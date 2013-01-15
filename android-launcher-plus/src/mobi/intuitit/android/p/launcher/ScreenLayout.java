@@ -102,7 +102,8 @@ public class ScreenLayout implements Animation.AnimationListener,
 	static final LinearLayout.LayoutParams LAYOUT_PARAMS = new LinearLayout.LayoutParams(
 			LinearLayout.LayoutParams.WRAP_CONTENT,
 			LinearLayout.LayoutParams.WRAP_CONTENT);
-	static final int BACK_ID = R.drawable.screen_plate;
+	///static final int BACK_ID = R.drawable.screen_plate;
+	static final int BACK_ID = R.drawable.screen_test;
 
 	/**
 	 * Setup imageviews

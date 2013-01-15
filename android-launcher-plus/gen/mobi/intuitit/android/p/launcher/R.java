@@ -190,12 +190,20 @@ containing a value of this type.
     public static final class color {
         public static final int appwidget_error_color=0x7f080004;
         public static final int bright_text_dark_focused=0x7f080008;
+        /** color name="bubble_dark_background">#B2191919</color
+         */
         public static final int bubble_dark_background=0x7f080002;
+        /** color name="delete_color_filter">#A5FF0000</color
+         */
         public static final int delete_color_filter=0x7f080003;
         public static final int gesture_color=0x7f080006;
+        /** color name="grid_dark_background">#EB191919</color
+         */
         public static final int grid_dark_background=0x7f080001;
         public static final int snag_callout_color=0x7f080005;
         public static final int uncertain_gesture_color=0x7f080007;
+        /** color name="window_background">#FF191919</color
+         */
         public static final int window_background=0x7f080000;
     }
     public static final class dimen {
@@ -247,17 +255,18 @@ containing a value of this type.
         public static final int placeholder_google=0x7f020026;
         public static final int pressed_application_background=0x7f020027;
         public static final int screen_plate=0x7f020028;
-        public static final int search_button_bg=0x7f020029;
-        public static final int search_button_voice=0x7f02002a;
-        public static final int search_floater=0x7f02002b;
-        public static final int shortcut_selector=0x7f02002c;
-        public static final int textfield_searchwidget=0x7f02002d;
-        public static final int textfield_searchwidget_default=0x7f02002e;
-        public static final int textfield_searchwidget_pressed=0x7f02002f;
-        public static final int textfield_searchwidget_selected=0x7f020030;
-        public static final int tray_handle_normal=0x7f020031;
-        public static final int tray_handle_pressed=0x7f020032;
-        public static final int tray_handle_selected=0x7f020033;
+        public static final int screen_test=0x7f020029;
+        public static final int search_button_bg=0x7f02002a;
+        public static final int search_button_voice=0x7f02002b;
+        public static final int search_floater=0x7f02002c;
+        public static final int shortcut_selector=0x7f02002d;
+        public static final int textfield_searchwidget=0x7f02002e;
+        public static final int textfield_searchwidget_default=0x7f02002f;
+        public static final int textfield_searchwidget_pressed=0x7f020030;
+        public static final int textfield_searchwidget_selected=0x7f020031;
+        public static final int tray_handle_normal=0x7f020032;
+        public static final int tray_handle_pressed=0x7f020033;
+        public static final int tray_handle_selected=0x7f020034;
     }
     public static final class id {
         public static final int all_apps=0x7f07000b;
