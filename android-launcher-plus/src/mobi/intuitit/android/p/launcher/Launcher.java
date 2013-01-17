@@ -688,6 +688,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * 
 	 * @return A View inflated from layoutResId.
 	 */
+	 
+	 // workspace icon 위치변경
 	View createShortcut(int layoutResId, ViewGroup parent, ApplicationInfo info) {
 		TextView favorite = (TextView) mInflater.inflate(layoutResId, parent,
 				false);
