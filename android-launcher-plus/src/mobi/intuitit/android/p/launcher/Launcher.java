@@ -223,7 +223,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (PROFILE_STARTUP) {
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
 		}
-
+		
 		checkForLocaleChange();
 		setWallpaperDimension();
 
