@@ -179,8 +179,8 @@ public final class Launcher extends Activity implements View.OnClickListener, On
     private Workspace mWorkspace;
 
     private AppWidgetManager mAppWidgetManager;
-    private LauncherAppWidgetHost mAppWidgetHost;
 
+    private LauncherAppWidgetHost mAppWidgetHost;
     static final int APPWIDGET_HOST_ID = 1024;
 
     private CellLayout.CellInfo mAddItemCellInfo;
@@ -664,7 +664,8 @@ public final class Launcher extends Activity implements View.OnClickListener, On
             info.icon = Utilities.createIconThumbnail(info.icon, this);
             info.filtered = true;
         }
-
+        
+//        info.icon.setBounds(0, 0, 10, 10);               안됨 ㅋㅋㅋㅋ ㅅㅂ
         favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null, null);
         favorite.setText(info.title);
         favorite.setTag(info);
@@ -1719,7 +1720,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
             }
 
             mSavedState = null;
-        }
+        } 
 
         if (mSavedInstanceState != null) {
             super.onRestoreInstanceState(mSavedInstanceState);
@@ -1968,7 +1969,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
             } else {
                 if (!(cellInfo.cell instanceof Folder)) {
                     // User long pressed on an item
-                    mWorkspace.startDrag(cellInfo);
+                    mWorkspace.startDrag(cellInfo);				// 주석처리시 아이콘 크기안변함
                 }
             }
         }
