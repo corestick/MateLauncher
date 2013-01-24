@@ -40,29 +40,29 @@ import android.view.ViewGroup;
 public class CellLayout extends WidgetCellLayout {
     private boolean mPortrait;
 
-    private int mCellWidth;
-    private int mCellHeight;
+    ///private int mCellWidth;
+    ///private int mCellHeight;
     
     private int mLongAxisStartPadding;
-    private int mLongAxisEndPadding;
+    ///private int mLongAxisEndPadding;
 
     private int mShortAxisStartPadding;
-    private int mShortAxisEndPadding;
+    ///private int mShortAxisEndPadding;
 
-    private int mShortAxisCells;
-    private int mLongAxisCells;
+    ///private int mShortAxisCells;
+    ///private int mLongAxisCells;
 
-    private int mWidthGap;
-    private int mHeightGap;
+    ///private int mWidthGap;
+    ///private int mHeightGap;
 
     private final Rect mRect = new Rect();
     private final CellInfo mCellInfo = new CellInfo();
     
     int[] mCellXY = new int[2];
     
-    boolean[][] mOccupied;
+    ///boolean[][] mOccupied;
 
-    private RectF mDragRect = new RectF();
+    ///private RectF mDragRect = new RectF();
 
     private boolean mDirtyTag;
 
@@ -78,25 +78,26 @@ public class CellLayout extends WidgetCellLayout {
         super(context, attrs, defStyle);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CellLayout, defStyle, 0);
 
-        mCellWidth = a.getDimensionPixelSize(R.styleable.CellLayout_cellWidth, 10);
-        mCellHeight = a.getDimensionPixelSize(R.styleable.CellLayout_cellHeight, 10);
+        ///mCellWidth = a.getDimensionPixelSize(R.styleable.CellLayout_cellWidth, 10);
+        ///mCellHeight = a.getDimensionPixelSize(R.styleable.CellLayout_cellHeight, 10);
         
         mLongAxisStartPadding = 
             a.getDimensionPixelSize(R.styleable.CellLayout_longAxisStartPadding, 10);
-        mLongAxisEndPadding = 
-            a.getDimensionPixelSize(R.styleable.CellLayout_longAxisEndPadding, 10);
+        ///mLongAxisEndPadding = 
+        ///   a.getDimensionPixelSize(R.styleable.CellLayout_longAxisEndPadding, 10);
         mShortAxisStartPadding =
             a.getDimensionPixelSize(R.styleable.CellLayout_shortAxisStartPadding, 10);
-        mShortAxisEndPadding = 
-            a.getDimensionPixelSize(R.styleable.CellLayout_shortAxisEndPadding, 10);
+        ///mShortAxisEndPadding = 
+        ///    a.getDimensionPixelSize(R.styleable.CellLayout_shortAxisEndPadding, 10);
         
-        mShortAxisCells = a.getInt(R.styleable.CellLayout_shortAxisCells, 4);
-        mLongAxisCells = a.getInt(R.styleable.CellLayout_longAxisCells, 4);
+        ///mShortAxisCells = a.getInt(R.styleable.CellLayout_shortAxisCells, 4);
+        ///mLongAxisCells = a.getInt(R.styleable.CellLayout_longAxisCells, 4);
 
         a.recycle();
 
         setAlwaysDrawnWithCacheEnabled(false);
-
+        
+        /*
         if (mOccupied == null) {
             if (mPortrait) {
                 mOccupied = new boolean[mShortAxisCells][mLongAxisCells];
@@ -104,6 +105,7 @@ public class CellLayout extends WidgetCellLayout {
                 mOccupied = new boolean[mLongAxisCells][mShortAxisCells];
             }
         }
+        */
     }
 
     @Override
@@ -118,6 +120,7 @@ public class CellLayout extends WidgetCellLayout {
         }
     }
 
+    /*
     int getCountX() {
         return mPortrait ? mShortAxisCells : mLongAxisCells;
     }
@@ -125,13 +128,14 @@ public class CellLayout extends WidgetCellLayout {
     int getCountY() {
         return mPortrait ? mLongAxisCells : mShortAxisCells;
     }
+    */
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         // Generate an id for each view, this assumes we have at most 256x256 cells
         // per workspace screen
-        final LayoutParams cellParams = (LayoutParams) params;
-        cellParams.regenerateId = true;
+        ///final LayoutParams cellParams = (LayoutParams) params;
+        ///cellParams.regenerateId = true;
 
         super.addView(child, index, params);
     }
@@ -172,10 +176,12 @@ public class CellLayout extends WidgetCellLayout {
                     if (frame.contains(x, y)) {
                         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
                         cellInfo.cell = child;
-                        cellInfo.cellX = lp.cellX;
-                        cellInfo.cellY = lp.cellY;
-                        cellInfo.spanX = lp.cellHSpan;
-                        cellInfo.spanY = lp.cellVSpan;
+                        ///cellInfo.cellX = lp.cellX;
+                        ///cellInfo.cellY = lp.cellY;
+                        ///cellInfo.spanX = lp.cellHSpan;
+                        ///cellInfo.spanY = lp.cellVSpan;
+                        cellInfo.x = lp.x;
+                        cellInfo.y = lp.y;
                         cellInfo.valid = true;
                         found = true;
                         mDirtyTag = false;
@@ -186,23 +192,27 @@ public class CellLayout extends WidgetCellLayout {
 
             if (!found) {
                 int cellXY[] = mCellXY;
-                pointToCellExact(x, y, cellXY);
+                ///pointToCellExact(x, y, cellXY);
 
-                final boolean portrait = mPortrait;
-                final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
-                final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
+                ///final boolean portrait = mPortrait;
+                ///final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
+                ///final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
 
-                final boolean[][] occupied = mOccupied;
-                findOccupiedCells(xCount, yCount, occupied, null);
+                ///final boolean[][] occupied = mOccupied;
+                ///findOccupiedCells(xCount, yCount, occupied, null);
 
                 cellInfo.cell = null;
-                cellInfo.cellX = cellXY[0];
-                cellInfo.cellY = cellXY[1];
-                cellInfo.spanX = 1;
-                cellInfo.spanY = 1;
-                cellInfo.valid = cellXY[0] >= 0 && cellXY[1] >= 0 && cellXY[0] < xCount &&
-                        cellXY[1] < yCount && !occupied[cellXY[0]][cellXY[1]];
+                ///cellInfo.cellX = cellXY[0];
+                ///cellInfo.cellY = cellXY[1];
+                ///cellInfo.spanX = 1;
+                ///cellInfo.spanY = 1;
+                ///cellInfo.valid = cellXY[0] >= 0 && cellXY[1] >= 0 && cellXY[0] < xCount &&
+                ///        cellXY[1] < yCount && !occupied[cellXY[0]][cellXY[1]];
 
+                cellInfo.x = cellXY[0];
+                cellInfo.y = cellXY[1];
+                cellInfo.valid = true;
+                
                 // Instead of finding the interesting vacant cells here, wait until a
                 // caller invokes getTag() to retrieve the result. Finding the vacant
                 // cells is a bit expensive and can generate many new objects, it's
@@ -213,10 +223,12 @@ public class CellLayout extends WidgetCellLayout {
             setTag(cellInfo);
         } else if (action == MotionEvent.ACTION_UP) {
             cellInfo.cell = null;
-            cellInfo.cellX = -1;
-            cellInfo.cellY = -1;
-            cellInfo.spanX = 0;
-            cellInfo.spanY = 0;
+            ///cellInfo.cellX = -1;
+            ///cellInfo.cellY = -1;
+            ///cellInfo.spanX = 0;
+            ///cellInfo.spanY = 0;
+            cellInfo.x = -1;
+            cellInfo.y = -1;
             cellInfo.valid = false;
             mDirtyTag = false;
             setTag(cellInfo);
@@ -229,20 +241,21 @@ public class CellLayout extends WidgetCellLayout {
     public CellInfo getTag() {
         final CellInfo info = (CellInfo) super.getTag();
         if (mDirtyTag && info.valid) {
-            final boolean portrait = mPortrait;
-            final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
-            final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
+            ///final boolean portrait = mPortrait;
+            ///final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
+            ///final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
 
-            final boolean[][] occupied = mOccupied;
-            findOccupiedCells(xCount, yCount, occupied, null);
+            ///final boolean[][] occupied = mOccupied;
+            ///findOccupiedCells(xCount, yCount, occupied, null);
 
-            findIntersectingVacantCells(info, info.cellX, info.cellY, xCount, yCount, occupied);
+            ///findIntersectingVacantCells(info, info.cellX, info.cellY, xCount, yCount, occupied);
 
             mDirtyTag = false;
         }
         return info;
     }
-
+    
+    /*
     private static void findIntersectingVacantCells(CellInfo cellInfo, int x, int y,
             int xCount, int yCount, boolean[][] occupied) {
 
@@ -333,9 +346,11 @@ public class CellLayout extends WidgetCellLayout {
         }
         return true;
     }
+    */
 
     CellInfo findAllVacantCells(boolean[] occupiedCells, View ignoreView) {
-        final boolean portrait = mPortrait;
+        /*///
+    	final boolean portrait = mPortrait;
         final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
         final int yCount = portrait ? mLongAxisCells : mShortAxisCells;
 
@@ -352,12 +367,24 @@ public class CellLayout extends WidgetCellLayout {
         }
 
         return findAllVacantCellsFromOccupied(occupied, xCount, yCount);
+        */
+    	
+    	CellInfo cellInfo = new CellInfo();
+    	
+    	cellInfo.x = -1;
+    	cellInfo.y = -1;
+    	cellInfo.screen = mCellInfo.screen;
+    	
+    	cellInfo.valid = true;
+    	
+    	return cellInfo;
     }
 
     /**
      * Variant of findAllVacantCells that uses LauncerModel as its source rather than the 
      * views.
      */
+    /*
     CellInfo findAllVacantCellsFromOccupied(boolean[][] occupied,
             final int xCount, final int yCount) {
         CellInfo cellInfo = new CellInfo();
@@ -391,13 +418,14 @@ public class CellLayout extends WidgetCellLayout {
         
         return cellInfo;
     }
-
+	*/
     /**
      * Given a point, return the cell that strictly encloses that point 
      * @param x X coordinate of the point
      * @param y Y coordinate of the point
      * @param result Array of 2 ints to hold the x and y coordinate of the cell
      */
+    /*
     void pointToCellExact(int x, int y, int[] result) {
         final boolean portrait = mPortrait;
         
@@ -415,6 +443,7 @@ public class CellLayout extends WidgetCellLayout {
         if (result[1] < 0) result[1] = 0;
         if (result[1] >= yAxis) result[1] = yAxis - 1;
     }
+    */
     
     /**
      * Given a cell coordinate, return the point that represents the upper left corner of that cell
@@ -424,6 +453,7 @@ public class CellLayout extends WidgetCellLayout {
      * 
      * @param result Array of 2 ints to hold the x and y coordinate of the point
      */
+    /*
     void cellToPoint(int cellX, int cellY, int[] result) {
         final boolean portrait = mPortrait;
         
@@ -434,6 +464,7 @@ public class CellLayout extends WidgetCellLayout {
         result[0] = hStartPadding + cellX * (mCellWidth + mWidthGap);
         result[1] = vStartPadding + cellY * (mCellHeight + mHeightGap);
     }
+    */
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -449,17 +480,18 @@ public class CellLayout extends WidgetCellLayout {
             throw new RuntimeException("CellLayout cannot have UNSPECIFIED dimensions");
         }
 
-        final int shortAxisCells = mShortAxisCells;
-        final int longAxisCells = mLongAxisCells;
+        ///final int shortAxisCells = mShortAxisCells;
+        ///final int longAxisCells = mLongAxisCells;
         final int longAxisStartPadding = mLongAxisStartPadding;
-        final int longAxisEndPadding = mLongAxisEndPadding;
+        ///final int longAxisEndPadding = mLongAxisEndPadding;
         final int shortAxisStartPadding = mShortAxisStartPadding;
-        final int shortAxisEndPadding = mShortAxisEndPadding;
-        final int cellWidth = mCellWidth;
-        final int cellHeight = mCellHeight;
+        ///final int shortAxisEndPadding = mShortAxisEndPadding;
+        ///final int cellWidth = mCellWidth;
+        ///final int cellHeight = mCellHeight;
 
         mPortrait = heightSpecSize > widthSpecSize;
 
+        /*
         int numShortGaps = shortAxisCells - 1;
         int numLongGaps = longAxisCells - 1;
 
@@ -488,6 +520,7 @@ public class CellLayout extends WidgetCellLayout {
                 mHeightGap = 0;
             }
         }
+        */
         
         int count = getChildCount();
 
@@ -496,17 +529,19 @@ public class CellLayout extends WidgetCellLayout {
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
             if (mPortrait) {
-                lp.setup(cellWidth, cellHeight, mWidthGap, mHeightGap, shortAxisStartPadding,
-                        longAxisStartPadding);
+                ///lp.setup(cellWidth, cellHeight, mWidthGap, mHeightGap, shortAxisStartPadding,
+                ///        longAxisStartPadding);
+            	lp.setup(lp.width, lp.height, shortAxisStartPadding, longAxisStartPadding);
             } else {
-                lp.setup(cellWidth, cellHeight, mWidthGap, mHeightGap, longAxisStartPadding,
-                        shortAxisStartPadding);
+                ///lp.setup(cellWidth, cellHeight, mWidthGap, mHeightGap, longAxisStartPadding,
+                ///        shortAxisStartPadding);
+            	lp.setup(lp.width, lp.height, longAxisStartPadding, shortAxisStartPadding);
             }
             
-            if (lp.regenerateId) {
-                child.setId(((getId() & 0xFF) << 16) | (lp.cellX & 0xFF) << 8 | (lp.cellY & 0xFF));
-                lp.regenerateId = false;
-            }
+//            if (lp.regenerateId) {
+//                child.setId(((getId() & 0xFF) << 16) | (lp.cellX & 0xFF) << 8 | (lp.cellY & 0xFF));
+//                lp.regenerateId = false;
+//            }
 
             int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(lp.width, MeasureSpec.EXACTLY);
             int childheightMeasureSpec =
@@ -516,8 +551,8 @@ public class CellLayout extends WidgetCellLayout {
 
         setMeasuredDimension(widthSpecSize, heightSpecSize);
 
-        if (mThumb == null) 
-            initThumb(widthSpecSize >> 2, heightSpecSize >> 2);
+//        if (mThumb == null) 
+//            initThumb(widthSpecSize >> 2, heightSpecSize >> 2);
     }
 
     @Override
@@ -532,13 +567,29 @@ public class CellLayout extends WidgetCellLayout {
 
                 int childLeft = lp.x;
                 int childTop = lp.y;
-                child.layout(childLeft, childTop, childLeft + lp.width, childTop + lp.height);
+                ///child.layout(childLeft, childTop, childLeft + lp.width, childTop + lp.height);
+                
+                int childRight;
+                int childBottom;
+                
+                if (lp.width < 0)
+                	childRight = childLeft + child.getMeasuredWidth();
+                else
+                	childRight = childLeft + lp.width;
+                
+                if (lp.height < 0)
+                	childBottom = childTop + child.getMeasuredHeight();
+                else
+                	childBottom = childTop + lp.height;
+                
+                
+                child.layout(childLeft, childTop, childRight, childBottom);
             }
         }
 
-        layoutDrawed = false;
+        ///layoutDrawed = false;
     }
-
+/*
     Bitmap mThumb;
     private Canvas mThumbCanvas;
     private Paint mThumbPaint;
@@ -588,7 +639,7 @@ public class CellLayout extends WidgetCellLayout {
         mThumb = null;
         mThumbCanvas = null;
     }
-
+*/
     @Override
     protected void setChildrenDrawingCacheEnabled(boolean enabled) {
         final int count = getChildCount();
@@ -596,7 +647,7 @@ public class CellLayout extends WidgetCellLayout {
             final View view = getChildAt(i);
             view.setDrawingCacheEnabled(enabled);
             // reduce cache quality to reduce memory usage
-            view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            ///view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
             // Update the drawing caches
             view.buildDrawingCache(true);
         }
@@ -620,6 +671,8 @@ public class CellLayout extends WidgetCellLayout {
      * @return The X, Y cell of a vacant area that can contain this object,
      *         nearest the requested location.
      */
+    
+    /*
     int[] findNearestVacantArea(int pixelX, int pixelY, int spanX, int spanY,
             CellInfo vacantCells, int[] recycle) {
         
@@ -662,6 +715,7 @@ public class CellLayout extends WidgetCellLayout {
             return null;
         }
     }
+    */
     
     /**
      * Drop a child at the specified position
@@ -672,10 +726,12 @@ public class CellLayout extends WidgetCellLayout {
     void onDropChild(View child, int[] targetXY) {
         if (child != null) {
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            lp.cellX = targetXY[0];
-            lp.cellY = targetXY[1];
+            ///lp.cellX = targetXY[0];
+            ///lp.cellY = targetXY[1];
+            lp.x = targetXY[0];
+            lp.y = targetXY[1];
             lp.isDragging = false;
-            mDragRect.setEmpty();
+            ///mDragRect.setEmpty();
             child.requestLayout();
             invalidate();
         }
@@ -686,7 +742,7 @@ public class CellLayout extends WidgetCellLayout {
             ((LayoutParams) child.getLayoutParams()).isDragging = false;
             invalidate();
         }
-        mDragRect.setEmpty();
+        ///mDragRect.setEmpty();
     }
 
     /**
@@ -697,7 +753,12 @@ public class CellLayout extends WidgetCellLayout {
     void onDragChild(View child) {
         LayoutParams lp = (LayoutParams) child.getLayoutParams();
         lp.isDragging = true;
-        mDragRect.setEmpty();
+        ///mDragRect.setEmpty();
+    }
+    
+    /////
+    void onDragOverChild(View child, int cellX, int cellY) {
+        invalidate();
     }
     
     /**
@@ -707,6 +768,7 @@ public class CellLayout extends WidgetCellLayout {
      * @param width Width in pixels
      * @param height Height in pixels
      */
+    /*
     public int[] rectToCell(int width, int height) {
         // Always assume we're working with the smallest span to make sure we
         // reserve enough space in both orientations.
@@ -721,7 +783,7 @@ public class CellLayout extends WidgetCellLayout {
 
         return new int[] { spanX, spanY };
     }
-
+	*/
     /**
      * Find the first vacant cell, if there is one.
      *
@@ -731,6 +793,7 @@ public class CellLayout extends WidgetCellLayout {
      * 
      * @return True if a vacant cell was found
      */
+    /*
     public boolean getVacantCell(int[] vacant, int spanX, int spanY) {
         final boolean portrait = mPortrait;
         final int xCount = portrait ? mShortAxisCells : mLongAxisCells;
@@ -806,6 +869,7 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
             }
         }
     }
+	*/
 
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -823,29 +887,30 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
     }
 
     public static class LayoutParams extends ViewGroup.MarginLayoutParams {
-        /**
+        
+    	/**
          * Horizontal location of the item in the grid.
          */
-        @ViewDebug.ExportedProperty
-        public int cellX;
+//        @ViewDebug.ExportedProperty
+//        public int cellX;
 
         /**
          * Vertical location of the item in the grid.
          */
-        @ViewDebug.ExportedProperty
-        public int cellY;
+//        @ViewDebug.ExportedProperty
+//        public int cellY;
 
         /**
          * Number of cells spanned horizontally by the item.
          */
-        @ViewDebug.ExportedProperty
-        public int cellHSpan;
+//        @ViewDebug.ExportedProperty
+//        public int cellHSpan;
 
         /**
          * Number of cells spanned vertically by the item.
          */
-        @ViewDebug.ExportedProperty
-        public int cellVSpan;
+//        @ViewDebug.ExportedProperty
+//        public int cellVSpan;
         
         /**
          * Is this item currently being dragged
@@ -859,43 +924,57 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
         @ViewDebug.ExportedProperty
         int y;
 
-        boolean regenerateId;
+        ///boolean regenerateId;
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-            cellHSpan = 1;
-            cellVSpan = 1;
+//            cellHSpan = 1;
+//            cellVSpan = 1;
         }
 
         public LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
-            cellHSpan = 1;
-            cellVSpan = 1;
+//            cellHSpan = 1;
+//            cellVSpan = 1;
         }
         
         public LayoutParams(int cellX, int cellY, int cellHSpan, int cellVSpan) {
             super(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-            this.cellX = cellX;
-            this.cellY = cellY;
-            this.cellHSpan = cellHSpan;
-            this.cellVSpan = cellVSpan;
+//            this.cellX = cellX;
+//            this.cellY = cellY;
+//            this.cellHSpan = cellHSpan;
+//            this.cellVSpan = cellVSpan;
+            this.x = cellX;
+            this.y = cellY;
         }
 
         public void setup(int cellWidth, int cellHeight, int widthGap, int heightGap,
                 int hStartPadding, int vStartPadding) {
             
-            final int myCellHSpan = cellHSpan;
-            final int myCellVSpan = cellVSpan;
-            final int myCellX = cellX;
-            final int myCellY = cellY;
+//            final int myCellHSpan = cellHSpan;
+//            final int myCellVSpan = cellVSpan;
+//            final int myCellX = cellX;
+//            final int myCellY = cellY;
             
-            width = myCellHSpan * cellWidth + ((myCellHSpan - 1) * widthGap) -
-                    leftMargin - rightMargin;
-            height = myCellVSpan * cellHeight + ((myCellVSpan - 1) * heightGap) -
-                    topMargin - bottomMargin;
+//            width = myCellHSpan * cellWidth + ((myCellHSpan - 1) * widthGap) -
+//                    leftMargin - rightMargin;
+//            height = myCellVSpan * cellHeight + ((myCellVSpan - 1) * heightGap) -
+//                    topMargin - bottomMargin;
+//
+//            x = hStartPadding + myCellX * (cellWidth + widthGap) + leftMargin;
+//            y = vStartPadding + myCellY * (cellHeight + heightGap) + topMargin;
+        }
+        
+        public void setup(int cellWidth, int cellHeight, int hStartPadding, int vStartPadding) {
+            
+            if (cellWidth > 0 )
+            	width = cellWidth - leftMargin - rightMargin;
+            	
+            if (cellHeight > 0)
+            	height = cellHeight - topMargin - bottomMargin;
 
-            x = hStartPadding + myCellX * (cellWidth + widthGap) + leftMargin;
-            y = vStartPadding + myCellY * (cellHeight + heightGap) + topMargin;
+            //x = hStartPadding + x + leftMargin;
+            //y = vStartPadding + y + topMargin;
         }
     }
 
@@ -906,6 +985,7 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
          * instances because up to several hundreds can be instanciated when
          * the user long presses an empty cell.
          */
+    	/*///
         static final class VacantCell {
             int cellX;
             int cellY;
@@ -954,15 +1034,17 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
                         ", spanY=" + spanY + "]";
             }
         }
-
+		*/
         View cell;
-        int cellX;
-        int cellY;
-        int spanX;
-        int spanY;
+        ///int cellX;
+        ///int cellY;
+        ///int spanX;
+        ///int spanY;
+        int x;
+        int y;
         int screen;
         boolean valid;
-
+        /*
         final ArrayList<VacantCell> vacantCells = new ArrayList<VacantCell>(VacantCell.POOL_LIMIT);
         int maxVacantSpanX;
         int maxVacantSpanXSpanY;
@@ -995,7 +1077,7 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
             }
             CellLayout.findIntersectingVacantCells(this, cellX, cellY, xCount, yCount, unflattened);
         }
-
+		*/
         /**
          * This method can be called only once! Calling #findVacantCellsFromOccupied will
          * restore the ability to call this method.
@@ -1010,6 +1092,7 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
          *
          * @return True if a vacant cell of the specified dimension was found, false otherwise.
          */
+    	/*
         boolean findCellForSpan(int[] cellXY, int spanX, int spanY) {
             return findCellForSpan(cellXY, spanX, spanY, true);
         }
@@ -1052,11 +1135,11 @@ out:            for (int i = x; i < x + spanX - 1 && x < xCount; i++) {
 
             return found;
         }
-
+    	 */
         @Override
         public String toString() {
-            return "Cell[view=" + (cell == null ? "null" : cell.getClass()) + ", x=" + cellX +
-                    ", y=" + cellY + "]";
+            return "Cell[view=" + (cell == null ? "null" : cell.getClass()) + ", x=" + x +
+                    ", y=" + y + "]";
         }
     }
 }

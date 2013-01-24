@@ -230,8 +230,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		setContentView(R.layout.launcher);
 		setupViews();
 
-		registerIntentReceivers();
-		registerContentObservers();
+		///registerIntentReceivers();
+		///registerContentObservers();
 
 		mSavedState = savedInstanceState;
 		restoreState(mSavedState);
@@ -579,18 +579,23 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			final CellLayout.CellInfo addItemCellInfo = mAddItemCellInfo;
 			addItemCellInfo.valid = true;
 			addItemCellInfo.screen = addScreen;
-			addItemCellInfo.cellX = savedState
-					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_X);
-			addItemCellInfo.cellY = savedState
-					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_Y);
-			addItemCellInfo.spanX = savedState
-					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_X);
-			addItemCellInfo.spanY = savedState
-					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_Y);
-			addItemCellInfo.findVacantCellsFromOccupied(savedState
-					.getBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS),
-					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_X),
-					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_Y));
+			
+//			addItemCellInfo.cellX = savedState
+//					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_X);
+//			addItemCellInfo.cellY = savedState
+//					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_Y);
+//			addItemCellInfo.spanX = savedState
+//					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_X);
+//			addItemCellInfo.spanY = savedState
+//					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_Y);
+//			addItemCellInfo.findVacantCellsFromOccupied(savedState
+//					.getBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS),
+//					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_X),
+//					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_Y));
+			
+			addItemCellInfo.x = savedState.getInt(RUNTIME_STATE_PENDING_ADD_CELL_X);
+            addItemCellInfo.y = savedState.getInt(RUNTIME_STATE_PENDING_ADD_CELL_Y);
+            
 			mRestoring = true;
 		}
 
@@ -780,7 +785,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			sModel.addDesktopItem(info);
 
 			final View view = createShortcut(info);
-			mWorkspace.addInCurrentScreen(view, cellInfo.cellX, cellInfo.cellY,
+			mWorkspace.addInCurrentScreen(view, cellInfo.x, cellInfo.y,
 					1, 1, insertAtFirst);
 		} else if (sModel.isDesktopLoaded()) {
 			sModel.addDesktopItem(info);
@@ -810,22 +815,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		// Calculate the grid spans needed to fit this widget
 		CellLayout layout = (CellLayout) mWorkspace.getChildAt(cellInfo.screen);
-		int[] spans = layout.rectToCell(appWidgetInfo.minWidth,
-				appWidgetInfo.minHeight);
+		///int[] spans = layout.rectToCell(appWidgetInfo.minWidth,
+		///		appWidgetInfo.minHeight);
 
 		// Try finding open space on Launcher screen
 		final int[] xy = mCellCoordinates;
-		if (!findSlot(cellInfo, xy, spans[0], spans[1])) {
-			if (appWidgetId != -1)
-				mAppWidgetHost.deleteAppWidgetId(appWidgetId);
-			return;
-		}
+///		if (!findSlot(cellInfo, xy, spans[0], spans[1])) {
+///			if (appWidgetId != -1)
+///				mAppWidgetHost.deleteAppWidgetId(appWidgetId);
+///			return;
+///		}
 
 		// Build Launcher-specific widget info and save to database
 		LauncherAppWidgetInfo launcherInfo = new LauncherAppWidgetInfo(
 				appWidgetId);
-		launcherInfo.spanX = spans[0];
-		launcherInfo.spanY = spans[1];
+///		launcherInfo.spanX = spans[0];
+///		launcherInfo.spanY = spans[1];
 
 		LauncherModel.addItemToDatabase(this, launcherInfo,
 				LauncherSettings.Favorites.CONTAINER_DESKTOP,
@@ -861,7 +866,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		final ApplicationInfo info = infoFromShortcutIntent(context, data);
 		LauncherModel.addItemToDatabase(context, info,
 				LauncherSettings.Favorites.CONTAINER_DESKTOP, cellInfo.screen,
-				cellInfo.cellX, cellInfo.cellY, notify);
+				cellInfo.x, cellInfo.y, notify);
 
 		return info;
 	}
@@ -1080,20 +1085,24 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			outState.putInt(RUNTIME_STATE_PENDING_ADD_SCREEN,
 					addItemCellInfo.screen);
+//			outState.putInt(RUNTIME_STATE_PENDING_ADD_CELL_X,
+//					addItemCellInfo.cellX);
+//			outState.putInt(RUNTIME_STATE_PENDING_ADD_CELL_Y,
+//					addItemCellInfo.cellY);
+//			outState.putInt(RUNTIME_STATE_PENDING_ADD_SPAN_X,
+//					addItemCellInfo.spanX);
+//			outState.putInt(RUNTIME_STATE_PENDING_ADD_SPAN_Y,
+//					addItemCellInfo.spanY);
+//			outState.putInt(RUNTIME_STATE_PENDING_ADD_COUNT_X,
+//					layout.getCountX());
+//			outState.putInt(RUNTIME_STATE_PENDING_ADD_COUNT_Y,
+//					layout.getCountY());
+//			outState.putBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS,
+//					layout.getOccupiedCells());
 			outState.putInt(RUNTIME_STATE_PENDING_ADD_CELL_X,
-					addItemCellInfo.cellX);
+					addItemCellInfo.x);
 			outState.putInt(RUNTIME_STATE_PENDING_ADD_CELL_Y,
-					addItemCellInfo.cellY);
-			outState.putInt(RUNTIME_STATE_PENDING_ADD_SPAN_X,
-					addItemCellInfo.spanX);
-			outState.putInt(RUNTIME_STATE_PENDING_ADD_SPAN_Y,
-					addItemCellInfo.spanY);
-			outState.putInt(RUNTIME_STATE_PENDING_ADD_COUNT_X,
-					layout.getCountX());
-			outState.putInt(RUNTIME_STATE_PENDING_ADD_COUNT_Y,
-					layout.getCountY());
-			outState.putBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS,
-					layout.getOccupiedCells());
+					addItemCellInfo.y);
 		}
 
 		if (mFolderInfo != null && mWaitingForResult) {
@@ -1128,10 +1137,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		sModel.abortLoaders();
 		mWorkspace.unbindWidgetScrollableViews();
 
-		getContentResolver().unregisterContentObserver(mObserver);
-		getContentResolver().unregisterContentObserver(mWidgetObserver);
-		unregisterReceiver(mApplicationsReceiver);
-		unregisterReceiver(mCloseSystemDialogsReceiver);
+///		getContentResolver().unregisterContentObserver(mObserver);
+///		getContentResolver().unregisterContentObserver(mWidgetObserver);
+///		unregisterReceiver(mApplicationsReceiver);
+///		unregisterReceiver(mCloseSystemDialogsReceiver);
 
 		mWorkspace.unregisterProvider();
 	}
@@ -1254,9 +1263,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// We can't trust the view state here since views we may not be done
 		// binding.
 		// Get the vacancy state from the model instead.
-		mMenuAddInfo = mWorkspace.findAllVacantCellsFromModel();
-		menu.setGroupEnabled(MENU_GROUP_ADD, mMenuAddInfo != null
-				&& mMenuAddInfo.valid);
+		
+		///mMenuAddInfo = mWorkspace.findAllVacantCellsFromModel();
+		///menu.setGroupEnabled(MENU_GROUP_ADD, mMenuAddInfo != null
+		///		&& mMenuAddInfo.valid);
 
 		return true;
 	}
@@ -1319,7 +1329,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			mAppWidgetHost.deleteAppWidgetId(appWidgetId);
 			// add the search widget
 			addSearch();
-		} else {
+		} 
+		/*///
+		else {
 			AppWidgetProviderInfo appWidget = mAppWidgetManager
 					.getAppWidgetInfo(appWidgetId);
 
@@ -1361,6 +1373,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						data);
 			}
 		}
+		*/
 	}
 
 	void addSearch() {
@@ -1371,8 +1384,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		final int spanX = info.spanX;
 		final int spanY = info.spanY;
 
-		if (!findSlot(cellInfo, xy, spanX, spanY))
-			return;
+		///if (!findSlot(cellInfo, xy, spanX, spanY))
+		///	return;
 
 		sModel.addDesktopItem(info);
 		LauncherModel.addItemToDatabase(this, info,
@@ -1430,7 +1443,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// Update the model
 		LauncherModel.addItemToDatabase(this, folderInfo,
 				LauncherSettings.Favorites.CONTAINER_DESKTOP,
-				mWorkspace.getCurrentScreen(), cellInfo.cellX, cellInfo.cellY,
+				mWorkspace.getCurrentScreen(), cellInfo.x, cellInfo.y,
 				false);
 		sModel.addDesktopItem(folderInfo);
 		sModel.addFolder(folderInfo);
@@ -1439,8 +1452,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		FolderIcon newFolder = FolderIcon
 				.fromXml(R.layout.folder_icon, this, (ViewGroup) mWorkspace
 						.getChildAt(mWorkspace.getCurrentScreen()), folderInfo);
-		mWorkspace.addInCurrentScreen(newFolder, cellInfo.cellX,
-				cellInfo.cellY, 1, 1, insertAtFirst);
+		mWorkspace.addInCurrentScreen(newFolder, cellInfo.x,
+				cellInfo.y, 1, 1, insertAtFirst);
 	}
 
 	private void completeAddLiveFolder(Intent data,
@@ -1457,7 +1470,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			final View view = LiveFolderIcon.fromXml(R.layout.live_folder_icon,
 					this, (ViewGroup) mWorkspace.getChildAt(mWorkspace
 							.getCurrentScreen()), info);
-			mWorkspace.addInCurrentScreen(view, cellInfo.cellX, cellInfo.cellY,
+			mWorkspace.addInCurrentScreen(view, cellInfo.x, cellInfo.y,
 					1, 1, insertAtFirst);
 		} else if (sModel.isDesktopLoaded()) {
 			sModel.addDesktopItem(info);
@@ -1510,7 +1523,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		LauncherModel.addItemToDatabase(context, info,
 				LauncherSettings.Favorites.CONTAINER_DESKTOP, cellInfo.screen,
-				cellInfo.cellX, cellInfo.cellY, notify);
+				cellInfo.x, cellInfo.y, notify);
 		sModel.addFolder(info);
 
 		return info;
@@ -1519,8 +1532,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private boolean findSingleSlot(CellLayout.CellInfo cellInfo) {
 		final int[] xy = new int[2];
 		if (findSlot(cellInfo, xy, 1, 1)) {
-			cellInfo.cellX = xy[0];
-			cellInfo.cellY = xy[1];
+			cellInfo.x = xy[0];
+			cellInfo.y = xy[1];
 			return true;
 		}
 		return false;
@@ -1528,17 +1541,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private boolean findSlot(CellLayout.CellInfo cellInfo, int[] xy, int spanX,
 			int spanY) {
-		if (!cellInfo.findCellForSpan(xy, spanX, spanY)) {
-			boolean[] occupied = mSavedState != null ? mSavedState
-					.getBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS)
-					: null;
-			cellInfo = mWorkspace.findAllVacantCells(occupied);
-			if (!cellInfo.findCellForSpan(xy, spanX, spanY)) {
-				Toast.makeText(this, getString(R.string.out_of_space),
-						Toast.LENGTH_SHORT).show();
-				return false;
-			}
-		}
+///		if (!cellInfo.findCellForSpan(xy, spanX, spanY)) {
+///			boolean[] occupied = mSavedState != null ? mSavedState
+///					.getBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS)
+///					: null;
+///			cellInfo = mWorkspace.findAllVacantCells(occupied);
+///			if (!cellInfo.findCellForSpan(xy, spanX, spanY)) {
+///				Toast.makeText(this, getString(R.string.out_of_space),
+///						Toast.LENGTH_SHORT).show();
+///				return false;
+///			}
+///		}
 		return true;
 	}
 
@@ -1854,9 +1867,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			mSavedInstanceState = null;
 		}
 
-		if (mDrawer.isOpened() && !mDrawer.hasFocus()) {
-			mDrawer.requestFocus();
-		}
+		///if (mDrawer.isOpened() && !mDrawer.hasFocus()) {
+		///	mDrawer.requestFocus();
+		///}
 
 		mDesktopLocked = false;
 		mDrawer.unlock();
@@ -1935,8 +1948,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			for (int i = 0; i < count; i++) {
 				// Prepare cache
 				screenView = (CellLayout) mWorkspace.getChildAt(i);
-				screenView.saveThumb();
-				sScreens[i] = screenView.mThumb;
+				///screenView.saveThumb();
+				///sScreens[i] = screenView.mThumb;
 			}
 
 			return null;
@@ -2025,6 +2038,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			openFolder(folderInfo);
 		} else {
 			// Find the open folder...
+			/*///
 			Folder openFolder = mWorkspace.getFolderForTag(folderInfo);
 			int folderScreen;
 			if (openFolder != null) {
@@ -2038,6 +2052,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					openFolder(folderInfo);
 				}
 			}
+			*/
 		}
 	}
 
@@ -2054,8 +2069,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		if (folderInfo instanceof UserFolderInfo) {
 			openFolder = UserFolder.fromXml(this);
-		} else if (folderInfo instanceof LiveFolderInfo) {
-			openFolder = LiveFolder.fromXml(this, folderInfo);
+		///} else if (folderInfo instanceof LiveFolderInfo) {
+		///	openFolder = LiveFolder.fromXml(this, folderInfo);
 		} else {
 			return;
 		}
@@ -2104,10 +2119,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					showAddDialog(cellInfo);
 				}
 			} else {
-				if (!(cellInfo.cell instanceof Folder)) {
+				///if (!(cellInfo.cell instanceof Folder)) {
 					// User long pressed on an item
 					mWorkspace.startDrag(cellInfo);
-				}
+				///}
 			}
 		}
 		return true;
