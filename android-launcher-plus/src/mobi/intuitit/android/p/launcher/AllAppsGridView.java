@@ -27,6 +27,7 @@ import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Canvas;
 
+// 슬라이딩 작업 부분 관련 클래스
 public class AllAppsGridView extends GridView implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener, DragSource {
 
@@ -110,11 +111,11 @@ public class AllAppsGridView extends GridView implements AdapterView.OnItemClick
         ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(position);
         app = new ApplicationInfo(app);
 
-        mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
-        mLauncher.closeAllApplications();
+        mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY); // 드레그 행동 처리
+        mLauncher.closeAllApplications(); // 아래 부분 스스로 닫힘
 
         return true;
-    }
+    } // 아래쪽 부분에서 길게 눌렀을 때 처리
 
     public void setDragger(DragController dragger) {
         mDragger = dragger;

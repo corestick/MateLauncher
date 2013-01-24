@@ -32,6 +32,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import static android.util.Log.*;
 import android.os.Process;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,6 +125,7 @@ public class LauncherModel {
         }
 
         if (mApplicationsAdapter == null || isLaunching || localeChanged) {
+//        	Log.d("kim-model", "start");
             mApplications = new ArrayList<ApplicationInfo>(DEFAULT_APPLICATIONS_NUMBER);
             mApplicationsAdapter = new ApplicationsAdapter(launcher, mApplications);
         }
@@ -719,6 +721,7 @@ public class LauncherModel {
         return label;
     }
 
+    //바탕화면 관련 스레드
     private class DesktopItemsLoader implements Runnable {
         private volatile boolean mStopped;
         private volatile boolean mRunning;
@@ -772,6 +775,7 @@ public class LauncherModel {
                     LauncherSettings.Favorites.CONTENT_URI, null, null, null, null);
 
             try {
+            	//getColumnIndexOrThrow() 특정 필드의 인덱스값을 반환하고, 필드가 존재하지 않으면 예외 발생
                 final int idIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites._ID);
                 final int intentIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.INTENT);
                 final int titleIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.TITLE);
@@ -970,10 +974,12 @@ public class LauncherModel {
 
                     if (!mStopped) {
                         d(LOG_TAG, "  ----> items cloned, ready to refresh UI");
+                        //UI와 관련된 일을 하는 스레드
                         launcher.runOnUiThread(new Runnable() {
                             public void run() {
                                 if (DEBUG_LOADERS) d(LOG_TAG, "  ----> onDesktopItemsLoaded()");
                                 launcher.onDesktopItemsLoaded(uiDesktopItems, uiDesktopWidgets);
+                               
                             }
                         });
                     }
@@ -982,6 +988,7 @@ public class LauncherModel {
                         if (DEBUG_LOADERS) {
                             d(LOG_TAG, "  ----> loading applications from workspace loader");
                         }
+                        Log.d("kim-loader","loader");
                         startApplicationsLoader(launcher, mIsLaunching);
                     }
 
@@ -1225,6 +1232,8 @@ public class LauncherModel {
         final ApplicationInfo info = new ApplicationInfo();
         final ActivityInfo activityInfo = resolveInfo.activityInfo;
         info.icon = Utilities.createIconThumbnail(activityInfo.loadIcon(manager), context);
+        Log.d("kim-work", "work");
+        //바탕화면에 어플리케이션 shortcut 뿌릴때
         if (info.title == null || info.title.length() == 0) {
             info.title = activityInfo.loadLabel(manager);
         }
@@ -1236,7 +1245,7 @@ public class LauncherModel {
     }
 
     /**
-     * Make an ApplicationInfo object for a sortcut
+     * Make an ApplicationInfo object for a shortcut
      */
     private ApplicationInfo getApplicationInfoShortcut(Cursor c, Context context,
             int iconTypeIndex, int iconPackageIndex, int iconResourceIndex, int iconIndex) {
@@ -1266,8 +1275,7 @@ public class LauncherModel {
                 byte[] data = c.getBlob(iconIndex);
                 try {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    info.icon = new FastBitmapDrawable(
-                            Utilities.createBitmapThumbnail(bitmap, context));
+                    info.icon = new FastBitmapDrawable(Utilities.createBitmapThumbnail(bitmap, context));
                 } catch (Exception e) {
                     packageManager = context.getPackageManager();
                     info.icon = packageManager.getDefaultActivityIcon();

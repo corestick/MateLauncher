@@ -72,8 +72,7 @@ public abstract class WidgetSpace extends ViewGroup {
     }
 
     public abstract Activity getLauncherActivity();
-
-    /**
+       /**
      * 
      */
     BroadcastReceiver mAnimationProvider = new BroadcastReceiver() {

@@ -76,7 +76,7 @@ class ApplicationInfo extends ItemInfo {
         icon = info.icon;
         filtered = info.filtered;
         customIcon = info.customIcon;
-    }
+    } // 해당 app의 정보, short cut 이미지 불러옴
 
     /**
      * Creates the application intent based on a component name and various launch flags.
