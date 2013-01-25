@@ -241,6 +241,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
         }
 
         if (!mRestoring) {
+        	Log.d("kim-load1", "load1");
             startLoaders();
         }
 
@@ -270,7 +271,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
 
         mLocaleChanged = !locale.equals(previousLocale) || mcc != previousMcc || mnc != previousMnc;
 
-        if (mLocaleChanged) {
+        if (mLocaleChanged) {        	
             localeConfiguration.locale = locale;
             localeConfiguration.mcc = mcc;
             localeConfiguration.mnc = mnc;
@@ -344,8 +345,8 @@ public final class Launcher extends Activity implements View.OnClickListener, On
     }
 
     private void startLoaders() {
-        boolean loadApplications = sModel.loadApplications(true, this, mLocaleChanged);
-        sModel.loadUserItems(!mLocaleChanged, this, mLocaleChanged, loadApplications);
+        boolean loadApplications = sModel.loadApplications(true, this, mLocaleChanged); //mLocaleChanged = false
+        sModel.loadUserItems(!mLocaleChanged, this, mLocaleChanged, loadApplications); //loadapplication = false
 
         mRestoring = false;
     }
@@ -411,7 +412,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
     @Override
     protected void onResume() {
         super.onResume();
-
+        Log.d("kim-home1", "home1");
         if (restartOnScreenNumberChange())
             return;
 
@@ -569,6 +570,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
                     .getBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS), savedState
                     .getInt(RUNTIME_STATE_PENDING_ADD_COUNT_X), savedState
                     .getInt(RUNTIME_STATE_PENDING_ADD_COUNT_Y));
+            Log.d("kim", "mRestoring1");
             mRestoring = true;
         }
 
@@ -576,6 +578,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
         if (renameFolder) {
             long id = savedState.getLong(RUNTIME_STATE_PENDING_FOLDER_RENAME_ID);
             mFolderInfo = sModel.getFolderById(this, id);
+            Log.d("kim", "mRestoring2");
             mRestoring = true;
         }
     }
@@ -895,7 +898,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
+        Log.d("kim-home2", "home2");
         // Close the menu
         if (Intent.ACTION_MAIN.equals(intent.getAction())) {
             closeSystemDialogs();

@@ -30,6 +30,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -670,6 +671,7 @@ public class CellLayout extends WidgetCellLayout {
      */
     void onDropChild(View child, int[] targetXY) {
         if (child != null) {
+        	Log.d("kim-child", child.toString());
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
             lp.cellX = targetXY[0];
             lp.cellY = targetXY[1];
