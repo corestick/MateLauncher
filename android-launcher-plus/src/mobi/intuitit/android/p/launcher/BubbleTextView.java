@@ -69,7 +69,7 @@ public class BubbleTextView extends TextView {
         mPaint.setColor(getContext().getResources().getColor(R.color.bubble_dark_background));
 
         final float scale = getContext().getResources().getDisplayMetrics().density;
-        mCornerRadius = CORNER_RADIUS * scale;
+        mCornerRadius = CORNER_RADIUS * scale; ///아이콘 글씨 부분 둥그런 정도
         mPaddingH = PADDING_H * scale;
         //noinspection PointlessArithmeticExpression
         mPaddingV = PADDING_V * scale;

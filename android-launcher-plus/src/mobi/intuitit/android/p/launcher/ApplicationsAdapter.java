@@ -52,7 +52,7 @@ public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
 
         final TextView textView = (TextView) convertView;
         textView.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null, null);
-        Log.e("{RYU}", info.title.toString());
+        ///Log.e("{RYU}", info.title.toString());
         textView.setText(info.title);
 
         return convertView;

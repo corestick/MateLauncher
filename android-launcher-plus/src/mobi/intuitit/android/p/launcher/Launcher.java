@@ -580,18 +580,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			addItemCellInfo.valid = true;
 			addItemCellInfo.screen = addScreen;
 			
-//			addItemCellInfo.cellX = savedState
-//					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_X);
-//			addItemCellInfo.cellY = savedState
-//					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_Y);
-//			addItemCellInfo.spanX = savedState
-//					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_X);
-//			addItemCellInfo.spanY = savedState
-//					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_Y);
-//			addItemCellInfo.findVacantCellsFromOccupied(savedState
-//					.getBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS),
-//					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_X),
-//					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_Y));
+///			addItemCellInfo.cellX = savedState
+///					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_X);
+///			addItemCellInfo.cellY = savedState
+///					.getInt(RUNTIME_STATE_PENDING_ADD_CELL_Y);
+///			addItemCellInfo.spanX = savedState
+///					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_X);
+///			addItemCellInfo.spanY = savedState
+///					.getInt(RUNTIME_STATE_PENDING_ADD_SPAN_Y);
+///			addItemCellInfo.findVacantCellsFromOccupied(savedState
+///					.getBooleanArray(RUNTIME_STATE_PENDING_ADD_OCCUPIED_CELLS),
+///					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_X),
+///					savedState.getInt(RUNTIME_STATE_PENDING_ADD_COUNT_Y));
 			
 			addItemCellInfo.x = savedState.getInt(RUNTIME_STATE_PENDING_ADD_CELL_X);
             addItemCellInfo.y = savedState.getInt(RUNTIME_STATE_PENDING_ADD_CELL_Y);
