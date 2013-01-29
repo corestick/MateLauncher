@@ -233,6 +233,48 @@ public class CellLayout extends WidgetCellLayout {
 			}
 		}
 	}
+	
+	Bitmap mThumb;
+    private Canvas mThumbCanvas;
+    private Paint mThumbPaint;
+
+    boolean layoutDrawed = false;
+
+    private void initThumb(int width, int height) {
+        if (mThumb == null || mThumb.isRecycled())
+            mThumb = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+
+        Matrix matrix = new Matrix();
+        matrix.setScale(0.25f, 0.25f);
+        mThumbCanvas = new Canvas(mThumb);
+        mThumbCanvas.concat(matrix);
+
+        mThumbPaint = new Paint();
+        mThumbPaint.setDither(true);
+        mThumbPaint.setAntiAlias(true);
+    }
+
+    synchronized void saveThumb() {
+        if (layoutDrawed)
+            return;
+
+        if (mThumbCanvas == null)
+            initThumb(getWidth() >> 2, getHeight() >> 2);
+
+        setDrawingCacheEnabled(true);
+
+        // Get bitmap
+        Bitmap bmp = getDrawingCache();
+        if (bmp != null) {
+            mThumbCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+            mThumbCanvas.drawBitmap(bmp, 0, 0, mThumbPaint);
+        }
+
+        // Clean up
+        destroyDrawingCache();
+        setDrawingCacheEnabled(false);
+        layoutDrawed = true;
+    }
 
 	@Override
 	protected void setChildrenDrawingCacheEnabled(boolean enabled) {

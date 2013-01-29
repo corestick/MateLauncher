@@ -1948,8 +1948,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			for (int i = 0; i < count; i++) {
 				// Prepare cache
 				screenView = (CellLayout) mWorkspace.getChildAt(i);
-				///screenView.saveThumb();
-				///sScreens[i] = screenView.mThumb;
+				screenView.saveThumb();
+				sScreens[i] = screenView.mThumb;
 			}
 
 			return null;
