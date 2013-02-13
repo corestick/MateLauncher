@@ -695,6 +695,8 @@ public class CellLayout extends WidgetCellLayout {
      */
     void onDragChild(View child) {
         LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        lp.width = 100;
+        lp.height = 100;
         lp.isDragging = true;
         mDragRect.setEmpty();
     }

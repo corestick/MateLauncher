@@ -179,8 +179,8 @@ public final class Launcher extends Activity implements View.OnClickListener, On
     private Workspace mWorkspace;
 
     private AppWidgetManager mAppWidgetManager;
-
     private LauncherAppWidgetHost mAppWidgetHost;
+
     static final int APPWIDGET_HOST_ID = 1024;
 
     private CellLayout.CellInfo mAddItemCellInfo;
@@ -252,7 +252,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
-    private void checkForLocaleChange() {		// 위치를  PREFERENCES에서 읽어오고 변화가 있으면 바꾸어줌 PREFERENCES
+    private void checkForLocaleChange() {
         final LocaleConfiguration localeConfiguration = new LocaleConfiguration();
         readConfiguration(this, localeConfiguration);
 
@@ -278,7 +278,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
         }
     }
 
-    private static class LocaleConfiguration {					
+    private static class LocaleConfiguration {
         public String locale;
         public int mcc = -1;
         public int mnc = -1;
@@ -343,13 +343,13 @@ public final class Launcher extends Activity implements View.OnClickListener, On
     }
 
     private void startLoaders() {
-        boolean loadApplications = sModel.loadApplications(true, this, mLocaleChanged); //
+        boolean loadApplications = sModel.loadApplications(true, this, mLocaleChanged);
         sModel.loadUserItems(!mLocaleChanged, this, mLocaleChanged, loadApplications);
 
         mRestoring = false;
     }
 
-    private void setWallpaperDimension() {		//가로세로 체크, 배경 뿌리기 가로*배경갯수
+    private void setWallpaperDimension() {
         WallpaperManager wpm = (WallpaperManager) getSystemService(WALLPAPER_SERVICE);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -373,7 +373,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
         if (resultCode == RESULT_OK && mAddItemCellInfo != null) {
             switch (requestCode) {
             case REQUEST_PICK_APPLICATION:
-                completeAddApplication(this, data, mAddItemCellInfo, !mDesktopLocked); // 
+                completeAddApplication(this, data, mAddItemCellInfo, !mDesktopLocked);
                 break;
             case REQUEST_PICK_SHORTCUT:
                 processShortcut(data, REQUEST_PICK_APPLICATION, REQUEST_CREATE_SHORTCUT);
@@ -665,7 +665,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
             info.filtered = true;
         }
         
-//        info.icon.setBounds(0, 0, 10, 10);               안됨 ㅋㅋㅋㅋ ㅅㅂ
+//        info.icon.setBounds(0, 0, 100, 100);               
         favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null, null);
         favorite.setText(info.title);
         favorite.setTag(info);
@@ -1720,7 +1720,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
             }
 
             mSavedState = null;
-        } 
+        }
 
         if (mSavedInstanceState != null) {
             super.onRestoreInstanceState(mSavedInstanceState);
@@ -1969,7 +1969,7 @@ public final class Launcher extends Activity implements View.OnClickListener, On
             } else {
                 if (!(cellInfo.cell instanceof Folder)) {
                     // User long pressed on an item
-                    mWorkspace.startDrag(cellInfo);				// 주석처리시 아이콘 크기안변함
+                    mWorkspace.startDrag(cellInfo);
                 }
             }
         }

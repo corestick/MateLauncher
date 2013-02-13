@@ -47,7 +47,7 @@ public class DragLayer extends FrameLayout implements DragController {
     private static final boolean PROFILE_DRAWING_DURING_DRAG = false;
 
     // Number of pixels to add to the dragged item for scaling
-    private static final float DRAG_SCALE = 24.0f;
+    private static final float DRAG_SCALE = 150.0f;
 
     private boolean mDragging = false;
     private boolean mShouldDrop;

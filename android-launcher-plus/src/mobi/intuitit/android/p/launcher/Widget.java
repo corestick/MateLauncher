@@ -28,7 +28,7 @@ class Widget extends ItemInfo {
     static Widget makeSearch() {
         Widget w = new Widget();
         w.itemType = LauncherSettings.Favorites.ITEM_TYPE_WIDGET_SEARCH;
-        w.spanX = 4;
+        w.spanX = 1;
         w.spanY = 1;
         w.layoutResource = R.layout.widget_search;
         return w;

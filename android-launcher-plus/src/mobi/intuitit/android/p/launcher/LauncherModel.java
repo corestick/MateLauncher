@@ -700,7 +700,7 @@ public class LauncherModel {
                 } catch (PackageManager.NameNotFoundException e) {
                     // Ignore
                 }
-            }
+            } 
         } finally {
             c.close();
         }
@@ -817,6 +817,7 @@ public class LauncherModel {
                             if (itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION) {
                                 info = getApplicationInfo(manager, intent, launcher);
                             } else {
+  //                          	info = null;
                                 info = getApplicationInfoShortcut(c, launcher, iconTypeIndex,
                                         iconPackageIndex, iconResourceIndex, iconIndex);
                             }

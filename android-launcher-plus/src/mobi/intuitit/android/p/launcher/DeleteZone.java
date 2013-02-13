@@ -134,7 +134,7 @@ public class DeleteZone extends ImageView implements DropTarget, DragController.
         final LauncherModel model = Launcher.getModel();
         if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
             if (item instanceof LauncherAppWidgetInfo) {
-                model.removeDesktopAppWidget((LauncherAppWidgetInfo) item);
+                model.removeDesktopAppWidget((LauncherAppWidgetInfo) item); 		//리스트에서 삭
             } else {
                 model.removeDesktopItem(item);
             }
@@ -192,7 +192,7 @@ public class DeleteZone extends ImageView implements DropTarget, DragController.
                 mUninstallUri = Uri.fromParts("package", mAppInfo.intent.getComponent()
                         .getPackageName(), null);
 
-                mUninstallHandler.sendEmptyMessageDelayed(MSG_UNINSTALL, UNINSTALL_DURATION);
+               mUninstallHandler.sendEmptyMessageDelayed(MSG_UNINSTALL, UNINSTALL_DURATION);
             }
         } catch (Exception e) {
             
