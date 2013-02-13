@@ -70,6 +70,7 @@ import android.os.MessageQueue;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.LiveFolders;
+import android.telephony.SmsMessage;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -424,6 +425,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		if (restartOnScreenNumberChange())
 			return;
+		
+		///sms
+		registerReceiver(mReceiverBR, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
+		
+		
+		
 
 		keepIndicatorOn = PreferenceManager.getDefaultSharedPreferences(this)
 				.getBoolean(getString(R.string.key_indicator_on), false);
@@ -462,6 +469,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	@Override
 	protected void onPause() {
 		super.onPause();
+		
+		//SMS CLOSE
+		unregisterReceiver(mReceiverBR);
+		
+		
 		closeDrawer(false);
 	}
 
@@ -705,6 +717,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
 				null);
 		favorite.setText(info.title);
+		///favorite.setText("123123");
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -2096,6 +2109,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	public boolean onLongClick(View v) {
+		
 		if (mDesktopLocked) {
 			return false;
 		}
@@ -2105,13 +2119,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		CellLayout.CellInfo cellInfo = (CellLayout.CellInfo) v.getTag();
-
+			
 		// This happens when long clicking an item with the dpad/trackball
 		if (cellInfo == null) {
 			return true;
 		}
 
 		if (mWorkspace.allowLongPress()) {
+			
 			if (cellInfo.cell == null) {
 				if (cellInfo.valid) {
 					// User long pressed on empty space
@@ -2786,5 +2801,20 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}
 	}
+	
+	BroadcastReceiver mReceiverBR = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String result = "";
+			Bundle bundle = intent.getExtras();
+			if(bundle != null) {
+				Object[] pdus = (Object[])bundle.get("pdus");
+				for(int i = 0; i < pdus.length; i++) {
+					SmsMessage msg = SmsMessage.createFromPdu((byte[])pdus[i]);
+					result += "from " + msg.getOriginatingAddress() + " => " + msg.getMessageBody() + "\n"; 
+				}
+				Toast.makeText(Launcher.this, result, Toast.LENGTH_LONG).show();
+			}
+		}
+	};
 
 }
