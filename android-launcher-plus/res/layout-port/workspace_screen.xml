@@ -21,11 +21,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
 
-    launcher:cellWidth="80dip"
-    launcher:cellHeight="100dip"
+    launcher:cellWidth="160dip"
+    launcher:cellHeight="200dip"
     launcher:longAxisStartPadding="0dip"
     launcher:longAxisEndPadding="55dip"
     launcher:shortAxisStartPadding="0dip"
     launcher:shortAxisEndPadding="0dip"
-    launcher:shortAxisCells="4"
-    launcher:longAxisCells="4" />
+    launcher:shortAxisCells="5"
+    launcher:longAxisCells="5" />
