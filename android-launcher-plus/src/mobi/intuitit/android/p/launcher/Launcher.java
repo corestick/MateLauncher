@@ -24,6 +24,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ import mobi.intuitit.android.p.launcher.ScreenLayout.onScreenChangeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
@@ -46,9 +50,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.ActivityInfo;
 import android.content.pm.LabeledIntent;
@@ -57,10 +61,12 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -83,9 +89,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -210,6 +216,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private Bundle mSavedInstanceState;
 
 	private DesktopBinder mBinder;
+	
+	NotificationManager mNotiManager;
+	public static final String MMSMON_RECEIVED_MMS = "MMStesting.intent.action.MMSMON_RECEIVED_MMS";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -251,6 +260,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		PreferenceManager.getDefaultSharedPreferences(this)
 				.registerOnSharedPreferenceChangeListener(this);
+		
+		
+		mNotiManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		
 	}
 
 	private void checkForLocaleChange() {
@@ -426,7 +439,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (restartOnScreenNumberChange())
 			return;
 		
-		///sms
+		///sms		
+		///registerReceiver(mSMSBR, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 		registerReceiver(mReceiverBR, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 		
 		
@@ -471,6 +485,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		super.onPause();
 		
 		//SMS CLOSE
+		///unregisterReceiver(mSMSBR);
 		unregisterReceiver(mReceiverBR);
 		
 		
@@ -2098,6 +2113,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		openFolder.onOpen();
 	}
 
+	
+	
+	
+	
 	/**
 	 * Returns true if the workspace is being loaded. When the workspace is
 	 * loading, no user interaction should be allowed to avoid any conflict.
@@ -2130,8 +2149,32 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (cellInfo.cell == null) {
 				if (cellInfo.valid) {
 					// User long pressed on empty space
-					mWorkspace.setAllowLongPress(false);
-					showAddDialog(cellInfo);
+					///mWorkspace.setAllowLongPress(false);
+					///showAddDialog(cellInfo);
+					
+					//Toast.makeText(Launcher.this, "알림테스트", Toast.LENGTH_LONG).show();
+					
+					
+					
+					Notification noti = new Notification(R.drawable.balloon, "통지 테스트", System.currentTimeMillis());
+					noti.defaults |= Notification.DEFAULT_SOUND;
+					noti.flags |= Notification.FLAG_INSISTENT;
+					noti.vibrate = new long[]{1000, 2000, 1000, 2500, 1000};
+					noti.defaults |= Notification.FLAG_AUTO_CANCEL;
+					
+					Intent intent = new Intent(Launcher.this, NapEnd.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					
+					PendingIntent pending = PendingIntent.getActivity(Launcher.this, 0, intent, 0);
+					noti.setLatestEventInfo(Launcher.this, "테스트", "메시지~~~", pending);
+					
+					mNotiManager.notify(1, noti);
+					
+					
+					///send("하이");
+					
+					
+					
 				}
 			} else {
 				///if (!(cellInfo.cell instanceof Folder)) {
@@ -2142,6 +2185,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 		return true;
 	}
+	
+	
 
 	static LauncherModel getModel() {
 		return sModel;
@@ -2804,17 +2849,54 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	
 	BroadcastReceiver mReceiverBR = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
+			Log.e("RRR", "onReceive !!!!");
 			String result = "";
 			Bundle bundle = intent.getExtras();
 			if(bundle != null) {
 				Object[] pdus = (Object[])bundle.get("pdus");
 				for(int i = 0; i < pdus.length; i++) {
 					SmsMessage msg = SmsMessage.createFromPdu((byte[])pdus[i]);
-					result += "from " + msg.getOriginatingAddress() + " => " + msg.getMessageBody() + "\n"; 
+					result += "from " + msg.getOriginatingAddress() + " => " + msg.getMessageBody() + "\n";
 				}
 				Toast.makeText(Launcher.this, result, Toast.LENGTH_LONG).show();
 			}
 		}
 	};
+	
+	public void send(String message) {
+		// String message = "카카오링크를 사용하여 메시지를 전달해보세요.";
+		String referenceURLString = "-"; ///"http://idevcox.com";
+		String appPackageId = "com.test";
+		String appVersion = "1.0";
+
+		KakaoLink kakaoLink = null;
+		Context context = this;
+
+		try {
+			kakaoLink = new KakaoLink(context, referenceURLString,
+					appPackageId, appVersion, message, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (kakaoLink.isAvailable()) {
+			startActivity(kakaoLink.getIntent());
+			Log.v("kakao", "send successfully");
+		} else {
+			// 카카오톡이 설치되어 있지 않은 경우에 대한 처리
+			Log.v("kakao", "not installed kakaotalk");
+		}
+
+	}
+	
+	private void alert(String message) {
+		new AlertDialog.Builder(this)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setTitle("카카오테스트")
+			.setMessage(message)
+			.setPositiveButton(android.R.string.ok, null)
+			.create().show();
+	}
 
 }
