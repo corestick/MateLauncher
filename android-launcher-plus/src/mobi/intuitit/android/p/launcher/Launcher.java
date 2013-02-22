@@ -2155,7 +2155,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					//Toast.makeText(Launcher.this, "알림테스트", Toast.LENGTH_LONG).show();
 					
 					
-					
+					/*
 					Notification noti = new Notification(R.drawable.balloon, "통지 테스트", System.currentTimeMillis());
 					noti.defaults |= Notification.DEFAULT_SOUND;
 					noti.flags |= Notification.FLAG_INSISTENT;
@@ -2169,9 +2169,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					noti.setLatestEventInfo(Launcher.this, "테스트", "메시지~~~", pending);
 					
 					mNotiManager.notify(1, noti);
+					*/
 					
-					
-					///send("하이");
+					send("하이");
 					
 					
 					
@@ -2865,7 +2865,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	
 	public void send(String message) {
 		// String message = "카카오링크를 사용하여 메시지를 전달해보세요.";
-		String referenceURLString = "-"; ///"http://idevcox.com";
+		///String referenceURLString = "http://idevcox.com";
 		String appPackageId = "com.test";
 		String appVersion = "1.0";
 
@@ -2873,7 +2873,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		Context context = this;
 
 		try {
-			kakaoLink = new KakaoLink(context, referenceURLString,
+			///kakaoLink = new KakaoLink(context, referenceURLString,
+			kakaoLink = new KakaoLink(context,
 					appPackageId, appVersion, message, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
