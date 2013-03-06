@@ -75,6 +75,7 @@ import android.os.Message;
 import android.os.MessageQueue;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.provider.LiveFolders;
 import android.telephony.SmsMessage;
 import android.text.Selection;
@@ -264,6 +265,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		
 		mNotiManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		
+		ReadContact readContact = new ReadContact();
 	}
 
 	private void checkForLocaleChange() {
@@ -2898,6 +2900,72 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			.setMessage(message)
 			.setPositiveButton(android.R.string.ok, null)
 			.create().show();
+	}
+	
+	
+	class ReadContact {
+		ReadContact() {
+			ContentResolver cr = getContentResolver();
+			Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+			
+			int ididx = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+			int nameidx = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+			
+			StringBuilder result = new StringBuilder();
+			
+			while(cursor.moveToNext()) {
+				result.append(cursor.getString(nameidx) + " :");
+				
+				String id = cursor.getString(ididx);
+				Cursor cursor2 = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+				
+				int typeidx = cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+				int numidx = cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+				
+				while(cursor2.moveToNext()) {
+					String num = cursor2.getString(numidx);
+					switch (cursor2.getInt(typeidx)) {
+					case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+						result.append(" Mobile:" + num);
+						break;
+					case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+						result.append(" Home:" + num);
+						break;
+					case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+						result.append(" Work:" + num);
+						break;
+					}
+				}
+				cursor2.close();
+				
+				Cursor cursor3 = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[]{id},	null);
+				int mailidx = cursor3.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+				int mailtypeidx = cursor3.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE);
+				
+				while(cursor3.moveToNext()) {
+					String mail = cursor3.getString(mailidx);
+					switch(cursor3.getInt(mailtypeidx)) {
+					case ContactsContract.CommonDataKinds.Email.TYPE_HOME:
+						result.append(" Home-Email:" + mail);
+						break;
+					case ContactsContract.CommonDataKinds.Email.TYPE_MOBILE:
+						result.append(" Mobile-Email:" + mail);
+						break;
+					case ContactsContract.CommonDataKinds.Email.TYPE_WORK:
+						result.append(" Work-Email:" + mail);
+						break;
+					}
+				}
+				
+				result.append("/n");
+			}
+			
+			cursor.close();
+			
+			Toast.makeText(Launcher.this, result, Toast.LENGTH_LONG).show();
+			///TextView txtResult = (TextView)findViewById(R.id.result);
+			///txtResult.setText(result);
+		}
 	}
 
 }
