@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mobi.intuitit.android.p.launcher"
+    package="mobi.intuitit.android.mate.launcher"
     android:versionCode="3"
     android:versionName="0.9.2">
 
@@ -30,13 +30,13 @@
         android:label="@string/permlab_write_settings"
         android:description="@string/permdesc_write_settings" />
     <permission
-        android:name="mobi.intuitit.android.p.launcher.permission.READ_SETTINGS"
+        android:name="mobi.intuitit.android.mate.launcher.permission.READ_SETTINGS"
         android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
         android:protectionLevel="normal"
         android:label="@string/permlab_read_settings"
         android:description="@string/permdesc_read_settings" />
     <permission
-        android:name="mobi.intuitit.android.p.launcher.permission.WRITE_SETTINGS"
+        android:name="mobi.intuitit.android.mate.launcher.permission.WRITE_SETTINGS"
         android:permissionGroup="android.permission-group.SYSTEM_TOOLS"
         android:protectionLevel="normal"
         android:label="@string/permlab_write_settings"
@@ -61,9 +61,9 @@
     <uses-permission
         android:name="android.permission.BIND_APPWIDGET" />
     <uses-permission
-        android:name="mobi.intuitit.android.p.launcher.permission.READ_SETTINGS" />
+        android:name="mobi.intuitit.android.mate.launcher.permission.READ_SETTINGS" />
     <uses-permission
-        android:name="mobi.intuitit.android.p.launcher.permission.WRITE_SETTINGS" />
+        android:name="mobi.intuitit.android.mate.launcher.permission.WRITE_SETTINGS" />
     <uses-permission
         android:name="android.permission.INTERNET" />
     <uses-permission
@@ -104,7 +104,7 @@
 
         <!-- Intent received used to install shortcuts from other applications -->
         <receiver
-            android:name=".InstallShortcutReceiver"
+            android:name="mobi.intuitit.android.mate.launcher.InstallShortcutReceiver"
             android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
             <intent-filter>
                 <action
@@ -114,7 +114,7 @@
 
         <!-- Intent received used to uninstall shortcuts from other applications -->
         <receiver
-            android:name=".UninstallShortcutReceiver"
+            android:name="mobi.intuitit.android.mate.launcher.UninstallShortcutReceiver"
             android:permission="com.android.launcher.permission.UNINSTALL_SHORTCUT">
             <intent-filter>
                 <action
@@ -125,9 +125,9 @@
         <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider
             android:name="LauncherProvider"
-            android:authorities="mobi.intuitit.android.p.launcher.settings"
-            android:writePermission="mobi.intuitit.android.p.launcher.permission.WRITE_SETTINGS"
-            android:readPermission="mobi.intuitit.android.p.launcher.permission.READ_SETTINGS" />
+            android:authorities="mobi.intuitit.android.mate.launcher.settings"
+            android:writePermission="mobi.intuitit.android.mate.launcher.permission.WRITE_SETTINGS"
+            android:readPermission="mobi.intuitit.android.mate.launcher.permission.READ_SETTINGS" />
 
         <activity
             android:name="ScreenPrefActivity"
