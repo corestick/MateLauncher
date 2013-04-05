@@ -1,34 +1,10 @@
-/*
- * Copyright (C) 2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package mobi.intuitit.android.mate.launcher;
 
 import mobi.intuitit.android.widget.WidgetCellLayout;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
@@ -42,12 +18,6 @@ public class MLayout extends WidgetCellLayout {
 
 	int[] mCellXY = new int[2];
 
-	boolean[][] mOccupied;
-
-	private RectF mDragRect = new RectF();
-
-	private boolean mDirtyTag;
-
 	public MLayout(Context context) {
 		this(context, null);
 	}
@@ -60,7 +30,6 @@ public class MLayout extends WidgetCellLayout {
 		super(context, attrs, defStyle);
 		TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.CellLayout, defStyle, 0);
-
 		a.recycle();
 
 		setAlwaysDrawnWithCacheEnabled(false);
@@ -83,8 +52,6 @@ public class MLayout extends WidgetCellLayout {
 		// Generate an id for each view, this assumes we have at most 256x256
 		// cells
 		// per workspace screen
-		final LayoutParams cellParams = (LayoutParams) params;
-		cellParams.regenerateId = true;
 
 		super.addView(child, index, params);
 	}
@@ -131,7 +98,6 @@ public class MLayout extends WidgetCellLayout {
 						cellInfo.y = lp.y;
 						cellInfo.valid = true;
 						found = true;
-						mDirtyTag = false;
 						break;
 					}
 				}
@@ -139,14 +105,11 @@ public class MLayout extends WidgetCellLayout {
 
 			if (!found) {
 				int cellXY[] = mCellXY;
-				final boolean portrait = mPortrait;
 
 				cellInfo.cell = null;
 				cellInfo.x = cellXY[0];
 				cellInfo.y = cellXY[1];
 				cellInfo.valid = true;
-
-				mDirtyTag = true;
 			}
 			setTag(cellInfo);
 		} else if (action == MotionEvent.ACTION_UP) {
@@ -154,22 +117,10 @@ public class MLayout extends WidgetCellLayout {
 			cellInfo.x = -1;
 			cellInfo.y = -1;
 			cellInfo.valid = false;
-			mDirtyTag = false;
 			setTag(cellInfo);
 		}
 
 		return false;
-	}
-
-	@Override
-	public CellInfo getTag() {
-		final CellInfo info = (CellInfo) super.getTag();
-		if (mDirtyTag && info.valid) {
-			final boolean portrait = mPortrait;
-
-			mDirtyTag = false;
-		}
-		return info;
 	}
 
 	@Override
@@ -197,13 +148,9 @@ public class MLayout extends WidgetCellLayout {
 			LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
 			if (mPortrait) {
-				lp.setup(lp.width, lp.height, 0, 0);
-			}
-
-			if (lp.regenerateId) {
-				child.setId(((getId() & 0xFF) << 16) | (lp.x & 0xFF) << 8
-						| (lp.y & 0xFF));
-				lp.regenerateId = false;
+				lp.setup(lp.width, lp.height);
+			} else {
+				lp.setup(lp.width, lp.height);
 			}
 
 			int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(lp.width,
@@ -214,9 +161,6 @@ public class MLayout extends WidgetCellLayout {
 		}
 
 		setMeasuredDimension(widthSpecSize, heightSpecSize);
-
-		if (mThumb == null)
-			initThumb(widthSpecSize >> 2, heightSpecSize >> 2);
 	}
 
 	@Override
@@ -232,63 +176,22 @@ public class MLayout extends WidgetCellLayout {
 
 				int childLeft = lp.x;
 				int childTop = lp.y;
-				child.layout(childLeft, childTop, childLeft + lp.width,
-						childTop + lp.height);
+				int childRight;
+				int childBottom;
+
+				if (lp.width < 0)
+					childRight = childLeft + child.getMeasuredWidth();
+				else
+					childRight = childLeft + lp.width;
+
+				if (lp.height < 0)
+					childBottom = childTop + child.getMeasuredHeight();
+				else
+					childBottom = childTop + lp.height;
+
+				child.layout(childLeft, childTop, childRight, childBottom);
 			}
 		}
-
-		layoutDrawed = false;
-	}
-
-	Bitmap mThumb;
-	private Canvas mThumbCanvas;
-	private Paint mThumbPaint;
-
-	boolean layoutDrawed = false;
-
-	private void initThumb(int width, int height) {
-		if (mThumb == null || mThumb.isRecycled())
-			mThumb = Bitmap
-					.createBitmap(width, height, Bitmap.Config.ARGB_4444);
-
-		Matrix matrix = new Matrix();
-		matrix.setScale(0.25f, 0.25f);
-		mThumbCanvas = new Canvas(mThumb);
-		mThumbCanvas.concat(matrix);
-
-		mThumbPaint = new Paint();
-		mThumbPaint.setDither(true);
-		mThumbPaint.setAntiAlias(true);
-	}
-
-	synchronized void saveThumb() {
-		if (layoutDrawed)
-			return;
-
-		if (mThumbCanvas == null)
-			initThumb(getWidth() >> 2, getHeight() >> 2);
-
-		setDrawingCacheEnabled(true);
-
-		// Get bitmap
-		Bitmap bmp = getDrawingCache();
-		if (bmp != null) {
-			mThumbCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-			mThumbCanvas.drawBitmap(bmp, 0, 0, mThumbPaint);
-		}
-
-		// Clean up
-		destroyDrawingCache();
-		setDrawingCacheEnabled(false);
-		layoutDrawed = true;
-	}
-
-	protected void onDetachedFromWindow() {
-		super.onDetachedFromWindow();
-		if (mThumb != null)
-			mThumb.recycle();
-		mThumb = null;
-		mThumbCanvas = null;
 	}
 
 	@Override
@@ -297,9 +200,7 @@ public class MLayout extends WidgetCellLayout {
 		for (int i = 0; i < count; i++) {
 			final View view = getChildAt(i);
 			view.setDrawingCacheEnabled(enabled);
-			// reduce cache quality to reduce memory usage
-			view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-			// Update the drawing caches
+			
 			view.buildDrawingCache(true);
 		}
 	}
@@ -317,13 +218,12 @@ public class MLayout extends WidgetCellLayout {
 	 * @param targetXY
 	 *            Destination area to move to
 	 */
-	void onDropChild(View child, int[] targetXY) {
+	void onDropChild(View child, int x, int y) {
 		if (child != null) {
 			LayoutParams lp = (LayoutParams) child.getLayoutParams();
-			lp.x = targetXY[0];
-			lp.y = targetXY[1];
+			lp.x = x;
+			lp.y = y;
 			lp.isDragging = false;
-			mDragRect.setEmpty();
 			child.requestLayout();
 			invalidate();
 		}
@@ -334,7 +234,6 @@ public class MLayout extends WidgetCellLayout {
 			((LayoutParams) child.getLayoutParams()).isDragging = false;
 			invalidate();
 		}
-		mDragRect.setEmpty();
 	}
 
 	/**
@@ -346,31 +245,10 @@ public class MLayout extends WidgetCellLayout {
 	void onDragChild(View child) {
 		LayoutParams lp = (LayoutParams) child.getLayoutParams();
 		lp.isDragging = true;
-		mDragRect.setEmpty();
 	}
 
-	/**
-	 * Computes the required horizontal and vertical cell spans to always fit
-	 * the given rectangle.
-	 * 
-	 * @param width
-	 *            Width in pixels
-	 * @param height
-	 *            Height in pixels
-	 */
-	public int[] rectToCell(int width, int height) {
-		// Always assume we're working with the smallest span to make sure we
-		// reserve enough space in both orientations.
-		final Resources resources = getResources();
-		int actualWidth = resources.getDimensionPixelSize(R.dimen.cell_width);
-		int actualHeight = resources.getDimensionPixelSize(R.dimen.cell_height);
-		int smallerSize = Math.min(actualWidth, actualHeight);
-
-		// Always round up to next largest cell
-		int spanX = (width + smallerSize) / smallerSize;
-		int spanY = (height + smallerSize) / smallerSize;
-
-		return new int[] { spanX, spanY };
+	void onDragOverChild(View child, int cellX, int cellY) {
+		invalidate();
 	}
 
 	@Override
@@ -402,8 +280,6 @@ public class MLayout extends WidgetCellLayout {
 		@ViewDebug.ExportedProperty
 		int y;
 
-		boolean regenerateId;
-
 		public LayoutParams(Context c, AttributeSet attrs) {
 			super(c, attrs);
 		}
@@ -412,16 +288,13 @@ public class MLayout extends WidgetCellLayout {
 			super(source);
 		}
 
-		public LayoutParams(int cellX, int cellY, int cellHSpan, int cellVSpan) {
+		public LayoutParams(int cellX, int cellY) {
 			super(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			this.x = cellX;
+			this.y = cellY;
 		}
 
-		public void setup(int cellWidth, int cellHeight, int widthGap,
-				int heightGap, int hStartPadding, int vStartPadding) {
-		}
-
-		public void setup(int cellWidth, int cellHeight, int hStartPadding,
-				int vStartPadding) {
+		public void setup(int cellWidth, int cellHeight) {
 
 			if (cellWidth > 0)
 				width = cellWidth - leftMargin - rightMargin;
@@ -431,18 +304,12 @@ public class MLayout extends WidgetCellLayout {
 		}
 	}
 
-	static final class CellInfo implements ContextMenu.ContextMenuInfo {
+	static final class CellInfo {
 
 		View cell;
 		int x;
 		int y;
 		int screen;
 		boolean valid;
-
-		@Override
-		public String toString() {
-			return "Cell[view=" + (cell == null ? "null" : cell.getClass())
-					+ ", x=" + x + ", y=" + y + "]";
-		}
 	}
 }
