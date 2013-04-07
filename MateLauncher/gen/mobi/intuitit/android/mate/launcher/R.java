@@ -314,7 +314,8 @@ containing a value of this type.
         public static final int wallpaper_chooser=0x7f03000f;
         public static final int wallpaper_item=0x7f030010;
         public static final int widget_search=0x7f030011;
-        public static final int workspace_screen=0x7f030012;
+        public static final int workspace_mscreen=0x7f030012;
+        public static final int workspace_screen=0x7f030013;
     }
     public static final class string {
         /**  Displayed when user selects a shortcut for an app that was uninstalled 
