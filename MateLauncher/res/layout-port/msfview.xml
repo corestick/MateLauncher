@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<mobi.intuitit.android.mate.launcher.CellLayout
+<mobi.intuitit.android.mate.launcher.MSurfaceView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res/mobi.intuitit.android.mate.launcher"
 
@@ -28,6 +28,4 @@
     launcher:shortAxisStartPadding="0dip"
     launcher:shortAxisEndPadding="0dip"
     launcher:shortAxisCells="4"
-    launcher:longAxisCells="4" >
-    
-    </mobi.intuitit.android.mate.launcher.CellLayout>
+    launcher:longAxisCells="4" />
