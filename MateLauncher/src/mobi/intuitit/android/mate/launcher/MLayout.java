@@ -2,20 +2,20 @@ package mobi.intuitit.android.mate.launcher;
 
 import mobi.intuitit.android.widget.WidgetCellLayout;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 
 public class MLayout extends WidgetCellLayout {
 	private boolean mPortrait;
 
 	private final Rect mRect = new Rect();
-	private final CellInfo mCellInfo = new CellInfo();
-
+	private final CellLayout.CellInfo mCellInfo = new CellLayout.CellInfo();
+	
 	int[] mCellXY = new int[2];
 
 	public MLayout(Context context) {
@@ -30,8 +30,8 @@ public class MLayout extends WidgetCellLayout {
 		super(context, attrs, defStyle);
 		TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.CellLayout, defStyle, 0);
+		
 		a.recycle();
-
 		setAlwaysDrawnWithCacheEnabled(false);
 	}
 
@@ -75,7 +75,7 @@ public class MLayout extends WidgetCellLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		final int action = ev.getAction();
-		final CellInfo cellInfo = mCellInfo;
+		final CellLayout.CellInfo cellInfo = mCellInfo;
 
 		if (action == MotionEvent.ACTION_DOWN) {
 			final Rect frame = mRect;
@@ -91,11 +91,11 @@ public class MLayout extends WidgetCellLayout {
 						|| child.getAnimation() != null) {
 					child.getHitRect(frame);
 					if (frame.contains(x, y)) {
-						final LayoutParams lp = (LayoutParams) child
+						final CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child
 								.getLayoutParams();
 						cellInfo.cell = child;
-						cellInfo.x = lp.x;
-						cellInfo.y = lp.y;
+						cellInfo.cellX = lp.x;
+						cellInfo.cellY = lp.y;
 						cellInfo.valid = true;
 						found = true;
 						break;
@@ -107,15 +107,15 @@ public class MLayout extends WidgetCellLayout {
 				int cellXY[] = mCellXY;
 
 				cellInfo.cell = null;
-				cellInfo.x = cellXY[0];
-				cellInfo.y = cellXY[1];
+				cellInfo.cellX = cellXY[0];
+				cellInfo.cellY = cellXY[1];
 				cellInfo.valid = true;
 			}
 			setTag(cellInfo);
 		} else if (action == MotionEvent.ACTION_UP) {
 			cellInfo.cell = null;
-			cellInfo.x = -1;
-			cellInfo.y = -1;
+			cellInfo.cellX = -1;
+			cellInfo.cellY = -1;
 			cellInfo.valid = false;
 			setTag(cellInfo);
 		}
@@ -145,12 +145,12 @@ public class MLayout extends WidgetCellLayout {
 
 		for (int i = 0; i < count; i++) {
 			View child = getChildAt(i);
-			LayoutParams lp = (LayoutParams) child.getLayoutParams();
+			CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
 
 			if (mPortrait) {
-				lp.setup(lp.width, lp.height);
+				lp.setup(lp.width, lp.height, 0, 0, 0, 0);
 			} else {
-				lp.setup(lp.width, lp.height);
+				lp.setup(lp.width, lp.height, 0, 0, 0, 0);
 			}
 
 			int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(lp.width,
@@ -219,8 +219,9 @@ public class MLayout extends WidgetCellLayout {
 	 *            Destination area to move to
 	 */
 	void onDropChild(View child, int x, int y) {
+	
 		if (child != null) {
-			LayoutParams lp = (LayoutParams) child.getLayoutParams();
+			CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
 			lp.x = x;
 			lp.y = y;
 			lp.isDragging = false;
@@ -231,7 +232,7 @@ public class MLayout extends WidgetCellLayout {
 
 	void onDropAborted(View child) {
 		if (child != null) {
-			((LayoutParams) child.getLayoutParams()).isDragging = false;
+			((CellLayout.LayoutParams) child.getLayoutParams()).isDragging = false;
 			invalidate();
 		}
 	}
@@ -243,9 +244,13 @@ public class MLayout extends WidgetCellLayout {
 	 *            The child that is being dragged
 	 */
 	void onDragChild(View child) {
-		LayoutParams lp = (LayoutParams) child.getLayoutParams();
+		CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
 		lp.isDragging = true;
 	}
+	    
+    public int[] rectToCell(int width, int height) {
+    	return new int[] { 0, 0 };
+    }
 
 	void onDragOverChild(View child, int cellX, int cellY) {
 		invalidate();
@@ -265,51 +270,5 @@ public class MLayout extends WidgetCellLayout {
 	protected ViewGroup.LayoutParams generateLayoutParams(
 			ViewGroup.LayoutParams p) {
 		return new CellLayout.LayoutParams(p);
-	}
-
-	public static class LayoutParams extends ViewGroup.MarginLayoutParams {
-		/**
-		 * Is this item currently being dragged
-		 */
-		public boolean isDragging;
-
-		// X coordinate of the view in the layout.
-		@ViewDebug.ExportedProperty
-		int x;
-		// Y coordinate of the view in the layout.
-		@ViewDebug.ExportedProperty
-		int y;
-
-		public LayoutParams(Context c, AttributeSet attrs) {
-			super(c, attrs);
-		}
-
-		public LayoutParams(ViewGroup.LayoutParams source) {
-			super(source);
-		}
-
-		public LayoutParams(int cellX, int cellY) {
-			super(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-			this.x = cellX;
-			this.y = cellY;
-		}
-
-		public void setup(int cellWidth, int cellHeight) {
-
-			if (cellWidth > 0)
-				width = cellWidth - leftMargin - rightMargin;
-
-			if (cellHeight > 0)
-				height = cellHeight - topMargin - bottomMargin;
-		}
-	}
-
-	static final class CellInfo {
-
-		View cell;
-		int x;
-		int y;
-		int screen;
-		boolean valid;
 	}
 }

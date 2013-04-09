@@ -358,6 +358,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private void setWallpaperDimension() {
 		WallpaperManager wpm = (WallpaperManager) getSystemService(WALLPAPER_SERVICE);
 
+		try {
+			wpm.clear();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Display display = getWindowManager().getDefaultDisplay();
 		boolean isPortrait = display.getWidth() < display.getHeight();
 

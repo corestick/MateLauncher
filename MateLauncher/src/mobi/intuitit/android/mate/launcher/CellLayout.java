@@ -64,7 +64,7 @@ public class CellLayout extends WidgetCellLayout {
     private RectF mDragRect = new RectF();
 
     private boolean mDirtyTag;
-
+    
     public CellLayout(Context context) {
         this(context, null);
     }
@@ -75,6 +75,7 @@ public class CellLayout extends WidgetCellLayout {
 
     public CellLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+                
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CellLayout, defStyle, 0);
 
         mCellWidth = a.getDimensionPixelSize(R.styleable.CellLayout_cellWidth, 10);
