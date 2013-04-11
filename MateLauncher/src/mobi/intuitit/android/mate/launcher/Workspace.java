@@ -72,7 +72,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     /**
      * CellInfo for the cell that is currently being dragged
      */
-    private CellLayout.CellInfo mDragInfo;
+    private LayoutType.CellInfo mDragInfo;
 
     /**
      * Target drop area calculated during last acceptDrop call.
@@ -95,7 +95,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     /**
      * Cache of vacant cells, used during drag events and invalidated as needed.
      */
-    private CellLayout.CellInfo mVacantCache = null;
+    private LayoutType.CellInfo mVacantCache = null;
 
     private int[] mTempCell = new int[2];
     private int[] mTempEstimate = new int[2];
@@ -167,7 +167,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
     @Override
     public void addView(View child, int index, LayoutParams params) {
-        if (!(child instanceof CellLayout)) {
+        if (!(child instanceof LayoutType)) {
             throw new IllegalArgumentException("A Workspace can only have CellLayout children.");
         }
         super.addView(child, index, params);
@@ -175,7 +175,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
     @Override
     public void addView(View child) {
-        if (!(child instanceof CellLayout)) {
+        if (!(child instanceof LayoutType)) {
             throw new IllegalArgumentException("A Workspace can only have CellLayout children.");
         }
         super.addView(child);
@@ -183,7 +183,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
     @Override
     public void addView(View child, int index) {
-        if (!(child instanceof CellLayout)) {
+        if (!(child instanceof LayoutType)) {
             throw new IllegalArgumentException("A Workspace can only have CellLayout children.");
         }
         super.addView(child, index);
@@ -191,7 +191,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
     @Override
     public void addView(View child, int width, int height) {
-        if (!(child instanceof CellLayout)) {
+        if (!(child instanceof LayoutType)) {
             throw new IllegalArgumentException("A Workspace can only have CellLayout children.");
         }
         super.addView(child, width, height);
@@ -199,7 +199,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
     @Override
     public void addView(View child, LayoutParams params) {
-        if (!(child instanceof CellLayout)) {
+        if (!(child instanceof LayoutType)) {
             throw new IllegalArgumentException("A Workspace can only have CellLayout children.");
         }
         super.addView(child, params);
@@ -209,11 +209,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
      * @return The open folder on the current screen, or null if there is none
      */
     Folder getOpenFolder() {
-        CellLayout currentScreen = (CellLayout) getChildAt(mCurrentScreen);
+    	LayoutType currentScreen = (LayoutType) getChildAt(mCurrentScreen);
         int count = currentScreen.getChildCount();
         for (int i = 0; i < count; i++) {
             View child = currentScreen.getChildAt(i);
-            CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+            LayoutType.LayoutParams lp = (LayoutType.LayoutParams) child.getLayoutParams();
             if (lp.cellHSpan == 4 && lp.cellVSpan == 4 && child instanceof Folder) {
                 return (Folder) child;
             }
@@ -226,11 +226,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         ArrayList<Folder> folders = new ArrayList<Folder>(screens);
 
         for (int screen = 0; screen < screens; screen++) {
-            CellLayout currentScreen = (CellLayout) getChildAt(screen);
+        	LayoutType currentScreen = (LayoutType) getChildAt(screen);
             int count = currentScreen.getChildCount();
             for (int i = 0; i < count; i++) {
                 View child = currentScreen.getChildAt(i);
-                CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+                LayoutType.LayoutParams lp = (LayoutType.LayoutParams) child.getLayoutParams();
                 if (lp.cellHSpan == 4 && lp.cellVSpan == 4 && child instanceof Folder) {
                     folders.add((Folder) child);
                     break;
@@ -364,10 +364,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
         clearVacantCache();
 
-        final CellLayout group = (CellLayout) getChildAt(screen);
-        CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+        final LayoutType group = (LayoutType) getChildAt(screen);
+        LayoutType.LayoutParams lp = (LayoutType.LayoutParams) child.getLayoutParams();
         if (lp == null) {
-            lp = new CellLayout.LayoutParams(x, y, spanX, spanY);
+            lp = new LayoutType.LayoutParams(x, y, spanX, spanY);
         } else {
             lp.cellX = x;
             lp.cellY = y;
@@ -385,16 +385,16 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
                 insert);
     }
 
-    CellLayout.CellInfo findAllVacantCells(boolean[] occupied) {
-        CellLayout group = (CellLayout) getChildAt(mCurrentScreen);
+    LayoutType.CellInfo findAllVacantCells(boolean[] occupied) {
+    	LayoutType group = (LayoutType) getChildAt(mCurrentScreen);
         if (group != null) {
             return group.findAllVacantCells(occupied, null);
         }
         return null;
     }
 
-    CellLayout.CellInfo findAllVacantCellsFromModel() {
-        CellLayout group = (CellLayout) getChildAt(mCurrentScreen);
+    LayoutType.CellInfo findAllVacantCellsFromModel() {
+    	LayoutType group = (LayoutType) getChildAt(mCurrentScreen);
         if (group != null) {
             int countX = group.getCountX();
             int countY = group.getCountY();
@@ -735,7 +735,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     void enableChildrenCache() {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            final CellLayout layout = (CellLayout) getChildAt(i);
+            final LayoutType layout = (LayoutType) getChildAt(i);
             layout.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
             layout.setChildrenDrawnWithCacheEnabled(true);
             layout.setChildrenDrawingCacheEnabled(true);
@@ -745,7 +745,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     void clearChildrenCache() {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            final CellLayout layout = (CellLayout) getChildAt(i);
+            final LayoutType layout = (LayoutType) getChildAt(i);
             layout.setChildrenDrawnWithCacheEnabled(false);
         }
     }
@@ -863,7 +863,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         invalidate();
     }
 
-    void startDrag(CellLayout.CellInfo cellInfo) {
+    void startDrag(LayoutType.CellInfo cellInfo) {
         View child = cellInfo.cell;
 
         // Make sure the drag was started by a long press as opposed to a long click.
@@ -875,7 +875,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         mDragInfo = cellInfo;
         mDragInfo.screen = mCurrentScreen;
 
-        CellLayout current = ((CellLayout) getChildAt(mCurrentScreen));
+        LayoutType current = ((LayoutType) getChildAt(mCurrentScreen));
 
         current.onDragChild(child);
         mDragger.startDrag(child, this, child.getTag(), DragController.DRAG_ACTION_MOVE);
@@ -899,9 +899,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         }
     }
 
-    void addApplicationShortcut(ApplicationInfo info, CellLayout.CellInfo cellInfo,
+    void addApplicationShortcut(ApplicationInfo info, LayoutType.CellInfo cellInfo,
             boolean insertAtFirst) {
-        final CellLayout layout = (CellLayout) getChildAt(cellInfo.screen);
+        final LayoutType layout = (LayoutType) getChildAt(cellInfo.screen);
         final int[] result = new int[2];
 
         layout.cellToPoint(cellInfo.cellX, cellInfo.cellY, result);
@@ -909,25 +909,25 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     }
 
     public void onDrop(DragSource source, int x, int y, int xOffset, int yOffset, Object dragInfo) {
-        final CellLayout cellLayout = getCurrentDropLayout();
+        final LayoutType layoutType = getCurrentDropLayout();
         if (source != this) {
-            onDropExternal(x - xOffset, y - yOffset, dragInfo, cellLayout);
+            onDropExternal(x - xOffset, y - yOffset, dragInfo, layoutType);
         } else {
             // Move internally
             if (mDragInfo != null) {
                 final View cell = mDragInfo.cell;
                 int index = mScroller.isFinished() ? mCurrentScreen : mNextScreen;
                 if (index != mDragInfo.screen) {
-                    final CellLayout originalCellLayout = (CellLayout) getChildAt(mDragInfo.screen);
-                    originalCellLayout.removeView(cell);
-                    cellLayout.addView(cell);
+                    final LayoutType originalLayoutType = (LayoutType) getChildAt(mDragInfo.screen);
+                    originalLayoutType.removeView(cell);
+                    layoutType.addView(cell);
                 }
                 mTargetCell = estimateDropCell(x - xOffset, y - yOffset, mDragInfo.spanX,
-                        mDragInfo.spanY, cell, cellLayout, mTargetCell);
-                cellLayout.onDropChild(cell, mTargetCell);
+                        mDragInfo.spanY, cell, layoutType, mTargetCell);
+                layoutType.onDropChild(cell, mTargetCell);
 
                 final ItemInfo info = (ItemInfo) cell.getTag();
-                CellLayout.LayoutParams lp = (CellLayout.LayoutParams) cell.getLayoutParams();
+                LayoutType.LayoutParams lp = (LayoutType.LayoutParams) cell.getLayoutParams();
                 LauncherModel.moveItemInDatabase(mLauncher, info,
                         LauncherSettings.Favorites.CONTAINER_DESKTOP, index, lp.cellX, lp.cellY);
             }
@@ -948,11 +948,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         clearVacantCache();
     }
 
-    private void onDropExternal(int x, int y, Object dragInfo, CellLayout cellLayout) {
-        onDropExternal(x, y, dragInfo, cellLayout, false);
+    private void onDropExternal(int x, int y, Object dragInfo, LayoutType layoutType) {
+        onDropExternal(x, y, dragInfo, layoutType, false);
     }
 
-    private void onDropExternal(int x, int y, Object dragInfo, CellLayout cellLayout,
+    private void onDropExternal(int x, int y, Object dragInfo, LayoutType layoutType,
             boolean insertAtFirst) {
         // Drag from somewhere else
         ItemInfo info = (ItemInfo) dragInfo;
@@ -966,7 +966,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
                 // Came from all apps -- make a copy
                 info = new ApplicationInfo((ApplicationInfo) info);
             }
-            view = mLauncher.createShortcut(R.layout.application, cellLayout,
+            view = mLauncher.createShortcut(R.layout.application, layoutType,
                     (ApplicationInfo) info);
             break;
         case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
@@ -977,11 +977,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
             throw new IllegalStateException("Unknown item type: " + info.itemType);
         }
 
-        cellLayout.addView(view, insertAtFirst ? 0 : -1);
+        layoutType.addView(view, insertAtFirst ? 0 : -1);
         view.setOnLongClickListener(mLongClickListener);
-        mTargetCell = estimateDropCell(x, y, 1, 1, view, cellLayout, mTargetCell);
-        cellLayout.onDropChild(view, mTargetCell);
-        CellLayout.LayoutParams lp = (CellLayout.LayoutParams) view.getLayoutParams();
+        mTargetCell = estimateDropCell(x, y, 1, 1, view, layoutType, mTargetCell);
+        layoutType.onDropChild(view, mTargetCell);
+        LayoutType.LayoutParams lp = (LayoutType.LayoutParams) view.getLayoutParams();
 
         final LauncherModel model = Launcher.getModel();
         model.addDesktopItem(info);
@@ -993,9 +993,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
      * Return the current {@link CellLayout}, correctly picking the destination screen while a
      * scroll is in progress.
      */
-    private CellLayout getCurrentDropLayout() {
+    private LayoutType getCurrentDropLayout() {
         int index = mScroller.isFinished() ? mCurrentScreen : mNextScreen;
-        return (CellLayout) getChildAt(index);
+        return (LayoutType) getChildAt(index);
     }
 
     /**
@@ -1003,8 +1003,8 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
      */
     public boolean acceptDrop(DragSource source, int x, int y, int xOffset, int yOffset,
             Object dragInfo) {
-        final CellLayout layout = getCurrentDropLayout();
-        final CellLayout.CellInfo cellInfo = mDragInfo;
+        final LayoutType layout = getCurrentDropLayout();
+        final LayoutType.CellInfo cellInfo = mDragInfo;
         final int spanX = cellInfo == null ? 1 : cellInfo.spanX;
         final int spanY = cellInfo == null ? 1 : cellInfo.spanY;
 
@@ -1020,9 +1020,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
      * {@inheritDoc}
      */
     public Rect estimateDropLocation(int x, int y, int xOffset, int yOffset, Rect recycle) {
-        final CellLayout layout = getCurrentDropLayout();
+        final LayoutType layout = getCurrentDropLayout();
 
-        final CellLayout.CellInfo cellInfo = mDragInfo;
+        final LayoutType.CellInfo cellInfo = mDragInfo;
         final int spanX = cellInfo == null ? 1 : cellInfo.spanX;
         final int spanY = cellInfo == null ? 1 : cellInfo.spanY;
         final View ignoreView = cellInfo == null ? null : cellInfo.cell;
@@ -1052,7 +1052,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
      * Calculate the nearest cell where the given object would be dropped.
      */
     private int[] estimateDropCell(int pixelX, int pixelY, int spanX, int spanY, View ignoreView,
-            CellLayout layout, int[] recycle) {
+    		LayoutType layout, int[] recycle) {
         // Create vacant cell cache if none exists
         if (mVacantCache == null) {
             mVacantCache = layout.findAllVacantCells(null, ignoreView);
@@ -1077,15 +1077,15 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
 
         if (success) {
             if (target != this && mDragInfo != null) {
-                final CellLayout cellLayout = (CellLayout) getChildAt(mDragInfo.screen);
-                cellLayout.removeView(mDragInfo.cell);
+                final LayoutType layoutType = (LayoutType) getChildAt(mDragInfo.screen);
+                layoutType.removeView(mDragInfo.cell);
                 final Object tag = mDragInfo.cell.getTag();
                 Launcher.getModel().removeDesktopItem((ItemInfo) tag);
             }
         } else {
             if (mDragInfo != null) {
-                final CellLayout cellLayout = (CellLayout) getChildAt(mDragInfo.screen);
-                cellLayout.onDropAborted(mDragInfo.cell);
+                final LayoutType layoutType = (LayoutType) getChildAt(mDragInfo.screen);
+                layoutType.onDropAborted(mDragInfo.cell);
             }
         }
 
@@ -1124,7 +1124,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     /**
      * Find a search widget on the given screen
      */
-    private Search findSearchWidget(CellLayout screen) {
+    private Search findSearchWidget(LayoutType screen) {
         final int count = screen.getChildCount();
         for (int i = 0; i < count; i++) {
             View v = screen.getChildAt(i);
@@ -1140,18 +1140,18 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
      * <code>null</code> otherwise.
      */
     public Search findSearchWidgetOnCurrentScreen() {
-        CellLayout currentScreen = (CellLayout) getChildAt(mCurrentScreen);
+    	LayoutType currentScreen = (LayoutType) getChildAt(mCurrentScreen);
         return findSearchWidget(currentScreen);
     }
 
     public Folder getFolderForTag(Object tag) {
         int screenCount = getChildCount();
         for (int screen = 0; screen < screenCount; screen++) {
-            CellLayout currentScreen = ((CellLayout) getChildAt(screen));
+        	LayoutType currentScreen = ((LayoutType) getChildAt(screen));
             int count = currentScreen.getChildCount();
             for (int i = 0; i < count; i++) {
                 View child = currentScreen.getChildAt(i);
-                CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+                LayoutType.LayoutParams lp = (LayoutType.LayoutParams) child.getLayoutParams();
                 if (lp.cellHSpan == 4 && lp.cellVSpan == 4 && child instanceof Folder) {
                     Folder f = (Folder) child;
                     if (f.getInfo() == tag) {
@@ -1166,7 +1166,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     public View getViewForTag(Object tag) {
         int screenCount = getChildCount();
         for (int screen = 0; screen < screenCount; screen++) {
-            CellLayout currentScreen = ((CellLayout) getChildAt(screen));
+        	LayoutType currentScreen = ((LayoutType) getChildAt(screen));
             int count = currentScreen.getChildCount();
             for (int i = 0; i < count; i++) {
                 View child = currentScreen.getChildAt(i);
@@ -1217,7 +1217,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
         final int count = getChildCount();
 
         for (int i = 0; i < count; i++) {
-            final CellLayout layout = (CellLayout) getChildAt(i);
+            final LayoutType layout = (LayoutType) getChildAt(i);
             int childCount = layout.getChildCount();
 
             childrenToRemove.clear();
@@ -1284,7 +1284,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     void updateShortcutsForPackage(String packageName) {
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
-            final CellLayout layout = (CellLayout) getChildAt(i);
+            final LayoutType layout = (LayoutType) getChildAt(i);
             int childCount = layout.getChildCount();
             for (int j = 0; j < childCount; j++) {
                 final View view = layout.getChildAt(j);
@@ -1357,7 +1357,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
     public boolean isWidgetAtLocationScrollable(int x, int y) {
 		// will return true if widget at this position is scrollable.
     	// Get current screen from the whole desktop
-    	CellLayout currentScreen = (CellLayout) getChildAt(mCurrentScreen);
+    	LayoutType currentScreen = (LayoutType) getChildAt(mCurrentScreen);
     	int[] cell_xy = new int[2];
     	// Get the cell where the user started the touch event
     	currentScreen.pointToCellExact(x, y, cell_xy);
@@ -1372,7 +1372,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource, Dr
             if ( child !=null)
             {
             	// Get Layount graphical info about this widget
-	            CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+            	LayoutType.LayoutParams lp = (LayoutType.LayoutParams) child.getLayoutParams();
 	            // Calculate Cell Margins
 	            int left_cellmargin = lp.cellX;
 	            int rigth_cellmargin = lp.cellX+lp.cellHSpan;

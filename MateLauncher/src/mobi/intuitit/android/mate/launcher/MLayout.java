@@ -1,20 +1,19 @@
 package mobi.intuitit.android.mate.launcher;
 
-import mobi.intuitit.android.widget.WidgetCellLayout;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MLayout extends WidgetCellLayout {
+public class MLayout extends LayoutType {
 	private boolean mPortrait;
 
 	private final Rect mRect = new Rect();
-	private final CellLayout.CellInfo mCellInfo = new CellLayout.CellInfo();
+	private final CellInfo mCellInfo = new CellInfo();
 	
 	int[] mCellXY = new int[2];
 
@@ -75,7 +74,7 @@ public class MLayout extends WidgetCellLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		final int action = ev.getAction();
-		final CellLayout.CellInfo cellInfo = mCellInfo;
+		final CellInfo cellInfo = mCellInfo;
 
 		if (action == MotionEvent.ACTION_DOWN) {
 			final Rect frame = mRect;
@@ -91,11 +90,11 @@ public class MLayout extends WidgetCellLayout {
 						|| child.getAnimation() != null) {
 					child.getHitRect(frame);
 					if (frame.contains(x, y)) {
-						final CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child
+						final LayoutParams lp = (LayoutParams) child
 								.getLayoutParams();
 						cellInfo.cell = child;
-						cellInfo.cellX = lp.x;
-						cellInfo.cellY = lp.y;
+						cellInfo.x = lp.x;
+						cellInfo.y = lp.y;
 						cellInfo.valid = true;
 						found = true;
 						break;
@@ -107,15 +106,15 @@ public class MLayout extends WidgetCellLayout {
 				int cellXY[] = mCellXY;
 
 				cellInfo.cell = null;
-				cellInfo.cellX = cellXY[0];
-				cellInfo.cellY = cellXY[1];
+				cellInfo.x = cellXY[0];
+				cellInfo.y = cellXY[1];
 				cellInfo.valid = true;
 			}
 			setTag(cellInfo);
 		} else if (action == MotionEvent.ACTION_UP) {
 			cellInfo.cell = null;
-			cellInfo.cellX = -1;
-			cellInfo.cellY = -1;
+			cellInfo.x = -1;
+			cellInfo.y = -1;
 			cellInfo.valid = false;
 			setTag(cellInfo);
 		}
@@ -145,7 +144,7 @@ public class MLayout extends WidgetCellLayout {
 
 		for (int i = 0; i < count; i++) {
 			View child = getChildAt(i);
-			CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+			LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
 			if (mPortrait) {
 				lp.setup(lp.width, lp.height, 0, 0, 0, 0);
@@ -171,7 +170,7 @@ public class MLayout extends WidgetCellLayout {
 			View child = getChildAt(i);
 			if (child.getVisibility() != GONE) {
 
-				CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child
+				LayoutParams lp = (LayoutParams) child
 						.getLayoutParams();
 
 				int childLeft = lp.x;
@@ -221,7 +220,7 @@ public class MLayout extends WidgetCellLayout {
 	void onDropChild(View child, int x, int y) {
 	
 		if (child != null) {
-			CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+			LayoutParams lp = (LayoutParams) child.getLayoutParams();
 			lp.x = x;
 			lp.y = y;
 			lp.isDragging = false;
@@ -232,7 +231,7 @@ public class MLayout extends WidgetCellLayout {
 
 	void onDropAborted(View child) {
 		if (child != null) {
-			((CellLayout.LayoutParams) child.getLayoutParams()).isDragging = false;
+			((LayoutParams) child.getLayoutParams()).isDragging = false;
 			invalidate();
 		}
 	}
@@ -244,7 +243,7 @@ public class MLayout extends WidgetCellLayout {
 	 *            The child that is being dragged
 	 */
 	void onDragChild(View child) {
-		CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
+		LayoutParams lp = (LayoutParams) child.getLayoutParams();
 		lp.isDragging = true;
 	}
 	    
@@ -258,17 +257,95 @@ public class MLayout extends WidgetCellLayout {
 
 	@Override
 	public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
-		return new CellLayout.LayoutParams(getContext(), attrs);
+		return new LayoutParams(getContext(), attrs);
 	}
 
 	@Override
 	protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
-		return p instanceof CellLayout.LayoutParams;
+		return p instanceof LayoutParams;
 	}
 
 	@Override
 	protected ViewGroup.LayoutParams generateLayoutParams(
 			ViewGroup.LayoutParams p) {
-		return new CellLayout.LayoutParams(p);
+		return new LayoutParams(p);
+	}
+
+	@Override
+	int getCountX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	int getCountY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	boolean[] getOccupiedCells() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	void saveThumb() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	Bitmap getThumb() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	CellInfo findAllVacantCells(boolean[] occupiedCells, View ignoreView) {
+		// TODO Auto-generated method stub
+		
+		/// 생성 위치 부분 수정 해야 한다.
+		CellInfo cellInfo = new CellInfo();
+		
+		cellInfo.cellX = -1;
+		cellInfo.cellY = -1;
+    	cellInfo.screen = mCellInfo.screen;
+    	
+    	cellInfo.valid = true;
+    	
+    	return cellInfo;
+	}
+
+	@Override
+	CellInfo findAllVacantCellsFromOccupied(boolean[][] occupied, int xCount,
+			int yCount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	void cellToPoint(int cellX, int cellY, int[] result) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	void onDropChild(View child, int[] targetXY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	int[] findNearestVacantArea(int pixelX, int pixelY, int spanX, int spanY,
+			CellInfo vacantCells, int[] recycle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	void pointToCellExact(int x, int y, int[] result) {
+		// TODO Auto-generated method stub
+		
 	}
 }

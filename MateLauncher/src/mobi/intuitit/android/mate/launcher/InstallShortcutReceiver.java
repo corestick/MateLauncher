@@ -48,7 +48,7 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
         String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
 
         if (findEmptyCell(context, mCoordinates, screen)) {
-            CellLayout.CellInfo cell = new CellLayout.CellInfo();
+            LayoutType.CellInfo cell = new LayoutType.CellInfo();
             cell.cellX = mCoordinates[0];
             cell.cellY = mCoordinates[1];
             cell.screen = screen;
@@ -117,6 +117,6 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
             c.close();
         }
 
-        return CellLayout.findVacantCell(xy, 1, 1, xCount, yCount, occupied);
+        return LayoutType.findVacantCell(xy, 1, 1, xCount, yCount, occupied);
     }
 }
