@@ -51,9 +51,9 @@ abstract public class LayoutType extends WidgetCellLayout {
 
 	abstract void onDragChild(View child);
 
-	abstract void cellToPoint(int cellX, int cellY, int[] result);
-
 	abstract void onDropChild(View child, int[] targetXY);
+	
+	abstract void onDropChild(View child, int x, int y);
 
 	abstract int[] findNearestVacantArea(int pixelX, int pixelY, int spanX,
 			int spanY, CellInfo vacantCells, int[] recycle);
@@ -254,7 +254,7 @@ abstract public class LayoutType extends WidgetCellLayout {
 
 			if (clear)
 				clearVacantCells();
-
+			
 			return found;
 		}
 

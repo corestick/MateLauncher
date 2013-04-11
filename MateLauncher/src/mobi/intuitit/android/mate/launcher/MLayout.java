@@ -208,6 +208,12 @@ public class MLayout extends LayoutType {
 	protected void setChildrenDrawnWithCacheEnabled(boolean enabled) {
 		super.setChildrenDrawnWithCacheEnabled(enabled);
 	}
+	
+	@Override
+	void onDropChild(View child, int[] targetXY) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	/**
 	 * Drop a child at the specified position
@@ -322,18 +328,6 @@ public class MLayout extends LayoutType {
 			int yCount) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	void cellToPoint(int cellX, int cellY, int[] result) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	void onDropChild(View child, int[] targetXY) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
