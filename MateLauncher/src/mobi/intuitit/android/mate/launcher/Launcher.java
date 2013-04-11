@@ -183,8 +183,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	static final int APPWIDGET_HOST_ID = 1024;
 
-	private CellLayout.CellInfo mAddItemCellInfo;
-	private CellLayout.CellInfo mMenuAddInfo;
+	private LayoutType.CellInfo mAddItemCellInfo;
+	private LayoutType.CellInfo mMenuAddInfo;
 	private final int[] mCellCoordinates = new int[2];
 	private FolderInfo mFolderInfo;
 
@@ -582,8 +582,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		final int addScreen = savedState.getInt(
 				RUNTIME_STATE_PENDING_ADD_SCREEN, -1);
 		if (addScreen > -1) {
-			mAddItemCellInfo = new CellLayout.CellInfo();
-			final CellLayout.CellInfo addItemCellInfo = mAddItemCellInfo;
+			mAddItemCellInfo = new LayoutType.CellInfo();
+			final LayoutType.CellInfo addItemCellInfo = mAddItemCellInfo;
 			addItemCellInfo.valid = true;
 			addItemCellInfo.screen = addScreen;
 			addItemCellInfo.cellX = savedState
@@ -722,7 +722,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The position on screen where to create the shortcut.
 	 */
 	void completeAddApplication(Context context, Intent data,
-			CellLayout.CellInfo cellInfo, boolean insertAtFirst) {
+			LayoutType.CellInfo cellInfo, boolean insertAtFirst) {
 		cellInfo.screen = mWorkspace.getCurrentScreen();
 		if (!findSingleSlot(cellInfo))
 			return;
@@ -775,7 +775,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The position on screen where to create the shortcut.
 	 * @param insertAtFirst
 	 */
-	private void completeAddShortcut(Intent data, CellLayout.CellInfo cellInfo,
+	private void completeAddShortcut(Intent data, LayoutType.CellInfo cellInfo,
 			boolean insertAtFirst) {
 		cellInfo.screen = mWorkspace.getCurrentScreen();
 		if (!findSingleSlot(cellInfo))
@@ -803,7 +803,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The position on screen where to create the widget.
 	 */
 	private void completeAddAppWidget(Intent data,
-			CellLayout.CellInfo cellInfo, boolean insertAtFirst) {
+			LayoutType.CellInfo cellInfo, boolean insertAtFirst) {
 
 		Bundle extras = data.getExtras();
 		int appWidgetId = extras
@@ -816,7 +816,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				.getAppWidgetInfo(appWidgetId);
 
 		// Calculate the grid spans needed to fit this widget
-		CellLayout layout = (CellLayout) mWorkspace.getChildAt(cellInfo.screen);
+		LayoutType layout = (LayoutType) mWorkspace.getChildAt(cellInfo.screen);
 		int[] spans = layout.rectToCell(appWidgetInfo.minWidth,
 				appWidgetInfo.minHeight);
 
@@ -863,7 +863,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	static ApplicationInfo addShortcut(Context context, Intent data,
-			CellLayout.CellInfo cellInfo, boolean notify) {
+			LayoutType.CellInfo cellInfo, boolean notify) {
 
 		final ApplicationInfo info = infoFromShortcutIntent(context, data);
 		LauncherModel.addItemToDatabase(context, info,
@@ -1081,8 +1081,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		if (mAddItemCellInfo != null && mAddItemCellInfo.valid
 				&& mWaitingForResult) {
-			final CellLayout.CellInfo addItemCellInfo = mAddItemCellInfo;
-			final CellLayout layout = (CellLayout) mWorkspace
+			final LayoutType.CellInfo addItemCellInfo = mAddItemCellInfo;
+			final LayoutType layout = (LayoutType) mWorkspace
 					.getChildAt(addItemCellInfo.screen);
 
 			outState.putInt(RUNTIME_STATE_PENDING_ADD_SCREEN,
@@ -1372,7 +1372,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	void addSearch() {
 		final Widget info = Widget.makeSearch();
-		final CellLayout.CellInfo cellInfo = mAddItemCellInfo;
+		final LayoutType.CellInfo cellInfo = mAddItemCellInfo;
 
 		final int[] xy = mCellCoordinates;
 		final int spanX = info.spanX;
@@ -1429,7 +1429,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		UserFolderInfo folderInfo = new UserFolderInfo();
 		folderInfo.title = getText(R.string.folder_name);
 
-		CellLayout.CellInfo cellInfo = mAddItemCellInfo;
+		LayoutType.CellInfo cellInfo = mAddItemCellInfo;
 		cellInfo.screen = mWorkspace.getCurrentScreen();
 		if (!findSingleSlot(cellInfo))
 			return;
@@ -1451,7 +1451,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	private void completeAddLiveFolder(Intent data,
-			CellLayout.CellInfo cellInfo, boolean insertAtFirst) {
+			LayoutType.CellInfo cellInfo, boolean insertAtFirst) {
 		cellInfo.screen = mWorkspace.getCurrentScreen();
 		if (!findSingleSlot(cellInfo))
 			return;
@@ -1472,7 +1472,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	static LiveFolderInfo addLiveFolder(Context context, Intent data,
-			CellLayout.CellInfo cellInfo, boolean notify) {
+			LayoutType.CellInfo cellInfo, boolean notify) {
 
 		Intent baseIntent = data
 				.getParcelableExtra(LiveFolders.EXTRA_LIVE_FOLDER_BASE_INTENT);
@@ -1523,7 +1523,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return info;
 	}
 
-	private boolean findSingleSlot(CellLayout.CellInfo cellInfo) {
+	private boolean findSingleSlot(LayoutType.CellInfo cellInfo) {
 		final int[] xy = new int[2];
 		if (findSlot(cellInfo, xy, 1, 1)) {
 			cellInfo.cellX = xy[0];
@@ -1533,7 +1533,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return false;
 	}
 
-	private boolean findSlot(CellLayout.CellInfo cellInfo, int[] xy, int spanX,
+	private boolean findSlot(LayoutType.CellInfo cellInfo, int[] xy, int spanX,
 			int spanY) {
 		if (!cellInfo.findCellForSpan(xy, spanX, spanY)) {
 			boolean[] occupied = mSavedState != null ? mSavedState
@@ -1934,16 +1934,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		@Override
 		protected Integer doInBackground(Integer... params) {
-			CellLayout screenView;
+			LayoutType screenView;
 			// Create screen array
 			if (sScreens == null || sScreens.length != count)
 				sScreens = new Bitmap[count];
 
 			for (int i = 0; i < count; i++) {
 				// Prepare cache
-				screenView = (CellLayout) mWorkspace.getChildAt(i);
+				screenView = (LayoutType) mWorkspace.getChildAt(i);
 				screenView.saveThumb();
-				sScreens[i] = screenView.mThumb;
+				sScreens[i] = screenView.getThumb();
 			}
 
 			return null;
@@ -2092,11 +2092,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return false;
 		}
 
-		if (!(v instanceof CellLayout)) {
+		if (!(v instanceof LayoutType)) {
 			v = (View) v.getParent();
 		}
 
-		CellLayout.CellInfo cellInfo = (CellLayout.CellInfo) v.getTag();
+		LayoutType.CellInfo cellInfo = (LayoutType.CellInfo) v.getTag();
 
 		// This happens when long clicking an item with the dpad/trackball
 		if (cellInfo == null) {
@@ -2187,7 +2187,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		showDialog(DIALOG_RENAME_FOLDER);
 	}
 
-	private void showAddDialog(CellLayout.CellInfo cellInfo) {
+	private void showAddDialog(LayoutType.CellInfo cellInfo) {
 		mAddItemCellInfo = cellInfo;
 		mWaitingForResult = true;
 		showDialog(DIALOG_CREATE_SHORTCUT);
