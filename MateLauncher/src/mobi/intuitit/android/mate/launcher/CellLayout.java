@@ -414,26 +414,7 @@ public class CellLayout extends LayoutType {
         if (result[1] < 0) result[1] = 0;
         if (result[1] >= yAxis) result[1] = yAxis - 1;
     }
-    
-    /**
-     * Given a cell coordinate, return the point that represents the upper left corner of that cell
-     * 
-     * @param cellX X coordinate of the cell 
-     * @param cellY Y coordinate of the cell
-     * 
-     * @param result Array of 2 ints to hold the x and y coordinate of the point
-     */
-    void cellToPoint(int cellX, int cellY, int[] result) {
-        final boolean portrait = mPortrait;
-        
-        final int hStartPadding = portrait ? mShortAxisStartPadding : mLongAxisStartPadding;
-        final int vStartPadding = portrait ? mLongAxisStartPadding : mShortAxisStartPadding;
-
-
-        result[0] = hStartPadding + cellX * (mCellWidth + mWidthGap);
-        result[1] = vStartPadding + cellY * (mCellHeight + mHeightGap);
-    }
-
+      
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // TODO: currently ignoring padding
@@ -645,10 +626,7 @@ public class CellLayout extends LayoutType {
             if (cell.spanX != spanX || cell.spanY != spanY) {
                 continue;
             }
-            
-            // Score is center distance from requested pixel
-            cellToPoint(cell.cellX, cell.cellY, cellXY);
-            
+                        
             double distance = Math.sqrt(Math.pow(cellXY[0] - pixelX, 2) +
                     Math.pow(cellXY[1] - pixelY, 2));
             if (distance <= bestDistance) {
@@ -683,6 +661,12 @@ public class CellLayout extends LayoutType {
             invalidate();
         }
     }
+    
+    @Override
+	void onDropChild(View child, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
 
     void onDropAborted(View child) {
         if (child != null) {
