@@ -51,8 +51,8 @@ public class FolderIcon extends BubbleTextView implements DropTarget {
         d = Utilities.createIconThumbnail(d, launcher);
         icon.mCloseIcon = d;
         icon.mOpenIcon = resources.getDrawable(R.drawable.ic_launcher_folder_open);
-        icon.setCompoundDrawablesWithIntrinsicBounds(null, d, null, null);
-        icon.setText(folderInfo.title);
+//        icon.setCompoundDrawablesWithIntrinsicBounds(null, d, null, null);
+//        icon.setText(folderInfo.title);
         icon.setTag(folderInfo);
         icon.setOnClickListener(launcher);
         icon.mInfo = folderInfo;
@@ -83,7 +83,7 @@ public class FolderIcon extends BubbleTextView implements DropTarget {
 
     public void onDragEnter(DragSource source, int x, int y, int xOffset, int yOffset,
             Object dragInfo) {
-        setCompoundDrawablesWithIntrinsicBounds(null, mOpenIcon, null, null);
+//        setCompoundDrawablesWithIntrinsicBounds(null, mOpenIcon, null, null);
     }
 
     public void onDragOver(DragSource source, int x, int y, int xOffset, int yOffset,
@@ -92,6 +92,6 @@ public class FolderIcon extends BubbleTextView implements DropTarget {
 
     public void onDragExit(DragSource source, int x, int y, int xOffset, int yOffset,
             Object dragInfo) {
-        setCompoundDrawablesWithIntrinsicBounds(null, mCloseIcon, null, null);
+//        setCompoundDrawablesWithIntrinsicBounds(null, mCloseIcon, null, null);
     }
 }

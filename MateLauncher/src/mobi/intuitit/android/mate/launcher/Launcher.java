@@ -88,6 +88,7 @@ import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -229,6 +230,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		setContentView(R.layout.launcher);
 		setupViews();
+		setDesktopWallpaper();
 
 		registerIntentReceivers();
 		registerContentObservers();
@@ -706,17 +708,30 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return A View inflated from layoutResId.
 	 */
 	View createShortcut(int layoutResId, ViewGroup parent, ApplicationInfo info) {
-		TextView favorite = (TextView) mInflater.inflate(layoutResId, parent,
-				false);
+		ImageView favorite = (ImageView) mInflater.inflate(layoutResId, parent,false);
 
 		if (!info.filtered) {
 			info.icon = Utilities.createIconThumbnail(info.icon, this);
 			info.filtered = true;
 		}
 
-		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
-				null);
-		favorite.setText(info.title);
+//		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,null);
+//		favorite.setText(info.title);
+		if((info.title).equals("ÈÞ´ëÀüÈ­")){
+			favorite.setImageResource(R.drawable.call);
+		}
+		else if((info.title).equals("À½¾Ç")){
+			favorite.setImageResource(R.drawable.audio);
+		}
+		else if((info.title).equals("°¶·¯¸®")){
+			favorite.setImageResource(R.drawable.avatar);
+		}
+		else if((info.title).equals("°Ë»ö")){
+			favorite.setImageResource(R.drawable.tv);
+		}
+		else{
+		favorite.setImageDrawable(info.icon);
+		}
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -2306,7 +2321,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
 							.getViewForTag(mFolderInfo);
 					if (folderIcon != null) {
-						folderIcon.setText(name);
+//						folderIcon.setText(name);
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
@@ -2817,5 +2832,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}
 	}
+	
+	private void setDesktopWallpaper() {
+		try {
+			WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+			wallpaperManager.setResource(R.drawable.room);
+		} catch (IOException e) {
+
+		}
+	}   
 
 }
