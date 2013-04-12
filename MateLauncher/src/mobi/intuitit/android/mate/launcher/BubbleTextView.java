@@ -23,14 +23,14 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 /**
  * TextView that draws a bubble behind the text. We cannot use a LineBackgroundSpan
  * because we want to make the bubble taller than the text and TextView's clip is
  * too aggressive.
  */
-public class BubbleTextView extends TextView {
+public class BubbleTextView extends ImageView {
     private static final float CORNER_RADIUS = 8.0f;
     private static final float PADDING_H = 5.0f;
     private static final float PADDING_V = 1.0f;
@@ -118,15 +118,15 @@ public class BubbleTextView extends TextView {
             }
         }
 
-        final Layout layout = getLayout();
-        final RectF rect = mRect;
-        final int left = getCompoundPaddingLeft();
-        final int top = getExtendedPaddingTop();
-
-        rect.set(left + layout.getLineLeft(0) - mPaddingH,
-                top + layout.getLineTop(0) -  mPaddingV,
-                Math.min(left + layout.getLineRight(0) + mPaddingH, getScrollX() + getRight() - getLeft()),
-                top + layout.getLineBottom(0) + mPaddingV);
+//        final Layout layout = getLayout();
+          final RectF rect = mRect;
+//        final int left = getCompoundPaddingLeft();
+//        final int top = getExtendedPaddingTop();
+//
+//        rect.set(left + layout.getLineLeft(0) - mPaddingH,
+//                top + layout.getLineTop(0) -  mPaddingV,
+//                Math.min(left + layout.getLineRight(0) + mPaddingH, getScrollX() + getRight() - getLeft()),
+//                top + layout.getLineBottom(0) + mPaddingV);
         canvas.drawRoundRect(rect, mCornerRadius, mCornerRadius, mPaint);
 
         super.draw(canvas);

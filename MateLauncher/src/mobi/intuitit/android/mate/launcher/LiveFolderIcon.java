@@ -45,8 +45,8 @@ public class LiveFolderIcon extends FolderIcon {
                     resources.getDrawable(R.drawable.ic_launcher_folder), launcher);
             folderInfo.filtered = true;
         }
-        icon.setCompoundDrawablesWithIntrinsicBounds(null, d, null, null);
-        icon.setText(folderInfo.title);
+//        icon.setCompoundDrawablesWithIntrinsicBounds(null, d, null, null);
+//        icon.setText(folderInfo.title);
         icon.setTag(folderInfo);
         icon.setOnClickListener(launcher);
         

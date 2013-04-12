@@ -62,12 +62,15 @@ abstract public class LayoutType extends WidgetCellLayout {
 	
 	abstract void pointToCellExact(int x, int y, int[] result);
 	
+<<<<<<< HEAD
 	static boolean findVacantCell(int[] xy, int i, int j, int xCount,
 			int yCount, boolean[][] occupied) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+=======
+>>>>>>> origin/Ryu3
 	public static class LayoutParams extends ViewGroup.MarginLayoutParams {
 		/**
 		 * Horizontal location of the item in the grid.
@@ -188,8 +191,12 @@ abstract public class LayoutType extends WidgetCellLayout {
 				}
 			}
 
+<<<<<<< HEAD
 			// /CellLayout.findIntersectingVacantCells(this, cellX, cellY,
 			// xCount, yCount, unflattened);
+=======
+			CellLayout.findIntersectingVacantCells(this, cellX, cellY, xCount, yCount, unflattened);
+>>>>>>> origin/Ryu3
 		}
 
 		/**
