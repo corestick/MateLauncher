@@ -260,8 +260,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 						folders.add((Folder) child);
 						break;
 					} else {
-						if (child instanceof Folder)
+						if (child instanceof Folder) {
 							folders.add((Folder) child);
+							break;
+						}
 					}
 				}
 			}
@@ -406,20 +408,17 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			lp = new LayoutType.LayoutParams(x, y, spanX, spanY);
 		} else {
 
+			lp.cellX = x;
+			lp.cellY = y;
 			// -- MLayout
-			if (group instanceof MLayout) {
-				lp.x = x;
-				lp.y = y;
-			} else {
-				lp.cellX = x;
-				lp.cellY = y;
+			if (group instanceof CellLayout) {
 				lp.cellHSpan = spanX;
 				lp.cellVSpan = spanY;
 			}
 		}
 
 		group.addView(child, insert ? 0 : -1, lp);
-		if (!(child instanceof Folder)) {
+		if (!(child instanceof Folder)) { // / -
 			child.setOnLongClickListener(mLongClickListener);
 		}
 	}
@@ -988,13 +987,15 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			LayoutType.CellInfo cellInfo, boolean insertAtFirst) {
 		final LayoutType layout = (LayoutType) getChildAt(cellInfo.screen);
 		final int[] result = new int[2];
-
+		
 		onDropExternal(result[0], result[1], info, layout, insertAtFirst);
 	}
 
 	public void onDrop(DragSource source, int x, int y, int xOffset,
 			int yOffset, Object dragInfo) {
+
 		final LayoutType layoutType = getCurrentDropLayout();
+
 		if (source != this) {
 			onDropExternal(x - xOffset, y - yOffset, dragInfo, layoutType);
 		} else {
@@ -1016,18 +1017,17 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				// -- MLayout ฐüทร
 				if (layoutType instanceof MLayout) {
 					layoutType.onDropChild(cell, x - xOffset, y - yOffset);
-					LauncherModel.moveItemInDatabase(mLauncher, info,
-							LauncherSettings.Favorites.CONTAINER_DESKTOP,
-							index, lp.x, lp.y);
+
 				} else {
 					mTargetCell = estimateDropCell(x - xOffset, y - yOffset,
 							mDragInfo.spanX, mDragInfo.spanY, cell, layoutType,
 							mTargetCell);
 					layoutType.onDropChild(cell, mTargetCell);
-					LauncherModel.moveItemInDatabase(mLauncher, info,
-							LauncherSettings.Favorites.CONTAINER_DESKTOP,
-							index, lp.cellX, lp.cellY);
 				}
+
+				LauncherModel.moveItemInDatabase(mLauncher, info,
+						LauncherSettings.Favorites.CONTAINER_DESKTOP, index,
+						lp.cellX, lp.cellY);
 			}
 		}
 	}
@@ -1089,25 +1089,21 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		if (layoutType instanceof MLayout) {
 			layoutType.onDropChild(view, x, y);
 
-			model.addDesktopItem(info);
-			LauncherModel.addOrMoveItemInDatabase(mLauncher, info,
-					LauncherSettings.Favorites.CONTAINER_DESKTOP,
-					mCurrentScreen, lp.x, lp.y);
 		} else {
 
 			mTargetCell = estimateDropCell(x, y, 1, 1, view, layoutType,
 					mTargetCell);
 			layoutType.onDropChild(view, mTargetCell);
-
-			model.addDesktopItem(info);
-			LauncherModel.addOrMoveItemInDatabase(mLauncher, info,
-					LauncherSettings.Favorites.CONTAINER_DESKTOP,
-					mCurrentScreen, lp.cellX, lp.cellY);
 		}
+
+		model.addDesktopItem(info);
+		LauncherModel.addOrMoveItemInDatabase(mLauncher, info,
+				LauncherSettings.Favorites.CONTAINER_DESKTOP, mCurrentScreen,
+				lp.cellX, lp.cellY);
 	}
 
 	/**
-	 * Return the current {@link CellLayout}, correctly picking the destination
+	 * Return the current {@link CellLayout||MLayout}, correctly picking the destination
 	 * screen while a scroll is in progress.
 	 */
 	private LayoutType getCurrentDropLayout() {
@@ -1121,7 +1117,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	public boolean acceptDrop(DragSource source, int x, int y, int xOffset,
 			int yOffset, Object dragInfo) {
 		final LayoutType layout = getCurrentDropLayout();
-
+		
 		if (layout instanceof MLayout) {
 			return true;
 		} else {
@@ -1133,13 +1129,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				final View ignoreView = cellInfo == null ? null : cellInfo.cell;
 				mVacantCache = layout.findAllVacantCells(null, ignoreView);
 			}
-
-			if (layout instanceof MLayout) {
-				return true;
-			} else {
-				return mVacantCache.findCellForSpan(mTempEstimate, spanX,
-						spanY, false);
-			}
+			
+			return mVacantCache.findCellForSpan(mTempEstimate, spanX, spanY,
+					false);
 		}
 	}
 
@@ -1171,17 +1163,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			return null;
 		}
 
-		if (layout instanceof MLayout) {
-			location.left = dropCell[0];
-			location.top = dropCell[1];
-			location.right = location.left + 30;
-			location.bottom = location.top + 30;
-		} else {
-			location.left = mTempEstimate[0];
-			location.top = mTempEstimate[1];
-			location.right = mTempEstimate[0];
-			location.bottom = mTempEstimate[1];
-		}
+		location.left = mTempEstimate[0];
+		location.top = mTempEstimate[1];
+		location.right = mTempEstimate[0];
+		location.bottom = mTempEstimate[1];
+
 		return location;
 	}
 

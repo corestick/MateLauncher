@@ -3,6 +3,10 @@ package mobi.intuitit.android.mate.launcher;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -93,8 +97,8 @@ public class MLayout extends LayoutType {
 						final LayoutParams lp = (LayoutParams) child
 								.getLayoutParams();
 						cellInfo.cell = child;
-						cellInfo.x = lp.x;
-						cellInfo.y = lp.y;
+						cellInfo.cellX = lp.cellX;
+						cellInfo.cellY = lp.cellX;
 						cellInfo.valid = true;
 						found = true;
 						break;
@@ -106,15 +110,15 @@ public class MLayout extends LayoutType {
 				int cellXY[] = mCellXY;
 
 				cellInfo.cell = null;
-				cellInfo.x = cellXY[0];
-				cellInfo.y = cellXY[1];
+				cellInfo.cellX = cellXY[0];
+				cellInfo.cellY = cellXY[1];
 				cellInfo.valid = true;
 			}
 			setTag(cellInfo);
 		} else if (action == MotionEvent.ACTION_UP) {
 			cellInfo.cell = null;
-			cellInfo.x = -1;
-			cellInfo.y = -1;
+			cellInfo.cellX = -1;
+			cellInfo.cellY = -1;
 			cellInfo.valid = false;
 			setTag(cellInfo);
 		}
@@ -173,8 +177,8 @@ public class MLayout extends LayoutType {
 				LayoutParams lp = (LayoutParams) child
 						.getLayoutParams();
 
-				int childLeft = lp.x;
-				int childTop = lp.y;
+				int childLeft = lp.cellX;
+				int childTop = lp.cellY;
 				int childRight;
 				int childBottom;
 
@@ -192,6 +196,52 @@ public class MLayout extends LayoutType {
 			}
 		}
 	}
+	
+	Bitmap mThumb;
+    private Canvas mThumbCanvas;
+    private Paint mThumbPaint;
+
+    boolean layoutDrawed = false;
+
+    private void initThumb(int width, int height) {
+        if (mThumb == null || mThumb.isRecycled())
+            mThumb = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+
+        Matrix matrix = new Matrix();
+        matrix.setScale(0.25f, 0.25f);
+        mThumbCanvas = new Canvas(mThumb);
+        mThumbCanvas.concat(matrix);
+
+        mThumbPaint = new Paint();
+        mThumbPaint.setDither(true);
+        mThumbPaint.setAntiAlias(true);
+    }
+
+    synchronized void saveThumb() {
+        if (layoutDrawed)
+            return;
+
+        if (mThumbCanvas == null)
+            initThumb(getWidth() >> 2, getHeight() >> 2);
+
+        setDrawingCacheEnabled(true);
+
+        // Get bitmap
+        Bitmap bmp = getDrawingCache();
+        if (bmp != null) {
+            mThumbCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+            mThumbCanvas.drawBitmap(bmp, 0, 0, mThumbPaint);
+        }
+
+        // Clean up
+        destroyDrawingCache();
+        setDrawingCacheEnabled(false);
+        layoutDrawed = true;
+    }
+    
+    public Bitmap getThumb() {
+    	return mThumb;
+    }
 
 	@Override
 	protected void setChildrenDrawingCacheEnabled(boolean enabled) {
@@ -227,8 +277,8 @@ public class MLayout extends LayoutType {
 	
 		if (child != null) {
 			LayoutParams lp = (LayoutParams) child.getLayoutParams();
-			lp.x = x;
-			lp.y = y;
+			lp.cellX = x;
+			lp.cellY = y;
 			lp.isDragging = false;
 			child.requestLayout();
 			invalidate();
@@ -296,26 +346,14 @@ public class MLayout extends LayoutType {
 	}
 
 	@Override
-	void saveThumb() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	Bitmap getThumb() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	CellInfo findAllVacantCells(boolean[] occupiedCells, View ignoreView) {
 		// TODO Auto-generated method stub
 		
 		/// 생성 위치 부분 수정 해야 한다.
 		CellInfo cellInfo = new CellInfo();
 		
-		cellInfo.cellX = -1;
-		cellInfo.cellY = -1;
+		///cellInfo.cellX = -1;
+		///cellInfo.cellY = -1;
     	cellInfo.screen = mCellInfo.screen;
     	
     	cellInfo.valid = true;

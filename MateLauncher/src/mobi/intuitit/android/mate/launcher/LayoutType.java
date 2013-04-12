@@ -149,8 +149,6 @@ abstract public class LayoutType extends WidgetCellLayout {
 		View cell;
 		int cellX;
 		int cellY;
-		int x;
-		int y;
 		int spanX;
 		int spanY;
 		int screen;
