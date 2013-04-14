@@ -117,6 +117,6 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
             c.close();
         }
 
-        return LayoutType.findVacantCell(xy, 1, 1, xCount, yCount, occupied);
+        return CellLayout.findVacantCell(xy, 1, 1, xCount, yCount, occupied);
     }
 }

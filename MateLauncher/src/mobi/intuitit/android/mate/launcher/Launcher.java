@@ -1499,13 +1499,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			LayoutType.CellInfo cellInfo, boolean insertAtFirst) {
 		cellInfo.screen = mWorkspace.getCurrentScreen();
 
-<<<<<<< HEAD
-		// -- MLayout
-		if (!findSingleSlot(cellInfo)
-				&& mWorkspace.getChildAt(mWorkspace.getCurrentScreen()) instanceof CellLayout)
-=======
 		if (!findSingleSlot(cellInfo))
->>>>>>> origin/Ryu3
 			return;
 
 		final LiveFolderInfo info = addLiveFolder(this, data, cellInfo, false);
