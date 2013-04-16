@@ -3,12 +3,18 @@ package mobi.intuitit.android.mate.launcher;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +24,7 @@ public class MLayout extends LayoutType {
 
 	private final Rect mRect = new Rect();
 	private final CellInfo mCellInfo = new CellInfo();
-	
+
 	int[] mCellXY = new int[2];
 
 	public MLayout(Context context) {
@@ -33,7 +39,7 @@ public class MLayout extends LayoutType {
 		super(context, attrs, defStyle);
 		TypedArray a = context.obtainStyledAttributes(attrs,
 				R.styleable.CellLayout, defStyle, 0);
-		
+
 		a.recycle();
 		setAlwaysDrawnWithCacheEnabled(false);
 	}
@@ -174,8 +180,7 @@ public class MLayout extends LayoutType {
 			View child = getChildAt(i);
 			if (child.getVisibility() != GONE) {
 
-				LayoutParams lp = (LayoutParams) child
-						.getLayoutParams();
+				LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
 				int childLeft = lp.cellX;
 				int childTop = lp.cellY;
@@ -196,52 +201,53 @@ public class MLayout extends LayoutType {
 			}
 		}
 	}
-	
+
 	Bitmap mThumb;
-    private Canvas mThumbCanvas;
-    private Paint mThumbPaint;
+	private Canvas mThumbCanvas;
+	private Paint mThumbPaint;
 
-    boolean layoutDrawed = false;
+	boolean layoutDrawed = false;
 
-    private void initThumb(int width, int height) {
-        if (mThumb == null || mThumb.isRecycled())
-            mThumb = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+	private void initThumb(int width, int height) {
+		if (mThumb == null || mThumb.isRecycled())
+			mThumb = Bitmap
+					.createBitmap(width, height, Bitmap.Config.ARGB_4444);
 
-        Matrix matrix = new Matrix();
-        matrix.setScale(0.25f, 0.25f);
-        mThumbCanvas = new Canvas(mThumb);
-        mThumbCanvas.concat(matrix);
+		Matrix matrix = new Matrix();
+		matrix.setScale(0.25f, 0.25f);
+		mThumbCanvas = new Canvas(mThumb);
+		mThumbCanvas.concat(matrix);
 
-        mThumbPaint = new Paint();
-        mThumbPaint.setDither(true);
-        mThumbPaint.setAntiAlias(true);
-    }
+		mThumbPaint = new Paint();
+		mThumbPaint.setDither(true);
+		mThumbPaint.setAntiAlias(true);
+	}
 
-    synchronized void saveThumb() {
-        if (layoutDrawed)
-            return;
+	synchronized void saveThumb() {
+		if (layoutDrawed)
+			return;
 
-        if (mThumbCanvas == null)
-            initThumb(getWidth() >> 2, getHeight() >> 2);
+		if (mThumbCanvas == null)
+			initThumb(getWidth() >> 2, getHeight() >> 2);
 
-        setDrawingCacheEnabled(true);
+		setDrawingCacheEnabled(true);
 
-        // Get bitmap
-        Bitmap bmp = getDrawingCache();
-        if (bmp != null) {
-            mThumbCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-            mThumbCanvas.drawBitmap(bmp, 0, 0, mThumbPaint);
-        }
+		// Get bitmap
+		Bitmap bmp = getDrawingCache();
+		if (bmp != null) {
+			mThumbCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+			mThumbCanvas.drawBitmap(bmp, 0, 0, mThumbPaint);
+		}
 
-        // Clean up
-        destroyDrawingCache();
-        setDrawingCacheEnabled(false);
-        layoutDrawed = true;
-    }
-    
-    public Bitmap getThumb() {
-    	return mThumb;
-    }
+		// Clean up
+		destroyDrawingCache();
+		setDrawingCacheEnabled(false);
+		layoutDrawed = true;
+	}
+
+	public Bitmap getThumb() {
+		return mThumb;
+	}
 
 	@Override
 	protected void setChildrenDrawingCacheEnabled(boolean enabled) {
@@ -249,7 +255,7 @@ public class MLayout extends LayoutType {
 		for (int i = 0; i < count; i++) {
 			final View view = getChildAt(i);
 			view.setDrawingCacheEnabled(enabled);
-			
+
 			view.buildDrawingCache(true);
 		}
 	}
@@ -258,11 +264,11 @@ public class MLayout extends LayoutType {
 	protected void setChildrenDrawnWithCacheEnabled(boolean enabled) {
 		super.setChildrenDrawnWithCacheEnabled(enabled);
 	}
-	
+
 	@Override
 	void onDropChild(View child, int[] targetXY) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -274,7 +280,7 @@ public class MLayout extends LayoutType {
 	 *            Destination area to move to
 	 */
 	void onDropChild(View child, int x, int y) {
-	
+
 		if (child != null) {
 			LayoutParams lp = (LayoutParams) child.getLayoutParams();
 			lp.cellX = x;
@@ -302,10 +308,10 @@ public class MLayout extends LayoutType {
 		LayoutParams lp = (LayoutParams) child.getLayoutParams();
 		lp.isDragging = true;
 	}
-	    
-    public int[] rectToCell(int width, int height) {
-    	return new int[] { 0, 0 };
-    }
+
+	public int[] rectToCell(int width, int height) {
+		return new int[] { 0, 0 };
+	}
 
 	void onDragOverChild(View child, int cellX, int cellY) {
 		invalidate();
@@ -348,17 +354,17 @@ public class MLayout extends LayoutType {
 	@Override
 	CellInfo findAllVacantCells(boolean[] occupiedCells, View ignoreView) {
 		// TODO Auto-generated method stub
-		
-		/// 생성 위치 부분 수정 해야 한다.
+
+		// / 생성 위치 부분 수정 해야 한다.
 		CellInfo cellInfo = new CellInfo();
-		
-		///cellInfo.cellX = -1;
-		///cellInfo.cellY = -1;
-    	cellInfo.screen = mCellInfo.screen;
-    	
-    	cellInfo.valid = true;
-    	
-    	return cellInfo;
+
+		// /cellInfo.cellX = -1;
+		// /cellInfo.cellY = -1;
+		cellInfo.screen = mCellInfo.screen;
+
+		cellInfo.valid = true;
+
+		return cellInfo;
 	}
 
 	@Override
@@ -378,6 +384,38 @@ public class MLayout extends LayoutType {
 	@Override
 	void pointToCellExact(int x, int y, int[] result) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void dispatchDraw(Canvas canvas) {
+		Log.e("RRR", "getScrollX>>>" + getScrollX());
+
+		Drawable drawable = getResources().getDrawable(R.drawable.audio);
+		drawable.setBounds(getScrollX(), 0, drawable.getIntrinsicWidth(),
+				drawable.getIntrinsicHeight());
+		///drawable.draw(canvas);
 		
+		BitmapDrawable bd = (BitmapDrawable)getResources().getDrawable(R.drawable.pattern_my);
+		Bitmap bit = bd.getBitmap();
+		
+		Paint paint = new Paint();
+		///paint.setColor(Color.BLUE);
+		paint.setAntiAlias(true);
+		//paint.set
+		
+		paint.setShader(new BitmapShader(bit, TileMode.REPEAT, TileMode.REPEAT));
+		
+		Path path = new Path();
+		
+		path.lineTo(0, 0);
+		path.lineTo(240, 0);
+		path.lineTo(240, 300);
+		path.lineTo(0, 500);
+		path.lineTo(0, 0);
+		//path.setLastPoint(0, 0);
+		canvas.drawPath(path, paint);
+		
+		super.dispatchDraw(canvas);
 	}
 }
