@@ -101,7 +101,7 @@
         <mobi.intuitit.android.mate.launcher.MobjectView
            android:id="@+id/objectview"
            android:layout_width="fill_parent"
-           android:layout_height="100dp"
+           android:layout_height="fill_parent"
            launcher:texture="@drawable/pattern_carbon_fiber_dark"
             android:verticalSpacing="10dip"
             android:numColumns="4"

@@ -56,16 +56,13 @@ public class MobjectView extends GridView implements
 	}
 
 	@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		// TODO Auto-generated method stub
-		return false;
+	protected void onFinishInflate() {
+		setOnItemClickListener(this);
+		setOnItemLongClickListener(this);
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		
-
+	public boolean isOpaque() {
+		return !mTexture.hasAlpha();
 	}
 
 	@Override
@@ -100,6 +97,27 @@ public class MobjectView extends GridView implements
 
 	void setLauncher(Launcher launcher) {
 		mLauncher = launcher;
+	}
+
+	public boolean onItemLongClick(AdapterView<?> parent, View view,
+			int position, long id) {
+		if (!view.isInTouchMode()) {
+			return false;
+		}
+
+		ApplicationInfo app = (ApplicationInfo) parent
+				.getItemAtPosition(position);
+		app = new ApplicationInfo(app);
+
+		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
+		mLauncher.closeObjectView();
+		return true;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

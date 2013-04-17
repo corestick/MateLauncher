@@ -2894,4 +2894,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}		
 
 	}
+	
+	void closeObjectView() {
+		mObjectView.setVisibility(View.GONE);
+	}
 }
