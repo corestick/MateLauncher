@@ -232,8 +232,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		setContentView(R.layout.launcher);
 		setupViews();
-		setDesktopWallpaper();
-
+		
 		registerIntentReceivers();
 		registerContentObservers();
 
