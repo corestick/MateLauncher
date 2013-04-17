@@ -230,8 +230,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		setContentView(R.layout.launcher);
 		setupViews();
-		setDesktopWallpaper();
-
+		
 		registerIntentReceivers();
 		registerContentObservers();
 
@@ -2833,14 +2832,4 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}
 	}
-	
-	private void setDesktopWallpaper() {
-		try {
-			WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
-			wallpaperManager.setResource(R.drawable.room);
-		} catch (IOException e) {
-
-		}
-	}   
-
 }

@@ -389,32 +389,19 @@ public class MLayout extends LayoutType {
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		Log.e("RRR", "getScrollX>>>" + getScrollX());
-
-		Drawable drawable = getResources().getDrawable(R.drawable.audio);
-		drawable.setBounds(getScrollX(), 0, drawable.getIntrinsicWidth(),
-				drawable.getIntrinsicHeight());
-		///drawable.draw(canvas);
+		MBackground mBack = new MBackground(canvas.getWidth(), canvas.getHeight());
 		
-		BitmapDrawable bd = (BitmapDrawable)getResources().getDrawable(R.drawable.pattern_my);
-		Bitmap bit = bd.getBitmap();
+		//벽지 그리기
+		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(R.drawable.wall_01));
+		canvas.drawPath(mBack.getLeftPath(), mBack.getPaint());
+		canvas.drawPath(mBack.getRightPath(), mBack.getPaint());
 		
-		Paint paint = new Paint();
-		///paint.setColor(Color.BLUE);
-		paint.setAntiAlias(true);
-		//paint.set
+		//바닥 그리기
+		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(R.drawable.flooring_01));
+		canvas.drawPath(mBack.getBottomPath(), mBack.getPaint());
 		
-		paint.setShader(new BitmapShader(bit, TileMode.REPEAT, TileMode.REPEAT));
-		
-		Path path = new Path();
-		
-		path.lineTo(0, 0);
-		path.lineTo(240, 0);
-		path.lineTo(240, 300);
-		path.lineTo(0, 500);
-		path.lineTo(0, 0);
-		//path.setLastPoint(0, 0);
-		canvas.drawPath(path, paint);
+		//테투리 그리기
+		canvas.drawPath(mBack.getStrokePath(), mBack.getStrokePaint());
 		
 		super.dispatchDraw(canvas);
 	}
