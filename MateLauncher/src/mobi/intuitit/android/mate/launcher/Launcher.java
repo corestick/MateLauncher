@@ -2855,16 +2855,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
-	private void setDesktopWallpaper() {
-		try {
-			WallpaperManager wallpaperManager = WallpaperManager
-					.getInstance(this);
-			wallpaperManager.setResource(R.drawable.room);
-		} catch (IOException e) {
-
-		}
-	}
-
 	public void showObject() {
 		if (mScreenLayout == null) {
 //			mAllAppsGrid.setVisibility(View.VISIBLE);
