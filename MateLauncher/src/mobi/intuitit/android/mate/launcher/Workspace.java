@@ -442,10 +442,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			int countX = group.getCountX();
 			int countY = group.getCountY();
 			boolean occupied[][] = new boolean[countX][countY];
-			Launcher.getModel().findAllOccupiedCells(occupied, countX, countY,
-					mCurrentScreen);
-			return group.findAllVacantCellsFromOccupied(occupied, countX,
-					countY);
+//			Launcher.getModel().findAllOccupiedCells(occupied, countX, countY,
+//					mCurrentScreen);
+//			return group.findAllVacantCellsFromOccupied(occupied, countX,
+//					countY);
 		}
 		return null;
 	}

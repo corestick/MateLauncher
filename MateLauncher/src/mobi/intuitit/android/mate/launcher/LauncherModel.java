@@ -1148,7 +1148,7 @@ public class LauncherModel {
             final int count = desktopItems.size();
             for (int i = 0; i < count; i++) {
                 ItemInfo item = desktopItems.get(i);
-                addOccupiedCells(occupied, screen, desktopItems.get(i));
+//                addOccupiedCells(occupied, screen, desktopItems.get(i));
             }
         }
         
@@ -1156,7 +1156,7 @@ public class LauncherModel {
         if (desktopAppWidgets != null) {
             final int count = desktopAppWidgets.size();
             for (int i = 0; i < count; i++) {
-                addOccupiedCells(occupied, screen, desktopAppWidgets.get(i));
+//                addOccupiedCells(occupied, screen, desktopAppWidgets.get(i));
             }
         }
     }
@@ -1164,16 +1164,16 @@ public class LauncherModel {
     /**
      * Add the footprint of the specified item to the occupied array
      */
-    private void addOccupiedCells(boolean[][] occupied, int screen,
-            ItemInfo item) {
-        if (item.screen == screen) {
-            for (int xx = item.cellX; xx < item.cellX + item.spanX; xx++) {
-                for (int yy = item.cellY; yy < item.cellY + item.spanY; yy++) {
-                    occupied[xx][yy] = true;
-                }
-            }
-        }
-    }
+//    private void addOccupiedCells(boolean[][] occupied, int screen,
+//            ItemInfo item) {
+//        if (item.screen == screen) {
+//            for (int xx = item.cellX; xx < item.cellX + item.spanX; xx++) {
+//                for (int yy = item.cellY; yy < item.cellY + item.spanY; yy++) {
+//                    occupied[xx][yy] = true;
+//                }
+//            }
+//        }
+//    }
     
     /**
      * @return The current list of applications

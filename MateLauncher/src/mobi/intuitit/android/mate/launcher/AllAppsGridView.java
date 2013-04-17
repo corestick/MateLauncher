@@ -36,6 +36,7 @@ public class AllAppsGridView extends GridView implements AdapterView.OnItemClick
     private Paint mPaint;
     private int mTextureWidth;
     private int mTextureHeight;
+   
 
     public AllAppsGridView(Context context) {
         super(context);
@@ -126,4 +127,5 @@ public class AllAppsGridView extends GridView implements AdapterView.OnItemClick
     void setLauncher(Launcher launcher) {
         mLauncher = launcher;
     }
+    
 }

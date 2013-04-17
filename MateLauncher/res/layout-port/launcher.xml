@@ -56,7 +56,7 @@
             android:background="@drawable/handle"
 
             android:focusable="true"
-            android:clickable="true"
+            android:clickable="false"
 
             android:scaleType="center"
             android:src="@drawable/handle_icon"
@@ -80,7 +80,7 @@
             android:nextFocusRight="@id/content"
 
             android:verticalSpacing="10dip"
-            android:numColumns="4" />
+            android:numColumns="4" />            
 
     </SlidingDrawer>
 
@@ -97,6 +97,15 @@
         android:visibility="invisible"
 
         launcher:direction="horizontal" />
+    
+        <mobi.intuitit.android.mate.launcher.MobjectView
+           android:id="@+id/objectview"
+           android:layout_width="fill_parent"
+           android:layout_height="100dp"
+           launcher:texture="@drawable/pattern_carbon_fiber_dark"
+            android:verticalSpacing="10dip"
+            android:numColumns="4"
+            android:visibility="invisible"/>   
 
     <mobi.intuitit.android.mate.launcher.ScreenIndicator
         android:id="@+id/screen_indicator"
@@ -110,5 +119,7 @@
         android:layout="@layout/screen_switcher"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+    
+  
 
 </mobi.intuitit.android.mate.launcher.DragLayer>
