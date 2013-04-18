@@ -105,6 +105,7 @@
         android:layout_height="50dp"
         launcher:texture="@drawable/pattern_carbon_fiber_dark"
         launcher:direction="horizontal"
+        android:visibility="invisible"
         android:layout_gravity="center|bottom"  />
 
     <ViewStub

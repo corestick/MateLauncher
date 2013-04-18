@@ -638,8 +638,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDragLayer = (DragLayer) findViewById(R.id.drag_layer);
 		final DragLayer dragLayer = mDragLayer;
 		
-		mDockbar = (Dockbar) dragLayer.findViewById(R.id.dockbar);
-		mDockbar.setLauncher(this);	
+	
 
 		mWorkspace = (Workspace) dragLayer.findViewById(R.id.workspace);
 		final Workspace workspace = mWorkspace;
@@ -685,7 +684,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 		
-		
+		mDockbar = (Dockbar) dragLayer.findViewById(R.id.dockbar);
+		mDockbar.setLauncher(this);			
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -1341,7 +1341,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			showNotifications();
 			return true;
 		case MENU_OBJECT:
-			mDockbar.setVisibility(View.GONE);
+//			mDockbar.setVisibility(View.GONE);
+			mObjectView.setVisibility(View.GONE);
 			// showObject();
 			return true;
 		}
@@ -1798,7 +1799,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			ArrayList<LauncherAppWidgetInfo> appWidgets) {
 
 		final ApplicationsAdapter drawerAdapter = sModel
-				.getApplicationsAdapter();
+				.getApplicationsAdapter();		
 		if (shortcuts == null || appWidgets == null || drawerAdapter == null) {
 			if (LauncherModel.DEBUG_LOADERS)
 				d(LauncherModel.LOG_TAG, "  ------> a source is null");
@@ -1820,7 +1821,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					.setOnClickListener(new android.widget.Button.OnClickListener() {
 						public void onClick(View v) {
 							// finish();
-							mDockbar.setVisibility(View.VISIBLE);
+//							mDockbar.setVisibility(View.VISIBLE);
+							mObjectView.setVisibility(View.VISIBLE);
 						}
 					});
 
@@ -1948,8 +1950,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private void bindDrawer(Launcher.DesktopBinder binder,
 			ApplicationsAdapter drawerAdapter) {
 		mAllAppsGrid.setAdapter(drawerAdapter);
-
-		// µ¶¹Ù
 		mObjectView.setAdapter(drawerAdapter);
 		binder.startBindingAppWidgetsWhenIdle();
 	}
@@ -2649,7 +2649,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		private final ArrayList<ItemInfo> mShortcuts;
 		private final LinkedList<LauncherAppWidgetInfo> mAppWidgets;
-		private final ApplicationsAdapter mDrawerAdapter;
+		private final ApplicationsAdapter mDrawerAdapter;		
 		private final WeakReference<Launcher> mLauncher;
 
 		public boolean mTerminate = false;
@@ -2657,10 +2657,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		DesktopBinder(Launcher launcher, ArrayList<ItemInfo> shortcuts,
 				ArrayList<LauncherAppWidgetInfo> appWidgets,
 				ApplicationsAdapter drawerAdapter) {
+			
 
 			mLauncher = new WeakReference<Launcher>(launcher);
 			mShortcuts = shortcuts;
-			mDrawerAdapter = drawerAdapter;
+			mDrawerAdapter = drawerAdapter;			
 
 			// Sort widgets so active workspace is bound first
 			final int currentScreen = launcher.mWorkspace.getCurrentScreen();
@@ -2728,6 +2729,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 			case MESSAGE_BIND_DRAWER: {
 				launcher.bindDrawer(this, mDrawerAdapter);
+				
 				break;
 			}
 			case MESSAGE_BIND_APPWIDGETS: {

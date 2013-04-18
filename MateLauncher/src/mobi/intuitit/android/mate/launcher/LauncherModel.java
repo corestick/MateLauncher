@@ -69,7 +69,7 @@ public class LauncherModel {
     private HashMap<Long, FolderInfo> mFolders;
 
     private ArrayList<ApplicationInfo> mApplications;
-    private ApplicationsAdapter mApplicationsAdapter;
+    private ApplicationsAdapter mApplicationsAdapter;   
     private ApplicationsLoader mApplicationsLoader;
     private DesktopItemsLoader mDesktopItemsLoader;
     private Thread mApplicationsLoaderThread;
@@ -115,7 +115,7 @@ public class LauncherModel {
         if (DEBUG_LOADERS) d(LOG_TAG, "load applications");
 
         if (isLaunching && mApplicationsLoaded && !localeChanged) {
-            mApplicationsAdapter = new ApplicationsAdapter(launcher, mApplications);
+            mApplicationsAdapter = new ApplicationsAdapter(launcher, mApplications);            
             if (DEBUG_LOADERS) d(LOG_TAG, "  --> applications loaded, return");
             return false;
         }
@@ -129,6 +129,7 @@ public class LauncherModel {
         if (mApplicationsAdapter == null || isLaunching || localeChanged) {
             mApplications = new ArrayList<ApplicationInfo>(DEFAULT_APPLICATIONS_NUMBER);
             mApplicationsAdapter = new ApplicationsAdapter(launcher, mApplications);
+           
         }
 
         mApplicationsLoaded = false;
@@ -526,7 +527,7 @@ public class LauncherModel {
                 // Can be set to null on the UI thread by the unbind() method
                 // Do not access without checking for null first
                 final ApplicationsAdapter applicationList = mApplicationsAdapter;
-
+                
                 ChangeNotifier action = new ChangeNotifier(applicationList, true);
                 final HashMap<ComponentName, ApplicationInfo> appInfoCache = mAppInfoCache;
 
@@ -556,25 +557,26 @@ public class LauncherModel {
     }
 
     private static class ChangeNotifier implements Runnable {
-        private final ApplicationsAdapter mApplicationList;
+        private final ApplicationsAdapter mApplicationList;     
         private final ArrayList<ApplicationInfo> mBuffer;
 
         private boolean mFirst = true;
 
         ChangeNotifier(ApplicationsAdapter applicationList, boolean first) {
-            mApplicationList = applicationList;
+            mApplicationList = applicationList;           
             mFirst = first;
             mBuffer = new ArrayList<ApplicationInfo>(UI_NOTIFICATION_RATE);
         }
 
         public void run() {
             final ApplicationsAdapter applicationList = mApplicationList;
+           
             // Can be set to null on the UI thread by the unbind() method
             if (applicationList == null) return;
 
             if (mFirst) {
                 applicationList.setNotifyOnChange(false);
-                applicationList.clear();
+                applicationList.clear();                              
                 if (DEBUG_LOADERS) d(LOG_TAG, "  ----> cleared application list");
                 mFirst = false;
             }
@@ -585,6 +587,8 @@ public class LauncherModel {
             for (int i = 0; i < count; i++) {
                 applicationList.setNotifyOnChange(false);
                 applicationList.add(buffer.get(i));
+//                objectList.setNotifyOnChange(false);
+//                objectList.add(buffer.get(i));
             }
 
             buffer.clear();
@@ -1076,7 +1080,7 @@ public class LauncherModel {
     void unbind() {
         // Interrupt the applications loader before setting the adapter to null
         stopAndWaitForApplicationsLoader();
-        mApplicationsAdapter = null;
+        mApplicationsAdapter = null;        
         unbindAppDrawables(mApplications);
         unbindDrawables(mDesktopItems);
         unbindAppWidgetHostViews(mDesktopAppWidgets);
@@ -1180,7 +1184,7 @@ public class LauncherModel {
      */
     ApplicationsAdapter getApplicationsAdapter() {
         return mApplicationsAdapter;
-    }
+    }   
 
     /**
      * Add an item to the desktop
