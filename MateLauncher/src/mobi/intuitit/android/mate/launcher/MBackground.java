@@ -94,6 +94,11 @@ public class MBackground {
 		mPath.moveTo(mWidth/2, mHeight/2);
 		mPath.lineTo(mWidth, mWallPoint);
 		
+		mPath.moveTo(0, 0);
+		mPath.lineTo(0, mHeight);
+		mPath.moveTo(mWidth, 0);
+		mPath.lineTo(mWidth, mHeight);
+		
 		return mPath;
 	}
 	
