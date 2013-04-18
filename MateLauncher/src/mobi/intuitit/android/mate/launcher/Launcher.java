@@ -31,6 +31,7 @@ import java.util.LinkedList;
 
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
+import mobi.intuitit.android.content.LauncherIntent.Action;
 import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -61,6 +62,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -727,7 +729,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon,
 		// null,null);
 		// favorite.setText(info.title);
-		if ((info.title).equals("»ﬁ¥Î¿¸»≠")) {
+		if ((info.title).equals("Phone")) {
 			favorite.setImageResource(R.drawable.call);
 		} else if ((info.title).equals("¿Ωæ«")) {
 			favorite.setImageResource(R.drawable.audio);
@@ -1344,6 +1346,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			return true;
 		case MENU_HOMEPAGE:
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.setClassName("com.LBL.launcherhome", "com.LBL.launcherhome.OwnerHome");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			startActivity(intent);
 			return true;
 		}
 
