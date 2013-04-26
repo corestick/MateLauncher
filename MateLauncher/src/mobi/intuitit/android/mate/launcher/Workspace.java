@@ -442,10 +442,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			int countX = group.getCountX();
 			int countY = group.getCountY();
 			boolean occupied[][] = new boolean[countX][countY];
-//			Launcher.getModel().findAllOccupiedCells(occupied, countX, countY,
-//					mCurrentScreen);
-//			return group.findAllVacantCellsFromOccupied(occupied, countX,
-//					countY);
+			// Launcher.getModel().findAllOccupiedCells(occupied, countX,
+			// countY,
+			// mCurrentScreen);
+			// return group.findAllVacantCellsFromOccupied(occupied, countX,
+			// countY);
 		}
 		return null;
 	}
@@ -987,7 +988,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			LayoutType.CellInfo cellInfo, boolean insertAtFirst) {
 		final LayoutType layout = (LayoutType) getChildAt(cellInfo.screen);
 		final int[] result = new int[2];
-		
+
 		onDropExternal(result[0], result[1], info, layout, insertAtFirst);
 	}
 
@@ -1103,8 +1104,8 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	}
 
 	/**
-	 * Return the current {@link CellLayout||MLayout}, correctly picking the destination
-	 * screen while a scroll is in progress.
+	 * Return the current {@link CellLayout||MLayout}, correctly picking the
+	 * destination screen while a scroll is in progress.
 	 */
 	private LayoutType getCurrentDropLayout() {
 		int index = mScroller.isFinished() ? mCurrentScreen : mNextScreen;
@@ -1117,7 +1118,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	public boolean acceptDrop(DragSource source, int x, int y, int xOffset,
 			int yOffset, Object dragInfo) {
 		final LayoutType layout = getCurrentDropLayout();
-		
+
 		if (layout instanceof MLayout) {
 			return true;
 		} else {
@@ -1129,7 +1130,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				final View ignoreView = cellInfo == null ? null : cellInfo.cell;
 				mVacantCache = layout.findAllVacantCells(null, ignoreView);
 			}
-			
+
 			return mVacantCache.findCellForSpan(mTempEstimate, spanX, spanY,
 					false);
 		}

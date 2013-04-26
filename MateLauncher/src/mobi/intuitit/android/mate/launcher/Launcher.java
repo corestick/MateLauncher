@@ -210,7 +210,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private Bundle mSavedInstanceState;
 
 	private DesktopBinder mBinder;
-	
+
 	private AsyncTask<Integer, Integer, Integer> Task;
 
 	@Override
@@ -232,7 +232,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		setContentView(R.layout.launcher);
 		setupViews();
-		
+
 		registerIntentReceivers();
 		registerContentObservers();
 
@@ -360,13 +360,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private void setWallpaperDimension() {
 		WallpaperManager wpm = (WallpaperManager) getSystemService(WALLPAPER_SERVICE);
-
-		try {
-			wpm.clear();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		Display display = getWindowManager().getDefaultDisplay();
 		boolean isPortrait = display.getWidth() < display.getHeight();
@@ -656,8 +649,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mHandleView.setLauncher(this);
 		mHandleIcon = (TransitionDrawable) mHandleView.getDrawable();
 		mHandleIcon.setCrossFadeEnabled(true);
-		
-		
 
 		drawer.lock();
 		final DrawerManager drawerManager = new DrawerManager();
@@ -677,16 +668,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDeleteZone.setLauncher(this);
 		mDeleteZone.setDragController(dragLayer);
 		mDeleteZone.setHandle(mHandleView);
-		
-		mObjectView = (MobjectView)dragLayer.findViewById(R.id.objectview);
+
+		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
-		
-		
 
 	}
 
@@ -1314,7 +1303,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// We can't trust the view state here since views we may not be done
 		// binding.
 		// Get the vacancy state from the model instead.
-		if(mWorkspace.getChildAt(mWorkspace.getCurrentScreen()) instanceof CellLayout)
+		if (mWorkspace.getChildAt(mWorkspace.getCurrentScreen()) instanceof CellLayout)
 			mMenuAddInfo = mWorkspace.findAllVacantCellsFromModel();
 		menu.setGroupEnabled(MENU_GROUP_ADD, mMenuAddInfo != null
 				&& mMenuAddInfo.valid);
@@ -1339,7 +1328,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return true;
 		case MENU_OBJECT:
 			mObjectView.setVisibility(View.GONE);
-//			showObject();
+			// showObject();
 			return true;
 		}
 
@@ -1945,7 +1934,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private void bindDrawer(Launcher.DesktopBinder binder,
 			ApplicationsAdapter drawerAdapter) {
 		mAllAppsGrid.setAdapter(drawerAdapter);
-		
+
 		// µ¶¹Ù
 		mObjectView.setAdapter(drawerAdapter);
 		binder.startBindingAppWidgetsWhenIdle();
@@ -2857,11 +2846,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public void showObject() {
 		if (mScreenLayout == null) {
-//			mAllAppsGrid.setVisibility(View.VISIBLE);
-//			mObjectView = new MobjectView(findViewById(R.id.objectview));
-			
+			// mAllAppsGrid.setVisibility(View.VISIBLE);
+			// mObjectView = new MobjectView(findViewById(R.id.objectview));
+
 			// mScreenLayout.setScreenChangeListener(mScreenChangeListener);
-			
+
 		}
 	}
 
@@ -2873,18 +2862,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		protected void onPreExecute() {
-			Toast.makeText(Launcher.this, "Mobject",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(Launcher.this, "Mobject", Toast.LENGTH_SHORT).show();
 		}
 
 		protected void onPostExecute(Integer result) {
 		}
-		protected void onCancelled() {
-			
-		}		
 
+		protected void onCancelled() {
+
+		}
 	}
-	
+
 	void closeObjectView() {
 		mObjectView.setVisibility(View.GONE);
 	}
