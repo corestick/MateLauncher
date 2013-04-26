@@ -214,8 +214,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private DesktopBinder mBinder;
 
-	private AsyncTask<Integer, Integer, Integer> Task;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -1347,7 +1345,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return true;
 		case MENU_HOMEPAGE:
 			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.setClassName("com.LBL.launcherhome", "com.LBL.launcherhome.OwnerHome");
+			intent.setClassName("com.LBL.launcherhome",
+					"com.LBL.launcherhome.OwnerHome");
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
 			startActivity(intent);
