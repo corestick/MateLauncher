@@ -192,10 +192,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private final int[] mCellCoordinates = new int[2];
 	private FolderInfo mFolderInfo;
 
-	private SlidingDrawer mDrawer;
-	private TransitionDrawable mHandleIcon;
-	private HandleView mHandleView;
-	private AllAppsGridView mAllAppsGrid;
+//	private SlidingDrawer mDrawer;
+//	private TransitionDrawable mHandleIcon;
+//	private HandleView mHandleView;
+//	private AllAppsGridView mAllAppsGrid;
 
 	private boolean mDesktopLocked = true;
 	private Bundle mSavedState;
@@ -473,7 +473,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	@Override
 	protected void onPause() {
 		super.onPause();
-		closeDrawer(false);
+//		closeDrawer(false);
 	}
 
 	@Override
@@ -629,6 +629,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ScreenLayout mScreenLayout;
 	private DeleteZone mDeleteZone;
 	private MobjectView mObjectView;
+	private Dockbar mDockbar;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -644,30 +645,35 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mIndicator = (ScreenIndicator) dragLayer
 				.findViewById(R.id.screen_indicator);
 		mIndicator.setWorkspace(workspace);
+		
+		
 
-		mDrawer = (SlidingDrawer) dragLayer.findViewById(R.id.drawer);
-		final SlidingDrawer drawer = mDrawer;
-
-		mAllAppsGrid = (AllAppsGridView) drawer.getContent();
-		final AllAppsGridView grid = mAllAppsGrid;
+//		mDrawer = (SlidingDrawer) dragLayer.findViewById(R.id.drawer);
+//		final SlidingDrawer drawer = mDrawer;
+//
+//		mAllAppsGrid = (AllAppsGridView) drawer.getContent();
+//		final AllAppsGridView grid = mAllAppsGrid;
 
 		mDeleteZone = (DeleteZone) dragLayer.findViewById(R.id.delete_zone);
 
-		mHandleView = (HandleView) drawer.findViewById(R.id.all_apps);
-		mHandleView.setLauncher(this);
-		mHandleIcon = (TransitionDrawable) mHandleView.getDrawable();
-		mHandleIcon.setCrossFadeEnabled(true);
+//		mHandleView = (HandleView) dragLayer.findViewById(R.id.all_apps);
+//		mHandleView.setLauncher(this);
+//		mHandleIcon = (TransitionDrawable) mHandleView.getDrawable();
+//		mHandleIcon.setCrossFadeEnabled(true);
 
-		drawer.lock();
+//		drawer.lock();
 		final DrawerManager drawerManager = new DrawerManager();
 
-		drawer.setOnDrawerOpenListener(drawerManager);
-		drawer.setOnDrawerCloseListener(drawerManager);
-		drawer.setOnDrawerScrollListener(drawerManager);
+//		drawer.setOnDrawerOpenListener(drawerManager);
+//		drawer.setOnDrawerCloseListener(drawerManager);
+//		drawer.setOnDrawerScrollListener(drawerManager);
 
-		grid.setTextFilterEnabled(false);
-		grid.setDragger(dragLayer);
-		grid.setLauncher(this);
+//		grid.setTextFilterEnabled(false);
+//		grid.setDragger(dragLayer);
+//		grid.setLauncher(this);
+		
+		mDockbar = (Dockbar) dragLayer.findViewById(R.id.dockbar);
+		mDockbar.setLauncher(this);		
 
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
@@ -675,13 +681,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mDeleteZone.setLauncher(this);
 		mDeleteZone.setDragController(dragLayer);
-		mDeleteZone.setHandle(mHandleView);
+		mDeleteZone.setHandle(mDockbar);
 
 		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
-
-		dragLayer.setIgnoredDropTarget(grid);
+		
+		
+		
+//		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
 
@@ -1011,7 +1019,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mWorkspace.moveToDefaultScreen();
 				}
 
-				closeDrawer();
+//				closeDrawer();
 
 				final View v = getWindow().peekDecorView();
 				if (v != null && v.getWindowToken() != null) {
@@ -1019,7 +1027,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				}
 			} else {
-				closeDrawer(false);
+//				closeDrawer(false);
 			}
 		}
 	}
@@ -1117,9 +1125,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		// When the drawer is opened and we are saving the state because of a
 		// configuration change
-		if (mDrawer.isOpened() && isConfigurationChange) {
-			outState.putBoolean(RUNTIME_STATE_ALL_APPS_FOLDER, true);
-		}
+//		if (mDrawer.isOpened() && isConfigurationChange) {
+//			outState.putBoolean(RUNTIME_STATE_ALL_APPS_FOLDER, true);
+//		}
 
 		if (mAddItemCellInfo != null && mAddItemCellInfo.valid
 				&& mWaitingForResult) {
@@ -1177,8 +1185,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		TextKeyListener.getInstance().release();
 
-		mAllAppsGrid.clearTextFilter();
-		mAllAppsGrid.setAdapter(null);
+//		mAllAppsGrid.clearTextFilter();
+//		mAllAppsGrid.setAdapter(null);
 		sModel.unbind();
 		sModel.abortLoaders();
 		mWorkspace.unbindWidgetScrollableViews();
@@ -1202,7 +1210,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public void startSearch(String initialQuery, boolean selectInitialQuery,
 			Bundle appSearchData, boolean globalSearch) {
 
-		closeDrawer(false);
+//		closeDrawer(false);
 
 		// Slide the search widget to the top, if it's on the current screen,
 		// otherwise show the search dialog immediately.
@@ -1716,10 +1724,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case KeyEvent.KEYCODE_BACK:
 				if (!event.isCanceled()) {
 					mWorkspace.dispatchKeyEvent(event);
-					if (mDrawer.isOpened()) {
-						closeDrawer();
-					} else
-						closeFolder();
+//					if (mDrawer.isOpened()) {
+//						closeDrawer();
+//					} else
+//						closeFolder();
 
 					if (mScreenLayout != null && mScreenLayout.isShown())
 						mScreenLayout.fadeOut();
@@ -1733,23 +1741,23 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return super.dispatchKeyEvent(event);
 	}
 
-	private void closeDrawer() {
-		closeDrawer(true);
-	}
+//	private void closeDrawer() {
+//		closeDrawer(true);
+//	}
 
-	private void closeDrawer(boolean animated) {
-		if (mDrawer.isOpened()) {
-			if (animated) {
-				mDrawer.animateClose();
-			} else {
-				mDrawer.close();
-			}
-			if (mDrawer.hasFocus()) {
-				mWorkspace.getChildAt(mWorkspace.getCurrentScreen())
-						.requestFocus();
-			}
-		}
-	}
+//	private void closeDrawer(boolean animated) {
+//		if (mDrawer.isOpened()) {
+//			if (animated) {
+//				mDrawer.animateClose();
+//			} else {
+//				mDrawer.close();
+//			}
+//			if (mDrawer.hasFocus()) {
+//				mWorkspace.getChildAt(mWorkspace.getCurrentScreen())
+//						.requestFocus();
+//			}
+//		}
+//	}
 
 	private boolean closeFolder() {
 		Folder folder = mWorkspace.getOpenFolder();
@@ -1775,7 +1783,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 */
 	private void onFavoritesChanged() {
 		mDesktopLocked = true;
-		mDrawer.lock();
+//		mDrawer.lock();
 		sModel.loadUserItems(false, this, false, false);
 	}
 
@@ -1933,7 +1941,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			final boolean allApps = mSavedState.getBoolean(
 					RUNTIME_STATE_ALL_APPS_FOLDER, false);
 			if (allApps) {
-				mDrawer.open();
+//				mDrawer.open();
 			}
 
 			mSavedState = null;
@@ -1944,17 +1952,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			mSavedInstanceState = null;
 		}
 
-		if (mDrawer.isOpened() && !mDrawer.hasFocus()) {
-			mDrawer.requestFocus();
-		}
+//		if (mDrawer.isOpened() && !mDrawer.hasFocus()) {
+//			mDrawer.requestFocus();
+//		}
 
 		mDesktopLocked = false;
-		mDrawer.unlock();
+//		mDrawer.unlock();
 	}
 
 	private void bindDrawer(Launcher.DesktopBinder binder,
 			ApplicationsAdapter drawerAdapter) {
-		mAllAppsGrid.setAdapter(drawerAdapter);
+//		mAllAppsGrid.setAdapter(drawerAdapter);
 
 		// 독바
 		mObjectView.setAdapter(drawerAdapter);
@@ -2210,33 +2218,33 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return sModel;
 	}
 
-	void closeAllApplications() {
-		mDrawer.close();
-	}
+//	void closeAllApplications() {
+//		mDrawer.close();
+//	}
 
-	View getDrawerHandle() {
-		return mHandleView;
-	}
+//	View getDrawerHandle() {
+//		return mHandleView;
+//	}
 
-	boolean isDrawerDown() {
-		return !mDrawer.isMoving() && !mDrawer.isOpened();
-	}
-
-	boolean isDrawerUp() {
-		return mDrawer.isOpened() && !mDrawer.isMoving();
-	}
-
-	boolean isDrawerMoving() {
-		return mDrawer.isMoving();
-	}
+//	boolean isDrawerDown() {
+//		return !mDrawer.isMoving() && !mDrawer.isOpened();
+//	}
+//
+//	boolean isDrawerUp() {
+//		return mDrawer.isOpened() && !mDrawer.isMoving();
+//	}
+//
+//	boolean isDrawerMoving() {
+//		return mDrawer.isMoving();
+//	}
 
 	Workspace getWorkspace() {
 		return mWorkspace;
 	}
 
-	GridView getApplicationsGrid() {
-		return mAllAppsGrid;
-	}
+//	GridView getApplicationsGrid() {
+//		return mAllAppsGrid;
+//	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -2347,7 +2355,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				LauncherModel.updateItemInDatabase(Launcher.this, mFolderInfo);
 
 				if (mDesktopLocked) {
-					mDrawer.lock();
+//					mDrawer.lock();
 					sModel.loadUserItems(false, Launcher.this, false, false);
 				} else {
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
@@ -2357,7 +2365,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
-						mDrawer.lock();
+//						mDrawer.lock();
 						sModel.loadUserItems(false, Launcher.this, false, false);
 					}
 				}
@@ -2600,10 +2608,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public void onDrawerOpened() {
 			if (!mOpen) {
-				mHandleIcon.reverseTransition(150);
+//				mHandleIcon.reverseTransition(150);
 				// allgridview 호출
 				final Rect bounds = mWorkspace.mDrawerBounds;
-				offsetBoundsToDragLayer(bounds, mAllAppsGrid);
+//				offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 
 				mOpen = true;
 			}
@@ -2620,13 +2628,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public void onDrawerClosed() {
 			if (mOpen) {
-				mHandleIcon.reverseTransition(150);
+//				mHandleIcon.reverseTransition(150);
 				mWorkspace.mDrawerBounds.setEmpty();
 				mOpen = false;
 			}
 
-			mAllAppsGrid.setSelection(0);
-			mAllAppsGrid.clearTextFilter();
+//			mAllAppsGrid.setSelection(0);
+//			mAllAppsGrid.clearTextFilter();
 		}
 
 		public void onScrollStarted() {
@@ -2634,8 +2642,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				android.os.Debug.startMethodTracing("/sdcard/launcher-drawer");
 			}
 
-			mWorkspace.mDrawerContentWidth = mAllAppsGrid.getWidth();
-			mWorkspace.mDrawerContentHeight = mAllAppsGrid.getHeight();
+//			mWorkspace.mDrawerContentWidth = mAllAppsGrid.getWidth();
+//			mWorkspace.mDrawerContentHeight = mAllAppsGrid.getHeight();
 		}
 
 		public void onScrollEnded() {

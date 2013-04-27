@@ -223,7 +223,8 @@ public class DeleteZone extends ImageView implements DropTarget, DragController.
             mDragLayer.setDeleteRegion(mRegion);
             mTransition.resetTransition();
             startAnimation(mInAnimation);
-            mHandle.startAnimation(mHandleOutAnimation);
+//            mHandle.startAnimation(mHandleOutAnimation);
+            mHandle.setVisibility(View.GONE);
             setVisibility(VISIBLE);
         }
         sDragging = true;
@@ -234,7 +235,8 @@ public class DeleteZone extends ImageView implements DropTarget, DragController.
             mTrashMode = false;
             mDragLayer.setDeleteRegion(null);
             startAnimation(mOutAnimation);
-            mHandle.startAnimation(mHandleInAnimation);
+//            mHandle.startAnimation(mHandleInAnimation);
+            mHandle.setVisibility(View.VISIBLE);
             setVisibility(GONE);
         }
         sDragging = false;
