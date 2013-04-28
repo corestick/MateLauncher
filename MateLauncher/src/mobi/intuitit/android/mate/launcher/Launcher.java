@@ -59,6 +59,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -88,6 +89,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -195,7 +197,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 //	private SlidingDrawer mDrawer;
 //	private TransitionDrawable mHandleIcon;
 //	private HandleView mHandleView;
-//	private AllAppsGridView mAllAppsGrid;
+	private AllAppsGridView mAllAppsGrid;
 
 	private boolean mDesktopLocked = true;
 	private Bundle mSavedState;
@@ -474,6 +476,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	protected void onPause() {
 		super.onPause();
 //		closeDrawer(false);
+		closeGridView(false);
 	}
 
 	@Override
@@ -630,6 +633,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private DeleteZone mDeleteZone;
 	private MobjectView mObjectView;
 	private Dockbar mDockbar;
+	private Button mDockButton1;
+	private Button mDockButton2;
+	private Button mDockButton3; 
+	private Button mDockButton4; 
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -662,18 +669,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 //		mHandleIcon.setCrossFadeEnabled(true);
 
 //		drawer.lock();
-		final DrawerManager drawerManager = new DrawerManager();
+//		final DrawerManager drawerManager = new DrawerManager();
 
 //		drawer.setOnDrawerOpenListener(drawerManager);
 //		drawer.setOnDrawerCloseListener(drawerManager);
 //		drawer.setOnDrawerScrollListener(drawerManager);
-
-//		grid.setTextFilterEnabled(false);
-//		grid.setDragger(dragLayer);
-//		grid.setLauncher(this);
+		
+		mAllAppsGrid = (AllAppsGridView) dragLayer.findViewById(R.id.content);
+		final AllAppsGridView grid = mAllAppsGrid;
+		grid.setTextFilterEnabled(false);
+		grid.setDragger(dragLayer);
+		grid.setLauncher(this);
 		
 		mDockbar = (Dockbar) dragLayer.findViewById(R.id.dockbar);
-		mDockbar.setLauncher(this);		
+		mDockbar.setLauncher(this);
+		DockbarView();
+	
 
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
@@ -694,6 +705,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		dragLayer.setDragListener(mDeleteZone);
 
 	}
+
+	
 
 	/**
 	 * Creates a view representing a shortcut.
@@ -1019,7 +1032,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mWorkspace.moveToDefaultScreen();
 				}
 
+				
 //				closeDrawer();
+				closeGridView(true);
 
 				final View v = getWindow().peekDecorView();
 				if (v != null && v.getWindowToken() != null) {
@@ -1028,6 +1043,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				}
 			} else {
 //				closeDrawer(false);
+				closeGridView(false);
 			}
 		}
 	}
@@ -1185,8 +1201,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		TextKeyListener.getInstance().release();
 
-//		mAllAppsGrid.clearTextFilter();
-//		mAllAppsGrid.setAdapter(null);
+		mAllAppsGrid.clearTextFilter();
+		mAllAppsGrid.setAdapter(null);
 		sModel.unbind();
 		sModel.abortLoaders();
 		mWorkspace.unbindWidgetScrollableViews();
@@ -1211,6 +1227,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Bundle appSearchData, boolean globalSearch) {
 
 //		closeDrawer(false);
+		closeGridView(false);
 
 		// Slide the search widget to the top, if it's on the current screen,
 		// otherwise show the search dialog immediately.
@@ -1724,8 +1741,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case KeyEvent.KEYCODE_BACK:
 				if (!event.isCanceled()) {
 					mWorkspace.dispatchKeyEvent(event);
-//					if (mDrawer.isOpened()) {
-//						closeDrawer();
+					if (mAllAppsGrid.getVisibility()==View.VISIBLE) {
+						closeGridView(true);
+					}
 //					} else
 //						closeFolder();
 
@@ -1759,6 +1777,21 @@ public final class Launcher extends Activity implements View.OnClickListener,
 //		}
 //	}
 
+	private void closeGridView(boolean animated){
+		if (mAllAppsGrid.getVisibility()==View.VISIBLE) {
+			if (animated) {
+//				mAllAppsGrid.animateClose();
+				
+			} else {
+//				mAllAppsGrid.close();
+			}
+			if (mAllAppsGrid.hasFocus()) {
+				mWorkspace.getChildAt(mWorkspace.getCurrentScreen())
+						.requestFocus();
+			}
+		}		
+		mAllAppsGrid.setVisibility(View.GONE);
+	}
 	private boolean closeFolder() {
 		Folder folder = mWorkspace.getOpenFolder();
 		if (folder != null) {
@@ -1962,10 +1995,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private void bindDrawer(Launcher.DesktopBinder binder,
 			ApplicationsAdapter drawerAdapter) {
-//		mAllAppsGrid.setAdapter(drawerAdapter);
+		mAllAppsGrid.setAdapter(drawerAdapter);
 
 		// µ¶¹Ù
-		mObjectView.setAdapter(drawerAdapter);
+		mObjectView.setAdapter(drawerAdapter);		
 		binder.startBindingAppWidgetsWhenIdle();
 	}
 
@@ -2083,6 +2116,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The view representing the clicked shortcut.
 	 */
 	public void onClick(View v) {
+		if(v.equals(mDockButton4)){
+			mAllAppsGrid.setVisibility(View.VISIBLE);
+			return;
+		}		
 		Object tag = v.getTag();
 		if (tag instanceof ApplicationInfo) {
 			// Open shortcut
@@ -2218,9 +2255,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return sModel;
 	}
 
-//	void closeAllApplications() {
-//		mDrawer.close();
-//	}
+	void closeAllApplications() {
+		closeGridView(true);
+	}
 
 //	View getDrawerHandle() {
 //		return mHandleView;
@@ -2242,9 +2279,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return mWorkspace;
 	}
 
-//	GridView getApplicationsGrid() {
-//		return mAllAppsGrid;
-//	}
+	GridView getApplicationsGrid() {
+		return mAllAppsGrid;
+	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -2875,5 +2912,23 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	void closeObjectView() {
 		mObjectView.setVisibility(View.GONE);
+	}
+	
+	private void DockbarView() {
+		mDockbar.setBackgroundColor(Color.GRAY);
+		mDockButton1 = new Button(this);
+		mDockButton2 = new Button(this);
+		mDockButton3 = new Button(this);
+		mDockButton4 = new Button(this);
+		
+		mDockButton4.setTextSize(10);
+		mDockButton4.setText("Grid");
+		
+		mDockbar.addView(mDockButton1,100,200);		
+		mDockbar.addView(mDockButton2,100,200);
+		mDockbar.addView(mDockButton3,100,200);
+		mDockbar.addView(mDockButton4,100,200);
+		
+		mDockButton4.setOnClickListener(this);
 	}
 }
