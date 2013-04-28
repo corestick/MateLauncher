@@ -42,7 +42,7 @@
         android:id="@+id/dockbar"
         android:layout_width="fill_parent"
         android:layout_height="56dip"
-        android:layout_gravity="bottom|center_horizontal" />
+        android:layout_gravity="bottom" />
 
     <mobi.intuitit.android.mate.launcher.AllAppsGridView
         android:id="@id/content"
@@ -80,7 +80,7 @@
         android:id="@+id/screen_indicator"
         android:layout_width="fill_parent"
         android:layout_height="3dp"
-        android:layout_gravity="center|bottom" />
+        android:layout_gravity="center|top" />
 
     <ViewStub
         android:id="@+id/stub_screen_switcher"
