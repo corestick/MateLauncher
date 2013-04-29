@@ -3,16 +3,12 @@ package mobi.intuitit.android.mate.launcher;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -26,6 +22,9 @@ public class MLayout extends LayoutType {
 	private final CellInfo mCellInfo = new CellInfo();
 
 	int[] mCellXY = new int[2];
+	
+	int mFlooringRes;
+	int mWallpaperRes;
 
 	public MLayout(Context context) {
 		this(context, null);
@@ -41,6 +40,10 @@ public class MLayout extends LayoutType {
 				R.styleable.CellLayout, defStyle, 0);
 
 		a.recycle();
+		
+		mFlooringRes = MImageList.getInstance().getFlooring("1");
+		mWallpaperRes = MImageList.getInstance().getWallpaper("1");
+		
 		setAlwaysDrawnWithCacheEnabled(false);
 	}
 
@@ -392,12 +395,12 @@ public class MLayout extends LayoutType {
 		MBackground mBack = new MBackground(canvas.getWidth(), canvas.getHeight());
 		
 		//벽지 그리기
-		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(R.drawable.wall_01));
+		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(mWallpaperRes));
 		canvas.drawPath(mBack.getLeftPath(), mBack.getPaint());
 		canvas.drawPath(mBack.getRightPath(), mBack.getPaint());
 		
 		//바닥 그리기
-		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(R.drawable.flooring_01));
+		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(mFlooringRes));
 		canvas.drawPath(mBack.getBottomPath(), mBack.getPaint());
 		
 		//테투리 그리기

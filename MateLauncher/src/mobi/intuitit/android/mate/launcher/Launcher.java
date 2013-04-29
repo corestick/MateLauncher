@@ -719,17 +719,20 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon,
 		// null,null);
 		// favorite.setText(info.title);
-		if ((info.title).equals("ÈÞ´ëÀüÈ­")) {
-			favorite.setImageResource(R.drawable.call);
-		} else if ((info.title).equals("À½¾Ç")) {
-			favorite.setImageResource(R.drawable.audio);
-		} else if ((info.title).equals("°¶·¯¸®")) {
-			favorite.setImageResource(R.drawable.avatar);
-		} else if ((info.title).equals("°Ë»ö")) {
-			favorite.setImageResource(R.drawable.tv);
-		} else {
-			favorite.setImageDrawable(info.icon);
-		}
+		
+//		
+//		if ((info.title).equals("ÈÞ´ëÀüÈ­")) {
+//			favorite.setImageResource(R.drawable.call);
+//		} else if ((info.title).equals("À½¾Ç")) {
+//			favorite.setImageResource(R.drawable.audio);
+//		} else if ((info.title).equals("°¶·¯¸®")) {
+//			favorite.setImageResource(R.drawable.avatar);
+//		} else if ((info.title).equals("°Ë»ö")) {
+//			favorite.setImageResource(R.drawable.tv);
+//		} else {
+//			favorite.setImageDrawable(info.icon);
+//		}
+		
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -1291,7 +1294,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				.setIcon(android.R.drawable.ic_menu_preferences)
 				.setAlphabeticShortcut('P').setIntent(settings);
 
-		menu.add(0, MENU_OBJECT, 0, "Object").setIcon(R.drawable.call);
+//		menu.add(0, MENU_OBJECT, 0, "Object").setIcon(R.drawable.call);
 
 		return true;
 	}
