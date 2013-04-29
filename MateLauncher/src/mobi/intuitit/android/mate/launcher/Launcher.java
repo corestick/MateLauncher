@@ -1786,10 +1786,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}			
 		mWorkspace.mDrawerBounds.setEmpty();
-		mAllAppsGrid.setSelection(-1);
-		mAllAppsGrid.setSelected(false);
+		mAllAppsGrid.setSelection(0);		
 		mAllAppsGrid.clearTextFilter();	
-		mAllAppsGrid.setVisibility(View.INVISIBLE);
+		mAllAppsGrid.setVisibility(View.GONE);
 		Log.e("ASDASD", "-->>" + mAllAppsGrid.getSelectedItemPosition());
 	}
 
@@ -2132,6 +2131,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (v.equals(mDockButton4)) {		
 			final Rect bounds = mWorkspace.mDrawerBounds;
 			offsetBoundsToDragLayer(bounds, mAllAppsGrid);
+			mAllAppsGrid.setFocusable(true);
 			mAllAppsGrid.setVisibility(View.VISIBLE);
 			return;
 		}
