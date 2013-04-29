@@ -699,7 +699,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
-		// dragLayer.setIgnoredDropTarget(grid);
+		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
 
@@ -1786,9 +1786,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}			
 		mWorkspace.mDrawerBounds.setEmpty();
-		mAllAppsGrid.setSelection(1);
+		mAllAppsGrid.setSelection(-1);
+		mAllAppsGrid.setSelected(false);
 		mAllAppsGrid.clearTextFilter();	
 		mAllAppsGrid.setVisibility(View.INVISIBLE);
+		Log.e("ASDASD", "-->>" + mAllAppsGrid.getSelectedItemPosition());
 	}
 
 	private boolean closeFolder() {
