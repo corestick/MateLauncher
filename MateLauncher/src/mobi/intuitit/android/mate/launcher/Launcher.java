@@ -1739,9 +1739,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mWorkspace.dispatchKeyEvent(event);
 					if (mAllAppsGrid.getVisibility() == View.VISIBLE) {
 						closeGridView(true);
-					}
-					// } else
-					// closeFolder();
+					} else
+						closeFolder();
 
 					if (mScreenLayout != null && mScreenLayout.isShown())
 						mScreenLayout.fadeOut();
@@ -1781,12 +1780,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else {
 				// mAllAppsGrid.close();
 			}
-			if (mAllAppsGrid.hasFocus()) {
+			if (true/*mAllAppsGrid.hasFocus()*/) {				
 				mWorkspace.getChildAt(mWorkspace.getCurrentScreen())
 						.requestFocus();
 			}
-		}
-		mAllAppsGrid.setVisibility(View.GONE);
+		}			
+		mWorkspace.mDrawerBounds.setEmpty();
+		mAllAppsGrid.setSelection(1);
+		mAllAppsGrid.clearTextFilter();	
+		mAllAppsGrid.setVisibility(View.INVISIBLE);
 	}
 
 	private boolean closeFolder() {
@@ -2125,7 +2127,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Toast.makeText(this, "b3", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (v.equals(mDockButton4)) {
+		if (v.equals(mDockButton4)) {		
+			final Rect bounds = mWorkspace.mDrawerBounds;
+			offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 			mAllAppsGrid.setVisibility(View.VISIBLE);
 			return;
 		}
@@ -2663,6 +2667,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}
 
+		final Rect bounds = mWorkspace.mDrawerBounds;
+
+		// offsetBoundsToDragLayer(bounds, mAllAppsGrid);
+
 		private void offsetBoundsToDragLayer(Rect bounds, View view) {
 			view.getDrawingRect(bounds);
 
@@ -2925,34 +2933,43 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private void DockbarView() {
 		mDockbar.setBackgroundColor(Color.GRAY);
-//		mDockbar.removeAllViews();
+		// mDockbar.removeAllViews();
 		mDockButton1 = new Button(this);
 		mDockButton2 = new Button(this);
 		mDockButton3 = new Button(this);
-		mDockButton4 = new TextView(this);		
+		mDockButton4 = new TextView(this);
 
 		mDockButton1.setText("button1");
 		mDockButton2.setText("button2");
 		mDockButton3.setText("button3");
-		
-		
+
 		mDockButton4.setLayoutParams(new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.FILL_PARENT, 0.0F));
 		mDockButton4.setTextColor(Color.RED);
 		mDockButton4.setTextSize(20);
 		mDockButton4.setGravity(Gravity.CENTER);
-		mDockButton4.setText("grid");		
-//		mDockButton4.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.call, 0, 0);
+		mDockButton4.setText("grid");
+		// mDockButton4.setCompoundDrawablesWithIntrinsicBounds(0,
+		// R.drawable.call, 0, 0);
 
 		mDockbar.addView(mDockButton1, 100, 56);
 		mDockbar.addView(mDockButton2, 100, 56);
-		mDockbar.addView(mDockButton3, 100, 56);		
+		mDockbar.addView(mDockButton3, 100, 56);
 		mDockbar.addView(mDockButton4, 100, 56);
 
 		mDockButton1.setOnClickListener(this);
 		mDockButton2.setOnClickListener(this);
 		mDockButton3.setOnClickListener(this);
 		mDockButton4.setOnClickListener(this);
+	}
+
+	private void offsetBoundsToDragLayer(Rect bounds, View view) {
+		view.getDrawingRect(bounds);
+
+		while (view != mDragLayer) {
+			bounds.offset(view.getLeft(), view.getTop());
+			view = (View) view.getParent();
+		}
 	}
 }
