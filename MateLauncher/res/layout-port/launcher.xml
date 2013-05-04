@@ -88,13 +88,9 @@
         android:layout_height="fill_parent"
         android:inflatedId="@+id/screen_switcher"
         android:layout="@layout/screen_switcher" />
-
-      <mobi.intuitit.android.mate.launcher.SpeechBubbleView
-        android:id="@+id/speech_bubble"
-        android:layout_width="fill_parent"
-        android:layout_height="49dip"
-        android:layout_gravity="top"
-        android:visibility="visible"/>
     
+    <include
+            android:id="@+id/speechbubbleview"
+            layout="@layout/speechbubbleview" />
 
 </mobi.intuitit.android.mate.launcher.DragLayer>

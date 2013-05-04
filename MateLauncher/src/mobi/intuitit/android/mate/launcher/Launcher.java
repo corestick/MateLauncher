@@ -74,6 +74,7 @@ import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.TextKeyListener;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
@@ -634,6 +635,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private MobjectView mObjectView;
 	private Dockbar mDockbar;
 	private SpeechBubbleView mSpeechBubbleview;
+	private SpeechBubbleView mSpeechBubbleview2;
 	private Button mDockButton1;
 	private Button mDockButton2;
 	private Button mDockButton3;
@@ -697,11 +699,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView.setDragger(dragLayer);
 
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
-				.findViewById(R.id.speech_bubble);
+				.findViewById(R.id.speechbubbleview);
 		mSpeechBubbleview.setLauncher(this);
 		mSpeechBubbleview.CreateMainView();
-		mSpeechBubbleview.setLocation(100, 300, 0, 0);		
-
+		mSpeechBubbleview.setLocation(5, 50, 0, 0);
+		
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
@@ -722,6 +724,24 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				(ViewGroup) mWorkspace.getChildAt(mWorkspace.getCurrentScreen()),
 				info);
 	}
+//
+//	private void createSpeechBubble() {
+//		LinearLayout speechview = (LinearLayout) mInflater.inflate(
+//				R.layout.speechbubbleview, (ViewGroup) mWorkspace
+//						.getChildAt(mWorkspace.getCurrentScreen()), false);
+//		speechview.addView(new Button(getApplicationContext()), 100, 200);
+//		int screen = mWorkspace.getCurrentScreen();
+//
+//		final LayoutType group = (LayoutType) mWorkspace.getChildAt(1);
+//		LayoutType.LayoutParams lp = (LayoutType.LayoutParams) speechview
+//				.getLayoutParams();
+//
+//		lp.cellX = 100;
+//		lp.cellY = 100;
+//		
+//		Toast.makeText(getApplication(), speechview.toString(), Toast.LENGTH_SHORT).show();
+//		group.addView(speechview, -1, lp);
+//	}
 
 	/**
 	 * Creates a view representing a shortcut inflated from the specified
@@ -1742,7 +1762,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mWorkspace.dispatchKeyEvent(event);
 					if (mAllAppsGrid.getVisibility() == View.VISIBLE) {
 						closeGridView(true);
-						mSpeechBubbleview.setVisibility(View.VISIBLE);
+//						mSpeechBubbleview.setVisibility(View.VISIBLE);
 					} else
 						closeFolder();
 
@@ -2137,7 +2157,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 			mAllAppsGrid.setFocusable(true);
 			mAllAppsGrid.setVisibility(View.VISIBLE);
-			mSpeechBubbleview.setVisibility(View.INVISIBLE);
+			// mSpeechBubbleview.setVisibility(View.INVISIBLE);
 			return;
 		}
 		Object tag = v.getTag();

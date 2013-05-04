@@ -200,10 +200,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 
 	@Override
 	public void addView(View child, int width, int height) {
-		if (!(child instanceof LayoutType)) {
-			throw new IllegalArgumentException(
-					"A Workspace can only have CellLayout children.");
-		}
+//		if (!(child instanceof LayoutType)) {
+//			throw new IllegalArgumentException(
+//					"A Workspace can only have CellLayout children.");
+//		}
 		super.addView(child, width, height);
 	}
 
