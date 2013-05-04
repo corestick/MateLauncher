@@ -699,7 +699,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speech_bubble);
 		mSpeechBubbleview.setLauncher(this);
-		mSpeechBubbleview.CreateSlectView();
+		mSpeechBubbleview.CreateMainView();
 		mSpeechBubbleview.setLocation(100, 300, 0, 0);		
 
 		dragLayer.setIgnoredDropTarget(grid);
