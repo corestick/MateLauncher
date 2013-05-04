@@ -53,8 +53,8 @@
         android:numColumns="4"
         android:scrollbarStyle="outsideInset"
         android:verticalSpacing="10dip"
-        launcher:texture="@drawable/pattern_carbon_fiber_dark"
-        android:visibility="gone" />
+        android:visibility="gone"
+        launcher:texture="@drawable/pattern_carbon_fiber_dark" />
 
     <mobi.intuitit.android.mate.launcher.DeleteZone
         android:id="@+id/delete_zone"
@@ -88,5 +88,13 @@
         android:layout_height="fill_parent"
         android:inflatedId="@+id/screen_switcher"
         android:layout="@layout/screen_switcher" />
+
+      <mobi.intuitit.android.mate.launcher.SpeechBubbleView
+        android:id="@+id/speech_bubble"
+        android:layout_width="fill_parent"
+        android:layout_height="49dip"
+        android:layout_gravity="top"
+        android:visibility="visible"/>
+    
 
 </mobi.intuitit.android.mate.launcher.DragLayer>

@@ -31,7 +31,6 @@ import java.util.LinkedList;
 
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
-import mobi.intuitit.android.content.LauncherIntent.Action;
 import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -62,8 +61,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -95,7 +92,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -637,6 +633,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private DeleteZone mDeleteZone;
 	private MobjectView mObjectView;
 	private Dockbar mDockbar;
+	private SpeechBubbleView mSpeechBubbleview;
 	private Button mDockButton1;
 	private Button mDockButton2;
 	private Button mDockButton3;
@@ -698,6 +695,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
+
+		mSpeechBubbleview = (SpeechBubbleView) dragLayer
+				.findViewById(R.id.speech_bubble);
+		mSpeechBubbleview.setLauncher(this);
+		mSpeechBubbleview.CreateSlectView();
+		mSpeechBubbleview.setLocation(100, 300, 0, 0);		
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -1739,6 +1742,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mWorkspace.dispatchKeyEvent(event);
 					if (mAllAppsGrid.getVisibility() == View.VISIBLE) {
 						closeGridView(true);
+						mSpeechBubbleview.setVisibility(View.VISIBLE);
 					} else
 						closeFolder();
 
@@ -1780,14 +1784,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else {
 				// mAllAppsGrid.close();
 			}
-			if (true/*mAllAppsGrid.hasFocus()*/) {				
+			if (true/* mAllAppsGrid.hasFocus() */) {
 				mWorkspace.getChildAt(mWorkspace.getCurrentScreen())
 						.requestFocus();
 			}
-		}			
+		}
 		mWorkspace.mDrawerBounds.setEmpty();
-		mAllAppsGrid.setSelection(0);		
-		mAllAppsGrid.clearTextFilter();	
+		mAllAppsGrid.setSelection(0);
+		mAllAppsGrid.clearTextFilter();
 		mAllAppsGrid.setVisibility(View.GONE);
 		Log.e("ASDASD", "-->>" + mAllAppsGrid.getSelectedItemPosition());
 	}
@@ -2128,11 +2132,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Toast.makeText(this, "b3", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (v.equals(mDockButton4)) {		
+		if (v.equals(mDockButton4)) {
 			final Rect bounds = mWorkspace.mDrawerBounds;
 			offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 			mAllAppsGrid.setFocusable(true);
 			mAllAppsGrid.setVisibility(View.VISIBLE);
+			mSpeechBubbleview.setVisibility(View.INVISIBLE);
 			return;
 		}
 		Object tag = v.getTag();
