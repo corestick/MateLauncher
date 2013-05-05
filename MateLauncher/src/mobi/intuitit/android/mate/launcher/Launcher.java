@@ -35,6 +35,7 @@ import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
@@ -70,11 +71,12 @@ import android.os.MessageQueue;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.LiveFolders;
+import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.TextKeyListener;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
@@ -177,6 +179,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 	private final BroadcastReceiver mCloseSystemDialogsReceiver = new CloseSystemDialogsIntentReceiver();
+	private final BroadcastReceiver mSmsReceiver = new SmsReceiver();
+
 	private final ContentObserver mObserver = new FavoritesChangeObserver();
 	private final ContentObserver mWidgetObserver = new AppWidgetResetObserver();
 
@@ -635,7 +639,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private MobjectView mObjectView;
 	private Dockbar mDockbar;
 	private SpeechBubbleView mSpeechBubbleview;
-	private SpeechBubbleView mSpeechBubbleview2;
 	private Button mDockButton1;
 	private Button mDockButton2;
 	private Button mDockButton3;
@@ -703,7 +706,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mSpeechBubbleview.setLauncher(this);
 		mSpeechBubbleview.CreateMainView();
 		mSpeechBubbleview.setLocation(5, 50, 0, 0);
-		
+
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
@@ -724,24 +727,26 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				(ViewGroup) mWorkspace.getChildAt(mWorkspace.getCurrentScreen()),
 				info);
 	}
-//
-//	private void createSpeechBubble() {
-//		LinearLayout speechview = (LinearLayout) mInflater.inflate(
-//				R.layout.speechbubbleview, (ViewGroup) mWorkspace
-//						.getChildAt(mWorkspace.getCurrentScreen()), false);
-//		speechview.addView(new Button(getApplicationContext()), 100, 200);
-//		int screen = mWorkspace.getCurrentScreen();
-//
-//		final LayoutType group = (LayoutType) mWorkspace.getChildAt(1);
-//		LayoutType.LayoutParams lp = (LayoutType.LayoutParams) speechview
-//				.getLayoutParams();
-//
-//		lp.cellX = 100;
-//		lp.cellY = 100;
-//		
-//		Toast.makeText(getApplication(), speechview.toString(), Toast.LENGTH_SHORT).show();
-//		group.addView(speechview, -1, lp);
-//	}
+
+	//
+	// private void createSpeechBubble() {
+	// LinearLayout speechview = (LinearLayout) mInflater.inflate(
+	// R.layout.speechbubbleview, (ViewGroup) mWorkspace
+	// .getChildAt(mWorkspace.getCurrentScreen()), false);
+	// speechview.addView(new Button(getApplicationContext()), 100, 200);
+	// int screen = mWorkspace.getCurrentScreen();
+	//
+	// final LayoutType group = (LayoutType) mWorkspace.getChildAt(1);
+	// LayoutType.LayoutParams lp = (LayoutType.LayoutParams) speechview
+	// .getLayoutParams();
+	//
+	// lp.cellX = 100;
+	// lp.cellY = 100;
+	//
+	// Toast.makeText(getApplication(), speechview.toString(),
+	// Toast.LENGTH_SHORT).show();
+	// group.addView(speechview, -1, lp);
+	// }
 
 	/**
 	 * Creates a view representing a shortcut inflated from the specified
@@ -1230,7 +1235,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		getContentResolver().unregisterContentObserver(mWidgetObserver);
 		unregisterReceiver(mApplicationsReceiver);
 		unregisterReceiver(mCloseSystemDialogsReceiver);
-
+		unregisterReceiver(mSmsReceiver);
+		
 		mWorkspace.unregisterProvider();
 	}
 
@@ -1443,6 +1449,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					.getAppWidgetInfo(appWidgetId);
 
 			try {
+
 				Bundle metadata = getPackageManager().getReceiverInfo(
 						appWidget.provider, PackageManager.GET_META_DATA).metaData;
 				if (metadata != null) {
@@ -1731,6 +1738,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerReceiver(mApplicationsReceiver, filter);
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
+		registerReceiver(mSmsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 	}
 
 	/**
@@ -1762,7 +1770,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mWorkspace.dispatchKeyEvent(event);
 					if (mAllAppsGrid.getVisibility() == View.VISIBLE) {
 						closeGridView(true);
-//						mSpeechBubbleview.setVisibility(View.VISIBLE);
+						// mSpeechBubbleview.setVisibility(View.VISIBLE);
 					} else
 						closeFolder();
 
@@ -2999,4 +3007,35 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			view = (View) view.getParent();
 		}
 	}
+	
+	public class SmsReceiver extends BroadcastReceiver {	
+
+		public void onReceive(Context context, Intent intent) {
+			Bundle bundle = intent.getExtras();
+			SmsMessage[] msgs = null;
+			String str = "";
+			if (bundle != null) {
+				Object[] pdus = (Object[]) bundle.get("pdus");
+				msgs = new SmsMessage[pdus.length];
+				for (int i = 0; i < msgs.length; i++) {
+					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+//					str += "SMS from " + msgs[i].getOriginatingAddress();
+//					str += " :";
+//					str += msgs[i].getMessageBody().toString();
+//					str += "\n";
+				}
+				mSpeechBubbleview.getMainView().setText(msgs[0].getMessageBody().toString());
+				Log.e("sms-change", msgs[0].getMessageBody().toString());
+			}
+		}
+
+	}
+	
+	public void sendtoSMS(String phoneNumber, String message) {
+		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
+				 Launcher.class), 0);
+		SmsManager sms = SmsManager.getDefault();
+		sms.sendTextMessage(phoneNumber, null, message, pi, null);
+	}
+
 }

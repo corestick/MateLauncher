@@ -41,6 +41,9 @@
     <uses-permission android:name="mobi.intuitit.android.mate.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
         android:name="LauncherApplication"
@@ -88,7 +91,7 @@
             <intent-filter>
                 <action android:name="com.android.launcher.action.UNINSTALL_SHORTCUT" />
             </intent-filter>
-        </receiver>
+        </receiver>          
 
         <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider

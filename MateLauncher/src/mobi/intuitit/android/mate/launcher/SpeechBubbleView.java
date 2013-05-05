@@ -1,6 +1,7 @@
 package mobi.intuitit.android.mate.launcher;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -19,7 +20,8 @@ public class SpeechBubbleView extends LinearLayout implements
 	private Button faceButton;
 	private Button sendButton;
 	private EditText edit;
-	
+
+	private Button b; // 전환용 임시버튼
 
 	public SpeechBubbleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -31,11 +33,24 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	}
 	
-	public void CreateMainView(){
-		mainview = new TextView(mLauncher);
+	public TextView getMainView(){
+		return mainview;
 	}
 
-	public void CreateSlectView() {
+	public void CreateMainView() {
+		mainview = new TextView(mLauncher);
+		b = new Button(mLauncher);
+		b.setText("임시");
+		mainview.setText("말풍선");
+		mainview.setHeight(100);
+		mainview.setTextColor(Color.RED);
+		mainview.setBackgroundColor(Color.LTGRAY);
+		addView(mainview, 200, 100);
+		addView(b, 100, 56);
+		b.setOnClickListener(this);
+	}
+
+	public void CreateSelectView() {
 		smsButton = new Button(mLauncher);
 		faceButton = new Button(mLauncher);
 		smsButton.setText("SMS");
@@ -53,6 +68,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		sendButton.setOnClickListener(this);
 		addView(edit, 200, 56);
 		addView(sendButton, 100, 56);
+		
 	}
 
 	public void setLocation(int left, int top, int right, int bottom) {
@@ -66,14 +82,20 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	@Override
 	public void onClick(View v) {
-		if (v.equals(smsButton)) {
+		if (v.equals(b)) {
+			removeAllViews();
+			CreateSelectView();
+		} else if (v.equals(smsButton)) {
 			removeAllViews();
 			CreateSendView();
 		} else if (v.equals(sendButton)) {
+			String message = edit.getText().toString();
+			mLauncher.sendtoSMS("5556", message);
 			removeAllViews();
-			CreateSlectView();
+			CreateMainView();
 		}
 
 	}
+	
 
 }
