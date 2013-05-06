@@ -210,7 +210,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private DesktopBinder mBinder;
 
-		@Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mInflater = getLayoutInflater();
@@ -708,9 +708,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.filtered = true;
 		}
 
-		 favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon,
-		 null,null);
-		 favorite.setText(info.title);
+		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
+				null);
+		favorite.setText(info.title);
 
 		//
 		// if ((info.title).equals("»ﬁ¥Î¿¸»≠")) {
@@ -2318,7 +2318,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
 							.getViewForTag(mFolderInfo);
 					if (folderIcon != null) {
-						 folderIcon.setText(name);
+						folderIcon.setText(name);
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
