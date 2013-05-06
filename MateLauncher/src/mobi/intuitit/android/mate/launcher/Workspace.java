@@ -200,10 +200,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 
 	@Override
 	public void addView(View child, int width, int height) {
-		if (!(child instanceof LayoutType)) {
-			throw new IllegalArgumentException(
-					"A Workspace can only have CellLayout children.");
-		}
+//		if (!(child instanceof LayoutType)) {
+//			throw new IllegalArgumentException(
+//					"A Workspace can only have CellLayout children.");
+//		}
 		super.addView(child, width, height);
 	}
 
@@ -539,24 +539,24 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// is contained within the drawer's bounds, we skip the drawing. This
 		// requires
 		// the drawer to be fully opaque.
-		if (mLauncher.isDrawerUp()) {
-			final Rect clipBounds = mClipBounds;
-			canvas.getClipBounds(clipBounds);
-			clipBounds.offset(-getScrollX(), -getScrollY());
-			if (mDrawerBounds.contains(clipBounds)) {
-				return;
-			}
-		} else if (mLauncher.isDrawerMoving()) {
-			restore = true;
-			canvas.save(Canvas.CLIP_SAVE_FLAG);
-
-			final View view = mLauncher.getDrawerHandle();
-			final int top = view.getTop() + view.getHeight();
-
-			canvas.clipRect(getScrollX(), top, getScrollX()
-					+ mDrawerContentWidth, top + mDrawerContentHeight,
-					Region.Op.DIFFERENCE);
-		}
+//		if (mLauncher.isDrawerUp()) {
+//			final Rect clipBounds = mClipBounds;
+//			canvas.getClipBounds(clipBounds);
+//			clipBounds.offset(-getScrollX(), -getScrollY());
+//			if (mDrawerBounds.contains(clipBounds)) {
+//				return;
+//			}
+//		} else if (mLauncher.isDrawerMoving()) {
+//			restore = true;
+//			canvas.save(Canvas.CLIP_SAVE_FLAG);
+//
+//			final View view = mLauncher.getDrawerHandle();
+//			final int top = view.getTop() + view.getHeight();
+//
+//			canvas.clipRect(getScrollX(), top, getScrollX()
+//					+ mDrawerContentWidth, top + mDrawerContentHeight,
+//					Region.Op.DIFFERENCE);
+//		}
 
 		// ViewGroup.dispatchDraw() supports many features we don't need:
 		// clip to padding, layout animation, animation listener, disappearing
@@ -653,22 +653,22 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	@Override
 	protected boolean onRequestFocusInDescendants(int direction,
 			Rect previouslyFocusedRect) {
-		if (mLauncher.isDrawerDown()) {
-			final Folder openFolder = getOpenFolder();
-			if (openFolder != null) {
-				return openFolder
-						.requestFocus(direction, previouslyFocusedRect);
-			} else {
-				int focusableScreen;
-				if (mNextScreen != INVALID_SCREEN) {
-					focusableScreen = mNextScreen;
-				} else {
-					focusableScreen = mCurrentScreen;
-				}
-				getChildAt(focusableScreen).requestFocus(direction,
-						previouslyFocusedRect);
-			}
-		}
+//		if (mLauncher.isDrawerDown()) {
+//			final Folder openFolder = getOpenFolder();
+//			if (openFolder != null) {
+//				return openFolder
+//						.requestFocus(direction, previouslyFocusedRect);
+//			} else {
+//				int focusableScreen;
+//				if (mNextScreen != INVALID_SCREEN) {
+//					focusableScreen = mNextScreen;
+//				} else {
+//					focusableScreen = mCurrentScreen;
+//				}
+//				getChildAt(focusableScreen).requestFocus(direction,
+//						previouslyFocusedRect);
+//			}
+//		}
 		return false;
 	}
 
@@ -691,32 +691,32 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	@Override
 	public void addFocusables(ArrayList<View> views, int direction,
 			int focusableMode) {
-		if (mLauncher.isDrawerDown()) {
-			final Folder openFolder = getOpenFolder();
-			if (openFolder == null) {
-				getChildAt(mCurrentScreen).addFocusables(views, direction);
-				if (direction == View.FOCUS_LEFT) {
-					if (mCurrentScreen > 0) {
-						getChildAt(mCurrentScreen - 1).addFocusables(views,
-								direction);
-					}
-				} else if (direction == View.FOCUS_RIGHT) {
-					if (mCurrentScreen < getChildCount() - 1) {
-						getChildAt(mCurrentScreen + 1).addFocusables(views,
-								direction);
-					}
-				}
-			} else {
-				openFolder.addFocusables(views, direction);
-			}
-		}
+//		if (mLauncher.isDrawerDown()) {
+//			final Folder openFolder = getOpenFolder();
+//			if (openFolder == null) {
+//				getChildAt(mCurrentScreen).addFocusables(views, direction);
+//				if (direction == View.FOCUS_LEFT) {
+//					if (mCurrentScreen > 0) {
+//						getChildAt(mCurrentScreen - 1).addFocusables(views,
+//								direction);
+//					}
+//				} else if (direction == View.FOCUS_RIGHT) {
+//					if (mCurrentScreen < getChildCount() - 1) {
+//						getChildAt(mCurrentScreen + 1).addFocusables(views,
+//								direction);
+//					}
+//				}
+//			} else {
+//				openFolder.addFocusables(views, direction);
+//			}
+//		}
 	}
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		if (mLocked || !mLauncher.isDrawerDown()) {
-			return true;
-		}
+//		if (mLocked || !mLauncher.isDrawerDown()) {
+//			return true;
+//		}
 
 		/*
 		 * This method JUST determines whether we want to intercept the motion.
@@ -828,9 +828,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (mLocked || !mLauncher.isDrawerDown()) {
-			return true;
-		}
+//		if (mLocked || !mLauncher.isDrawerDown()) {
+//			return true;
+//		}
 
 		if (mVelocityTracker == null) {
 			mVelocityTracker = VelocityTracker.obtain();

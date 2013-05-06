@@ -23,8 +23,9 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-public class HandleView extends ImageView {
+public class HandleView extends LinearLayout{
     private static final int ORIENTATION_HORIZONTAL = 1;
 
     private Launcher mLauncher;
@@ -34,22 +35,22 @@ public class HandleView extends ImageView {
         super(context);
     }
 
-    public HandleView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
+//    public HandleView(Context context, AttributeSet attrs) {
+//        this(context, attrs, 0);
+//    }
 
-    public HandleView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.HandleView, defStyle, 0);
-        mOrientation = a.getInt(R.styleable.HandleView_direction, ORIENTATION_HORIZONTAL);
-        a.recycle();
-    }
+//    public HandleView(Context context, AttributeSet attrs, int defStyle) {
+//        super(context, attrs, defStyle);
+//
+//        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.HandleView, defStyle, 0);
+//        mOrientation = a.getInt(R.styleable.HandleView_direction, ORIENTATION_HORIZONTAL);
+//        a.recycle();
+//    }
 
     @Override
     public View focusSearch(int direction) {
         View newFocus = super.focusSearch(direction);
-        if (newFocus == null && mLauncher.isDrawerDown()) {
+        if (newFocus == null){ //&& mLauncher.isDrawerDown()) {
             final Workspace workspace = mLauncher.getWorkspace();
             workspace.dispatchUnhandledMove(null, direction);
             return (mOrientation == ORIENTATION_HORIZONTAL && direction == FOCUS_DOWN) ?
@@ -62,8 +63,8 @@ public class HandleView extends ImageView {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         final boolean handled = super.onKeyDown(keyCode, event);
 
-        if (!handled && !mLauncher.isDrawerDown() && !isDirectionKey(keyCode)) {
-            return mLauncher.getApplicationsGrid().onKeyDown(keyCode, event);
+        if (!handled && /*!mLauncher.isDrawerDown() &&*/ !isDirectionKey(keyCode)) {
+//            return mLauncher.getApplicationsGrid().onKeyDown(keyCode, event);
         }
 
         return handled;
@@ -73,8 +74,8 @@ public class HandleView extends ImageView {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         final boolean handled = super.onKeyUp(keyCode, event);
 
-        if (!handled && !mLauncher.isDrawerDown() && !isDirectionKey(keyCode)) {
-            return mLauncher.getApplicationsGrid().onKeyUp(keyCode, event);
+        if (!handled &&/* !mLauncher.isDrawerDown() &&*/ !isDirectionKey(keyCode)) {
+//            return mLauncher.getApplicationsGrid().onKeyUp(keyCode, event);
         }
 
         return handled;

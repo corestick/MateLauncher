@@ -35,6 +35,7 @@ import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
@@ -58,9 +59,9 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,6 +71,8 @@ import android.os.MessageQueue;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.LiveFolders;
+import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -77,6 +80,7 @@ import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -86,8 +90,12 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,6 +119,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final int MENU_SEARCH = MENU_WALLPAPER_SETTINGS + 1;
 	private static final int MENU_NOTIFICATIONS = MENU_SEARCH + 1;
 	private static final int MENU_SETTINGS = MENU_NOTIFICATIONS + 1;
+	private static final int MENU_OBJECT = MENU_SETTINGS + 1;
+	private static final int MENU_HOMEPAGE = MENU_OBJECT + 1;
 
 	private static final int REQUEST_CREATE_SHORTCUT = 1;
 	private static final int REQUEST_CREATE_LIVE_FOLDER = 4;
@@ -170,6 +180,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 	private final BroadcastReceiver mCloseSystemDialogsReceiver = new CloseSystemDialogsIntentReceiver();
+	private final BroadcastReceiver mSmsReceiver = new SmsReceiver();
+
 	private final ContentObserver mObserver = new FavoritesChangeObserver();
 	private final ContentObserver mWidgetObserver = new AppWidgetResetObserver();
 
@@ -188,9 +200,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private final int[] mCellCoordinates = new int[2];
 	private FolderInfo mFolderInfo;
 
-	private SlidingDrawer mDrawer;
-	private TransitionDrawable mHandleIcon;
-	private HandleView mHandleView;
+	// private SlidingDrawer mDrawer;
+	// private TransitionDrawable mHandleIcon;
+	// private HandleView mHandleView;
 	private AllAppsGridView mAllAppsGrid;
 
 	private boolean mDesktopLocked = true;
@@ -462,7 +474,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	@Override
 	protected void onPause() {
 		super.onPause();
-		closeDrawer(false);
+		// closeDrawer(false);
+		closeGridView(false);
 	}
 
 	@Override
@@ -617,6 +630,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ScreenIndicator mIndicator;
 	private ScreenLayout mScreenLayout;
 	private DeleteZone mDeleteZone;
+	private MobjectView mObjectView;
+	private Dockbar mDockbar;
+	private SpeechBubbleView mSpeechBubbleview;
+	private Button mDockButton1;
+	private Button mDockButton2;
+	private Button mDockButton3;
+	private TextView mDockButton4;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -633,29 +653,35 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				.findViewById(R.id.screen_indicator);
 		mIndicator.setWorkspace(workspace);
 
-		mDrawer = (SlidingDrawer) dragLayer.findViewById(R.id.drawer);
-		final SlidingDrawer drawer = mDrawer;
-
-		mAllAppsGrid = (AllAppsGridView) drawer.getContent();
-		final AllAppsGridView grid = mAllAppsGrid;
+		// mDrawer = (SlidingDrawer) dragLayer.findViewById(R.id.drawer);
+		// final SlidingDrawer drawer = mDrawer;
+		//
+		// mAllAppsGrid = (AllAppsGridView) drawer.getContent();
+		// final AllAppsGridView grid = mAllAppsGrid;
 
 		mDeleteZone = (DeleteZone) dragLayer.findViewById(R.id.delete_zone);
 
-		mHandleView = (HandleView) drawer.findViewById(R.id.all_apps);
-		mHandleView.setLauncher(this);
-		mHandleIcon = (TransitionDrawable) mHandleView.getDrawable();
-		mHandleIcon.setCrossFadeEnabled(true);
+		// mHandleView = (HandleView) dragLayer.findViewById(R.id.all_apps);
+		// mHandleView.setLauncher(this);
+		// mHandleIcon = (TransitionDrawable) mHandleView.getDrawable();
+		// mHandleIcon.setCrossFadeEnabled(true);
 
-		drawer.lock();
-		final DrawerManager drawerManager = new DrawerManager();
+		// drawer.lock();
+		// final DrawerManager drawerManager = new DrawerManager();
 
-		drawer.setOnDrawerOpenListener(drawerManager);
-		drawer.setOnDrawerCloseListener(drawerManager);
-		drawer.setOnDrawerScrollListener(drawerManager);
+		// drawer.setOnDrawerOpenListener(drawerManager);
+		// drawer.setOnDrawerCloseListener(drawerManager);
+		// drawer.setOnDrawerScrollListener(drawerManager);
 
+		mAllAppsGrid = (AllAppsGridView) dragLayer.findViewById(R.id.content);
+		final AllAppsGridView grid = mAllAppsGrid;
 		grid.setTextFilterEnabled(false);
 		grid.setDragger(dragLayer);
 		grid.setLauncher(this);
+
+		mDockbar = (Dockbar) dragLayer.findViewById(R.id.dockbar);
+		mDockbar.setLauncher(this);
+		DockbarView();
 
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
@@ -663,7 +689,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mDeleteZone.setLauncher(this);
 		mDeleteZone.setDragController(dragLayer);
-		mDeleteZone.setHandle(mHandleView);
+		mDeleteZone.setHandle(mDockbar);
+
+		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
+		mObjectView.setLauncher(this);
+		mObjectView.setDragger(dragLayer);
+
+		mSpeechBubbleview = (SpeechBubbleView) dragLayer
+				.findViewById(R.id.speechbubbleview);
+		mSpeechBubbleview.setLauncher(this);
+		mSpeechBubbleview.CreateMainView();
+		mSpeechBubbleview.setLocation(5, 50, 0, 0);
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -685,6 +721,26 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				(ViewGroup) mWorkspace.getChildAt(mWorkspace.getCurrentScreen()),
 				info);
 	}
+
+	//
+	// private void createSpeechBubble() {
+	// LinearLayout speechview = (LinearLayout) mInflater.inflate(
+	// R.layout.speechbubbleview, (ViewGroup) mWorkspace
+	// .getChildAt(mWorkspace.getCurrentScreen()), false);
+	// speechview.addView(new Button(getApplicationContext()), 100, 200);
+	// int screen = mWorkspace.getCurrentScreen();
+	//
+	// final LayoutType group = (LayoutType) mWorkspace.getChildAt(1);
+	// LayoutType.LayoutParams lp = (LayoutType.LayoutParams) speechview
+	// .getLayoutParams();
+	//
+	// lp.cellX = 100;
+	// lp.cellY = 100;
+	//
+	// Toast.makeText(getApplication(), speechview.toString(),
+	// Toast.LENGTH_SHORT).show();
+	// group.addView(speechview, -1, lp);
+	// }
 
 	/**
 	 * Creates a view representing a shortcut inflated from the specified
@@ -708,6 +764,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.filtered = true;
 		}
 
+
 		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
 				null);
 		favorite.setText(info.title);
@@ -724,7 +781,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// } else {
 		// favorite.setImageDrawable(info.icon);
 		// }
-
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -998,7 +1054,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mWorkspace.moveToDefaultScreen();
 				}
 
-				closeDrawer();
+				// closeDrawer();
+				closeGridView(true);
 
 				final View v = getWindow().peekDecorView();
 				if (v != null && v.getWindowToken() != null) {
@@ -1006,7 +1063,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				}
 			} else {
-				closeDrawer(false);
+				// closeDrawer(false);
+				closeGridView(false);
 			}
 		}
 	}
@@ -1104,9 +1162,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		// When the drawer is opened and we are saving the state because of a
 		// configuration change
-		if (mDrawer.isOpened() && isConfigurationChange) {
-			outState.putBoolean(RUNTIME_STATE_ALL_APPS_FOLDER, true);
-		}
+		// if (mDrawer.isOpened() && isConfigurationChange) {
+		// outState.putBoolean(RUNTIME_STATE_ALL_APPS_FOLDER, true);
+		// }
 
 		if (mAddItemCellInfo != null && mAddItemCellInfo.valid
 				&& mWaitingForResult) {
@@ -1174,7 +1232,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		getContentResolver().unregisterContentObserver(mWidgetObserver);
 		unregisterReceiver(mApplicationsReceiver);
 		unregisterReceiver(mCloseSystemDialogsReceiver);
-
+		unregisterReceiver(mSmsReceiver);
+		
 		mWorkspace.unregisterProvider();
 	}
 
@@ -1189,7 +1248,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public void startSearch(String initialQuery, boolean selectInitialQuery,
 			Bundle appSearchData, boolean globalSearch) {
 
-		closeDrawer(false);
+		// closeDrawer(false);
+		closeGridView(false);
 
 		// Slide the search widget to the top, if it's on the current screen,
 		// otherwise show the search dialog immediately.
@@ -1286,7 +1346,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				.setIcon(android.R.drawable.ic_menu_preferences)
 				.setAlphabeticShortcut('P').setIntent(settings);
 
-		// menu.add(0, MENU_OBJECT, 0, "Object").setIcon(R.drawable.call);
+		menu.add(0, MENU_OBJECT, 0, "Object");
+		menu.add(0, MENU_HOMEPAGE, 0, "HomePage");
 
 		return true;
 	}
@@ -1320,6 +1381,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return true;
 		case MENU_NOTIFICATIONS:
 			showNotifications();
+			return true;
+		case MENU_OBJECT:
+			if (mObjectView.getVisibility() == View.VISIBLE) {
+				mObjectView.setVisibility(View.GONE);
+			} else {
+				mObjectView.setVisibility(View.VISIBLE);
+			}
+
+			return true;
+		case MENU_HOMEPAGE:
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.setClassName("com.LBL.launcherhome",
+					"com.LBL.launcherhome.OwnerHome");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			startActivity(intent);
 			return true;
 		}
 
@@ -1369,6 +1446,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					.getAppWidgetInfo(appWidgetId);
 
 			try {
+
 				Bundle metadata = getPackageManager().getReceiverInfo(
 						appWidget.provider, PackageManager.GET_META_DATA).metaData;
 				if (metadata != null) {
@@ -1657,6 +1735,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerReceiver(mApplicationsReceiver, filter);
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
+		registerReceiver(mSmsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 	}
 
 	/**
@@ -1686,8 +1765,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case KeyEvent.KEYCODE_BACK:
 				if (!event.isCanceled()) {
 					mWorkspace.dispatchKeyEvent(event);
-					if (mDrawer.isOpened()) {
-						closeDrawer();
+					if (mAllAppsGrid.getVisibility() == View.VISIBLE) {
+						closeGridView(true);
+						// mSpeechBubbleview.setVisibility(View.VISIBLE);
 					} else
 						closeFolder();
 
@@ -1703,22 +1783,42 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return super.dispatchKeyEvent(event);
 	}
 
-	private void closeDrawer() {
-		closeDrawer(true);
-	}
+	// private void closeDrawer() {
+	// closeDrawer(true);
+	// }
 
-	private void closeDrawer(boolean animated) {
-		if (mDrawer.isOpened()) {
+	// private void closeDrawer(boolean animated) {
+	// if (mDrawer.isOpened()) {
+	// if (animated) {
+	// mDrawer.animateClose();
+	// } else {
+	// mDrawer.close();
+	// }
+	// if (mDrawer.hasFocus()) {
+	// mWorkspace.getChildAt(mWorkspace.getCurrentScreen())
+	// .requestFocus();
+	// }
+	// }
+	// }
+
+	private void closeGridView(boolean animated) {
+		if (mAllAppsGrid.getVisibility() == View.VISIBLE) {
 			if (animated) {
-				mDrawer.animateClose();
+				// mAllAppsGrid.animateClose();
+
 			} else {
-				mDrawer.close();
+				// mAllAppsGrid.close();
 			}
-			if (mDrawer.hasFocus()) {
+			if (true/* mAllAppsGrid.hasFocus() */) {
 				mWorkspace.getChildAt(mWorkspace.getCurrentScreen())
 						.requestFocus();
 			}
 		}
+		mWorkspace.mDrawerBounds.setEmpty();
+		mAllAppsGrid.setSelection(0);
+		mAllAppsGrid.clearTextFilter();
+		mAllAppsGrid.setVisibility(View.GONE);
+		Log.e("ASDASD", "-->>" + mAllAppsGrid.getSelectedItemPosition());
 	}
 
 	private boolean closeFolder() {
@@ -1745,7 +1845,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 */
 	private void onFavoritesChanged() {
 		mDesktopLocked = true;
-		mDrawer.lock();
+		// mDrawer.lock();
 		sModel.loadUserItems(false, this, false, false);
 	}
 
@@ -1901,7 +2001,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			final boolean allApps = mSavedState.getBoolean(
 					RUNTIME_STATE_ALL_APPS_FOLDER, false);
 			if (allApps) {
-				mDrawer.open();
+				// mDrawer.open();
 			}
 
 			mSavedState = null;
@@ -1912,17 +2012,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			mSavedInstanceState = null;
 		}
 
-		if (mDrawer.isOpened() && !mDrawer.hasFocus()) {
-			mDrawer.requestFocus();
-		}
+		// if (mDrawer.isOpened() && !mDrawer.hasFocus()) {
+		// mDrawer.requestFocus();
+		// }
 
 		mDesktopLocked = false;
-		mDrawer.unlock();
+		// mDrawer.unlock();
 	}
 
 	private void bindDrawer(Launcher.DesktopBinder binder,
 			ApplicationsAdapter drawerAdapter) {
 		mAllAppsGrid.setAdapter(drawerAdapter);
+		// 독바
+		mObjectView.setAdapter(drawerAdapter);
 		binder.startBindingAppWidgetsWhenIdle();
 	}
 
@@ -2040,6 +2142,26 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The view representing the clicked shortcut.
 	 */
 	public void onClick(View v) {
+		if (v.equals(mDockButton1)) {
+			Toast.makeText(this, "b1", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (v.equals(mDockButton2)) {
+			Toast.makeText(this, "b2", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (v.equals(mDockButton3)) {
+			Toast.makeText(this, "b3", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if (v.equals(mDockButton4)) {
+			final Rect bounds = mWorkspace.mDrawerBounds;
+			offsetBoundsToDragLayer(bounds, mAllAppsGrid);
+			mAllAppsGrid.setFocusable(true);
+			mAllAppsGrid.setVisibility(View.VISIBLE);
+			// mSpeechBubbleview.setVisibility(View.INVISIBLE);
+			return;
+		}
 		Object tag = v.getTag();
 		if (tag instanceof ApplicationInfo) {
 			// Open shortcut
@@ -2176,24 +2298,24 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	void closeAllApplications() {
-		mDrawer.close();
+		closeGridView(true);
 	}
 
-	View getDrawerHandle() {
-		return mHandleView;
-	}
+	// View getDrawerHandle() {
+	// return mHandleView;
+	// }
 
-	boolean isDrawerDown() {
-		return !mDrawer.isMoving() && !mDrawer.isOpened();
-	}
-
-	boolean isDrawerUp() {
-		return mDrawer.isOpened() && !mDrawer.isMoving();
-	}
-
-	boolean isDrawerMoving() {
-		return mDrawer.isMoving();
-	}
+	// boolean isDrawerDown() {
+	// return !mDrawer.isMoving() && !mDrawer.isOpened();
+	// }
+	//
+	// boolean isDrawerUp() {
+	// return mDrawer.isOpened() && !mDrawer.isMoving();
+	// }
+	//
+	// boolean isDrawerMoving() {
+	// return mDrawer.isMoving();
+	// }
 
 	Workspace getWorkspace() {
 		return mWorkspace;
@@ -2312,7 +2434,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				LauncherModel.updateItemInDatabase(Launcher.this, mFolderInfo);
 
 				if (mDesktopLocked) {
-					mDrawer.lock();
+					// mDrawer.lock();
 					sModel.loadUserItems(false, Launcher.this, false, false);
 				} else {
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
@@ -2322,7 +2444,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
-						mDrawer.lock();
+						// mDrawer.lock();
 						sModel.loadUserItems(false, Launcher.this, false, false);
 					}
 				}
@@ -2565,14 +2687,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public void onDrawerOpened() {
 			if (!mOpen) {
-				mHandleIcon.reverseTransition(150);
+				// mHandleIcon.reverseTransition(150);
 				// allgridview 호출
 				final Rect bounds = mWorkspace.mDrawerBounds;
-				offsetBoundsToDragLayer(bounds, mAllAppsGrid);
+				// offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 
 				mOpen = true;
 			}
 		}
+
+		final Rect bounds = mWorkspace.mDrawerBounds;
+
+		// offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 
 		private void offsetBoundsToDragLayer(Rect bounds, View view) {
 			view.getDrawingRect(bounds);
@@ -2585,13 +2711,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public void onDrawerClosed() {
 			if (mOpen) {
-				mHandleIcon.reverseTransition(150);
+				// mHandleIcon.reverseTransition(150);
 				mWorkspace.mDrawerBounds.setEmpty();
 				mOpen = false;
 			}
 
-			mAllAppsGrid.setSelection(0);
-			mAllAppsGrid.clearTextFilter();
+			// mAllAppsGrid.setSelection(0);
+			// mAllAppsGrid.clearTextFilter();
 		}
 
 		public void onScrollStarted() {
@@ -2599,8 +2725,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				android.os.Debug.startMethodTracing("/sdcard/launcher-drawer");
 			}
 
-			mWorkspace.mDrawerContentWidth = mAllAppsGrid.getWidth();
-			mWorkspace.mDrawerContentHeight = mAllAppsGrid.getHeight();
+			// mWorkspace.mDrawerContentWidth = mAllAppsGrid.getWidth();
+			// mWorkspace.mDrawerContentHeight = mAllAppsGrid.getHeight();
 		}
 
 		public void onScrollEnded() {
@@ -2829,4 +2955,80 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}
 	}
+	void closeObjectView() {
+		mObjectView.setVisibility(View.GONE);
+	}
+
+	private void DockbarView() {
+		mDockbar.setBackgroundColor(Color.GRAY);
+		// mDockbar.removeAllViews();
+		mDockButton1 = new Button(this);
+		mDockButton2 = new Button(this);
+		mDockButton3 = new Button(this);
+		mDockButton4 = new TextView(this);
+
+		mDockButton1.setText("button1");
+		mDockButton2.setText("button2");
+		mDockButton3.setText("button3");
+
+		mDockButton4.setLayoutParams(new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.FILL_PARENT, 0.0F));
+		mDockButton4.setTextColor(Color.RED);
+		mDockButton4.setTextSize(20);
+		mDockButton4.setGravity(Gravity.CENTER);
+		mDockButton4.setText("grid");
+		// mDockButton4.setCompoundDrawablesWithIntrinsicBounds(0,
+		// R.drawable.call, 0, 0);
+
+		mDockbar.addView(mDockButton1, 100, 56);
+		mDockbar.addView(mDockButton2, 100, 56);
+		mDockbar.addView(mDockButton3, 100, 56);
+		mDockbar.addView(mDockButton4, 100, 56);
+
+		mDockButton1.setOnClickListener(this);
+		mDockButton2.setOnClickListener(this);
+		mDockButton3.setOnClickListener(this);
+		mDockButton4.setOnClickListener(this);
+	}
+
+	private void offsetBoundsToDragLayer(Rect bounds, View view) {
+		view.getDrawingRect(bounds);
+
+		while (view != mDragLayer) {
+			bounds.offset(view.getLeft(), view.getTop());
+			view = (View) view.getParent();
+		}
+	}
+	
+	public class SmsReceiver extends BroadcastReceiver {	
+
+		public void onReceive(Context context, Intent intent) {
+			Bundle bundle = intent.getExtras();
+			SmsMessage[] msgs = null;
+			String str = "";
+			if (bundle != null) {
+				Object[] pdus = (Object[]) bundle.get("pdus");
+				msgs = new SmsMessage[pdus.length];
+				for (int i = 0; i < msgs.length; i++) {
+					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+//					str += "SMS from " + msgs[i].getOriginatingAddress();
+//					str += " :";
+//					str += msgs[i].getMessageBody().toString();
+//					str += "\n";
+				}
+				mSpeechBubbleview.getMainView().setText(msgs[0].getMessageBody().toString());
+				Log.e("sms-change", msgs[0].getMessageBody().toString());
+			}
+		}
+
+	}
+	
+	public void sendtoSMS(String phoneNumber, String message) {
+		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
+				 Launcher.class), 0);
+		SmsManager sms = SmsManager.getDefault();
+		sms.sendTextMessage(phoneNumber, null, message, pi, null);
+	}
+
 }
