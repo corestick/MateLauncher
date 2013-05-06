@@ -90,7 +90,7 @@ public class SpeechBubbleView extends LinearLayout implements
 			CreateSendView();
 		} else if (v.equals(sendButton)) {
 			String message = edit.getText().toString();
-			mLauncher.sendtoSMS("5556", message);
+			mLauncher.sendtoSMS("", message);
 			removeAllViews();
 			CreateMainView();
 		}

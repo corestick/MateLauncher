@@ -681,7 +681,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mDockbar = (Dockbar) dragLayer.findViewById(R.id.dockbar);
 		mDockbar.setLauncher(this);
-		DockbarView();
+		mDockbar.setWorkspace(mWorkspace);
+		mDockbar.setAllgridView(mAllAppsGrid);
+		mDockbar.CreateDockbar(); // µ¶¹Ù ºä »ý¼º
+		
 
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
@@ -2141,27 +2144,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @param v
 	 *            The view representing the clicked shortcut.
 	 */
-	public void onClick(View v) {
-		if (v.equals(mDockButton1)) {
-			Toast.makeText(this, "b1", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if (v.equals(mDockButton2)) {
-			Toast.makeText(this, "b2", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if (v.equals(mDockButton3)) {
-			Toast.makeText(this, "b3", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		if (v.equals(mDockButton4)) {
-			final Rect bounds = mWorkspace.mDrawerBounds;
-			offsetBoundsToDragLayer(bounds, mAllAppsGrid);
-			mAllAppsGrid.setFocusable(true);
-			mAllAppsGrid.setVisibility(View.VISIBLE);
-			// mSpeechBubbleview.setVisibility(View.INVISIBLE);
-			return;
-		}
+	public void onClick(View v) {		
 		Object tag = v.getTag();
 		if (tag instanceof ApplicationInfo) {
 			// Open shortcut
@@ -2958,47 +2941,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	void closeObjectView() {
 		mObjectView.setVisibility(View.GONE);
 	}
-
-	private void DockbarView() {
-		mDockbar.setBackgroundColor(Color.GRAY);
-		// mDockbar.removeAllViews();
-		mDockButton1 = new Button(this);
-		mDockButton2 = new Button(this);
-		mDockButton3 = new Button(this);
-		mDockButton4 = new TextView(this);
-
-		mDockButton1.setText("button1");
-		mDockButton2.setText("button2");
-		mDockButton3.setText("button3");
-
-		mDockButton4.setLayoutParams(new LinearLayout.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.FILL_PARENT, 0.0F));
-		mDockButton4.setTextColor(Color.RED);
-		mDockButton4.setTextSize(20);
-		mDockButton4.setGravity(Gravity.CENTER);
-		mDockButton4.setText("grid");
-		// mDockButton4.setCompoundDrawablesWithIntrinsicBounds(0,
-		// R.drawable.call, 0, 0);
-
-		mDockbar.addView(mDockButton1, 100, 56);
-		mDockbar.addView(mDockButton2, 100, 56);
-		mDockbar.addView(mDockButton3, 100, 56);
-		mDockbar.addView(mDockButton4, 100, 56);
-
-		mDockButton1.setOnClickListener(this);
-		mDockButton2.setOnClickListener(this);
-		mDockButton3.setOnClickListener(this);
-		mDockButton4.setOnClickListener(this);
-	}
-
-	private void offsetBoundsToDragLayer(Rect bounds, View view) {
+	
+	public void offsetBoundsToDragLayer(Rect bounds, View view) {
 		view.getDrawingRect(bounds);
 
 		while (view != mDragLayer) {
 			bounds.offset(view.getLeft(), view.getTop());
 			view = (View) view.getParent();
 		}
+	}	
+	
+	public View getAllgridView(){
+		return mAllAppsGrid;
 	}
 	
 	public class SmsReceiver extends BroadcastReceiver {	
