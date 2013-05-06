@@ -88,8 +88,8 @@ import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.SlidingDrawer;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -103,7 +103,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final boolean PROFILE_STARTUP = false;
 	private static final boolean PROFILE_DRAWER = false;
 	private static final boolean PROFILE_ROTATE = false;
-	private static final boolean DEBUG_USER_INTERFACE = true;
+	private static final boolean DEBUG_USER_INTERFACE = false;
 
 	private static final int MENU_GROUP_ADD = 1;
 	private static final int MENU_ADD = Menu.FIRST + 1;
@@ -111,7 +111,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final int MENU_SEARCH = MENU_WALLPAPER_SETTINGS + 1;
 	private static final int MENU_NOTIFICATIONS = MENU_SEARCH + 1;
 	private static final int MENU_SETTINGS = MENU_NOTIFICATIONS + 1;
-	private static final int MENU_OBJECT = MENU_SETTINGS + 1;
 
 	private static final int REQUEST_CREATE_SHORTCUT = 1;
 	private static final int REQUEST_CREATE_LIVE_FOLDER = 4;
@@ -211,9 +210,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private DesktopBinder mBinder;
 
-	private AsyncTask<Integer, Integer, Integer> Task;
-
-	@Override
+		@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mInflater = getLayoutInflater();
@@ -620,7 +617,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ScreenIndicator mIndicator;
 	private ScreenLayout mScreenLayout;
 	private DeleteZone mDeleteZone;
-	private MobjectView mObjectView;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -669,10 +665,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDeleteZone.setDragController(dragLayer);
 		mDeleteZone.setHandle(mHandleView);
 
-		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
-		mObjectView.setLauncher(this);
-		mObjectView.setDragger(dragLayer);
-
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
@@ -708,7 +700,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return A View inflated from layoutResId.
 	 */
 	View createShortcut(int layoutResId, ViewGroup parent, ApplicationInfo info) {
-		ImageView favorite = (ImageView) mInflater.inflate(layoutResId, parent,
+		TextView favorite = (TextView) mInflater.inflate(layoutResId, parent,
 				false);
 
 		if (!info.filtered) {
@@ -716,23 +708,23 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.filtered = true;
 		}
 
-		// favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon,
-		// null,null);
-		// favorite.setText(info.title);
-		
-//		
-//		if ((info.title).equals("ÈÞ´ëÀüÈ­")) {
-//			favorite.setImageResource(R.drawable.call);
-//		} else if ((info.title).equals("À½¾Ç")) {
-//			favorite.setImageResource(R.drawable.audio);
-//		} else if ((info.title).equals("°¶·¯¸®")) {
-//			favorite.setImageResource(R.drawable.avatar);
-//		} else if ((info.title).equals("°Ë»ö")) {
-//			favorite.setImageResource(R.drawable.tv);
-//		} else {
-//			favorite.setImageDrawable(info.icon);
-//		}
-		
+		 favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon,
+		 null,null);
+		 favorite.setText(info.title);
+
+		//
+		// if ((info.title).equals("ÈÞ´ëÀüÈ­")) {
+		// favorite.setImageResource(R.drawable.call);
+		// } else if ((info.title).equals("À½¾Ç")) {
+		// favorite.setImageResource(R.drawable.audio);
+		// } else if ((info.title).equals("°¶·¯¸®")) {
+		// favorite.setImageResource(R.drawable.avatar);
+		// } else if ((info.title).equals("°Ë»ö")) {
+		// favorite.setImageResource(R.drawable.tv);
+		// } else {
+		// favorite.setImageDrawable(info.icon);
+		// }
+
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -1294,7 +1286,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				.setIcon(android.R.drawable.ic_menu_preferences)
 				.setAlphabeticShortcut('P').setIntent(settings);
 
-//		menu.add(0, MENU_OBJECT, 0, "Object").setIcon(R.drawable.call);
+		// menu.add(0, MENU_OBJECT, 0, "Object").setIcon(R.drawable.call);
 
 		return true;
 	}
@@ -1328,10 +1320,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return true;
 		case MENU_NOTIFICATIONS:
 			showNotifications();
-			return true;
-		case MENU_OBJECT:
-			mObjectView.setVisibility(View.GONE);
-			// showObject();
 			return true;
 		}
 
@@ -1808,11 +1796,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			finishButton
 					.setOnClickListener(new android.widget.Button.OnClickListener() {
 						public void onClick(View v) {
-							// finish();
-							mObjectView.setVisibility(View.VISIBLE);
+							finish();
 						}
 					});
-
 		}
 
 		// Flag any old binder to terminate early
@@ -1937,9 +1923,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private void bindDrawer(Launcher.DesktopBinder binder,
 			ApplicationsAdapter drawerAdapter) {
 		mAllAppsGrid.setAdapter(drawerAdapter);
-
-		// µ¶¹Ù
-		mObjectView.setAdapter(drawerAdapter);
 		binder.startBindingAppWidgetsWhenIdle();
 	}
 
@@ -2335,7 +2318,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
 							.getViewForTag(mFolderInfo);
 					if (folderIcon != null) {
-						// folderIcon.setText(name);
+						 folderIcon.setText(name);
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
@@ -2845,38 +2828,5 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				mWorkspace.resetDefaultScreen(screen - 1);
 			}
 		}
-	}
-
-	public void showObject() {
-		if (mScreenLayout == null) {
-			// mAllAppsGrid.setVisibility(View.VISIBLE);
-			// mObjectView = new MobjectView(findViewById(R.id.objectview));
-
-			// mScreenLayout.setScreenChangeListener(mScreenChangeListener);
-
-		}
-	}
-
-	class ObjectTask extends AsyncTask<Integer, Integer, Integer> {
-
-		@Override
-		protected Integer doInBackground(Integer... params) {
-			return null;
-		}
-
-		protected void onPreExecute() {
-			Toast.makeText(Launcher.this, "Mobject", Toast.LENGTH_SHORT).show();
-		}
-
-		protected void onPostExecute(Integer result) {
-		}
-
-		protected void onCancelled() {
-
-		}
-	}
-
-	void closeObjectView() {
-		mObjectView.setVisibility(View.GONE);
 	}
 }

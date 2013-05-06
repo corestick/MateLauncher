@@ -28,7 +28,7 @@
 
         <include
             android:id="@+id/cell1"
-            layout="@layout/workspace_screen" />
+            layout="@layout/workspace_mscreen" />
         <include
             android:id="@+id/cell2"
             layout="@layout/workspace_mscreen" />
@@ -56,7 +56,7 @@
             android:background="@drawable/handle"
 
             android:focusable="true"
-            android:clickable="false"
+            android:clickable="true"
 
             android:scaleType="center"
             android:src="@drawable/handle_icon"
@@ -98,15 +98,6 @@
 
         launcher:direction="horizontal" />
     
-        <mobi.intuitit.android.mate.launcher.MobjectView
-           android:id="@+id/objectview"
-           android:layout_width="fill_parent"
-           android:layout_height="fill_parent"
-           launcher:texture="@drawable/pattern_carbon_fiber_dark"
-            android:verticalSpacing="10dip"
-            android:numColumns="4"
-            android:visibility="invisible"/>   
-
     <mobi.intuitit.android.mate.launcher.ScreenIndicator
         android:id="@+id/screen_indicator"
         android:layout_gravity="center|bottom"
