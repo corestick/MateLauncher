@@ -684,7 +684,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDockbar.setWorkspace(mWorkspace);
 		mDockbar.setAllgridView(mAllAppsGrid);
 		mDockbar.CreateDockbar(); // µ¶¹Ù ºä »ý¼º
-		
 
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
@@ -766,7 +765,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.icon = Utilities.createIconThumbnail(info.icon, this);
 			info.filtered = true;
 		}
-
 
 		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
 				null);
@@ -1236,7 +1234,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		unregisterReceiver(mApplicationsReceiver);
 		unregisterReceiver(mCloseSystemDialogsReceiver);
 		unregisterReceiver(mSmsReceiver);
-		
+
 		mWorkspace.unregisterProvider();
 	}
 
@@ -1738,7 +1736,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerReceiver(mApplicationsReceiver, filter);
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
-		registerReceiver(mSmsReceiver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
+		registerReceiver(mSmsReceiver, new IntentFilter(
+				"android.provider.Telephony.SMS_RECEIVED"));
 	}
 
 	/**
@@ -2144,7 +2143,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @param v
 	 *            The view representing the clicked shortcut.
 	 */
-	public void onClick(View v) {		
+	public void onClick(View v) {
 		Object tag = v.getTag();
 		if (tag instanceof ApplicationInfo) {
 			// Open shortcut
@@ -2938,10 +2937,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		}
 	}
+
 	void closeObjectView() {
 		mObjectView.setVisibility(View.GONE);
 	}
-	
+
 	public void offsetBoundsToDragLayer(Rect bounds, View view) {
 		view.getDrawingRect(bounds);
 
@@ -2949,13 +2949,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			bounds.offset(view.getLeft(), view.getTop());
 			view = (View) view.getParent();
 		}
-	}	
-	
-	public View getAllgridView(){
+	}
+
+	public View getAllgridView() {
 		return mAllAppsGrid;
 	}
-	
-	public class SmsReceiver extends BroadcastReceiver {	
+
+	public class SmsReceiver extends BroadcastReceiver {
 
 		public void onReceive(Context context, Intent intent) {
 			Bundle bundle = intent.getExtras();
@@ -2966,21 +2966,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				msgs = new SmsMessage[pdus.length];
 				for (int i = 0; i < msgs.length; i++) {
 					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-//					str += "SMS from " + msgs[i].getOriginatingAddress();
-//					str += " :";
-//					str += msgs[i].getMessageBody().toString();
-//					str += "\n";
+					// str += "SMS from " + msgs[i].getOriginatingAddress();
+					// str += " :";
+					// str += msgs[i].getMessageBody().toString();
+					// str += "\n";
 				}
-				mSpeechBubbleview.getMainView().setText(msgs[0].getMessageBody().toString());
+				mSpeechBubbleview.getMainView().setText(
+						msgs[0].getMessageBody().toString());
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
 			}
 		}
 
 	}
-	
+
 	public void sendtoSMS(String phoneNumber, String message) {
 		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
-				 Launcher.class), 0);
+				Launcher.class), 0);
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 	}
