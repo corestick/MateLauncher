@@ -80,7 +80,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 		mDockButton[3].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
 		mDockButton[3].setText("어플리케이션");		
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 		if (v.equals(mDockButton[0])) {

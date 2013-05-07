@@ -41,7 +41,16 @@
         android:id="@+id/dockbar"
         android:layout_width="fill_parent"
         android:layout_height="65dip"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:visibility="invisible" />
+    
+    <mobi.intuitit.android.mate.launcher.MDockbar
+        android:id="@+id/mdockbar"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="65dip"
+        android:layout_gravity="bottom"
+        android:visibility="visible" />
 
     <mobi.intuitit.android.mate.launcher.AllAppsGridView
         android:id="@id/content"
@@ -65,7 +74,7 @@
         android:src="@drawable/ic_delete"
         android:visibility="invisible"
         launcher:direction="horizontal" />
-    <mobi.intuitit.android.mate.launcher.MobjectView
+    <mobi.intuitit.android.mate.launcher.MObjectView
         android:id="@+id/objectview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

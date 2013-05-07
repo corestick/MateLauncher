@@ -630,13 +630,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ScreenIndicator mIndicator;
 	private ScreenLayout mScreenLayout;
 	private DeleteZone mDeleteZone;
-	private MobjectView mObjectView;
-	private Dockbar mDockbar;
+	private MObjectView mObjectView;
+	public Dockbar mDockbar;
+	public MDockbar mMDockbar;
 	private SpeechBubbleView mSpeechBubbleview;
-	private Button mDockButton1;
-	private Button mDockButton2;
-	private Button mDockButton3;
-	private TextView mDockButton4;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -684,7 +681,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDockbar.setWorkspace(mWorkspace);
 		mDockbar.setAllgridView(mAllAppsGrid);
 		mDockbar.CreateDockbar(); // µ¶¹Ù ºä »ý¼º
-
+		
+		mMDockbar = (MDockbar) dragLayer.findViewById(R.id.mdockbar);
+		mMDockbar.initMDockbar();
+		
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
 		workspace.setLauncher(this);
@@ -693,7 +693,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDeleteZone.setDragController(dragLayer);
 		mDeleteZone.setHandle(mDockbar);
 
-		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
+		mObjectView = (MObjectView) dragLayer.findViewById(R.id.objectview);
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
@@ -1820,7 +1820,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mAllAppsGrid.setSelection(0);
 		mAllAppsGrid.clearTextFilter();
 		mAllAppsGrid.setVisibility(View.GONE);
-		Log.e("ASDASD", "-->>" + mAllAppsGrid.getSelectedItemPosition());
 	}
 
 	private boolean closeFolder() {
