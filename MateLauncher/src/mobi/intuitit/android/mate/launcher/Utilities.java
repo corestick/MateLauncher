@@ -192,4 +192,5 @@ final class Utilities {
 
         return bitmap;
     }
+	
 }

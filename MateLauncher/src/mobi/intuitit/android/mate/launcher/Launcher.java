@@ -185,7 +185,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private final ContentObserver mObserver = new FavoritesChangeObserver();
 	private final ContentObserver mWidgetObserver = new AppWidgetResetObserver();
 
-	private LayoutInflater mInflater;
+	public LayoutInflater mInflater;
 
 	private DragLayer mDragLayer;
 	private Workspace mWorkspace;

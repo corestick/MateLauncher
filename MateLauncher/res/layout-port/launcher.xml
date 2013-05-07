@@ -40,7 +40,7 @@
     <mobi.intuitit.android.mate.launcher.Dockbar
         android:id="@+id/dockbar"
         android:layout_width="fill_parent"
-        android:layout_height="56dip"
+        android:layout_height="65dip"
         android:layout_gravity="bottom" />
 
     <mobi.intuitit.android.mate.launcher.AllAppsGridView

@@ -1,13 +1,13 @@
 package mobi.intuitit.android.mate.launcher;
 
+import mobi.intuitit.android.mate.launcher.R.color;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,16 +15,13 @@ import android.widget.Toast;
 public class Dockbar extends LinearLayout implements View.OnClickListener {
 
 	private Launcher mLauncher;
-	private Button mDockButton1;
-	private Button mDockButton2;
-	private Button mDockButton3;
-	private TextView mDockButton4;
+	private TextView [] mDockButton;
 	private Workspace mWorkspace;
-	private View mAllAppsGrid;
+	private View mAllAppsGrid;	
+	private ImageView left;
 
 	public Dockbar(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		// TODO Auto-generated constructor stub
+		super(context, attrs);		
 	}
 
 	public void setLauncher(Launcher launcher) {
@@ -40,59 +37,73 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 	}
 
 	public void CreateDockbar() {
-		this.setBackgroundColor(Color.GRAY);
-		// mDockbar.removeAllViews();
-		mDockButton1 = new Button(mLauncher);
-		mDockButton2 = new Button(mLauncher);
-		mDockButton3 = new Button(mLauncher);
-		mDockButton4 = new TextView(mLauncher);
 
-		mDockButton1.setText("button1");
-		mDockButton2.setText("button2");
-		mDockButton3.setText("button3");
-
-		mDockButton4.setLayoutParams(new LinearLayout.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.FILL_PARENT, 0.0F));
-		mDockButton4.setTextColor(Color.RED);
-		mDockButton4.setTextSize(20);
-		mDockButton4.setGravity(Gravity.CENTER);
-		mDockButton4.setText("grid");
-		// mDockButton4.setCompoundDrawablesWithIntrinsicBounds(0,
-		// R.drawable.call, 0, 0);
-
-		addView(mDockButton1, 100, 56);
-		addView(mDockButton2, 100, 56);
-		addView(mDockButton3, 100, 56);
-		addView(mDockButton4, 100, 56);
-
-		mDockButton1.setOnClickListener(this);
-		mDockButton2.setOnClickListener(this);
-		mDockButton3.setOnClickListener(this);
-		mDockButton4.setOnClickListener(this);
+		left = new ImageView(mLauncher);		
+		addView(left);
+		left.setOnClickListener(this);
+		LayoutParams param = (LayoutParams) left.getLayoutParams();
+		param.weight = 10;
+		left.setLayoutParams(param);		
+		Drawable drawable4 = getResources().getDrawable(R.drawable.icon_left);		
+		left.setImageDrawable(drawable4);		
+		
+		mDockButton = new TextView[4];	
+		for(int i =0 ; i < 4 ; i++){
+			mDockButton[i] = new TextView(mLauncher);			
+			addView(mDockButton[i]);
+			mDockButton[i].setOnClickListener(this);
+			LayoutParams param1 = (LayoutParams) mDockButton[i].getLayoutParams();
+			param1.weight = 50;
+			 mDockButton[i].setLayoutParams(param1);			
+			mDockButton[i].setPadding(2, 2, 5, 2);		
+			mDockButton[i].setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP);
+			mDockButton[i].setTextSize(12);
+			mDockButton[i].setTextColor(color.bright_text_dark_focused);
+		}	
+		Drawable drawable = getResources().getDrawable(R.drawable.phone);
+		drawable =Utilities.createIconThumbnail(drawable, mLauncher);
+		mDockButton[0].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+		mDockButton[0].setText("전화");
+		
+		Drawable drawable1 = getResources().getDrawable(R.drawable.call);
+		drawable1 =Utilities.createIconThumbnail(drawable1, mLauncher);
+		mDockButton[1].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+		mDockButton[1].setText("연락처");
+		
+		Drawable drawable2 = getResources().getDrawable(R.drawable.call);
+		drawable2 =Utilities.createIconThumbnail(drawable2, mLauncher);
+		mDockButton[2].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+		mDockButton[2].setText("문자");
+		
+		Drawable drawable3 = getResources().getDrawable(R.drawable.call);
+		drawable2 =Utilities.createIconThumbnail(drawable3, mLauncher);
+		mDockButton[3].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+		mDockButton[3].setText("어플리케이션");		
 	}
 
 	@Override
 	public void onClick(View v) {
-		if (v.equals(mDockButton1)) {
+		if (v.equals(mDockButton[0])) {
 			Toast.makeText(mLauncher, "b1", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (v.equals(mDockButton2)) {
+		else if (v.equals(mDockButton[1])) {
 			Toast.makeText(mLauncher, "b2", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (v.equals(mDockButton3)) {
+		else if (v.equals(mDockButton[2])) {
 			Toast.makeText(mLauncher, "b3", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if (v.equals(mDockButton4)) {
+		else if (v.equals(mDockButton[3])) {
 			final Rect bounds = mWorkspace.mDrawerBounds;
 			mLauncher.offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 			mAllAppsGrid.setFocusable(true);
 			mAllAppsGrid.setVisibility(View.VISIBLE);
 			// mSpeechBubbleview.setVisibility(View.INVISIBLE);
 			return;
+		}
+		else if(v.equals(left)){
 		}
 
 	}
