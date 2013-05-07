@@ -70,8 +70,9 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 		mDockButton2.setOnClickListener(this);
 		mDockButton3.setOnClickListener(this);
 		mDockButton4.setOnClickListener(this);
+		
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 		if (v.equals(mDockButton1)) {
