@@ -683,7 +683,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDockbar.CreateDockbar(); // µ¶¹Ù ºä »ý¼º
 		
 		mMDockbar = (MDockbar) dragLayer.findViewById(R.id.mdockbar);
-		mMDockbar.initMDockbar();
+		mMDockbar.initMDockbar(this);
 		
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);

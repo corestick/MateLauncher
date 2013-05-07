@@ -15,6 +15,8 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	private ImageButton mHomepage;
 	private ImageButton mRight;
 	
+	Launcher launcher;
+	
 	Context context;
 	
 	public MDockbar(Context context) {
@@ -31,7 +33,9 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		///this.setBackgroundResource(R.drawable.mdock);
 	}
 	
-	public void initMDockbar() {
+	public void initMDockbar(Launcher launcher) {
+		this.launcher = launcher;
+		
 		mFurniture = new ImageButton(context);
 		mFlooring = new ImageButton(context);
 		mWallpaper = new ImageButton(context);
@@ -105,6 +109,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		
 		if(v.equals(mRight)) {
 			hideMDockbar();
+			launcher.mDockbar.showDockbar();
 		}
 		
 	}
