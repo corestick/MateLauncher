@@ -630,7 +630,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ScreenIndicator mIndicator;
 	private ScreenLayout mScreenLayout;
 	private DeleteZone mDeleteZone;
-	private MObjectView mObjectView;
+	private MobjectView mObjectView;
 	public Dockbar mDockbar;
 	public MDockbar mMDockbar;
 	private SpeechBubbleView mSpeechBubbleview;
@@ -693,7 +693,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDeleteZone.setDragController(dragLayer);
 		mDeleteZone.setHandle(mDockbar);
 
-		mObjectView = (MObjectView) dragLayer.findViewById(R.id.objectview);
+		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 

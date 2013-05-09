@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-public class MObjectView extends GridView implements
+public class MobjectView extends GridView implements
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 		DragSource {
 
@@ -22,16 +22,16 @@ public class MObjectView extends GridView implements
 	private int mTextureWidth;
 	private int mTextureHeight;
 
-	public MObjectView(Context context) {
+	public MobjectView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	public MObjectView(Context context, AttributeSet attrs) {
+	public MobjectView(Context context, AttributeSet attrs) {
 		this(context, attrs, android.R.attr.gridViewStyle);
 	}
 
-	public MObjectView(Context context, AttributeSet attrs, int defStyle) {
+	public MobjectView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
 		TypedArray a = context.obtainStyledAttributes(attrs,
