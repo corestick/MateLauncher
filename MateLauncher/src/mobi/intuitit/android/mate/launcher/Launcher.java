@@ -630,7 +630,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ScreenIndicator mIndicator;
 	private ScreenLayout mScreenLayout;
 	private DeleteZone mDeleteZone;
-	private MobjectView mObjectView;
+	public MobjectView mObjectView;
 	public Dockbar mDockbar;
 	public MDockbar mMDockbar;
 	private SpeechBubbleView mSpeechBubbleview;
@@ -697,11 +697,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
-		mSpeechBubbleview = (SpeechBubbleView) dragLayer
-				.findViewById(R.id.speechbubbleview);
-		mSpeechBubbleview.setLauncher(this);
-		mSpeechBubbleview.CreateMainView();
-		mSpeechBubbleview.setLocation(5, 50, 0, 0);
+//		mSpeechBubbleview = (SpeechBubbleView) dragLayer
+//				.findViewById(R.id.speechbubbleview);
+//		mSpeechBubbleview.setLauncher(this);
+//		mSpeechBubbleview.CreateMainView();
+//		mSpeechBubbleview.setLocation(5, 50, 0, 0);
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -2975,7 +2975,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
 			}
 		}
-
 	}
 
 	public void sendtoSMS(String phoneNumber, String message) {
@@ -2985,4 +2984,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 	}
 
+	
+	public MLayout getCurrentMLayout() {
+		return (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
+	}
 }

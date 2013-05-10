@@ -22,6 +22,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 
 	public Dockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.setBackgroundResource(R.drawable.dock);
 	}
 
 	public void setLauncher(Launcher launcher) {

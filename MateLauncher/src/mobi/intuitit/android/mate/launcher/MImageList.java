@@ -1,78 +1,83 @@
 package mobi.intuitit.android.mate.launcher;
 
-import java.util.HashMap;
-
-import android.util.Log;
+import java.util.Vector;
 
 public class MImageList {
 
-	private HashMap<String, Integer> flooringList;
-	private HashMap<String, Integer> wallpaperList;
-	private HashMap<String, Integer> avatarList;
-	private HashMap<String, Integer> furnitureList;
-	
+	public Vector<Integer> flooringList;
+	public Vector<Integer> wallpaperList;
+	public Vector<Integer> avatarList;
+	public Vector<Integer> furnitureList;
+
 	private static MImageList mImageList = new MImageList();
 
 	private MImageList() {
-		
-		flooringList = new HashMap<String, Integer>();
-		wallpaperList = new HashMap<String, Integer>();
-		avatarList = new HashMap<String, Integer>();
-		furnitureList = new HashMap<String, Integer>();
-		
+
+		flooringList = new Vector<Integer>();
+		wallpaperList = new Vector<Integer>();
+		avatarList = new Vector<Integer>();
+		furnitureList = new Vector<Integer>();
+
 		initFlooring();
 		initWallpapaer();
 		initAvatar();
 		initFurniture();
 	}
-	
+
 	public static MImageList getInstance() {
 		return mImageList;
 	}
 
 	private void initFlooring() {
+
+		flooringList.add(R.drawable.m_flooring_01);
+		flooringList.add(R.drawable.m_flooring_02);
+		flooringList.add(R.drawable.m_flooring_03);
+		flooringList.add(R.drawable.m_flooring_04);
+		flooringList.add(R.drawable.m_flooring_05);
+		flooringList.add(R.drawable.m_flooring_06);
+		flooringList.add(R.drawable.m_flooring_07);
+		flooringList.add(R.drawable.m_flooring_08);
+//		flooringList.add(R.drawable.m_flooring_09);
 		
-		flooringList.put("1", R.drawable.m_flooring_01);
 
 	}
 
 	private void initWallpapaer() {
 
-		wallpaperList.put("1", R.drawable.m_wall_01);
+		wallpaperList.add(R.drawable.m_wall_01);
+		wallpaperList.add(R.drawable.m_wall_02);
+		wallpaperList.add(R.drawable.m_wall_03);
+		wallpaperList.add(R.drawable.m_wall_04);
+		wallpaperList.add(R.drawable.m_wall_05);
+		wallpaperList.add(R.drawable.m_wall_06);
+		wallpaperList.add(R.drawable.m_wall_07);
+		wallpaperList.add(R.drawable.m_wall_08);
+//		wallpaperList.add(R.drawable.m_wall_09);
+//		wallpaperList.add(R.drawable.m_wall_010);
 
 	}
 
 	private void initAvatar() {
 
-		avatarList.put("1", R.drawable.m_avatar_01);
+		avatarList.add(R.drawable.m_avatar_01);
+		avatarList.add(R.drawable.m_avatar_02);
+		avatarList.add(R.drawable.m_avatar_03);
+		avatarList.add(R.drawable.m_avatar_04);
+		avatarList.add(R.drawable.m_avatar_05);
+		avatarList.add(R.drawable.m_avatar_06);
 
 	}
 
 	private void initFurniture() {
 
-		furnitureList.put("audio_01", R.drawable.m_audio_01);
-		furnitureList.put("tv_01", R.drawable.m_tv_01);
-		furnitureList.put("phone_01", R.drawable.m_phone_01);
-
-	}
-
-	public int getFlooring(String Idx) {
-
-		return flooringList.get(Idx); 
-	}
-	
-	public int getWallpaper(String Idx) {
-
-		return wallpaperList.get(Idx); 
-	}
-	
-	public int getAvatar(String Idx) {
-
-		return avatarList.get(Idx); 
-	}
-	
-	public int getFurniture(String Idx) {
-
-		return furnitureList.get(Idx); 
+		furnitureList.add(R.drawable.m_furniture_01);
+		furnitureList.add(R.drawable.m_furniture_02);
+		furnitureList.add(R.drawable.m_furniture_03);
+		furnitureList.add(R.drawable.m_furniture_04);
+		furnitureList.add(R.drawable.m_furniture_05);
+		furnitureList.add(R.drawable.m_furniture_06);
+		furnitureList.add(R.drawable.m_furniture_07);
+		
 	}
 }

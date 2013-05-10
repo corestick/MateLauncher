@@ -9,8 +9,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +23,8 @@ public class MLayout extends LayoutType {
 
 	int[] mCellXY = new int[2];
 	
-	int mFlooringRes;
-	int mWallpaperRes;
+	Drawable mFlooringRes;
+	Drawable mWallpaperRes;
 
 	public MLayout(Context context) {
 		this(context, null);
@@ -41,8 +41,8 @@ public class MLayout extends LayoutType {
 
 		a.recycle();
 		
-		mFlooringRes = MImageList.getInstance().getFlooring("1");
-		mWallpaperRes = MImageList.getInstance().getWallpaper("1");
+		mFlooringRes = getResources().getDrawable(MImageList.getInstance().flooringList.get(0));
+		mWallpaperRes = getResources().getDrawable(MImageList.getInstance().wallpaperList.get(0));
 		
 		setAlwaysDrawnWithCacheEnabled(false);
 	}
@@ -395,17 +395,18 @@ public class MLayout extends LayoutType {
 		MBackground mBack = new MBackground(canvas.getWidth(), canvas.getHeight());
 		
 		//벽지 그리기
-		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(mWallpaperRes));
+		mBack.setBitmap((BitmapDrawable)mWallpaperRes);
 		canvas.drawPath(mBack.getLeftPath(), mBack.getPaint());
 		canvas.drawPath(mBack.getRightPath(), mBack.getPaint());
 		
 		//바닥 그리기
-		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(mFlooringRes));
+		mBack.setBitmap((BitmapDrawable)mFlooringRes);
 		canvas.drawPath(mBack.getBottomPath(), mBack.getPaint());
 		
 		//테투리 그리기
 		canvas.drawPath(mBack.getStrokePath(), mBack.getStrokePaint());
 		
 		super.dispatchDraw(canvas);
+		invalidate();
 	}
 }
