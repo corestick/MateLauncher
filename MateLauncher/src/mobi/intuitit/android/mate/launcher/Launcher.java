@@ -223,8 +223,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private DesktopBinder mBinder;
 
 	// mobject list
-	MObject mobject;
-	ArrayList<MObject> mobjectlist = new ArrayList<MObject>();
+	Mobject mobject;
+	ArrayList<Mobject> mobjectlist = new ArrayList<Mobject>();
 
 	static boolean modifyMode = false; // 수정모드 플래그
 
@@ -636,7 +636,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ScreenIndicator mIndicator;
 	private ScreenLayout mScreenLayout;
 	private DeleteZone mDeleteZone;
-	private MobjectView mObjectView;
+	public MobjectView mObjectView;
 	public Dockbar mDockbar;
 	public MDockbar mMDockbar;
 	private SpeechBubbleView mSpeechBubbleview;
@@ -706,12 +706,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		/*****
 		 * 
 		 */
-		mobject = new MObject();
+		mobject = new Mobject();
 		mobject.cellX = 10;
 		mobject.cellY = 10;
 		mobject.icon = getResources().getDrawable(R.drawable.sms);
 
-		MObject mobject1 = new MObject();
+		Mobject mobject1 = new Mobject();
 		mobject1.cellX = 20;
 		mobject1.cellY = 20;
 		mobject1.icon = getResources().getDrawable(R.drawable.call);
@@ -727,6 +727,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mSpeechBubbleview.setLauncher(this);
 		mSpeechBubbleview.CreateSelectView();		
 		mSpeechBubbleview.setVisibility(View.GONE);
+
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -3009,7 +3010,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
 			}
 		}
-
 	}
 
 	public void sendtoSMS(String phoneNumber, String message) {
@@ -3020,4 +3020,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.", Toast.LENGTH_SHORT).show();
 	}
 
+	
+	public MLayout getCurrentMLayout() {
+		return (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
+	}
 }

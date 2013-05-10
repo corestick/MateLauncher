@@ -78,6 +78,7 @@
         android:id="@+id/objectview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_marginBottom="65dip"
         android:numColumns="4"
         android:verticalSpacing="10dip"
         android:visibility="invisible"

@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-public class MObject extends ItemInfo {
+public class Mobject extends ItemInfo {
 
 	/**
      * The application name.
@@ -26,12 +26,12 @@ public class MObject extends ItemInfo {
      * 아이콘 사이즈
      */
     float scale;
-
-    MObject() {
+    
+    Mobject() {
         itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
     }
     
-    public MObject(MObject info) {
+    public Mobject(Mobject info) {
         super(info);
         title = info.title.toString();
         intent = new Intent(info.intent);

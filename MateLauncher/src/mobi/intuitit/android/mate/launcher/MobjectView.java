@@ -21,7 +21,7 @@ public class MobjectView extends GridView implements
 	private Paint mPaint;
 	private int mTextureWidth;
 	private int mTextureHeight;
-
+	
 	public MobjectView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -104,10 +104,13 @@ public class MobjectView extends GridView implements
 		if (!view.isInTouchMode()) {
 			return false;
 		}
+		
+		if(!mLauncher.mMDockbar.isDraggable())
+			return false;
 
-		MObject app = (MObject) parent
+		ItemInfo app = (ItemInfo) parent
 				.getItemAtPosition(position);
-		app = new MObject(app);
+		app = new ItemInfo(app);
 
 		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
 		mLauncher.closeObjectView();
@@ -117,7 +120,22 @@ public class MobjectView extends GridView implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
-
+		
+		if(mLauncher.mMDockbar.mMDockbarMode == mLauncher.mMDockbar.WALLPAPER_MODE) {
+			MLayout mLayout = mLauncher.getCurrentMLayout();
+			mLayout.mWallpaperRes = getResources().getDrawable(MImageList.getInstance().wallpaperList.get(arg2));
+			
+			mLauncher.mMDockbar.mMDockbarMode = mLauncher.mMDockbar.HIDE_MODE;
+			this.setVisibility(View.GONE);
+		}
+		
+		if(mLauncher.mMDockbar.mMDockbarMode == mLauncher.mMDockbar.FLOORING_MODE) {
+			MLayout mLayout = mLauncher.getCurrentMLayout();
+			mLayout.mFlooringRes = getResources().getDrawable(MImageList.getInstance().flooringList.get(arg2));
+			
+			mLauncher.mMDockbar.mMDockbarMode = mLauncher.mMDockbar.HIDE_MODE;
+			this.setVisibility(View.GONE);
+		}
 	}
-
+	
 }
