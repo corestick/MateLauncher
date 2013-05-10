@@ -8,16 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 
 public class SpeechBubbleView extends LinearLayout implements
 		View.OnClickListener {
 
 	private Launcher mLauncher;
 	private TextView mainview;
-	private Button smsButton;
-	private Button faceButton;
+	private ImageView smsButton;
+	private ImageView faceButton;
+	private ImageView twiterButton;
 	private Button sendButton;
 	private EditText edit;
 
@@ -51,23 +55,58 @@ public class SpeechBubbleView extends LinearLayout implements
 	}
 
 	public void CreateSelectView() {
-		smsButton = new Button(mLauncher);
-		faceButton = new Button(mLauncher);
-		smsButton.setText("SMS");
-		faceButton.setText("facebook");
-		addView(smsButton, 100, 56);
-		addView(faceButton, 250, 56);
+		smsButton = new ImageView(mLauncher);
+		faceButton = new ImageView(mLauncher);
+		twiterButton = new ImageView(mLauncher);
+
 		smsButton.setOnClickListener(this);
 		faceButton.setOnClickListener(this);
+		
+		addView(smsButton);
+		addView(faceButton);
+		addView(twiterButton);
+		
+		LayoutParams param2 = (LayoutParams) smsButton.getLayoutParams();
+		param2.width = 60;
+		param2.height = 60;
+		
+		LayoutParams param3 = (LayoutParams) faceButton.getLayoutParams();
+		param3.width = 60;
+		param3.height = 60;
+		
+		LayoutParams param4 = (LayoutParams) twiterButton.getLayoutParams();
+		param4.width = 60;
+		param4.height = 60;
+		
+		smsButton.setLayoutParams(param2);
+		faceButton.setLayoutParams(param3);
+		twiterButton.setLayoutParams(param4);
+		
+		smsButton.setImageResource(R.drawable.ico_sms);
+		faceButton.setImageResource(R.drawable.ico_facebook);
+		twiterButton.setImageResource(R.drawable.ico_tweet);
+		
 	}
 
 	public void CreateSendView() {
 		edit = new EditText(mLauncher);
-		sendButton = new Button(mLauncher);
-		sendButton.setText("전송");
+		sendButton = new Button(mLauncher);			
+		
 		sendButton.setOnClickListener(this);
-		addView(edit, 200, 56);
-		addView(sendButton, 100, 56);
+		addView(edit);
+		addView(sendButton);
+		
+		LayoutParams param1 = (LayoutParams) edit.getLayoutParams();
+		param1.width = 200;
+		param1.height = 110;
+		edit.setLayoutParams(param1);
+		
+		LayoutParams param2 = (LayoutParams) sendButton.getLayoutParams();
+		param2.width = 100;
+		param2.height = 50;
+		sendButton.setLayoutParams(param2);
+		
+		sendButton.setText("전송");
 		
 	}
 
@@ -90,9 +129,18 @@ public class SpeechBubbleView extends LinearLayout implements
 			CreateSendView();
 		} else if (v.equals(sendButton)) {
 			String message = edit.getText().toString();
-			mLauncher.sendtoSMS("", message);
-			removeAllViews();
-			CreateMainView();
+			if(message.length() !=0){
+				mLauncher.sendtoSMS("01095485995", message);
+				removeAllViews();
+				CreateSelectView();
+				this.setVisibility(View.GONE);
+			}
+			else{
+				Toast.makeText(mLauncher, "문자를 입력하세요", Toast.LENGTH_SHORT).show();
+				removeAllViews();
+				CreateSelectView();
+				this.setVisibility(View.GONE);
+			}
 		}
 
 	}

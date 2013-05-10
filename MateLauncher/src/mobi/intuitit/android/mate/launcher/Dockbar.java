@@ -67,21 +67,21 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 				null, null);
 		mDockButton[0].setText("전화");
 
-		Drawable drawable1 = getResources().getDrawable(R.drawable.call);
+		Drawable drawable1 = getResources().getDrawable(R.drawable.contacts);
 		drawable1 = Utilities.createIconThumbnail(drawable1, mLauncher);
-		mDockButton[1].setCompoundDrawablesWithIntrinsicBounds(null, drawable,
+		mDockButton[1].setCompoundDrawablesWithIntrinsicBounds(null, drawable1,
 				null, null);
 		mDockButton[1].setText("연락처");
 
-		Drawable drawable2 = getResources().getDrawable(R.drawable.call);
+		Drawable drawable2 = getResources().getDrawable(R.drawable.message);
 		drawable2 = Utilities.createIconThumbnail(drawable2, mLauncher);
-		mDockButton[2].setCompoundDrawablesWithIntrinsicBounds(null, drawable,
+		mDockButton[2].setCompoundDrawablesWithIntrinsicBounds(null, drawable2,
 				null, null);
 		mDockButton[2].setText("문자");
 
-		Drawable drawable3 = getResources().getDrawable(R.drawable.call);
-		drawable2 = Utilities.createIconThumbnail(drawable3, mLauncher);
-		mDockButton[3].setCompoundDrawablesWithIntrinsicBounds(null, drawable,
+		Drawable drawable3 = getResources().getDrawable(R.drawable.allapps);
+		drawable3 = Utilities.createIconThumbnail(drawable3, mLauncher);
+		mDockButton[3].setCompoundDrawablesWithIntrinsicBounds(null, drawable3,
 				null, null);
 		mDockButton[3].setText("어플리케이션");
 	}
@@ -114,6 +114,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			return;
 		} else if (v.equals(left)) {
 			hideDockbar();
+			Launcher.modifyMode = true;
 			mLauncher.mMDockbar.showMDockbar();
 		}
 

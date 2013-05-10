@@ -105,9 +105,9 @@ public class MobjectView extends GridView implements
 			return false;
 		}
 
-		ApplicationInfo app = (ApplicationInfo) parent
+		MObject app = (MObject) parent
 				.getItemAtPosition(position);
-		app = new ApplicationInfo(app);
+		app = new MObject(app);
 
 		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
 		mLauncher.closeObjectView();

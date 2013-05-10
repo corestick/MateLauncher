@@ -109,6 +109,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		
 		if(v.equals(mRight)) {
 			hideMDockbar();
+			Launcher.modifyMode = false;
 			launcher.mDockbar.showDockbar();
 		}
 		

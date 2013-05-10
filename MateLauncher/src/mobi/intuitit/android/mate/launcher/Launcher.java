@@ -222,6 +222,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private DesktopBinder mBinder;
 
+	// mobject list
+	MObject mobject;
+	ArrayList<MObject> mobjectlist = new ArrayList<MObject>();
+
+	static boolean modifyMode = false; // 수정모드 플래그
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -681,27 +687,46 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDockbar.setWorkspace(mWorkspace);
 		mDockbar.setAllgridView(mAllAppsGrid);
 		mDockbar.CreateDockbar(); // 독바 뷰 생성
-		
+
 		mMDockbar = (MDockbar) dragLayer.findViewById(R.id.mdockbar);
 		mMDockbar.initMDockbar(this);
-		
+
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
 		workspace.setLauncher(this);
 
 		mDeleteZone.setLauncher(this);
 		mDeleteZone.setDragController(dragLayer);
-		mDeleteZone.setHandle(mDockbar);
+		mDeleteZone.setHandle(mMDockbar);
 
 		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
+		/*****
+		 * 
+		 */
+		mobject = new MObject();
+		mobject.cellX = 10;
+		mobject.cellY = 10;
+		mobject.icon = getResources().getDrawable(R.drawable.sms);
+
+		MObject mobject1 = new MObject();
+		mobject1.cellX = 20;
+		mobject1.cellY = 20;
+		mobject1.icon = getResources().getDrawable(R.drawable.call);
+
+		mobjectlist.add(mobject);
+		mobjectlist.add(mobject1);
+		MobjectAdapter mobjectadapter = new MobjectAdapter(
+				getApplicationContext(), mobjectlist);
+		mObjectView.setAdapter(mobjectadapter);
+
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
 		mSpeechBubbleview.setLauncher(this);
-		mSpeechBubbleview.CreateMainView();
-		mSpeechBubbleview.setLocation(5, 50, 0, 0);
+		mSpeechBubbleview.CreateSelectView();		
+		mSpeechBubbleview.setVisibility(View.GONE);
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -2025,7 +2050,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			ApplicationsAdapter drawerAdapter) {
 		mAllAppsGrid.setAdapter(drawerAdapter);
 		// 독바
-		mObjectView.setAdapter(drawerAdapter);
 		binder.startBindingAppWidgetsWhenIdle();
 	}
 
@@ -2242,34 +2266,44 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	public boolean onLongClick(View v) {
-		if (mDesktopLocked) {
-			return false;
-		}
-
-		if (!(v instanceof LayoutType)) {
-			v = (View) v.getParent();
-		}
-
-		LayoutType.CellInfo cellInfo = (LayoutType.CellInfo) v.getTag();
-
-		// This happens when long clicking an item with the dpad/trackball
-		if (cellInfo == null) {
-			return true;
-		}
-
-		if (mWorkspace.allowLongPress()) {
-			if (cellInfo.cell == null) {
-				if (cellInfo.valid) {
-					// User long pressed on empty space
-					mWorkspace.setAllowLongPress(false);
-					showAddDialog(cellInfo);
-				}
-			} else {
-				if (!(cellInfo.cell instanceof Folder)) {
-					// User long pressed on an item
-					mWorkspace.startDrag(cellInfo);
-				}
+		if (modifyMode == true) {
+			if (mDesktopLocked) {
+				return false;
 			}
+
+			if (!(v instanceof LayoutType)) {
+				v = (View) v.getParent();
+			}
+
+			LayoutType.CellInfo cellInfo = (LayoutType.CellInfo) v.getTag();
+
+			// This happens when long clicking an item with the dpad/trackball
+			if (cellInfo == null) {
+				return true;
+			}
+
+			if (mWorkspace.allowLongPress()) {
+				if (cellInfo.cell == null) {
+					if (cellInfo.valid) {
+						// User long pressed on empty space
+						mWorkspace.setAllowLongPress(false);
+						showAddDialog(cellInfo);
+					}
+				} else {
+					if (!(cellInfo.cell instanceof Folder)) {
+						// User long pressed on an item
+						mWorkspace.startDrag(cellInfo);
+					}
+				}
+			}			
+		}
+		else {
+			ApplicationInfo a =  (ApplicationInfo) v.getTag();			
+			mSpeechBubbleview.setLocation(a.cellX-40, a.cellY-50, 0, 0);
+			mSpeechBubbleview.setVisibility(View.VISIBLE);
+			Log.e("x", a.cellX+"");
+			Log.e("y", a.cellY+"");
+			
 		}
 		return true;
 	}
@@ -2983,6 +3017,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				Launcher.class), 0);
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
+		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.", Toast.LENGTH_SHORT).show();
 	}
 
 }
