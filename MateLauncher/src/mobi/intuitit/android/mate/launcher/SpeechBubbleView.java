@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
 
 public class SpeechBubbleView extends LinearLayout implements
 		View.OnClickListener {
@@ -103,7 +103,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		
 		LayoutParams param2 = (LayoutParams) sendButton.getLayoutParams();
 		param2.width = 100;
-		param2.height = 50;
+		param2.height = 70;
 		sendButton.setLayoutParams(param2);
 		
 		sendButton.setText("Àü¼Û");
@@ -130,9 +130,12 @@ public class SpeechBubbleView extends LinearLayout implements
 		} else if (v.equals(sendButton)) {
 			String message = edit.getText().toString();
 			if(message.length() !=0){
-				mLauncher.sendtoSMS("01095485995", message);
+				mLauncher.sendtoSMS("5556", message);
 				removeAllViews();
 				CreateSelectView();
+				InputMethodManager imm = (InputMethodManager)mLauncher.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+
 				this.setVisibility(View.GONE);
 			}
 			else{

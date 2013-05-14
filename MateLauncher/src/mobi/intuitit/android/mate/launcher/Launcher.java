@@ -725,9 +725,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
 		mSpeechBubbleview.setLauncher(this);
-		mSpeechBubbleview.CreateSelectView();		
+		mSpeechBubbleview.CreateSelectView();
 		mSpeechBubbleview.setVisibility(View.GONE);
-
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -784,7 +783,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return A View inflated from layoutResId.
 	 */
 	View createShortcut(int layoutResId, ViewGroup parent, ApplicationInfo info) {
-		TextView favorite = (TextView) mInflater.inflate(layoutResId, parent,
+		ImageView favorite = (ImageView) mInflater.inflate(layoutResId, parent,
 				false);
 
 		if (!info.filtered) {
@@ -792,13 +791,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.filtered = true;
 		}
 
-		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
-				null);
-		favorite.setText(info.title);
+//		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
+//				null);
+//		favorite.setText(info.title);
 
-		//
-		// if ((info.title).equals("휴대전화")) {
-		// favorite.setImageResource(R.drawable.call);
+		if ((info.title).equals("Contacts")) {
+			favorite.setImageResource(R.drawable.m_avatar_01);
+		}
+		else if((info.title).equals("Gallery")){
+			favorite.setImageResource(R.drawable.m_furniture_02);
+		}
+		else {
+			 favorite.setImageDrawable(info.icon);
+		}
 		// } else if ((info.title).equals("음악")) {
 		// favorite.setImageResource(R.drawable.audio);
 		// } else if ((info.title).equals("갤러리")) {
@@ -2296,15 +2301,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						mWorkspace.startDrag(cellInfo);
 					}
 				}
-			}			
-		}
-		else {
-			ApplicationInfo a =  (ApplicationInfo) v.getTag();			
-			mSpeechBubbleview.setLocation(a.cellX-40, a.cellY-50, 0, 0);
+			}
+		} else {
+			ApplicationInfo a = (ApplicationInfo) v.getTag();
+			mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);
 			mSpeechBubbleview.setVisibility(View.VISIBLE);
-			Log.e("x", a.cellX+"");
-			Log.e("y", a.cellY+"");
-			
+			Log.e("x", a.cellX + "");
+			Log.e("y", a.cellY + "");
+
 		}
 		return true;
 	}
@@ -2456,7 +2460,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
 							.getViewForTag(mFolderInfo);
 					if (folderIcon != null) {
-						folderIcon.setText(name);
+//						folderIcon.setText(name);
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
@@ -3005,8 +3009,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					// str += msgs[i].getMessageBody().toString();
 					// str += "\n";
 				}
-				mSpeechBubbleview.getMainView().setText(
-						msgs[0].getMessageBody().toString());
+//				mSpeechBubbleview.getMainView().setText(
+//						msgs[0].getMessageBody().toString());
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
 			}
 		}
@@ -3017,10 +3021,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				Launcher.class), 0);
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
-		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
+				Toast.LENGTH_SHORT).show();
 	}
 
-	
 	public MLayout getCurrentMLayout() {
 		return (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
 	}

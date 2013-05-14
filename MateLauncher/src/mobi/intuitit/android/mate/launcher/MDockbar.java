@@ -3,8 +3,8 @@ package mobi.intuitit.android.mate.launcher;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -168,6 +168,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 				launcher.mObjectView.setVisibility(View.VISIBLE);
 				mMDockbarMode = FURNITURE_MODE;
 			}
+			return;
 		}
 
 		if (v.equals(mWallpaper)) {
@@ -180,6 +181,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 				launcher.mObjectView.setVisibility(View.VISIBLE);
 				mMDockbarMode = WALLPAPER_MODE;
 			}
+			return;
 		}
 
 		if (v.equals(mFlooring)) {
@@ -191,6 +193,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 				launcher.mObjectView.setVisibility(View.VISIBLE);
 				mMDockbarMode = FLOORING_MODE;
 			}
+			return;
 		}
 
 		if (v.equals(mAvatar)) {
@@ -202,6 +205,16 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 				launcher.mObjectView.setVisibility(View.VISIBLE);
 				mMDockbarMode = AVATAR_MODE;
 			}
+			return;
+		}
+		if (v.equals(mHomepage)) {
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.setClassName("com.LBL.launcherhome",
+					"com.LBL.launcherhome.Main");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			launcher.startActivity(intent);
+			return;
 		}
 
 		if (v.equals(mRight)) {
@@ -210,6 +223,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			hideMDockbar();
 			Launcher.modifyMode = false;
 			launcher.mDockbar.showDockbar();
+			return;
 		}
 	}
 
