@@ -1,7 +1,10 @@
 package mobi.intuitit.android.mate.launcher;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -22,8 +25,13 @@ public class SpeechBubbleView extends LinearLayout implements
 	private ImageView smsButton;
 	private ImageView faceButton;
 	private ImageView twiterButton;
+	private ImageView kakaoButton;
+	private ImageView callButton;
+
 	private Button sendButton;
 	private EditText edit;
+	private EditText PhoneNum_edit;
+	private Button OkButton;
 
 	private Button b; // 전환용 임시버튼
 
@@ -36,8 +44,8 @@ public class SpeechBubbleView extends LinearLayout implements
 		mLauncher = launcher;
 
 	}
-	
-	public TextView getMainView(){
+
+	public TextView getMainView() {
 		return mainview;
 	}
 
@@ -54,60 +62,99 @@ public class SpeechBubbleView extends LinearLayout implements
 		b.setOnClickListener(this);
 	}
 
+	public void InputPhonenumView() {
+		PhoneNum_edit = new EditText(mLauncher);
+		OkButton = new Button(mLauncher);
+
+		addView(PhoneNum_edit);
+		addView(OkButton);
+
+		LayoutParams param1 = (LayoutParams) PhoneNum_edit.getLayoutParams();
+		param1.width = 200;
+		param1.height = 70;
+		PhoneNum_edit.setLayoutParams(param1);
+
+		LayoutParams param2 = (LayoutParams) OkButton.getLayoutParams();
+		param2.width = 100;
+		param2.height = 70;
+		OkButton.setLayoutParams(param2);
+
+		PhoneNum_edit.setInputType(InputType.TYPE_CLASS_NUMBER);
+		OkButton.setText("확인");
+	}
+
 	public void CreateSelectView() {
+		callButton = new ImageView(mLauncher);
 		smsButton = new ImageView(mLauncher);
+		kakaoButton = new ImageView(mLauncher);
 		faceButton = new ImageView(mLauncher);
 		twiterButton = new ImageView(mLauncher);
 
+		callButton.setOnClickListener(this);
 		smsButton.setOnClickListener(this);
 		faceButton.setOnClickListener(this);
-		
+		kakaoButton.setOnClickListener(this);
+
+		addView(callButton);
 		addView(smsButton);
+		addView(kakaoButton);
 		addView(faceButton);
 		addView(twiterButton);
-		
+
+		LayoutParams param = (LayoutParams) callButton.getLayoutParams();
+		param.width = 60;
+		param.height = 60;
+
+		LayoutParams param1 = (LayoutParams) kakaoButton.getLayoutParams();
+		param1.width = 60;
+		param1.height = 60;
+
 		LayoutParams param2 = (LayoutParams) smsButton.getLayoutParams();
 		param2.width = 60;
 		param2.height = 60;
-		
+
 		LayoutParams param3 = (LayoutParams) faceButton.getLayoutParams();
 		param3.width = 60;
 		param3.height = 60;
-		
+
 		LayoutParams param4 = (LayoutParams) twiterButton.getLayoutParams();
 		param4.width = 60;
 		param4.height = 60;
-		
+
+		callButton.setLayoutParams(param);
+		kakaoButton.setLayoutParams(param1);
 		smsButton.setLayoutParams(param2);
 		faceButton.setLayoutParams(param3);
 		twiterButton.setLayoutParams(param4);
-		
+
+		callButton.setImageResource(R.drawable.ico_tweet);
+		kakaoButton.setImageResource(R.drawable.ico_tweet);
 		smsButton.setImageResource(R.drawable.ico_sms);
 		faceButton.setImageResource(R.drawable.ico_facebook);
 		twiterButton.setImageResource(R.drawable.ico_tweet);
-		
+
 	}
 
 	public void CreateSendView() {
 		edit = new EditText(mLauncher);
-		sendButton = new Button(mLauncher);			
-		
+		sendButton = new Button(mLauncher);
+
 		sendButton.setOnClickListener(this);
 		addView(edit);
 		addView(sendButton);
-		
+
 		LayoutParams param1 = (LayoutParams) edit.getLayoutParams();
 		param1.width = 200;
 		param1.height = 110;
 		edit.setLayoutParams(param1);
-		
+
 		LayoutParams param2 = (LayoutParams) sendButton.getLayoutParams();
 		param2.width = 100;
 		param2.height = 70;
 		sendButton.setLayoutParams(param2);
-		
+
 		sendButton.setText("전송");
-		
+
 	}
 
 	public void setLocation(int left, int top, int right, int bottom) {
@@ -129,24 +176,31 @@ public class SpeechBubbleView extends LinearLayout implements
 			CreateSendView();
 		} else if (v.equals(sendButton)) {
 			String message = edit.getText().toString();
-			if(message.length() !=0){
+			if (message.length() != 0) {
 				mLauncher.sendtoSMS("5556", message);
 				removeAllViews();
 				CreateSelectView();
-				InputMethodManager imm = (InputMethodManager)mLauncher.getSystemService(Context.INPUT_METHOD_SERVICE);
+				InputMethodManager imm = (InputMethodManager) mLauncher
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 
 				this.setVisibility(View.GONE);
-			}
-			else{
-				Toast.makeText(mLauncher, "문자를 입력하세요", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(mLauncher, "문자를 입력하세요", Toast.LENGTH_SHORT)
+						.show();
 				removeAllViews();
 				CreateSelectView();
 				this.setVisibility(View.GONE);
 			}
+		} else if (v.equals(callButton)) {
+			Intent intent = new Intent(Intent.ACTION_CALL);
+			intent.setData(Uri.parse("tel:01095485995"));
+			mLauncher.startActivity(intent);
+
+		} else if (v.equals(kakaoButton)) {
+			KakaoLink kakao = new KakaoLink(mLauncher);
 		}
 
 	}
-	
 
 }

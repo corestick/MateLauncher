@@ -639,7 +639,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public MobjectView mObjectView;
 	public Dockbar mDockbar;
 	public MDockbar mMDockbar;
-	private SpeechBubbleView mSpeechBubbleview;
+	public SpeechBubbleView mSpeechBubbleview;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -724,9 +724,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
-		mSpeechBubbleview.setLauncher(this);
-		mSpeechBubbleview.CreateSelectView();
+		mSpeechBubbleview.setLauncher(this);		
 		mSpeechBubbleview.setVisibility(View.GONE);
+		
+		mSpeechBubbleview = (SpeechBubbleView) dragLayer
+				.findViewById(R.id.speechbubbleview);
+		mSpeechBubbleview.setLauncher(this);
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -791,18 +794,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.filtered = true;
 		}
 
-//		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
-//				null);
-//		favorite.setText(info.title);
+		// favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon,
+		// null,
+		// null);
+		// favorite.setText(info.title);
 
 		if ((info.title).equals("Contacts")) {
 			favorite.setImageResource(R.drawable.m_avatar_01);
-		}
-		else if((info.title).equals("Gallery")){
+		} else if ((info.title).equals("Gallery")) {
 			favorite.setImageResource(R.drawable.m_furniture_02);
-		}
-		else {
-			 favorite.setImageDrawable(info.icon);
+		} else {
+			favorite.setImageDrawable(info.icon);
 		}
 		// } else if ((info.title).equals("À½¾Ç")) {
 		// favorite.setImageResource(R.drawable.audio);
@@ -1806,6 +1808,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mScreenLayout != null && mScreenLayout.isShown())
 						mScreenLayout.fadeOut();
+				
+					if(mSpeechBubbleview.getVisibility() == View.VISIBLE){
+						mSpeechBubbleview.removeAllViews();
+						mSpeechBubbleview.setVisibility(View.INVISIBLE);
+					}
 				}
 				return true;
 			case KeyEvent.KEYCODE_HOME:
@@ -2173,19 +2180,29 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The view representing the clicked shortcut.
 	 */
 	public void onClick(View v) {
-		Object tag = v.getTag();
-		if (tag instanceof ApplicationInfo) {
-			// Open shortcut
-			final Intent intent = ((ApplicationInfo) tag).intent;
-			// set bound
-			if (v != null) {
-				Rect targetRect = new Rect();
-				v.getGlobalVisibleRect(targetRect);
-				intent.setSourceBounds(targetRect);
+		if (modifyMode == false) {
+			Object tag = v.getTag();
+			if (tag instanceof ApplicationInfo) {
+				// Open shortcut
+				final Intent intent = ((ApplicationInfo) tag).intent;
+				// set bound
+				if (v != null) {
+					Rect targetRect = new Rect();
+					v.getGlobalVisibleRect(targetRect);
+					intent.setSourceBounds(targetRect);
+				}
+				startActivitySafely(intent);
+			} else if (tag instanceof FolderInfo) {
+				handleFolderClick((FolderInfo) tag);
 			}
-			startActivitySafely(intent);
-		} else if (tag instanceof FolderInfo) {
-			handleFolderClick((FolderInfo) tag);
+		}
+		else{			
+			ApplicationInfo a = (ApplicationInfo) v.getTag();
+			mSpeechBubbleview.removeAllViews();
+			mSpeechBubbleview.InputPhonenumView();
+			mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);		
+			mSpeechBubbleview.setVisibility(View.VISIBLE);
+						
 		}
 	}
 
@@ -2304,11 +2321,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 		} else {
 			ApplicationInfo a = (ApplicationInfo) v.getTag();
+			mSpeechBubbleview.removeAllViews();			
+			mSpeechBubbleview.CreateSelectView();
 			mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);
 			mSpeechBubbleview.setVisibility(View.VISIBLE);
-			Log.e("x", a.cellX + "");
-			Log.e("y", a.cellY + "");
-
 		}
 		return true;
 	}
@@ -2460,7 +2476,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
 							.getViewForTag(mFolderInfo);
 					if (folderIcon != null) {
-//						folderIcon.setText(name);
+						// folderIcon.setText(name);
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
@@ -3009,8 +3025,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					// str += msgs[i].getMessageBody().toString();
 					// str += "\n";
 				}
-//				mSpeechBubbleview.getMainView().setText(
-//						msgs[0].getMessageBody().toString());
+				// mSpeechBubbleview.getMainView().setText(
+				// msgs[0].getMessageBody().toString());
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
 			}
 		}
