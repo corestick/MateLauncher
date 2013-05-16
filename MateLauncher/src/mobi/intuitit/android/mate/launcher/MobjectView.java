@@ -134,6 +134,7 @@ public class MobjectView extends GridView implements
 			mLayout.mFlooringRes = getResources().getDrawable(MImageList.getInstance().flooringList.get(arg2));
 			
 			mLauncher.mMDockbar.mMDockbarMode = mLauncher.mMDockbar.HIDE_MODE;
+			mLauncher.mMDockbar.invalidate();
 			this.setVisibility(View.GONE);
 		}
 	}
