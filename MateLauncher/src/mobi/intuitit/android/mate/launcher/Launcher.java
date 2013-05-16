@@ -119,8 +119,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final int MENU_SEARCH = MENU_WALLPAPER_SETTINGS + 1;
 	private static final int MENU_NOTIFICATIONS = MENU_SEARCH + 1;
 	private static final int MENU_SETTINGS = MENU_NOTIFICATIONS + 1;
-	private static final int MENU_OBJECT = MENU_SETTINGS + 1;
-	private static final int MENU_HOMEPAGE = MENU_OBJECT + 1;
 
 	private static final int REQUEST_CREATE_SHORTCUT = 1;
 	private static final int REQUEST_CREATE_LIVE_FOLDER = 4;
@@ -791,28 +789,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.filtered = true;
 		}
 
-//		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
-//				null);
-//		favorite.setText(info.title);
-
-		if ((info.title).equals("Contacts")) {
-			favorite.setImageResource(R.drawable.m_avatar_01);
-		}
-		else if((info.title).equals("Gallery")){
-			favorite.setImageResource(R.drawable.m_furniture_02);
-		}
-		else {
-			 favorite.setImageDrawable(info.icon);
-		}
-		// } else if ((info.title).equals("À½¾Ç")) {
-		// favorite.setImageResource(R.drawable.audio);
-		// } else if ((info.title).equals("°¶·¯¸®")) {
-		// favorite.setImageResource(R.drawable.avatar);
-		// } else if ((info.title).equals("°Ë»ö")) {
-		// favorite.setImageResource(R.drawable.tv);
-		// } else {
-		// favorite.setImageDrawable(info.icon);
-		// }
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -1378,9 +1354,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				.setIcon(android.R.drawable.ic_menu_preferences)
 				.setAlphabeticShortcut('P').setIntent(settings);
 
-		menu.add(0, MENU_OBJECT, 0, "Object");
-		menu.add(0, MENU_HOMEPAGE, 0, "HomePage");
-
 		return true;
 	}
 
@@ -1413,22 +1386,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return true;
 		case MENU_NOTIFICATIONS:
 			showNotifications();
-			return true;
-		case MENU_OBJECT:
-			if (mObjectView.getVisibility() == View.VISIBLE) {
-				mObjectView.setVisibility(View.GONE);
-			} else {
-				mObjectView.setVisibility(View.VISIBLE);
-			}
-
-			return true;
-		case MENU_HOMEPAGE:
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.setClassName("com.LBL.launcherhome",
-					"com.LBL.launcherhome.OwnerHome");
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			startActivity(intent);
 			return true;
 		}
 
@@ -1806,8 +1763,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mScreenLayout != null && mScreenLayout.isShown())
 						mScreenLayout.fadeOut();
-					
-					if(mObjectView.getVisibility() == View.VISIBLE)
+
+					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
 				}
 				return true;
@@ -2306,13 +2263,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				}
 			}
 		} else {
-			ApplicationInfo a = (ApplicationInfo) v.getTag();
-			mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);
-			mSpeechBubbleview.setVisibility(View.VISIBLE);
-			Log.e("x", a.cellX + "");
-			Log.e("y", a.cellY + "");
 
+			if (!(v instanceof LayoutType)) {
+				v = (View) v.getParent();
+
+				ApplicationInfo a = (ApplicationInfo) v.getTag();
+				mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);
+				mSpeechBubbleview.setVisibility(View.VISIBLE);
+			}
 		}
+
 		return true;
 	}
 
@@ -2463,7 +2423,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
 							.getViewForTag(mFolderInfo);
 					if (folderIcon != null) {
-//						folderIcon.setText(name);
+						// folderIcon.setText(name);
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
@@ -3012,8 +2972,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					// str += msgs[i].getMessageBody().toString();
 					// str += "\n";
 				}
-//				mSpeechBubbleview.getMainView().setText(
-//						msgs[0].getMessageBody().toString());
+				// mSpeechBubbleview.getMainView().setText(
+				// msgs[0].getMessageBody().toString());
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
 			}
 		}

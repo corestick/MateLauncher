@@ -227,10 +227,10 @@ public class MLayout extends LayoutType {
 	}
 
 	synchronized void saveThumb() {
-		if (layoutDrawed)
-			return;
+//		if (layoutDrawed)  벽지, 바닥 바뀌면 적용을 위해
+//			return;
 
-//		if (mThumbCanvas == null) 벽지, 바닥 바뀌면 적용을 위해
+		if (mThumbCanvas == null)
 			initThumb(getWidth() >> 2, getHeight() >> 2);
 
 		setDrawingCacheEnabled(true);
