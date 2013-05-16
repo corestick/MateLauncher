@@ -1,7 +1,5 @@
 package mobi.intuitit.android.mate.launcher;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
@@ -11,6 +9,11 @@ import android.widget.LinearLayout;
 
 public class MDockbar extends LinearLayout implements View.OnClickListener {
 	
+	private final int FURNITURE = 1;
+	private final int WALLPAPER = 2;
+	private final int FLOORING = 3;
+	private final int AVATAR = 4;
+	
 	private ImageButton mFurniture;
 	private ImageButton mWallpaper;
 	private ImageButton mFlooring;
@@ -18,18 +21,8 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	private ImageButton mHomepage;
 	private ImageButton mRight;
 
-	Launcher launcher;
-
+	Launcher mLauncher;
 	Context context;
-
-	MobjectAdapter mFurnitureAdapter;
-	MobjectAdapter mWallpaperAdapter;
-	MobjectAdapter mFlooringAdapter;
-	MobjectAdapter mAvatarAdapter;
-	ArrayList<Mobject> mFurnitureList;
-	ArrayList<Mobject> mWallpaperList;
-	ArrayList<Mobject> mFlooringList;
-	ArrayList<Mobject> mAvatarList;
 
 	public MDockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -40,7 +33,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	}
 
 	public void initMDockbar(Launcher launcher) {
-		this.launcher = launcher;
+		this.mLauncher = launcher;
 
 		mFurniture = new ImageButton(context);
 		mFlooring = new ImageButton(context);
@@ -92,52 +85,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		mAvatar.setOnClickListener(this);
 		mHomepage.setOnClickListener(this);
 		mRight.setOnClickListener(this);
-
-		initAdapter();
-	}
-
-	public void initAdapter() {
-		mFurnitureList = new ArrayList<Mobject>();
-		mWallpaperList = new ArrayList<Mobject>();
-		mFlooringList = new ArrayList<Mobject>();
-		mAvatarList = new ArrayList<Mobject>();
-
-		for (int i = 0; i < MImageList.getInstance().furnitureList.size(); i++) {
-			Mobject mObject = new Mobject();
-			mObject.icon = getResources().getDrawable(
-					MImageList.getInstance().furnitureList.get(i));
-
-			mFurnitureList.add(mObject);
-		}
-		mFurnitureAdapter = new MobjectAdapter(launcher, mFurnitureList);
-
-		for (int i = 0; i < MImageList.getInstance().wallpaperList.size(); i++) {
-			Mobject mObject = new Mobject();
-			mObject.icon = getResources().getDrawable(
-					MImageList.getInstance().wallpaperList.get(i));
-
-			mWallpaperList.add(mObject);
-		}
-		mWallpaperAdapter = new MobjectAdapter(launcher, mWallpaperList);
-
-		for (int i = 0; i < MImageList.getInstance().flooringList.size(); i++) {
-			Mobject mObject = new Mobject();
-			mObject.icon = getResources().getDrawable(
-					MImageList.getInstance().flooringList.get(i));
-
-			mFlooringList.add(mObject);
-		}
-		mFlooringAdapter = new MobjectAdapter(launcher, mFlooringList);
-
-		for (int i = 0; i < MImageList.getInstance().avatarList.size(); i++) {
-			Mobject mObject = new Mobject();
-			mObject.icon = getResources().getDrawable(
-					MImageList.getInstance().avatarList.get(i));
-
-			mAvatarList.add(mObject);
-		}
-		mAvatarAdapter = new MobjectAdapter(launcher, mAvatarList);
-	}
+	}	
 
 	public void showMDockbar() {
 		this.setVisibility(VISIBLE);
@@ -152,46 +100,38 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		// TODO Auto-generated method stubs
 
 		if (v.equals(mFurniture)) {
-			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.FURNITURE) {
-				launcher.mObjectView.hideMobjectView();
+			if (mLauncher.mObjectView.mObjectViewType == FURNITURE) {
+				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				launcher.mObjectView.setAdapter(mFurnitureAdapter);
-				launcher.mObjectView.setVisibility(View.VISIBLE);
-				launcher.mObjectView.mObjectViewType = launcher.mObjectView.FURNITURE;
+				mLauncher.mObjectView.showMojbectView(FURNITURE);
 			}
 			return;
 		}
 
 		if (v.equals(mWallpaper)) {
 
-			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.WALLPAPER) {
-				launcher.mObjectView.hideMobjectView();
+			if (mLauncher.mObjectView.mObjectViewType == WALLPAPER) {
+				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				launcher.mObjectView.setAdapter(mWallpaperAdapter);
-				launcher.mObjectView.setVisibility(View.VISIBLE);
-				launcher.mObjectView.mObjectViewType = launcher.mObjectView.WALLPAPER;
+				mLauncher.mObjectView.showMojbectView(WALLPAPER);
 			}
 			return;
 		}
 
 		if (v.equals(mFlooring)) {
-			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.FLOORING) {
-				launcher.mObjectView.hideMobjectView();
+			if (mLauncher.mObjectView.mObjectViewType == FLOORING) {
+				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				launcher.mObjectView.setAdapter(mFlooringAdapter);
-				launcher.mObjectView.setVisibility(View.VISIBLE);
-				launcher.mObjectView.mObjectViewType = launcher.mObjectView.FLOORING;
+				mLauncher.mObjectView.showMojbectView(FLOORING);
 			}
 			return;
 		}
 
 		if (v.equals(mAvatar)) {
-			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.AVATAR) {
-				launcher.mObjectView.hideMobjectView();
+			if (mLauncher.mObjectView.mObjectViewType == AVATAR) {
+				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				launcher.mObjectView.setAdapter(mAvatarAdapter);
-				launcher.mObjectView.setVisibility(View.VISIBLE);
-				launcher.mObjectView.mObjectViewType = launcher.mObjectView.AVATAR;
+				mLauncher.mObjectView.showMojbectView(AVATAR);
 			}
 			return;
 		}
@@ -201,15 +141,15 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 					"com.LBL.launcherhome.Main");
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			launcher.startActivity(intent);
+			mLauncher.startActivity(intent);
 			return;
 		}
 
 		if (v.equals(mRight)) {
-			launcher.mObjectView.hideMobjectView();
+			mLauncher.mObjectView.hideMobjectView();
 			hideMDockbar();
 			Launcher.modifyMode = false;
-			launcher.mDockbar.showDockbar();
+			mLauncher.mDockbar.showDockbar();
 			return;
 		}
 	}

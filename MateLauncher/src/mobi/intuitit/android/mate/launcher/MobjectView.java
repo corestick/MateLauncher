@@ -1,5 +1,7 @@
 package mobi.intuitit.android.mate.launcher;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -14,14 +16,23 @@ import android.widget.GridView;
 public class MobjectView extends GridView implements
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 		DragSource {
-	
+
 	private final int HIDE = 0;
-	public final int FURNITURE = 1;
-	public final int WALLPAPER = 2;
-	public final int FLOORING = 3;
-	public final int AVATAR = 4;
+	private final int FURNITURE = 1;
+	private final int WALLPAPER = 2;
+	private final int FLOORING = 3;
+	private final int AVATAR = 4;
 
 	public int mObjectViewType = HIDE;
+
+	MobjectAdapter mFurnitureAdapter;
+	MobjectAdapter mWallpaperAdapter;
+	MobjectAdapter mFlooringAdapter;
+	MobjectAdapter mAvatarAdapter;
+	ArrayList<Mobject> mFurnitureList;
+	ArrayList<Mobject> mWallpaperList;
+	ArrayList<Mobject> mFlooringList;
+	ArrayList<Mobject> mAvatarList;
 
 	private DragController mDragger;
 	private Launcher mLauncher;
@@ -29,7 +40,7 @@ public class MobjectView extends GridView implements
 	private Paint mPaint;
 	private int mTextureWidth;
 	private int mTextureHeight;
-	
+
 	public MobjectView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -55,6 +66,49 @@ public class MobjectView extends GridView implements
 			mPaint.setDither(false);
 		}
 		a.recycle();
+	}
+
+	public void initAdapter() {
+		mFurnitureList = new ArrayList<Mobject>();
+		mWallpaperList = new ArrayList<Mobject>();
+		mFlooringList = new ArrayList<Mobject>();
+		mAvatarList = new ArrayList<Mobject>();
+
+		for (int i = 0; i < MImageList.getInstance().furnitureList.size(); i++) {
+			Mobject mObject = new Mobject();
+			mObject.icon = getResources().getDrawable(
+					MImageList.getInstance().furnitureList.get(i));
+
+			mFurnitureList.add(mObject);
+		}
+		mFurnitureAdapter = new MobjectAdapter(mLauncher, mFurnitureList);
+
+		for (int i = 0; i < MImageList.getInstance().wallpaperList.size(); i++) {
+			Mobject mObject = new Mobject();
+			mObject.icon = getResources().getDrawable(
+					MImageList.getInstance().wallpaperList.get(i));
+
+			mWallpaperList.add(mObject);
+		}
+		mWallpaperAdapter = new MobjectAdapter(mLauncher, mWallpaperList);
+
+		for (int i = 0; i < MImageList.getInstance().flooringList.size(); i++) {
+			Mobject mObject = new Mobject();
+			mObject.icon = getResources().getDrawable(
+					MImageList.getInstance().flooringList.get(i));
+
+			mFlooringList.add(mObject);
+		}
+		mFlooringAdapter = new MobjectAdapter(mLauncher, mFlooringList);
+
+		for (int i = 0; i < MImageList.getInstance().avatarList.size(); i++) {
+			Mobject mObject = new Mobject();
+			mObject.icon = getResources().getDrawable(
+					MImageList.getInstance().avatarList.get(i));
+
+			mAvatarList.add(mObject);
+		}
+		mAvatarAdapter = new MobjectAdapter(mLauncher, mAvatarList);
 	}
 
 	@Override
@@ -105,6 +159,7 @@ public class MobjectView extends GridView implements
 
 	void setLauncher(Launcher launcher) {
 		mLauncher = launcher;
+		initAdapter();
 	}
 
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
@@ -112,12 +167,11 @@ public class MobjectView extends GridView implements
 		if (!view.isInTouchMode()) {
 			return false;
 		}
-		
-		if(isDraggable())
+
+		if (isDraggable())
 			return false;
 
-		ItemInfo app = (ItemInfo) parent
-				.getItemAtPosition(position);
+		ItemInfo app = (ItemInfo) parent.getItemAtPosition(position);
 		app = new ItemInfo(app);
 
 		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
@@ -128,28 +182,49 @@ public class MobjectView extends GridView implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
-		
-		if(mObjectViewType == WALLPAPER) {
+
+		if (mObjectViewType == WALLPAPER) {
 			MLayout mLayout = mLauncher.getCurrentMLayout();
-			mLayout.mWallpaperRes = getResources().getDrawable(MImageList.getInstance().wallpaperList.get(arg2));
-			
+			mLayout.mWallpaperRes = getResources().getDrawable(
+					MImageList.getInstance().wallpaperList.get(arg2));
+
 			hideMobjectView();
 		}
-		
-		if(mObjectViewType == FLOORING) {
+
+		if (mObjectViewType == FLOORING) {
 			MLayout mLayout = mLauncher.getCurrentMLayout();
-			mLayout.mFlooringRes = getResources().getDrawable(MImageList.getInstance().flooringList.get(arg2));
-			
+			mLayout.mFlooringRes = getResources().getDrawable(
+					MImageList.getInstance().flooringList.get(arg2));
+
 			mLauncher.mMDockbar.invalidate();
 			hideMobjectView();
 		}
 	}
-	
+
 	public void hideMobjectView() {
 		mObjectViewType = HIDE;
 		this.setVisibility(View.GONE);
 	}
-	
+
+	public void showMojbectView(int argType) {
+		switch (argType) {
+		case FURNITURE:
+			setAdapter(mFurnitureAdapter);
+			break;
+		case WALLPAPER:
+			setAdapter(mWallpaperAdapter);
+			break;
+		case FLOORING:
+			setAdapter(mFlooringAdapter);
+			break;
+		case AVATAR:
+			setAdapter(mAvatarAdapter);
+			break;
+		}
+		setVisibility(View.VISIBLE);
+		mObjectViewType = argType;
+	}
+
 	public boolean isDraggable() {
 		switch (mObjectViewType) {
 		case FURNITURE:

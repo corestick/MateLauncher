@@ -119,6 +119,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final int MENU_SEARCH = MENU_WALLPAPER_SETTINGS + 1;
 	private static final int MENU_NOTIFICATIONS = MENU_SEARCH + 1;
 	private static final int MENU_SETTINGS = MENU_NOTIFICATIONS + 1;
+	private static final int MENU_SCREENS = MENU_SETTINGS + 1;
 
 	private static final int REQUEST_CREATE_SHORTCUT = 1;
 	private static final int REQUEST_CREATE_LIVE_FOLDER = 4;
@@ -1332,12 +1333,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return false;
 
 		super.onCreateOptionsMenu(menu);
-		menu.add(MENU_GROUP_ADD, MENU_ADD, 0, R.string.menu_add)
+		// menu.add(MENU_GROUP_ADD, MENU_ADD, 0, R.string.menu_add)
+		// .setIcon(android.R.drawable.ic_menu_add)
+		// .setAlphabeticShortcut('A');
+		// menu.add(0, MENU_WALLPAPER_SETTINGS, 0, R.string.menu_wallpaper)
+		// .setIcon(android.R.drawable.ic_menu_gallery)
+		// .setAlphabeticShortcut('W');
+		menu.add(0, MENU_SCREENS, 0, R.string.group_screens)
 				.setIcon(android.R.drawable.ic_menu_add)
 				.setAlphabeticShortcut('A');
-		menu.add(0, MENU_WALLPAPER_SETTINGS, 0, R.string.menu_wallpaper)
-				.setIcon(android.R.drawable.ic_menu_gallery)
-				.setAlphabeticShortcut('W');
 		menu.add(0, MENU_SEARCH, 0, R.string.menu_search)
 				.setIcon(android.R.drawable.ic_search_category_default)
 				.setAlphabeticShortcut(SearchManager.MENU_KEY);
@@ -1386,6 +1390,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			return true;
 		case MENU_NOTIFICATIONS:
 			showNotifications();
+			return true;
+		case MENU_SCREENS:
+			Intent intent = new Intent(Launcher.this, ScreenPrefActivity.class);
+			startActivity(intent);
 			return true;
 		}
 
@@ -2252,8 +2260,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if (cellInfo.cell == null) {
 					if (cellInfo.valid) {
 						// User long pressed on empty space
-						mWorkspace.setAllowLongPress(false);
-						showAddDialog(cellInfo);
+						// mWorkspace.setAllowLongPress(false);
+						// showAddDialog(cellInfo);
 					}
 				} else {
 					if (!(cellInfo.cell instanceof Folder)) {
