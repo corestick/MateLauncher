@@ -10,15 +10,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class MDockbar extends LinearLayout implements View.OnClickListener {
-
-	public final int HIDE_MODE = 0;
-	public final int FURNITURE_MODE = 1;
-	public final int WALLPAPER_MODE = 2;
-	public final int FLOORING_MODE = 3;
-	public final int AVATAR_MODE = 4;
-
-	public int mMDockbarMode = HIDE_MODE;
-
+	
 	private ImageButton mFurniture;
 	private ImageButton mWallpaper;
 	private ImageButton mFlooring;
@@ -160,50 +152,46 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		// TODO Auto-generated method stubs
 
 		if (v.equals(mFurniture)) {
-			if (mMDockbarMode == FURNITURE_MODE) {
-				launcher.mObjectView.setVisibility(View.GONE);
-				mMDockbarMode = HIDE_MODE;
+			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.FURNITURE) {
+				launcher.mObjectView.hideMobjectView();
 			} else {
 				launcher.mObjectView.setAdapter(mFurnitureAdapter);
 				launcher.mObjectView.setVisibility(View.VISIBLE);
-				mMDockbarMode = FURNITURE_MODE;
+				launcher.mObjectView.mObjectViewType = launcher.mObjectView.FURNITURE;
 			}
 			return;
 		}
 
 		if (v.equals(mWallpaper)) {
 
-			if (mMDockbarMode == WALLPAPER_MODE) {
-				launcher.mObjectView.setVisibility(View.GONE);
-				mMDockbarMode = HIDE_MODE;
+			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.WALLPAPER) {
+				launcher.mObjectView.hideMobjectView();
 			} else {
 				launcher.mObjectView.setAdapter(mWallpaperAdapter);
 				launcher.mObjectView.setVisibility(View.VISIBLE);
-				mMDockbarMode = WALLPAPER_MODE;
+				launcher.mObjectView.mObjectViewType = launcher.mObjectView.WALLPAPER;
 			}
 			return;
 		}
 
 		if (v.equals(mFlooring)) {
-			if (mMDockbarMode == FLOORING_MODE) {
-				launcher.mObjectView.setVisibility(View.GONE);
-				mMDockbarMode = HIDE_MODE;
+			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.FLOORING) {
+				launcher.mObjectView.hideMobjectView();
 			} else {
 				launcher.mObjectView.setAdapter(mFlooringAdapter);
 				launcher.mObjectView.setVisibility(View.VISIBLE);
-				mMDockbarMode = FLOORING_MODE;
+				launcher.mObjectView.mObjectViewType = launcher.mObjectView.FLOORING;
 			}
 			return;
 		}
 
 		if (v.equals(mAvatar)) {
-			if (mMDockbarMode == AVATAR_MODE) {
-				launcher.mObjectView.setVisibility(View.GONE);
-				mMDockbarMode = HIDE_MODE;
+			if (launcher.mObjectView.mObjectViewType == launcher.mObjectView.AVATAR) {
+				launcher.mObjectView.hideMobjectView();
 			} else {
 				launcher.mObjectView.setAdapter(mAvatarAdapter);
 				launcher.mObjectView.setVisibility(View.VISIBLE);
-				mMDockbarMode = AVATAR_MODE;
+				launcher.mObjectView.mObjectViewType = launcher.mObjectView.AVATAR;
 			}
 			return;
 		}
@@ -218,24 +206,11 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		}
 
 		if (v.equals(mRight)) {
-			mMDockbarMode = HIDE_MODE;
-			launcher.mObjectView.setVisibility(View.GONE);
+			launcher.mObjectView.hideMobjectView();
 			hideMDockbar();
 			Launcher.modifyMode = false;
 			launcher.mDockbar.showDockbar();
 			return;
 		}
-	}
-
-	public boolean isDraggable() {
-		switch (mMDockbarMode) {
-		case FURNITURE_MODE:
-		case AVATAR_MODE:
-			return true;
-		case WALLPAPER_MODE:
-		case FLOORING_MODE:
-			return false;
-		}
-		return false;
 	}
 }

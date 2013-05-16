@@ -14,6 +14,14 @@ import android.widget.GridView;
 public class MobjectView extends GridView implements
 		AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
 		DragSource {
+	
+	private final int HIDE = 0;
+	public final int FURNITURE = 1;
+	public final int WALLPAPER = 2;
+	public final int FLOORING = 3;
+	public final int AVATAR = 4;
+
+	public int mObjectViewType = HIDE;
 
 	private DragController mDragger;
 	private Launcher mLauncher;
@@ -105,7 +113,7 @@ public class MobjectView extends GridView implements
 			return false;
 		}
 		
-		if(!mLauncher.mMDockbar.isDraggable())
+		if(isDraggable())
 			return false;
 
 		ItemInfo app = (ItemInfo) parent
@@ -121,22 +129,36 @@ public class MobjectView extends GridView implements
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
 		
-		if(mLauncher.mMDockbar.mMDockbarMode == mLauncher.mMDockbar.WALLPAPER_MODE) {
+		if(mObjectViewType == WALLPAPER) {
 			MLayout mLayout = mLauncher.getCurrentMLayout();
 			mLayout.mWallpaperRes = getResources().getDrawable(MImageList.getInstance().wallpaperList.get(arg2));
 			
-			mLauncher.mMDockbar.mMDockbarMode = mLauncher.mMDockbar.HIDE_MODE;
-			this.setVisibility(View.GONE);
+			hideMobjectView();
 		}
 		
-		if(mLauncher.mMDockbar.mMDockbarMode == mLauncher.mMDockbar.FLOORING_MODE) {
+		if(mObjectViewType == FLOORING) {
 			MLayout mLayout = mLauncher.getCurrentMLayout();
 			mLayout.mFlooringRes = getResources().getDrawable(MImageList.getInstance().flooringList.get(arg2));
 			
-			mLauncher.mMDockbar.mMDockbarMode = mLauncher.mMDockbar.HIDE_MODE;
 			mLauncher.mMDockbar.invalidate();
-			this.setVisibility(View.GONE);
+			hideMobjectView();
 		}
 	}
 	
+	public void hideMobjectView() {
+		mObjectViewType = HIDE;
+		this.setVisibility(View.GONE);
+	}
+	
+	public boolean isDraggable() {
+		switch (mObjectViewType) {
+		case FURNITURE:
+		case AVATAR:
+			return true;
+		case WALLPAPER:
+		case FLOORING:
+			return false;
+		}
+		return false;
+	}
 }

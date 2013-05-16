@@ -1806,6 +1806,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mScreenLayout != null && mScreenLayout.isShown())
 						mScreenLayout.fadeOut();
+					
+					if(mObjectView.getVisibility() == View.VISIBLE)
+						mObjectView.hideMobjectView();
 				}
 				return true;
 			case KeyEvent.KEYCODE_HOME:
