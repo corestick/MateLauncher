@@ -230,7 +230,7 @@ public class MLayout extends LayoutType {
 		if (layoutDrawed)
 			return;
 
-		if (mThumbCanvas == null)
+//		if (mThumbCanvas == null) 벽지, 바닥 바뀌면 적용을 위해
 			initThumb(getWidth() >> 2, getHeight() >> 2);
 
 		setDrawingCacheEnabled(true);
@@ -407,6 +407,6 @@ public class MLayout extends LayoutType {
 		canvas.drawPath(mBack.getStrokePath(), mBack.getStrokePaint());
 		
 		super.dispatchDraw(canvas);
-		invalidate();
+//		invalidate();
 	}
 }
