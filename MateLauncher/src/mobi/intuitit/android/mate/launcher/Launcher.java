@@ -22,7 +22,9 @@ import static android.util.Log.w;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
@@ -62,8 +64,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -86,6 +90,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -225,6 +230,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	// mobject list
 	Mobject mobject;
 	ArrayList<Mobject> mobjectlist = new ArrayList<Mobject>();
+	
+	// 캡쳐 버튼
+	Button screenBtn;
+	Bitmap bm;
 
 	static boolean modifyMode = false; // 수정모드 플래그
 
@@ -246,7 +255,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		setWallpaperDimension();
 
 		setContentView(R.layout.launcher);
-		setupViews();
+		setupViews();	
 
 		registerIntentReceivers();
 		registerContentObservers();
@@ -3028,4 +3037,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public MLayout getCurrentMLayout() {
 		return (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
 	}
+	
+	
+	
+	
+	
+	
 }
