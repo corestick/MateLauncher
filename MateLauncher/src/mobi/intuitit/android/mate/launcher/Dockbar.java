@@ -29,9 +29,6 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 	private Workspace mWorkspace;
 	private View mAllAppsGrid;
 	private ImageView left;
-	LinearLayout linearLayout=null;
-    Button saveBtn=null;
-    Bitmap bm=null;
 
 	public Dockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -112,35 +109,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.equals(mDockButton[0])) {
-
-		    linearLayout=(LinearLayout) findViewById(R.id.workspace);
-			linearLayout.buildDrawingCache();
-			bm=linearLayout.getDrawingCache();
-			
-			long time = System.currentTimeMillis(); 
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss"); 
-	        Date dd = new Date(time);  
-	        String strTime = sdf.format(dd);  
-	                
-	        String sdcard=Environment.getExternalStorageDirectory().getAbsolutePath();
-	        File cfile=new File(sdcard + "/ScreenShotTest");  
-	        cfile.mkdirs(); //폴더가 없을 경우 ScreenShotTest 폴더생성
-	        
-	        String path=sdcard + "/ScreenShotTest/"  + strTime + ".jpg";  //ScreenShotTest 폴더에 시간순으로 저장
-	 		try{
-	 			FileOutputStream fos=new FileOutputStream(path);
-	 			bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-	 			fos.flush();
-	 			fos.close();
-	 		}catch(Exception e){
-	 			e.printStackTrace();
-	 		}	 		
-	 		Intent intent=new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-	 		Uri uri=Uri.parse("file://" + path);
-	 		intent.setData(uri);
-	 		getContext().sendBroadcast(intent);
-	 				
-			Toast.makeText(mLauncher, "스크린샷", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mLauncher, "b1", Toast.LENGTH_SHORT).show();
 			return;
 		} else if (v.equals(mDockButton[1])) {
 			Toast.makeText(mLauncher, "b2", Toast.LENGTH_SHORT).show();

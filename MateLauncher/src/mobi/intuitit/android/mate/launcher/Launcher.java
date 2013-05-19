@@ -28,7 +28,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 
 import mobi.intuitit.android.content.LauncherIntent;
@@ -231,9 +233,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	Mobject mobject;
 	ArrayList<Mobject> mobjectlist = new ArrayList<Mobject>();
 	
-	// 캡쳐 버튼
+	// 캡쳐 
+//	DragLayer layout;
+	Workspace layout;
 	Button screenBtn;
-	Bitmap bm;
+	Bitmap bm = null;
 
 	static boolean modifyMode = false; // 수정모드 플래그
 
@@ -740,8 +744,79 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
+		
+		/// 캡쳐
+		
+//		layout=(DragLayer)findViewById(R.id.drag_layer);
+		layout=(Workspace)findViewById(R.id.workspace);
+		screenBtn=(Button)findViewById(R.id.screenBtn);		
+		
+		screenBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				layout.buildDrawingCache();
+				bm=layout.getDrawingCache();
+				
+				long time = System.currentTimeMillis(); 
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		        Date dd = new Date(time);  
+		        String strTime = sdf.format(dd); 
+		                
+		        String sdcard=Environment.getExternalStorageDirectory().getAbsolutePath();
+		        File cfile=new File(sdcard + "/ScreenShotTest");  
+		        cfile.mkdirs(); //폴더가 없을 경우 ScreenShotTest 폴더생성
+		        
+		        String path=sdcard + "/ScreenShotTest/"  + strTime + ".jpg";  //ScreenShotTest 폴더에 시간순으로 저장
+		 		try{
+		 			FileOutputStream fos=new FileOutputStream(path);
+		 			bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+		 			fos.flush();
+		 			fos.close();
+		 		}catch(Exception e){
+		 			e.printStackTrace();
+		 		}
+		 		
+		 		
+		 		Intent intent=new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+		 		Uri uri=Uri.parse("file://" + path);
+		 		intent.setData(uri);
+		 		sendBroadcast(intent);
+		 		
+		 		Toast.makeText(getApplicationContext(), "Image Saved!" , 0).show(); //토스트 알림
+//				Toast.makeText(getApplication(), "스크린샷", Toast.LENGTH_SHORT).show();				
+			}
+		});
 
 	}
+	/// 화면 캡쳐
+//	public void screenshot(Bitmap bm){		
+//		long time = System.currentTimeMillis(); 
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss"); 
+//        Date dd = new Date(time);  
+//        String strTime = sdf.format(dd); 
+//                
+//        String sdcard=Environment.getExternalStorageDirectory().getAbsolutePath();
+//        File cfile=new File(sdcard + "/ScreenShotTest");  
+//        cfile.mkdirs(); //폴더가 없을 경우 ScreenShotTest 폴더생성
+//        
+//        String path=sdcard + "/ScreenShotTest/"  + strTime + ".jpg";  //ScreenShotTest 폴더에 시간순으로 저장
+// 		try{
+// 			FileOutputStream fos=new FileOutputStream(path);
+// 			bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+// 			fos.flush();
+// 			fos.close();
+// 		}catch(Exception e){
+// 			e.printStackTrace();
+// 		}
+// 		
+// 		
+// 		Intent intent=new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+// 		Uri uri=Uri.parse("file://" + path);
+// 		intent.setData(uri);
+// 		sendBroadcast(intent);
+// 		
+// 		Toast.makeText(getApplicationContext(), "Image Saved!" , 0).show(); //토스트 알림
+//	}
 
 	/**
 	 * Creates a view representing a shortcut.
