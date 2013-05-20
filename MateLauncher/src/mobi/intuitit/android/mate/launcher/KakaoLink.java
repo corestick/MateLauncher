@@ -82,9 +82,9 @@ public class KakaoLink {
 	 * @param encoding
 	 *            recommend UTF-8
 	 */
-	public void openKakaoLink(Activity activity, String url, String message, String appId, String appVer, String appName, String encoding) {
+	public void openKakaoLink(Activity activity, String message, String appId, String appVer, String encoding) {
 
-		if (isEmptyString(url) || isEmptyString(message) || isEmptyString(appId) || isEmptyString(appVer) || isEmptyString(appName) || isEmptyString(encoding))
+		if (isEmptyString(message) || isEmptyString(appId) || isEmptyString(appVer) ||  isEmptyString(encoding))
 			throw new IllegalArgumentException();
 
 		try {
@@ -96,14 +96,12 @@ public class KakaoLink {
 
 		this.params = getBaseKakaoLinkUrl();
 
-		appendParam("url", url);
+
 		appendParam("msg", message);
 		appendParam("apiver", KakaoLinkApiVersion);
 		appendParam("appid", appId);
 		appendParam("appver", appVer);
-		appendParam("appname", appName);
 		appendParam("type", "link");
-
 		openKakaoLink(activity, params);
 	}
 

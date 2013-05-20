@@ -111,7 +111,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final boolean PROFILE_STARTUP = false;
 	private static final boolean PROFILE_DRAWER = false;
 	private static final boolean PROFILE_ROTATE = false;
-	private static final boolean DEBUG_USER_INTERFACE = false;
+	private static final boolean DEBUG_USER_INTERFACE = true;
 
 	private static final int MENU_GROUP_ADD = 1;
 	private static final int MENU_ADD = Menu.FIRST + 1;
@@ -1928,14 +1928,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		if (DEBUG_USER_INTERFACE) {
-			android.widget.Button finishButton = new android.widget.Button(this);
+			final android.widget.Button finishButton = new android.widget.Button(this);
 			finishButton.setText("Finish");
 			workspace.addInScreen(finishButton, 1, 0, 0, 1, 1);
 
 			finishButton
 					.setOnClickListener(new android.widget.Button.OnClickListener() {
 						public void onClick(View v) {
-							finish();
+							((ViewGroup)finishButton.getParent()).removeView(finishButton);				
+							Log.e("del-button", "del-button");
+//							finish();
 						}
 					});
 		}
@@ -2196,11 +2198,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				handleFolderClick((FolderInfo) tag);
 			}
 		}
-		else{			
-			ApplicationInfo a = (ApplicationInfo) v.getTag();
+		else{
+			ApplicationInfo a = (ApplicationInfo) v.getTag();			
 			mSpeechBubbleview.removeAllViews();
-			mSpeechBubbleview.InputPhonenumView();
-			mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);		
+			mSpeechBubbleview.selectApp();
+//			mSpeechBubbleview.InputPhonenumView();
+//			mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);		
 			mSpeechBubbleview.setVisibility(View.VISIBLE);
 						
 		}

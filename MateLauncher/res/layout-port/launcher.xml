@@ -66,11 +66,10 @@
 
     <mobi.intuitit.android.mate.launcher.DeleteZone
         android:id="@+id/delete_zone"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="49dip"
         android:layout_gravity="bottom|center_horizontal"
-        android:background="@drawable/delete_zone_selector"
-        android:scaleType="center"
+        android:background="@drawable/delete_zone_selector"      
         android:src="@drawable/ic_delete"
         android:visibility="invisible"
         launcher:direction="horizontal" />
