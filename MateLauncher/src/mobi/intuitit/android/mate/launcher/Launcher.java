@@ -235,7 +235,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	
 	// 캡쳐 
 //	DragLayer layout;
-	Workspace layout;
+//	Workspace layout;
+	LinearLayout layout;
 	Button screenBtn;
 	Bitmap bm = null;
 
@@ -748,7 +749,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		/// 캡쳐
 		
 //		layout=(DragLayer)findViewById(R.id.drag_layer);
-		layout=(Workspace)findViewById(R.id.workspace);
+//		layout=(Workspace)findViewById(R.id.workspace);
+		layout=(LinearLayout)findViewById(R.id.screen);
 		screenBtn=(Button)findViewById(R.id.screenBtn);		
 		
 		screenBtn.setOnClickListener(new OnClickListener() {
@@ -772,6 +774,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		 			bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 		 			fos.flush();
 		 			fos.close();
+			 		Toast.makeText(getApplicationContext(), "Image Saved!" , 0).show(); //토스트 알림
 		 		}catch(Exception e){
 		 			e.printStackTrace();
 		 		}
@@ -782,8 +785,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		 		intent.setData(uri);
 		 		sendBroadcast(intent);
 		 		
-		 		Toast.makeText(getApplicationContext(), "Image Saved!" , 0).show(); //토스트 알림
-//				Toast.makeText(getApplication(), "스크린샷", Toast.LENGTH_SHORT).show();				
+				Toast.makeText(getApplication(), "스크린샷", Toast.LENGTH_SHORT).show();				
 			}
 		});
 
