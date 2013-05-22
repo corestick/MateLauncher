@@ -218,13 +218,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private boolean mLocaleChanged;
 
 	private Bundle mSavedInstanceState;
-
 	private DesktopBinder mBinder;
-
-	// mobject list
-	Mobject mobject;
-	ArrayList<Mobject> mobjectlist = new ArrayList<Mobject>();
-
+	
 	static boolean modifyMode = false; // 수정모드 플래그
 
 	@Override
@@ -701,26 +696,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView = (MobjectView) dragLayer.findViewById(R.id.objectview);
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
-
-		/*****
-		 * 
-		 */
-		mobject = new Mobject();
-		mobject.cellX = 10;
-		mobject.cellY = 10;
-		mobject.icon = getResources().getDrawable(R.drawable.sms);
-
-		Mobject mobject1 = new Mobject();
-		mobject1.cellX = 20;
-		mobject1.cellY = 20;
-		mobject1.icon = getResources().getDrawable(R.drawable.call);
-
-		mobjectlist.add(mobject);
-		mobjectlist.add(mobject1);
-		MobjectAdapter mobjectadapter = new MobjectAdapter(
-				getApplicationContext(), mobjectlist);
-		mObjectView.setAdapter(mobjectadapter);
-
+	
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
 		mSpeechBubbleview.setLauncher(this);
@@ -742,8 +718,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return A View inflated from R.layout.application.
 	 */
 	View createShortcut(ApplicationInfo info) {
+		Log.e("RRR", "createShortcut ApplicationInfo");
 		return createShortcut(
 				R.layout.application,
+				(ViewGroup) mWorkspace.getChildAt(mWorkspace.getCurrentScreen()),
+				info);
+	}
+	
+	View createShortcut(Mobject info) {
+		Log.e("RRR", "createShortcut Mobject");
+		
+		return createShortcut(
+				R.layout.mobject,
 				(ViewGroup) mWorkspace.getChildAt(mWorkspace.getCurrentScreen()),
 				info);
 	}
@@ -781,13 +767,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * 
 	 * @return A View inflated from layoutResId.
 	 */
-	View createShortcut(int layoutResId, ViewGroup parent, ApplicationInfo info) {
+	View createShortcut(int layoutResId, ViewGroup parent, ItemInfo info) {
+		Log.e("RRR", "createShortcut layoutResId" + layoutResId);
+		
 		ImageView favorite = (ImageView) mInflater.inflate(layoutResId, parent,
 				false);
 
-		if (!info.filtered) {
-			info.icon = Utilities.createIconThumbnail(info.icon, this);
-			info.filtered = true;
+		if (info instanceof ApplicationInfo) {
+			ApplicationInfo appInfo = (ApplicationInfo) info;
+			if (!appInfo.filtered) {
+				appInfo.icon = Utilities
+						.createIconThumbnail(appInfo.icon, this);
+				appInfo.filtered = true;
+			}
 		}
 
 		favorite.setTag(info);
@@ -1929,7 +1921,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			switch (item.itemType) {
 			case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 			case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-				final View shortcut = createShortcut((ApplicationInfo) item);
+				Log.e("RRR", "bindItems");
+				final View shortcut;
+				if(item instanceof ItemInfo) {
+					shortcut = createShortcut((ApplicationInfo) item);
+				}
+				else
+				{
+					Log.e("RRR", "itemType Mobject");
+					shortcut = createShortcut((Mobject) item);
+				}
+				
 				workspace.addInScreen(shortcut, item.screen, item.cellX,
 						item.cellY, 1, 1, !desktopLocked);
 				break;
