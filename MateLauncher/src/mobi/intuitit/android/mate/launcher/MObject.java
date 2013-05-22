@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 public class Mobject extends ItemInfo {
 
@@ -25,7 +26,7 @@ public class Mobject extends ItemInfo {
     /**
      * 아이콘 사이즈
      */
-    float scale;
+//    float scale;
     
     Mobject() {
         itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
@@ -33,10 +34,10 @@ public class Mobject extends ItemInfo {
     
     public Mobject(Mobject info) {
         super(info);
-        title = info.title.toString();
-        intent = new Intent(info.intent);
+//        title = info.title.toString();
+//        intent = new Intent(info.intent);
         icon = info.icon;
-        scale = info.scale;
+//        scale = info.scale;
     }
 
     /**

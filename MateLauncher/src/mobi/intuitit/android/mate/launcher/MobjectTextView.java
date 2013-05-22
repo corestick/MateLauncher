@@ -7,9 +7,9 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-public class MobjectTextView extends TextView {
+public class MobjectTextView extends ImageView {
 	private static final float CORNER_RADIUS = 8.0f;
 	private static final float PADDING_H = 5.0f;
 	private static final float PADDING_V = 1.0f;
@@ -100,17 +100,17 @@ public class MobjectTextView extends TextView {
 			}
 		}
 
-		final Layout layout = getLayout();
-		final RectF rect = mRect;
-		final int left = getCompoundPaddingLeft();
-		final int top = getExtendedPaddingTop();
-
-		rect.set(left + layout.getLineLeft(0) - mPaddingH,
-				top + layout.getLineTop(0) - mPaddingV, Math.min(
-						left + layout.getLineRight(0) + mPaddingH, getScrollX()
-								+ getRight() - getLeft()),
-				top + layout.getLineBottom(0) + mPaddingV);
-		canvas.drawRoundRect(rect, mCornerRadius, mCornerRadius, mPaint);
+//		final Layout layout = getLayout();
+//		final RectF rect = mRect;
+//		final int left = getCompoundPaddingLeft();
+//		final int top = getExtendedPaddingTop();
+//
+//		rect.set(left + layout.getLineLeft(0) - mPaddingH,
+//				top + layout.getLineTop(0) - mPaddingV, Math.min(
+//						left + layout.getLineRight(0) + mPaddingH, getScrollX()
+//								+ getRight() - getLeft()),
+//				top + layout.getLineBottom(0) + mPaddingV);
+//		canvas.drawRoundRect(rect, mCornerRadius, mCornerRadius, mPaint);
 
 		super.draw(canvas);
 	}
