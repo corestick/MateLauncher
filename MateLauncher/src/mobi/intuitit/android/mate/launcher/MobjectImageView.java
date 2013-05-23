@@ -9,7 +9,7 @@ import android.text.Layout;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-public class MobjectTextView extends ImageView {
+public class MobjectImageView extends ImageView {
 	private static final float CORNER_RADIUS = 8.0f;
 	private static final float PADDING_H = 5.0f;
 	private static final float PADDING_V = 1.0f;
@@ -23,17 +23,17 @@ public class MobjectTextView extends ImageView {
 	private float mPaddingH;
 	private float mPaddingV;
 
-	public MobjectTextView(Context context) {
+	public MobjectImageView(Context context) {
 		super(context);
 		init();
 	}
 
-	public MobjectTextView(Context context, AttributeSet attrs) {
+	public MobjectImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
-	public MobjectTextView(Context context, AttributeSet attrs, int defStyle) {
+	public MobjectImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
 	}

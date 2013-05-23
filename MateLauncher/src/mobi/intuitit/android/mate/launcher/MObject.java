@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-public class Mobject extends ItemInfo {
+public class Mobject extends ItemType {
 
 	/**
      * The application name.
@@ -47,13 +47,13 @@ public class Mobject extends ItemInfo {
      * @param className the class name of the component representing the intent
      * @param launchFlags the launch flags
      */
-    final void setActivity(ComponentName className, int launchFlags) {
-        intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        intent.setComponent(className);
-        intent.setFlags(launchFlags);
-        itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
-    }
+//    final void setActivity(ComponentName className, int launchFlags) {
+//        intent = new Intent(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        intent.setComponent(className);
+//        intent.setFlags(launchFlags);
+//        itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
+//    }
 
     @Override
     void onAddToDatabase(ContentValues values) {

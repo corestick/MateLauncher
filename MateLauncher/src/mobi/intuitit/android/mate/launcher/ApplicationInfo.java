@@ -26,27 +26,27 @@ import android.graphics.drawable.Drawable;
  * Represents a launchable application. An application is made of a name (or title),
  * an intent and an icon.
  */
-class ApplicationInfo extends ItemInfo {
+class ApplicationInfo extends ItemType {
 
     /**
      * The application name.
      */
-    CharSequence title;
+//    CharSequence title;
 
     /**
      * The intent used to start the application.
      */
-    Intent intent;
+//    Intent intent;
 
     /**
      * The application icon.
      */
-    Drawable icon;
+//    Drawable icon;
 
     /**
      * When set to true, indicates that the icon has been resized.
      */
-    boolean filtered;
+//    boolean filtered;
 
     /**
      * Indicates whether the icon comes from an application's resource (if false)
@@ -85,13 +85,13 @@ class ApplicationInfo extends ItemInfo {
      * @param className the class name of the component representing the intent
      * @param launchFlags the launch flags
      */
-    final void setActivity(ComponentName className, int launchFlags) {
-        intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        intent.setComponent(className);
-        intent.setFlags(launchFlags);
-        itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
-    }
+//    final void setActivity(ComponentName className, int launchFlags) {
+//        intent = new Intent(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        intent.setComponent(className);
+//        intent.setFlags(launchFlags);
+//        itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
+//    }
 
     @Override
     void onAddToDatabase(ContentValues values) {

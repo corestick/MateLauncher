@@ -224,7 +224,8 @@ public class LauncherProvider extends ContentProvider {
                     "iconResource TEXT," +
                     "icon BLOB," +
                     "uri TEXT," +
-                    "displayMode INTEGER" +
+                    "displayMode INTEGER, " +
+                    "mobjectIcon INTEGER" + 
                     ");");
 
             db.execSQL("CREATE TABLE gestures (" +
@@ -302,6 +303,7 @@ public class LauncherProvider extends ContentProvider {
             final int cellYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLY);
             final int uriIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.URI);
             final int displayModeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.DISPLAY_MODE);
+            final int mobjectIcon = c.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_ICON);
 
             ContentValues[] rows = new ContentValues[c.getCount()];
             int i = 0;
@@ -322,6 +324,7 @@ public class LauncherProvider extends ContentProvider {
                 values.put(LauncherSettings.Favorites.CELLY, c.getInt(cellYIndex));
                 values.put(LauncherSettings.Favorites.URI, c.getString(uriIndex));
                 values.put(LauncherSettings.Favorites.DISPLAY_MODE, c.getInt(displayModeIndex));
+                values.put(LauncherSettings.Favorites.MOBJECT_ICON, c.getInt(mobjectIcon));
                 rows[i++] = values;
             }
 

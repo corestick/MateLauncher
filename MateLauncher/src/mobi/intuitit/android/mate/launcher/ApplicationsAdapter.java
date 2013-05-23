@@ -28,31 +28,33 @@ import android.widget.TextView;
 /**
  * GridView adapter to show the list of applications and shortcuts
  */
-public class ApplicationsAdapter extends ArrayAdapter<ApplicationInfo> {
-    private final LayoutInflater mInflater;
+public class ApplicationsAdapter extends ArrayAdapter<ItemType> {
+	private final LayoutInflater mInflater;
 
-    public ApplicationsAdapter(Context context, ArrayList<ApplicationInfo> apps) {
-        super(context, 0, apps);
-        mInflater = LayoutInflater.from(context);
-    }
+	public ApplicationsAdapter(Context context, ArrayList<ItemType> apps) {
+		super(context, 0, apps);
+		mInflater = LayoutInflater.from(context);
+	}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ApplicationInfo info = getItem(position);
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		final ItemType info = getItem(position);
 
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.application_boxed, parent, false);
-        }
+		if (convertView == null) {
+			convertView = mInflater.inflate(R.layout.application_boxed, parent,
+					false);
+		}
 
-        if (!info.filtered) {
-            info.icon = Utilities.createIconThumbnail(info.icon, getContext());
-            info.filtered = true;
-        }
+		if (!info.filtered) {
+			info.icon = Utilities.createIconThumbnail(info.icon, getContext());
+			info.filtered = true;
+		}
 
-        final TextView textView = (TextView) convertView;
-        textView.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null, null);
-        textView.setText(info.title);
+		final TextView textView = (TextView) convertView;
+		textView.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
+				null);
+		textView.setText(info.title);
 
-        return convertView;
-    }
+		return convertView;
+	}
 }

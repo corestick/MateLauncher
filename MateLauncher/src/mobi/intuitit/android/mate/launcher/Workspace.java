@@ -983,7 +983,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		}
 	}
 
-	void addApplicationShortcut(ApplicationInfo info,
+	void addApplicationShortcut(ItemType info,
 			LayoutType.CellInfo cellInfo, boolean insertAtFirst) {
 		final LayoutType layout = (LayoutType) getChildAt(cellInfo.screen);
 		final int[] result = new int[2];
@@ -1061,12 +1061,21 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		switch (info.itemType) {
 		case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 		case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-			if (info.container == NO_ID) {
-				// Came from all apps -- make a copy
-				info = new ApplicationInfo((ApplicationInfo) info);
+			if(info instanceof ApplicationInfo) {
+				if (info.container == NO_ID) {
+					// Came from all apps -- make a copy
+					info = new ApplicationInfo((ApplicationInfo) info);
+				}
+				view = mLauncher.createShortcut(R.layout.application, layoutType,
+						(ApplicationInfo) info);
 			}
-			view = mLauncher.createShortcut(R.layout.application, layoutType,
-					(ApplicationInfo) info);
+			else
+			{
+				info = new Mobject((Mobject) info);
+				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
+						(Mobject) info);
+			}
+			
 			break;
 		case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
 			view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher,
@@ -1373,14 +1382,14 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 					}
 				} else if (tag instanceof UserFolderInfo) {
 					final UserFolderInfo info = (UserFolderInfo) tag;
-					final ArrayList<ApplicationInfo> contents = info.contents;
-					final ArrayList<ApplicationInfo> toRemove = new ArrayList<ApplicationInfo>(
+					final ArrayList<ItemType> contents = info.contents;
+					final ArrayList<ItemType> toRemove = new ArrayList<ItemType>(
 							1);
 					final int contentsCount = contents.size();
 					boolean removedFromFolder = false;
 
 					for (int k = 0; k < contentsCount; k++) {
-						final ApplicationInfo appInfo = contents.get(k);
+						final ItemType appInfo = contents.get(k);
 						final Intent intent = appInfo.intent;
 						final ComponentName name = intent.getComponent();
 

@@ -218,12 +218,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private boolean mLocaleChanged;
 
 	private Bundle mSavedInstanceState;
-
 	private DesktopBinder mBinder;
-
-	// mobject list
-	Mobject mobject;
-	ArrayList<Mobject> mobjectlist = new ArrayList<Mobject>();
 
 	static boolean modifyMode = false; // 수정모드 플래그
 
@@ -702,25 +697,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
-		/*****
-		 * 
-		 */
-		mobject = new Mobject();
-		mobject.cellX = 10;
-		mobject.cellY = 10;
-		mobject.icon = getResources().getDrawable(R.drawable.sms);
-
-		Mobject mobject1 = new Mobject();
-		mobject1.cellX = 20;
-		mobject1.cellY = 20;
-		mobject1.icon = getResources().getDrawable(R.drawable.call);
-
-		mobjectlist.add(mobject);
-		mobjectlist.add(mobject1);
-		MobjectAdapter mobjectadapter = new MobjectAdapter(
-				getApplicationContext(), mobjectlist);
-		mObjectView.setAdapter(mobjectadapter);
-
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
 		mSpeechBubbleview.setLauncher(this);
@@ -741,32 +717,20 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * 
 	 * @return A View inflated from R.layout.application.
 	 */
-	View createShortcut(ApplicationInfo info) {
-		return createShortcut(
-				R.layout.application,
-				(ViewGroup) mWorkspace.getChildAt(mWorkspace.getCurrentScreen()),
-				info);
-	}
+	View createShortcut(ItemType info) {
+		Log.e("RRR", "createShortcut ApplicationInfo");
 
-	//
-	// private void createSpeechBubble() {
-	// LinearLayout speechview = (LinearLayout) mInflater.inflate(
-	// R.layout.speechbubbleview, (ViewGroup) mWorkspace
-	// .getChildAt(mWorkspace.getCurrentScreen()), false);
-	// speechview.addView(new Button(getApplicationContext()), 100, 200);
-	// int screen = mWorkspace.getCurrentScreen();
-	//
-	// final LayoutType group = (LayoutType) mWorkspace.getChildAt(1);
-	// LayoutType.LayoutParams lp = (LayoutType.LayoutParams) speechview
-	// .getLayoutParams();
-	//
-	// lp.cellX = 100;
-	// lp.cellY = 100;
-	//
-	// Toast.makeText(getApplication(), speechview.toString(),
-	// Toast.LENGTH_SHORT).show();
-	// group.addView(speechview, -1, lp);
-	// }
+		if (info instanceof ApplicationInfo) {
+
+			return createShortcut(R.layout.application,
+					(ViewGroup) mWorkspace.getChildAt(mWorkspace
+							.getCurrentScreen()), info);
+		} else {
+			return createShortcut(R.layout.mobject,
+					(ViewGroup) mWorkspace.getChildAt(mWorkspace
+							.getCurrentScreen()), info);
+		}
+	}
 
 	/**
 	 * Creates a view representing a shortcut inflated from the specified
@@ -781,13 +745,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * 
 	 * @return A View inflated from layoutResId.
 	 */
-	View createShortcut(int layoutResId, ViewGroup parent, ApplicationInfo info) {
+	View createShortcut(int layoutResId, ViewGroup parent, ItemType info) {
 		ImageView favorite = (ImageView) mInflater.inflate(layoutResId, parent,
 				false);
 
-		if (!info.filtered) {
-			info.icon = Utilities.createIconThumbnail(info.icon, this);
-			info.filtered = true;
+		if (info instanceof ApplicationInfo) {
+			ApplicationInfo appInfo = (ApplicationInfo) info;
+			if (!appInfo.filtered) {
+				appInfo.icon = Utilities
+						.createIconThumbnail(appInfo.icon, this);
+				appInfo.filtered = true;
+			}
 		}
 
 		favorite.setTag(info);
@@ -811,13 +779,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (!findSingleSlot(cellInfo))
 			return;
 
-		final ApplicationInfo info = infoFromApplicationIntent(context, data);
+		final ItemType info = infoFromApplicationIntent(context, data);
 		if (info != null) {
 			mWorkspace.addApplicationShortcut(info, cellInfo, insertAtFirst);
 		}
 	}
 
-	private static ApplicationInfo infoFromApplicationIntent(Context context,
+	private static ItemType infoFromApplicationIntent(Context context,
 			Intent data) {
 		ComponentName component = data.getComponent();
 		PackageManager packageManager = context.getPackageManager();
@@ -1929,7 +1897,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			switch (item.itemType) {
 			case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 			case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-				final View shortcut = createShortcut((ApplicationInfo) item);
+				Log.e("RRR", "bindItems");
+				final View shortcut = createShortcut((ItemType) item);
+
 				workspace.addInScreen(shortcut, item.screen, item.cellX,
 						item.cellY, 1, 1, !desktopLocked);
 				break;
