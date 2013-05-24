@@ -80,4 +80,12 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_07);
 		
 	}
+	
+	public int getIcon(int resType, int resIdx) {
+		if(resType == 0) { //°¡±¸
+			return furnitureList.get(resIdx);
+		}
+		else
+			return avatarList.get(resIdx);
+	}
 }

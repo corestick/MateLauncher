@@ -80,6 +80,9 @@ class ItemInfo {
      * Indicates whether the item is a gesture.
      */
     boolean isGesture = false;
+    
+    int resType;
+    int resIdx;
 
     ItemInfo() {
     }
@@ -93,6 +96,8 @@ class ItemInfo {
         screen = info.screen;
         itemType = info.itemType;
         container = info.container;
+        resType = info.resType;
+        resIdx = info.resIdx;
     }
 
     /**

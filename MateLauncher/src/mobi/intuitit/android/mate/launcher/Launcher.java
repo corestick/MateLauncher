@@ -760,7 +760,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		{
 			Log.e("RRR", "createShortcut");
 			Mobject appInfo = (Mobject) info;
-			appInfo.icon = getResources().getDrawable(MImageList.getInstance().furnitureList.get(0));
+
+			favorite.setImageResource(MImageList.getInstance().getIcon(appInfo.resType, appInfo.resIdx));
 		}
 		
 		Log.e("RRR", "childcount22 = " + ((MLayout)mWorkspace.getChildAt(1)).getChildCount());
@@ -1912,6 +1913,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				} else {
 					Log.e("RRR", "itemType Mobject");
 					shortcut = createShortcut((Mobject) item);
+					
 				}				
 
 				workspace.addInScreen(shortcut, item.screen, item.cellX,

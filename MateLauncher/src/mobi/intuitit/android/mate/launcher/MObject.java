@@ -27,7 +27,7 @@ public class Mobject extends ItemType {
 	 * 아이콘 사이즈
 	 */
 	// float scale;
-
+	
 	Mobject() {
 		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
 	}
