@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -164,15 +165,15 @@ public class MobjectView extends GridView implements
 
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
+		
 		if (!view.isInTouchMode()) {
 			return false;
 		}
-
-		if (isDraggable())
+		if (!isDraggable())
 			return false;
-
-		ItemInfo app = (ItemInfo) parent.getItemAtPosition(position);
-		app = new ItemInfo(app);
+		
+		Mobject app = (Mobject) parent.getItemAtPosition(position);
+		app = new Mobject(app);
 
 		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
 		mLauncher.closeObjectView();

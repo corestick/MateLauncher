@@ -9,81 +9,84 @@ import android.util.Log;
 public class Mobject extends ItemType {
 
 	/**
-     * The application name.
-     */
-    CharSequence title;
+	 * The application name.
+	 */
+	CharSequence title;
 
-    /**
-     * The intent used to start the application.
-     */
-    Intent intent;
+	/**
+	 * The intent used to start the application.
+	 */
+	Intent intent;
 
-    /**
-     * The application icon.
-     */
-    Drawable icon;
+	/**
+	 * The application icon.
+	 */
+	Drawable icon;
 
-    /**
-     * 아이콘 사이즈
-     */
-//    float scale;
-    
-    Mobject() {
-        itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
-    }
-    
-    public Mobject(Mobject info) {
-        super(info);
-//        title = info.title.toString();
-//        intent = new Intent(info.intent);
-        icon = info.icon;
-//        scale = info.scale;
-    }
+	/**
+	 * 아이콘 사이즈
+	 */
+	// float scale;
 
-    /**
-     * Creates the application intent based on a component name and various launch flags.
-     * Sets {@link #itemType} to {@link LauncherSettings.BaseLauncherColumns#ITEM_TYPE_APPLICATION}.
-     *
-     * @param className the class name of the component representing the intent
-     * @param launchFlags the launch flags
-     */
-//    final void setActivity(ComponentName className, int launchFlags) {
-//        intent = new Intent(Intent.ACTION_MAIN);
-//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//        intent.setComponent(className);
-//        intent.setFlags(launchFlags);
-//        itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
-//    }
+	Mobject() {
+		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
+	}
 
-    @Override
-    void onAddToDatabase(ContentValues values) {
-        super.onAddToDatabase(values);
+	public Mobject(Mobject info) {
+		super(info);
+		// title = info.title.toString();
+		// intent = new Intent(info.intent);
+		icon = info.icon;
+		// scale = info.scale;
+	}
 
-        String titleStr = title != null ? title.toString() : null;
-        values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
+	/**
+	 * Creates the application intent based on a component name and various
+	 * launch flags. Sets {@link #itemType} to
+	 * {@link LauncherSettings.BaseLauncherColumns#ITEM_TYPE_APPLICATION}.
+	 * 
+	 * @param className
+	 *            the class name of the component representing the intent
+	 * @param launchFlags
+	 *            the launch flags
+	 */
+	// final void setActivity(ComponentName className, int launchFlags) {
+	// intent = new Intent(Intent.ACTION_MAIN);
+	// intent.addCategory(Intent.CATEGORY_LAUNCHER);
+	// intent.setComponent(className);
+	// intent.setFlags(launchFlags);
+	// itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
+	// }
 
-        String uri = intent != null ? intent.toUri(0) : null;
-        values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
+	@Override
+	void onAddToDatabase(ContentValues values) {
+		super.onAddToDatabase(values);
 
-//        if (customIcon) {
-//            values.put(LauncherSettings.BaseLauncherColumns.ICON_TYPE,
-//                    LauncherSettings.BaseLauncherColumns.ICON_TYPE_BITMAP);
-//            Bitmap bitmap = ((FastBitmapDrawable) icon).getBitmap();
-//            writeBitmap(values, bitmap);
-//        } else {
-//            values.put(LauncherSettings.BaseLauncherColumns.ICON_TYPE,
-//                    LauncherSettings.BaseLauncherColumns.ICON_TYPE_RESOURCE);
-//            if (iconResource != null) {
-//                values.put(LauncherSettings.BaseLauncherColumns.ICON_PACKAGE,
-//                        iconResource.packageName);
-//                values.put(LauncherSettings.BaseLauncherColumns.ICON_RESOURCE,
-//                        iconResource.resourceName);
-//            }
-//        }
-    }
+		String titleStr = title != null ? title.toString() : null;
+		values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
 
-    @Override
-    public String toString() {
-        return title.toString();
-    }
+		String uri = intent != null ? intent.toUri(0) : null;
+		values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
+
+		// if (customIcon) {
+		// values.put(LauncherSettings.BaseLauncherColumns.ICON_TYPE,
+		// LauncherSettings.BaseLauncherColumns.ICON_TYPE_BITMAP);
+		// Bitmap bitmap = ((FastBitmapDrawable) icon).getBitmap();
+		// writeBitmap(values, bitmap);
+		// } else {
+		// values.put(LauncherSettings.BaseLauncherColumns.ICON_TYPE,
+		// LauncherSettings.BaseLauncherColumns.ICON_TYPE_RESOURCE);
+		// if (iconResource != null) {
+		// values.put(LauncherSettings.BaseLauncherColumns.ICON_PACKAGE,
+		// iconResource.packageName);
+		// values.put(LauncherSettings.BaseLauncherColumns.ICON_RESOURCE,
+		// iconResource.resourceName);
+		// }
+		// }
+	}
+
+	@Override
+	public String toString() {
+		return title.toString();
+	}
 }

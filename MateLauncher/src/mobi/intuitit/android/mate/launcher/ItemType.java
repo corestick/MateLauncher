@@ -10,11 +10,11 @@ class ItemType extends ItemInfo {
 	boolean filtered;
 	Drawable icon;
 	Intent intent;
-	
+
 	public ItemType(ItemType info) {
 		super(info);
 	}
-	
+
 	public ItemType() {
 		super();
 	}
@@ -22,9 +22,9 @@ class ItemType extends ItemInfo {
 	public void setActivity(ComponentName componentName, int launchFlags) {
 		// TODO Auto-generated method stub
 		intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        intent.setComponent(componentName);
-        intent.setFlags(launchFlags);
-        itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setComponent(componentName);
+		intent.setFlags(launchFlags);
+		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
 	}
 }

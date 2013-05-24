@@ -756,7 +756,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						.createIconThumbnail(appInfo.icon, this);
 				appInfo.filtered = true;
 			}
+		} else
+		{
+			Log.e("RRR", "createShortcut");
+			Mobject appInfo = (Mobject) info;
+			appInfo.icon = getResources().getDrawable(MImageList.getInstance().furnitureList.get(0));
 		}
+		
+		Log.e("RRR", "childcount22 = " + ((MLayout)mWorkspace.getChildAt(1)).getChildCount());
 
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
@@ -1898,7 +1905,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 			case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
 				Log.e("RRR", "bindItems");
-				final View shortcut = createShortcut((ItemType) item);
+
+				final View shortcut;
+				if (item instanceof ApplicationInfo) {
+					shortcut = createShortcut((ApplicationInfo) item);
+				} else {
+					Log.e("RRR", "itemType Mobject");
+					shortcut = createShortcut((Mobject) item);
+				}				
 
 				workspace.addInScreen(shortcut, item.screen, item.cellX,
 						item.cellY, 1, 1, !desktopLocked);
