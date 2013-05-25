@@ -2120,6 +2120,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 */
 	public void onClick(View v) {
 		Object tag = v.getTag();
+		
+		int a = ((Mobject)tag).mobjectType;
+		Log.e("RRRR", "===>>>" + a);
+		
 		if (tag instanceof ApplicationInfo) {
 			// Open shortcut
 			final Intent intent = ((ApplicationInfo) tag).intent;
