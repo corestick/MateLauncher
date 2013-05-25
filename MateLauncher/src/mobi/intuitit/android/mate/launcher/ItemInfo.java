@@ -104,7 +104,7 @@ class ItemInfo {
      */
     boolean filtered;
     
-    int mobjectType = -1;
+    int mobjectType = -1; // 0 = 가구, 1 = 아바타
     int mobjectIcon = -1;
 
     ItemInfo() {
