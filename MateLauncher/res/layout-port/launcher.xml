@@ -18,10 +18,6 @@
     android:layout_height="fill_parent" >
 
     <!-- The workspace contains 3 screens of cells -->
-    <LinearLayout
-        android:id="@+id/screen"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
 
     <mobi.intuitit.android.mate.launcher.Workspace
         android:id="@+id/workspace"
@@ -38,7 +34,6 @@
             android:id="@+id/cell3"
             layout="@layout/workspace_mscreen" />
     </mobi.intuitit.android.mate.launcher.Workspace>    
-    </LinearLayout>
     
     <Button 
         android:id="@+id/screenBtn"        

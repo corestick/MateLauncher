@@ -232,13 +232,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	// mobject list
 	Mobject mobject;
 	ArrayList<Mobject> mobjectlist = new ArrayList<Mobject>();
-	
-	// 캡쳐 
-//	DragLayer layout;
-//	Workspace layout;
-	LinearLayout layout;
-	Button screenBtn;
-	Bitmap bm = null;
+
+	// 캡쳐
+	// DragLayer layout;
+//	 Workspace captureView;
+//	View CaptureView;
+//	Button screenBtn;
+//	Bitmap bm = null;
 
 	static boolean modifyMode = false; // 수정모드 플래그
 
@@ -260,7 +260,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		setWallpaperDimension();
 
 		setContentView(R.layout.launcher);
-		setupViews();	
+		setupViews();
 
 		registerIntentReceivers();
 		registerContentObservers();
@@ -745,80 +745,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
-		
-		/// 캡쳐
-		
-//		layout=(DragLayer)findViewById(R.id.drag_layer);
-//		layout=(Workspace)findViewById(R.id.workspace);
-		layout=(LinearLayout)findViewById(R.id.screen);
-		screenBtn=(Button)findViewById(R.id.screenBtn);		
-		
-		screenBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				layout.buildDrawingCache();
-				bm=layout.getDrawingCache();
-				
-				long time = System.currentTimeMillis(); 
-		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-		        Date dd = new Date(time);  
-		        String strTime = sdf.format(dd); 
-		                
-		        String sdcard=Environment.getExternalStorageDirectory().getAbsolutePath();
-		        File cfile=new File(sdcard + "/ScreenShotTest");  
-		        cfile.mkdirs(); //폴더가 없을 경우 ScreenShotTest 폴더생성
-		        
-		        String path=sdcard + "/ScreenShotTest/"  + strTime + ".jpg";  //ScreenShotTest 폴더에 시간순으로 저장
-		 		try{
-		 			FileOutputStream fos=new FileOutputStream(path);
-		 			bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-		 			fos.flush();
-		 			fos.close();
-			 		Toast.makeText(getApplicationContext(), "Image Saved!" , 0).show(); //토스트 알림
-		 		}catch(Exception e){
-		 			e.printStackTrace();
-		 		}
-		 		
-		 		
-		 		Intent intent=new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-		 		Uri uri=Uri.parse("file://" + path);
-		 		intent.setData(uri);
-		 		sendBroadcast(intent);
-		 		
-				Toast.makeText(getApplication(), "스크린샷", Toast.LENGTH_SHORT).show();				
-			}
-		});
-
 	}
-	/// 화면 캡쳐
-//	public void screenshot(Bitmap bm){		
-//		long time = System.currentTimeMillis(); 
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss"); 
-//        Date dd = new Date(time);  
-//        String strTime = sdf.format(dd); 
-//                
-//        String sdcard=Environment.getExternalStorageDirectory().getAbsolutePath();
-//        File cfile=new File(sdcard + "/ScreenShotTest");  
-//        cfile.mkdirs(); //폴더가 없을 경우 ScreenShotTest 폴더생성
-//        
-//        String path=sdcard + "/ScreenShotTest/"  + strTime + ".jpg";  //ScreenShotTest 폴더에 시간순으로 저장
-// 		try{
-// 			FileOutputStream fos=new FileOutputStream(path);
-// 			bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-// 			fos.flush();
-// 			fos.close();
-// 		}catch(Exception e){
-// 			e.printStackTrace();
-// 		}
-// 		
-// 		
-// 		Intent intent=new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-// 		Uri uri=Uri.parse("file://" + path);
-// 		intent.setData(uri);
-// 		sendBroadcast(intent);
-// 		
-// 		Toast.makeText(getApplicationContext(), "Image Saved!" , 0).show(); //토스트 알림
-//	}
 
 	/**
 	 * Creates a view representing a shortcut.
@@ -877,18 +804,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			info.filtered = true;
 		}
 
-//		favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
-//				null);
-//		favorite.setText(info.title);
+		// favorite.setCompoundDrawablesWithIntrinsicBounds(null, info.icon,
+		// null,
+		// null);
+		// favorite.setText(info.title);
 
 		if ((info.title).equals("Contacts")) {
 			favorite.setImageResource(R.drawable.m_avatar_01);
-		}
-		else if((info.title).equals("Gallery")){
+		} else if ((info.title).equals("Gallery")) {
 			favorite.setImageResource(R.drawable.m_furniture_02);
-		}
-		else {
-			 favorite.setImageDrawable(info.icon);
+		} else {
+			favorite.setImageDrawable(info.icon);
 		}
 		// } else if ((info.title).equals("음악")) {
 		// favorite.setImageResource(R.drawable.audio);
@@ -2546,7 +2472,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final FolderIcon folderIcon = (FolderIcon) mWorkspace
 							.getViewForTag(mFolderInfo);
 					if (folderIcon != null) {
-//						folderIcon.setText(name);
+						// folderIcon.setText(name);
 						getWorkspace().requestLayout();
 					} else {
 						mDesktopLocked = true;
@@ -3095,8 +3021,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					// str += msgs[i].getMessageBody().toString();
 					// str += "\n";
 				}
-//				mSpeechBubbleview.getMainView().setText(
-//						msgs[0].getMessageBody().toString());
+				// mSpeechBubbleview.getMainView().setText(
+				// msgs[0].getMessageBody().toString());
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
 			}
 		}
@@ -3114,10 +3040,5 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public MLayout getCurrentMLayout() {
 		return (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
 	}
-	
-	
-	
-	
-	
-	
+
 }

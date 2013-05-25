@@ -1,13 +1,20 @@
 package mobi.intuitit.android.mate.launcher;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MDockbar extends LinearLayout implements View.OnClickListener {
 
@@ -38,6 +45,11 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	ArrayList<Mobject> mWallpaperList;
 	ArrayList<Mobject> mFlooringList;
 	ArrayList<Mobject> mAvatarList;
+	
+	Workspace captureView;
+//	View CaptureView;
+	Button screenBtn;
+	Bitmap bm = null;
 
 	public MDockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -208,12 +220,45 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			return;
 		}
 		if (v.equals(mHomepage)) {
+			
+			// 캡쳐
+//			int ScreenNum[] = {R.id.cell1, R.id.cell2, R.id.cell3};
+			String sdcard = Environment.getExternalStorageDirectory()
+					.getAbsolutePath();
+			File cfile = new File(sdcard + "/ScreenShotTest");
+			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
+//			for (int i = 0; i < 3; i++) {
+				captureView = (Workspace)findViewById(R.id.workspace);
+				captureView.buildDrawingCache();
+				bm = captureView.getDrawingCache();
+
+				String path = sdcard + "/ScreenShotTest/" + "screen.jpg"; 
+				try {
+					FileOutputStream fos = new FileOutputStream(path);
+					bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+					fos.flush();
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				Intent intentScreen = new Intent(
+						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+				Uri uri = Uri.parse("file://" + path);
+				intentScreen.setData(uri);
+				launcher.sendBroadcast(intentScreen);
+//			}
+
+			Toast.makeText(launcher, "스크린샷", Toast.LENGTH_SHORT)
+					.show();
+			
+			
 			Intent intent = new Intent(Intent.ACTION_MAIN);
 			intent.setClassName("com.LBL.launcherhome",
 					"com.LBL.launcherhome.Main");
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			launcher.startActivity(intent);
+			launcher.startActivity(intent);		
 			return;
 		}
 
