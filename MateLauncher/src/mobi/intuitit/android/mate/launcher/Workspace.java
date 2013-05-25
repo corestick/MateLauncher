@@ -1056,7 +1056,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// Drag from somewhere else
 		ItemInfo info = (ItemInfo) dragInfo;
 		
-		Log.e("RRR", "onDropExternal");
+//		Log.e("RRR", "onDropExternal");
 		
 		View view = null;
 
@@ -1072,7 +1072,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 						layoutType, (ApplicationInfo) info);
 			} else if (info instanceof Mobject) {
 				info = new Mobject((Mobject) info);
-				Log.e("RRR", "ResIdx-->>" + info.resIdx);
 				
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
 						(Mobject) info);

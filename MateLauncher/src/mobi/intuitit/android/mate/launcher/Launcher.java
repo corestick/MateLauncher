@@ -718,7 +718,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return A View inflated from R.layout.application.
 	 */
 	View createShortcut(ItemType info) {
-		Log.e("RRR", "createShortcut ApplicationInfo");
+//		Log.e("RRR", "createShortcut ApplicationInfo");
 
 		if (info instanceof ApplicationInfo) {
 
@@ -756,15 +756,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						.createIconThumbnail(appInfo.icon, this);
 				appInfo.filtered = true;
 			}
-		} else
-		{
-			Log.e("RRR", "createShortcut");
+		} else {
+//			Log.e("RRR", "createShortcut");
 			Mobject appInfo = (Mobject) info;
 
-			favorite.setImageResource(MImageList.getInstance().getIcon(appInfo.resType, appInfo.resIdx));
+			favorite.setImageResource(MImageList.getInstance().getIcon(
+					appInfo.resType, appInfo.resIdx));
 		}
-		
-		Log.e("RRR", "childcount22 = " + ((MLayout)mWorkspace.getChildAt(1)).getChildCount());
 
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
@@ -1905,16 +1903,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			switch (item.itemType) {
 			case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 			case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-				Log.e("RRR", "bindItems");
+//				Log.e("RRR", "bindItems");
 
 				final View shortcut;
 				if (item instanceof ApplicationInfo) {
 					shortcut = createShortcut((ApplicationInfo) item);
 				} else {
-					Log.e("RRR", "itemType Mobject");
+//					Log.e("RRR", "itemType Mobject");
 					shortcut = createShortcut((Mobject) item);
-					
-				}				
+
+				}
 
 				workspace.addInScreen(shortcut, item.screen, item.cellX,
 						item.cellY, 1, 1, !desktopLocked);
@@ -2260,10 +2258,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			if (!(v instanceof LayoutType)) {
 				v = (View) v.getParent();
-
-				ApplicationInfo a = (ApplicationInfo) v.getTag();
-				mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);
-				mSpeechBubbleview.setVisibility(View.VISIBLE);
 			}
 		}
 

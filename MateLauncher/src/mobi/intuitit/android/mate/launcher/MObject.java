@@ -1,10 +1,8 @@
 package mobi.intuitit.android.mate.launcher;
 
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class Mobject extends ItemType {
 
@@ -34,10 +32,6 @@ public class Mobject extends ItemType {
 
 	public Mobject(Mobject info) {
 		super(info);
-		// title = info.title.toString();
-		// intent = new Intent(info.intent);
-		icon = info.icon;
-		// scale = info.scale;
 	}
 
 	/**

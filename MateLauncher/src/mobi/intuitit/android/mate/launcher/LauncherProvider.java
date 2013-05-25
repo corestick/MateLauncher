@@ -206,6 +206,10 @@ public class LauncherProvider extends ContentProvider {
         public void onCreate(SQLiteDatabase db) {
             if (LOGD) Log.d(LOG_TAG, "creating new launcher database");
             
+            Log.e("RRR", "onCreate DB");
+            
+            db.execSQL("DROP TABLE IF EXISTS favorites");
+            
             db.execSQL("CREATE TABLE favorites (" +
                     "_id INTEGER PRIMARY KEY," +
                     "title TEXT," +
@@ -225,7 +229,8 @@ public class LauncherProvider extends ContentProvider {
                     "icon BLOB," +
                     "uri TEXT," +
                     "displayMode INTEGER, " +
-                    "mobjectIcon INTEGER" + 
+                    "mobjectType INTEGER, " +
+                    "mobjectIcon INTEGER" +
                     ");");
 
             db.execSQL("CREATE TABLE gestures (" +
@@ -247,7 +252,9 @@ public class LauncherProvider extends ContentProvider {
             
             if (!convertDatabase(db)) {
                 // Populate favorites table with initial favorites
-                loadFavorites(db);
+//                loadFavorites(db);
+            	
+            	
             }
         }
 
@@ -304,6 +311,7 @@ public class LauncherProvider extends ContentProvider {
             final int uriIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.URI);
             final int displayModeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.DISPLAY_MODE);
             final int mobjectIcon = c.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_ICON);
+            final int mobjectType = c.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_TYPE);
 
             ContentValues[] rows = new ContentValues[c.getCount()];
             int i = 0;
@@ -325,6 +333,7 @@ public class LauncherProvider extends ContentProvider {
                 values.put(LauncherSettings.Favorites.URI, c.getString(uriIndex));
                 values.put(LauncherSettings.Favorites.DISPLAY_MODE, c.getInt(displayModeIndex));
                 values.put(LauncherSettings.Favorites.MOBJECT_ICON, c.getInt(mobjectIcon));
+                values.put(LauncherSettings.Favorites.MOBJECT_TYPE, c.getInt(mobjectType));
                 rows[i++] = values;
             }
 

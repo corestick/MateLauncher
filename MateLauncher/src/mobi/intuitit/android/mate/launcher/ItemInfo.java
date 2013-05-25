@@ -81,8 +81,8 @@ class ItemInfo {
      */
     boolean isGesture = false;
     
-    int resType;
-    int resIdx;
+    int resType = -1;
+    int resIdx = -1;
 
     ItemInfo() {
     }
