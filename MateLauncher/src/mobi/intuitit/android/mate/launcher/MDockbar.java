@@ -11,11 +11,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class MDockbar extends LinearLayout implements View.OnClickListener {
 
@@ -46,11 +43,8 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	ArrayList<Mobject> mWallpaperList;
 	ArrayList<Mobject> mFlooringList;
 	ArrayList<Mobject> mAvatarList;
-	
 
-//	View CaptureView;
-	Button screenBtn;
-	Bitmap bm = null;
+//	Bitmap bm = null; // 스크린샷용 비트맵
 
 	public MDockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -221,45 +215,43 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			return;
 		}
 		if (v.equals(mHomepage)) {
-			
+
 			// 캡쳐
-//			int ScreenNum[] = {R.id.cell1, R.id.cell2, R.id.cell3};
+			// int ScreenNum[] = {R.id.cell1, R.id.cell2, R.id.cell3};
 			String sdcard = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();
-			File cfile = new File(sdcard + "/ScreenShotTest");
-			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
-//			for (int i = 0; i < 3; i++) {
-				View captureView = launcher.getWorkspace();
-				captureView.getRootView().buildDrawingCache();
-				bm = captureView.getRootView().getDrawingCache();
+			File cfile = new File(sdcard
+					+ "/Android/data/mobi.intuitit.android/");
+			cfile.mkdirs();
+//			View captureView = launcher.getWorkspace();
+//			captureView.getRootView().buildDrawingCache();
+//			bm = captureView.getRootView().getDrawingCache();
 
-				String path = sdcard + "/ScreenShotTest/" + "screen.jpg"; 
+			for (int i = 0; i < 3; i++) {
+				String path = sdcard + "/Android/data/mobi.intuitit.android/"
+						+ "screen"+i+".jpg";
 				try {
 					FileOutputStream fos = new FileOutputStream(path);
-					bm.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+					launcher.sScreens[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
 					fos.flush();
 					fos.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+//				Intent intentScreen = new Intent(
+//						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//				Uri uri = Uri.parse("file://" + path);
+//				intentScreen.setData(uri);
+//				launcher.sendBroadcast(intentScreen);
+			}
 
-				Intent intentScreen = new Intent(
-						Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-				Uri uri = Uri.parse("file://" + path);
-				intentScreen.setData(uri);
-				launcher.sendBroadcast(intentScreen);
-//			}
-
-			Toast.makeText(launcher, "스크린샷", Toast.LENGTH_SHORT)
-					.show();
-			
-			
+			// 런처 홈으로 이동
 			Intent intent = new Intent(Intent.ACTION_MAIN);
 			intent.setClassName("com.LBL.launcherhome",
 					"com.LBL.launcherhome.Main");
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			launcher.startActivity(intent);		
+			launcher.startActivity(intent);
 			return;
 		}
 
