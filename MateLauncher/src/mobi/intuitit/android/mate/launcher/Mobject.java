@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-public class Mobject2 extends ItemInfo {
+public class Mobject extends ItemInfo {
 
 	/**
 	 * The application name.
@@ -26,11 +26,11 @@ public class Mobject2 extends ItemInfo {
 	 */
 	// float scale;
 	
-	Mobject2() {
+	Mobject() {
 		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
 	}
 
-	public Mobject2(Mobject2 info) {
+	public Mobject(Mobject info) {
 		super(info);
 	}
 

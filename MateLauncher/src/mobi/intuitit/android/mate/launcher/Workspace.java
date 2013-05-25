@@ -1068,12 +1068,12 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				}
 				view = mLauncher.createShortcut(R.layout.application,
 						layoutType, (ApplicationInfo) info);
-			} else if (info instanceof Mobject2) {
+			} else if (info instanceof Mobject) {
 				Log.e("RRR", "onDropExternal, Mobject");
-				info = new Mobject2((Mobject2) info);
+				info = new Mobject((Mobject) info);
 				
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
-						(Mobject2) info);
+						(Mobject) info);
 			}
 
 			break;

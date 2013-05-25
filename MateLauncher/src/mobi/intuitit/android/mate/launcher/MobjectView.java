@@ -30,10 +30,10 @@ public class MobjectView extends GridView implements
 	MobjectAdapter mWallpaperAdapter;
 	MobjectAdapter mFlooringAdapter;
 	MobjectAdapter mAvatarAdapter;
-	ArrayList<Mobject2> mFurnitureList;
-	ArrayList<Mobject2> mWallpaperList;
-	ArrayList<Mobject2> mFlooringList;
-	ArrayList<Mobject2> mAvatarList;
+	ArrayList<Mobject> mFurnitureList;
+	ArrayList<Mobject> mWallpaperList;
+	ArrayList<Mobject> mFlooringList;
+	ArrayList<Mobject> mAvatarList;
 
 	private DragController mDragger;
 	private Launcher mLauncher;
@@ -70,13 +70,13 @@ public class MobjectView extends GridView implements
 	}
 
 	public void initAdapter() {
-		mFurnitureList = new ArrayList<Mobject2>();
-		mWallpaperList = new ArrayList<Mobject2>();
-		mFlooringList = new ArrayList<Mobject2>();
-		mAvatarList = new ArrayList<Mobject2>();
+		mFurnitureList = new ArrayList<Mobject>();
+		mWallpaperList = new ArrayList<Mobject>();
+		mFlooringList = new ArrayList<Mobject>();
+		mAvatarList = new ArrayList<Mobject>();
 
 		for (int i = 0; i < MImageList.getInstance().furnitureList.size(); i++) {
-			Mobject2 mObject = new Mobject2();
+			Mobject mObject = new Mobject();
 			mObject.icon = getResources().getDrawable(
 					MImageList.getInstance().furnitureList.get(i));
 			mObject.mobjectType = 0;
@@ -87,7 +87,7 @@ public class MobjectView extends GridView implements
 		mFurnitureAdapter = new MobjectAdapter(mLauncher, mFurnitureList);
 
 		for (int i = 0; i < MImageList.getInstance().wallpaperList.size(); i++) {
-			Mobject2 mObject = new Mobject2();
+			Mobject mObject = new Mobject();
 			mObject.icon = getResources().getDrawable(
 					MImageList.getInstance().wallpaperList.get(i));
 			
@@ -96,7 +96,7 @@ public class MobjectView extends GridView implements
 		mWallpaperAdapter = new MobjectAdapter(mLauncher, mWallpaperList);
 
 		for (int i = 0; i < MImageList.getInstance().flooringList.size(); i++) {
-			Mobject2 mObject = new Mobject2();
+			Mobject mObject = new Mobject();
 			mObject.icon = getResources().getDrawable(
 					MImageList.getInstance().flooringList.get(i));
 
@@ -105,7 +105,7 @@ public class MobjectView extends GridView implements
 		mFlooringAdapter = new MobjectAdapter(mLauncher, mFlooringList);
 
 		for (int i = 0; i < MImageList.getInstance().avatarList.size(); i++) {
-			Mobject2 mObject = new Mobject2();
+			Mobject mObject = new Mobject();
 			mObject.icon = getResources().getDrawable(
 					MImageList.getInstance().avatarList.get(i));
 			mObject.mobjectType = 1;
@@ -176,8 +176,8 @@ public class MobjectView extends GridView implements
 		if (!isDraggable())
 			return false;
 		
-		Mobject2 app = (Mobject2) parent.getItemAtPosition(position);
-		app = new Mobject2(app);
+		Mobject app = (Mobject) parent.getItemAtPosition(position);
+		app = new Mobject(app);
 
 		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
 		mLauncher.closeObjectView();
