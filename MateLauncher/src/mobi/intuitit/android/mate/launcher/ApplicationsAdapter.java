@@ -28,17 +28,17 @@ import android.widget.TextView;
 /**
  * GridView adapter to show the list of applications and shortcuts
  */
-public class ApplicationsAdapter extends ArrayAdapter<ItemType> {
+public class ApplicationsAdapter extends ArrayAdapter<ItemInfo> {
 	private final LayoutInflater mInflater;
 
-	public ApplicationsAdapter(Context context, ArrayList<ItemType> apps) {
+	public ApplicationsAdapter(Context context, ArrayList<ItemInfo> apps) {
 		super(context, 0, apps);
 		mInflater = LayoutInflater.from(context);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final ItemType info = getItem(position);
+		final ItemInfo info = getItem(position);
 
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.application_boxed, parent,

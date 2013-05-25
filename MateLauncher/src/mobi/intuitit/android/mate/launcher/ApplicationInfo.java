@@ -26,7 +26,7 @@ import android.graphics.drawable.Drawable;
  * Represents a launchable application. An application is made of a name (or title),
  * an intent and an icon.
  */
-class ApplicationInfo extends ItemType {
+class ApplicationInfo extends ItemInfo {
 
     /**
      * The application name.

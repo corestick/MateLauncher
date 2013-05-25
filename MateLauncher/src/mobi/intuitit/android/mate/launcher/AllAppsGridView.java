@@ -109,8 +109,8 @@ public class AllAppsGridView extends GridView implements AdapterView.OnItemClick
             return false;
         }
 
-        ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(position);
-        app = new ApplicationInfo(app);
+        ItemInfo app = (ItemInfo) parent.getItemAtPosition(position);
+        app = new ItemInfo(app);
 
         mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
         mLauncher.closeAllApplications();

@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-public class Mobject extends ItemType {
+public class Mobject extends ItemInfo {
 
 	/**
 	 * The application name.
@@ -34,49 +34,9 @@ public class Mobject extends ItemType {
 		super(info);
 	}
 
-	/**
-	 * Creates the application intent based on a component name and various
-	 * launch flags. Sets {@link #itemType} to
-	 * {@link LauncherSettings.BaseLauncherColumns#ITEM_TYPE_APPLICATION}.
-	 * 
-	 * @param className
-	 *            the class name of the component representing the intent
-	 * @param launchFlags
-	 *            the launch flags
-	 */
-	// final void setActivity(ComponentName className, int launchFlags) {
-	// intent = new Intent(Intent.ACTION_MAIN);
-	// intent.addCategory(Intent.CATEGORY_LAUNCHER);
-	// intent.setComponent(className);
-	// intent.setFlags(launchFlags);
-	// itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
-	// }
-
 	@Override
 	void onAddToDatabase(ContentValues values) {
 		super.onAddToDatabase(values);
-
-		String titleStr = title != null ? title.toString() : null;
-		values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
-
-		String uri = intent != null ? intent.toUri(0) : null;
-		values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
-
-		// if (customIcon) {
-		// values.put(LauncherSettings.BaseLauncherColumns.ICON_TYPE,
-		// LauncherSettings.BaseLauncherColumns.ICON_TYPE_BITMAP);
-		// Bitmap bitmap = ((FastBitmapDrawable) icon).getBitmap();
-		// writeBitmap(values, bitmap);
-		// } else {
-		// values.put(LauncherSettings.BaseLauncherColumns.ICON_TYPE,
-		// LauncherSettings.BaseLauncherColumns.ICON_TYPE_RESOURCE);
-		// if (iconResource != null) {
-		// values.put(LauncherSettings.BaseLauncherColumns.ICON_PACKAGE,
-		// iconResource.packageName);
-		// values.put(LauncherSettings.BaseLauncherColumns.ICON_RESOURCE,
-		// iconResource.resourceName);
-		// }
-		// }
 	}
 
 	@Override

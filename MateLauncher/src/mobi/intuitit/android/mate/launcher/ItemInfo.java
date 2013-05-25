@@ -19,8 +19,11 @@ package mobi.intuitit.android.mate.launcher;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 /**
@@ -81,8 +84,28 @@ class ItemInfo {
      */
     boolean isGesture = false;
     
-    int resType = -1;
-    int resIdx = -1;
+    /**
+     * The application name.
+     */
+    CharSequence title;
+
+    /**
+     * The intent used to start the application.
+     */
+    Intent intent;
+
+    /**
+     * The application icon.
+     */
+    Drawable icon;
+
+    /**
+     * When set to true, indicates that the icon has been resized.
+     */
+    boolean filtered;
+    
+    int mobjectType = -1;
+    int mobjectIcon = -1;
 
     ItemInfo() {
     }
@@ -96,8 +119,8 @@ class ItemInfo {
         screen = info.screen;
         itemType = info.itemType;
         container = info.container;
-        resType = info.resType;
-        resIdx = info.resIdx;
+        mobjectType = info.mobjectType;
+        mobjectIcon = info.mobjectIcon;
     }
 
     /**
@@ -114,6 +137,14 @@ class ItemInfo {
             values.put(LauncherSettings.Favorites.CELLY, cellY);
             values.put(LauncherSettings.Favorites.SPANX, spanX);
             values.put(LauncherSettings.Favorites.SPANY, spanY);
+            values.put(LauncherSettings.Favorites.MOBJECT_TYPE, mobjectType);
+            values.put(LauncherSettings.Favorites.MOBJECT_ICON, mobjectIcon);
+
+            String titleStr = title != null ? title.toString() : null;
+    		values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
+
+    		String uri = intent != null ? intent.toUri(0) : null;
+    		values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
         }
     }
 
@@ -127,6 +158,7 @@ class ItemInfo {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                 out.flush();
                 out.close();
+                
 
                 values.put(LauncherSettings.Favorites.ICON, out.toByteArray());
             } catch (IOException e) {
@@ -134,5 +166,13 @@ class ItemInfo {
             }
         }
     }
-
+    
+    public void setActivity(ComponentName componentName, int launchFlags) {
+		// TODO Auto-generated method stub
+		intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setComponent(componentName);
+		intent.setFlags(launchFlags);
+		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_APPLICATION;
+	}
 }

@@ -79,8 +79,8 @@ public class MobjectView extends GridView implements
 			Mobject mObject = new Mobject();
 			mObject.icon = getResources().getDrawable(
 					MImageList.getInstance().furnitureList.get(i));
-			mObject.resType = 0;
-			mObject.resIdx = i;
+			mObject.mobjectType = 0;
+			mObject.mobjectIcon = i;
 						
 			mFurnitureList.add(mObject);
 		}
@@ -108,8 +108,8 @@ public class MobjectView extends GridView implements
 			Mobject mObject = new Mobject();
 			mObject.icon = getResources().getDrawable(
 					MImageList.getInstance().avatarList.get(i));
-			mObject.resType = 1;
-			mObject.resIdx = i;
+			mObject.mobjectType = 1;
+			mObject.mobjectIcon = i;
 			
 			mAvatarList.add(mObject);
 		}

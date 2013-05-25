@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -983,7 +982,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		}
 	}
 
-	void addApplicationShortcut(ItemType info, LayoutType.CellInfo cellInfo,
+	void addApplicationShortcut(ItemInfo info, LayoutType.CellInfo cellInfo,
 			boolean insertAtFirst) {
 		final LayoutType layout = (LayoutType) getChildAt(cellInfo.screen);
 		final int[] result = new int[2];
@@ -1056,14 +1055,13 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// Drag from somewhere else
 		ItemInfo info = (ItemInfo) dragInfo;
 		
-//		Log.e("RRR", "onDropExternal");
-		
 		View view = null;
 
 		switch (info.itemType) {
 		case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 		case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
 			if (info instanceof ApplicationInfo) {
+				Log.e("RRR", "onDropExternal, ApplicationInfo");
 				if (info.container == NO_ID) {
 					// Came from all apps -- make a copy
 					info = new ApplicationInfo((ApplicationInfo) info);
@@ -1071,6 +1069,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				view = mLauncher.createShortcut(R.layout.application,
 						layoutType, (ApplicationInfo) info);
 			} else if (info instanceof Mobject) {
+				Log.e("RRR", "onDropExternal, Mobject");
 				info = new Mobject((Mobject) info);
 				
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
@@ -1094,8 +1093,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// -- MLayout ฐüทร
 		LayoutType.LayoutParams lp = (LayoutType.LayoutParams) view
 				.getLayoutParams();
-		final LauncherModel model = Launcher.getModel();
-
 		if (layoutType instanceof MLayout) {
 			layoutType.onDropChild(view, x, y);
 
@@ -1105,7 +1102,8 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 					mTargetCell);
 			layoutType.onDropChild(view, mTargetCell);
 		}
-
+		
+		final LauncherModel model = Launcher.getModel();
 		model.addDesktopItem(info);
 		LauncherModel.addOrMoveItemInDatabase(mLauncher, info,
 				LauncherSettings.Favorites.CONTAINER_DESKTOP, mCurrentScreen,
@@ -1383,14 +1381,14 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 					}
 				} else if (tag instanceof UserFolderInfo) {
 					final UserFolderInfo info = (UserFolderInfo) tag;
-					final ArrayList<ItemType> contents = info.contents;
-					final ArrayList<ItemType> toRemove = new ArrayList<ItemType>(
+					final ArrayList<ItemInfo> contents = info.contents;
+					final ArrayList<ItemInfo> toRemove = new ArrayList<ItemInfo>(
 							1);
 					final int contentsCount = contents.size();
 					boolean removedFromFolder = false;
 
 					for (int k = 0; k < contentsCount; k++) {
-						final ItemType appInfo = contents.get(k);
+						final ItemInfo appInfo = contents.get(k);
 						final Intent intent = appInfo.intent;
 						final ComponentName name = intent.getComponent();
 

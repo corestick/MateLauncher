@@ -717,9 +717,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * 
 	 * @return A View inflated from R.layout.application.
 	 */
-	View createShortcut(ItemType info) {
-//		Log.e("RRR", "createShortcut ApplicationInfo");
-
+	View createShortcut(ItemInfo info) {
 		if (info instanceof ApplicationInfo) {
 
 			return createShortcut(R.layout.application,
@@ -745,7 +743,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * 
 	 * @return A View inflated from layoutResId.
 	 */
-	View createShortcut(int layoutResId, ViewGroup parent, ItemType info) {
+	View createShortcut(int layoutResId, ViewGroup parent, ItemInfo info) {
 		ImageView favorite = (ImageView) mInflater.inflate(layoutResId, parent,
 				false);
 
@@ -757,11 +755,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				appInfo.filtered = true;
 			}
 		} else {
-//			Log.e("RRR", "createShortcut");
 			Mobject appInfo = (Mobject) info;
 
 			favorite.setImageResource(MImageList.getInstance().getIcon(
-					appInfo.resType, appInfo.resIdx));
+					appInfo.mobjectType, appInfo.mobjectIcon));
 		}
 
 		favorite.setTag(info);
@@ -785,13 +782,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (!findSingleSlot(cellInfo))
 			return;
 
-		final ItemType info = infoFromApplicationIntent(context, data);
+		final ItemInfo info = infoFromApplicationIntent(context, data);
 		if (info != null) {
 			mWorkspace.addApplicationShortcut(info, cellInfo, insertAtFirst);
 		}
 	}
 
-	private static ItemType infoFromApplicationIntent(Context context,
+	private static ItemInfo infoFromApplicationIntent(Context context,
 			Intent data) {
 		ComponentName component = data.getComponent();
 		PackageManager packageManager = context.getPackageManager();
@@ -1903,15 +1900,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			switch (item.itemType) {
 			case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 			case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-//				Log.e("RRR", "bindItems");
-
 				final View shortcut;
+				
 				if (item instanceof ApplicationInfo) {
 					shortcut = createShortcut((ApplicationInfo) item);
 				} else {
-//					Log.e("RRR", "itemType Mobject");
 					shortcut = createShortcut((Mobject) item);
-
 				}
 
 				workspace.addInScreen(shortcut, item.screen, item.cellX,
@@ -2138,6 +2132,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			startActivitySafely(intent);
 		} else if (tag instanceof FolderInfo) {
 			handleFolderClick((FolderInfo) tag);
+		}
+		else if(tag instanceof Mobject) {
+			
 		}
 	}
 

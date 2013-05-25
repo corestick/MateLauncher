@@ -68,14 +68,14 @@ public class LauncherModel {
 	private ArrayList<LauncherAppWidgetInfo> mDesktopAppWidgets;
 	private HashMap<Long, FolderInfo> mFolders;
 
-	private ArrayList<ItemType> mApplications;
+	private ArrayList<ItemInfo> mApplications;
 	private ApplicationsAdapter mApplicationsAdapter;
 	private ApplicationsLoader mApplicationsLoader;
 	private DesktopItemsLoader mDesktopItemsLoader;
 	private Thread mApplicationsLoaderThread;
 	private Thread mDesktopLoaderThread;
 
-	private final HashMap<ComponentName, ItemType> mAppInfoCache = new HashMap<ComponentName, ItemType>(
+	private final HashMap<ComponentName, ItemInfo> mAppInfoCache = new HashMap<ComponentName, ItemInfo>(
 			INITIAL_ICON_CACHE_CAPACITY);
 
 	synchronized void abortLoaders() {
@@ -133,7 +133,7 @@ public class LauncherModel {
 		}
 
 		if (mApplicationsAdapter == null || isLaunching || localeChanged) {
-			mApplications = new ArrayList<ItemType>(DEFAULT_APPLICATIONS_NUMBER);
+			mApplications = new ArrayList<ItemInfo>(DEFAULT_APPLICATIONS_NUMBER);
 			mApplicationsAdapter = new ApplicationsAdapter(launcher,
 					mApplications);
 		}
@@ -201,7 +201,7 @@ public class LauncherModel {
 
 			if (matches.size() > 0) {
 				final ApplicationsAdapter adapter = mApplicationsAdapter;
-				final HashMap<ComponentName, ItemType> cache = mAppInfoCache;
+				final HashMap<ComponentName, ItemInfo> cache = mAppInfoCache;
 
 				for (ResolveInfo info : matches) {
 					adapter.setNotifyOnChange(false);
@@ -225,11 +225,11 @@ public class LauncherModel {
 		if (packageName != null && packageName.length() > 0) {
 			final ApplicationsAdapter adapter = mApplicationsAdapter;
 
-			final List<ItemType> toRemove = new ArrayList<ItemType>();
+			final List<ItemInfo> toRemove = new ArrayList<ItemInfo>();
 			final int count = adapter.getCount();
 
 			for (int i = 0; i < count; i++) {
-				final ItemType applicationInfo = adapter.getItem(i);
+				final ItemInfo applicationInfo = adapter.getItem(i);
 				final Intent intent = applicationInfo.intent;
 				final ComponentName component = intent.getComponent();
 				if (packageName.equals(component.getPackageName())) {
@@ -237,8 +237,8 @@ public class LauncherModel {
 				}
 			}
 
-			final HashMap<ComponentName, ItemType> cache = mAppInfoCache;
-			for (ItemType info : toRemove) {
+			final HashMap<ComponentName, ItemInfo> cache = mAppInfoCache;
+			for (ItemInfo info : toRemove) {
 				adapter.setNotifyOnChange(false);
 				adapter.remove(info);
 				cache.remove(info.intent.getComponent());
@@ -269,7 +269,7 @@ public class LauncherModel {
 
 			for (int i = 0; i < count; i++) {
 				final ResolveInfo info = matches.get(i);
-				final ItemType applicationInfo = findIntent(adapter,
+				final ItemInfo applicationInfo = findIntent(adapter,
 						info.activityInfo.applicationInfo.packageName,
 						info.activityInfo.name);
 				if (applicationInfo != null) {
@@ -290,7 +290,7 @@ public class LauncherModel {
 	}
 
 	private void updateAndCacheApplicationInfo(PackageManager packageManager,
-			ResolveInfo info, ItemType applicationInfo, Context context) {
+			ResolveInfo info, ItemInfo applicationInfo, Context context) {
 
 		updateApplicationInfoTitleAndIcon(packageManager, info,
 				applicationInfo, context);
@@ -366,14 +366,14 @@ public class LauncherModel {
 	private boolean addEnabledAndUpdateActivities(List<ResolveInfo> matches,
 			ApplicationsAdapter adapter, Launcher launcher) {
 
-		final List<ItemType> toAdd = new ArrayList<ItemType>();
+		final List<ItemInfo> toAdd = new ArrayList<ItemInfo>();
 		final int count = matches.size();
 
 		boolean changed = false;
 
 		for (int i = 0; i < count; i++) {
 			final ResolveInfo info = matches.get(i);
-			final ItemType applicationInfo = findIntent(adapter,
+			final ItemInfo applicationInfo = findIntent(adapter,
 					info.activityInfo.applicationInfo.packageName,
 					info.activityInfo.name);
 			if (applicationInfo == null) {
@@ -388,7 +388,7 @@ public class LauncherModel {
 			}
 		}
 
-		for (ItemType info : toAdd) {
+		for (ItemInfo info : toAdd) {
 			adapter.setNotifyOnChange(false);
 			adapter.add(info);
 		}
@@ -399,13 +399,13 @@ public class LauncherModel {
 	private boolean removeDisabledActivities(String packageName,
 			List<ResolveInfo> matches, ApplicationsAdapter adapter) {
 
-		final List<ItemType> toRemove = new ArrayList<ItemType>();
+		final List<ItemInfo> toRemove = new ArrayList<ItemInfo>();
 		final int count = adapter.getCount();
 
 		boolean changed = false;
 
 		for (int i = 0; i < count; i++) {
-			final ItemType applicationInfo = adapter.getItem(i);
+			final ItemInfo applicationInfo = adapter.getItem(i);
 			final Intent intent = applicationInfo.intent;
 			final ComponentName component = intent.getComponent();
 			if (packageName.equals(component.getPackageName())) {
@@ -416,8 +416,8 @@ public class LauncherModel {
 			}
 		}
 
-		final HashMap<ComponentName, ItemType> cache = mAppInfoCache;
-		for (ItemType info : toRemove) {
+		final HashMap<ComponentName, ItemInfo> cache = mAppInfoCache;
+		for (ItemInfo info : toRemove) {
 			adapter.setNotifyOnChange(false);
 			adapter.remove(info);
 			cache.remove(info.intent.getComponent());
@@ -426,12 +426,12 @@ public class LauncherModel {
 		return changed;
 	}
 
-	private static ItemType findIntent(ApplicationsAdapter adapter,
+	private static ItemInfo findIntent(ApplicationsAdapter adapter,
 			String packageName, String name) {
 
 		final int count = adapter.getCount();
 		for (int i = 0; i < count; i++) {
-			final ItemType applicationInfo = adapter.getItem(i);
+			final ItemInfo applicationInfo = adapter.getItem(i);
 			final Intent intent = applicationInfo.intent;
 			final ComponentName component = intent.getComponent();
 			if (packageName.equals(component.getPackageName())
@@ -455,7 +455,7 @@ public class LauncherModel {
 		return false;
 	}
 
-	Drawable getApplicationInfoIcon(PackageManager manager, ItemType info) {
+	Drawable getApplicationInfoIcon(PackageManager manager, ItemInfo info) {
 		final ResolveInfo resolveInfo = manager.resolveActivity(info.intent, 0);
 		if (resolveInfo == null) {
 			return null;
@@ -464,7 +464,7 @@ public class LauncherModel {
 		ComponentName componentName = new ComponentName(
 				resolveInfo.activityInfo.applicationInfo.packageName,
 				resolveInfo.activityInfo.name);
-		ItemType application = mAppInfoCache.get(componentName);
+		ItemInfo application = mAppInfoCache.get(componentName);
 
 		if (application == null) {
 			return resolveInfo.activityInfo.loadIcon(manager);
@@ -473,17 +473,17 @@ public class LauncherModel {
 		return application.icon;
 	}
 
-	private static ItemType makeAndCacheApplicationInfo(PackageManager manager,
-			HashMap<ComponentName, ItemType> appInfoCache, ResolveInfo info,
+	private static ItemInfo makeAndCacheApplicationInfo(PackageManager manager,
+			HashMap<ComponentName, ItemInfo> appInfoCache, ResolveInfo info,
 			Context context) {
 
 		ComponentName componentName = new ComponentName(
 				info.activityInfo.applicationInfo.packageName,
 				info.activityInfo.name);
-		ItemType application = appInfoCache.get(componentName);
+		ItemInfo application = appInfoCache.get(componentName);
 
 		if (application == null) {
-			application = new ItemType();
+			application = new ItemInfo();
 			application.container = ItemInfo.NO_ID;
 
 			updateApplicationInfoTitleAndIcon(manager, info, application,
@@ -500,7 +500,7 @@ public class LauncherModel {
 	}
 
 	private static void updateApplicationInfoTitleAndIcon(
-			PackageManager manager, ResolveInfo info, ItemType application,
+			PackageManager manager, ResolveInfo info, ItemInfo application,
 			Context context) {
 
 		application.title = info.loadLabel(manager);
@@ -566,11 +566,12 @@ public class LauncherModel {
 
 				ChangeNotifier action = new ChangeNotifier(applicationList,
 						true);
-				final HashMap<ComponentName, ItemType> appInfoCache = mAppInfoCache;
+				final HashMap<ComponentName, ItemInfo> appInfoCache = mAppInfoCache;
 
 				for (int i = 0; i < count && !mStopped; i++) {
 					ResolveInfo info = apps.get(i);
-					ItemType application = makeAndCacheApplicationInfo(manager,
+					
+					ItemInfo application = makeAndCacheApplicationInfo(manager,
 							appInfoCache, info, launcher);
 
 					if (action.add(application) && !mStopped) {
@@ -597,14 +598,14 @@ public class LauncherModel {
 
 	private static class ChangeNotifier implements Runnable {
 		private final ApplicationsAdapter mApplicationList;
-		private final ArrayList<ItemType> mBuffer;
+		private final ArrayList<ItemInfo> mBuffer;
 
 		private boolean mFirst = true;
 
 		ChangeNotifier(ApplicationsAdapter applicationList, boolean first) {
 			mApplicationList = applicationList;
 			mFirst = first;
-			mBuffer = new ArrayList<ItemType>(UI_NOTIFICATION_RATE);
+			mBuffer = new ArrayList<ItemInfo>(UI_NOTIFICATION_RATE);
 		}
 
 		public void run() {
@@ -621,7 +622,7 @@ public class LauncherModel {
 				mFirst = false;
 			}
 
-			final ArrayList<ItemType> buffer = mBuffer;
+			final ArrayList<ItemInfo> buffer = mBuffer;
 			final int count = buffer.size();
 
 			for (int i = 0; i < count; i++) {
@@ -635,15 +636,15 @@ public class LauncherModel {
 			applicationList.notifyDataSetChanged();
 		}
 
-		boolean add(ItemType application) {
-			final ArrayList<ItemType> buffer = mBuffer;
+		boolean add(ItemInfo application) {
+			final ArrayList<ItemInfo> buffer = mBuffer;
 			buffer.add(application);
 			return buffer.size() >= UI_NOTIFICATION_RATE;
 		}
 	}
 
-	static class ApplicationInfoComparator implements Comparator<ItemType> {
-		public final int compare(ItemType a, ItemType b) {
+	static class ApplicationInfoComparator implements Comparator<ItemInfo> {
+		public final int compare(ItemInfo a, ItemInfo b) {
 			return sCollator.compare(a.title.toString(), b.title.toString());
 		}
 	}
@@ -876,10 +877,11 @@ public class LauncherModel {
 						.getColumnIndexOrThrow(LauncherSettings.Favorites.URI);
 				final int displayModeIndex = c
 						.getColumnIndexOrThrow(LauncherSettings.Favorites.DISPLAY_MODE);
+				final int mobjectType = c.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_TYPE);
 				final int mobjectIcon = c
 						.getColumnIndex(LauncherSettings.Favorites.MOBJECT_ICON);
 
-				ApplicationInfo info;
+				ItemInfo info;
 				String intentDescription;
 				Widget widgetInfo;
 				LauncherAppWidgetInfo appWidgetInfo;
@@ -927,6 +929,9 @@ public class LauncherModel {
 								info.screen = c.getInt(screenIndex);
 								info.cellX = c.getInt(cellXIndex);
 								info.cellY = c.getInt(cellYIndex);
+								
+								info.mobjectType = c.getInt(mobjectType);
+								info.mobjectIcon = c.getInt(mobjectIcon);
 
 								switch (container) {
 								case LauncherSettings.Favorites.CONTAINER_DESKTOP:
@@ -1220,7 +1225,7 @@ public class LauncherModel {
 	 * Remove the callback for the cached drawables or we leak the previous Home
 	 * screen on orientation change.
 	 */
-	private void unbindAppDrawables(ArrayList<ItemType> applications) {
+	private void unbindAppDrawables(ArrayList<ItemInfo> applications) {
 		if (applications != null) {
 			final int count = applications.size();
 			for (int i = 0; i < count; i++) {
@@ -1248,7 +1253,7 @@ public class LauncherModel {
 	 * screen on orientation change.
 	 */
 	private void unbindCachedIconDrawables() {
-		for (ItemType appInfo : mAppInfoCache.values()) {
+		for (ItemInfo appInfo : mAppInfoCache.values()) {
 			appInfo.icon.setCallback(null);
 		}
 	}

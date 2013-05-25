@@ -229,7 +229,7 @@ class LauncherSettings {
          */
         static final String DISPLAY_MODE = "displayMode";
         
-        static final String MOBJECT_TYPE = "mojbectType";
+        static final String MOBJECT_TYPE = "mobjectType";
         
         static final String MOBJECT_ICON = "mobjectIcon";
     }
