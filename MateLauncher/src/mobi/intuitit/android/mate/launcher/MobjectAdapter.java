@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class MobjectAdapter extends ArrayAdapter<Mobject> {
+public class MobjectAdapter extends ArrayAdapter<Mobject2> {
 	private final LayoutInflater mInflater;
 
-	public MobjectAdapter(Context context, ArrayList<Mobject> objects) {
+	public MobjectAdapter(Context context, ArrayList<Mobject2> objects) {
 		super(context, 0, objects);
 		mInflater = LayoutInflater.from(context);
 
@@ -25,7 +25,7 @@ public class MobjectAdapter extends ArrayAdapter<Mobject> {
 
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Mobject info = getItem(position);
+        final Mobject2 info = getItem(position);
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.application_boxed, parent, false);

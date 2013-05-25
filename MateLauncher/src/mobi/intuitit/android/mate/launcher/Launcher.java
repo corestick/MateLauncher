@@ -755,7 +755,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				appInfo.filtered = true;
 			}
 		} else {
-			Mobject appInfo = (Mobject) info;
+			Mobject2 appInfo = (Mobject2) info;
 
 			favorite.setImageResource(MImageList.getInstance().getIcon(
 					appInfo.mobjectType, appInfo.mobjectIcon));
@@ -1905,7 +1905,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if (item instanceof ApplicationInfo) {
 					shortcut = createShortcut((ApplicationInfo) item);
 				} else {
-					shortcut = createShortcut((Mobject) item);
+					shortcut = createShortcut((Mobject2) item);
 				}
 
 				workspace.addInScreen(shortcut, item.screen, item.cellX,
@@ -2133,7 +2133,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		} else if (tag instanceof FolderInfo) {
 			handleFolderClick((FolderInfo) tag);
 		}
-		else if(tag instanceof Mobject) {
+		else if(tag instanceof Mobject2) {
 			
 		}
 	}
