@@ -308,6 +308,8 @@ containing a value of this type.
     }
     public static final class id {
         public static final int all_apps=0x7f07000b;
+        public static final int applist_image=0x7f070018;
+        public static final int applist_name=0x7f070019;
         public static final int cell1=0x7f070007;
         public static final int cell2=0x7f070008;
         public static final int cell3=0x7f070009;
@@ -318,32 +320,32 @@ containing a value of this type.
         public static final int dockbar=0x7f070011;
         public static final int drag_layer=0x7f070005;
         public static final int drawer=0x7f07000a;
-        public static final int folder_close=0x7f070018;
-        public static final int folder_content=0x7f070019;
-        public static final int folder_name=0x7f07001b;
-        public static final int gallery=0x7f070020;
+        public static final int folder_close=0x7f07001a;
+        public static final int folder_content=0x7f07001b;
+        public static final int folder_name=0x7f07001d;
+        public static final int gallery=0x7f070022;
         public static final int horizontal=0x7f070001;
         public static final int icon=0x7f070003;
-        public static final int label=0x7f07001a;
-        public static final int line1=0x7f07001c;
-        public static final int line2=0x7f07001d;
-        public static final int line3=0x7f07001e;
+        public static final int label=0x7f07001c;
+        public static final int line1=0x7f07001e;
+        public static final int line2=0x7f07001f;
+        public static final int line3=0x7f070020;
         public static final int mdockbar=0x7f070012;
         public static final int name=0x7f070002;
         public static final int objectview=0x7f070013;
         public static final int screen_indicator=0x7f07000e;
         public static final int screen_switcher=0x7f070010;
-        public static final int search_plate=0x7f070023;
-        public static final int search_src_text=0x7f070024;
-        public static final int search_voice_btn=0x7f070025;
-        public static final int set=0x7f070021;
+        public static final int search_plate=0x7f070025;
+        public static final int search_src_text=0x7f070026;
+        public static final int search_voice_btn=0x7f070027;
+        public static final int set=0x7f070023;
         public static final int speechbubbleview=0x7f070014;
         public static final int stub_screen_switcher=0x7f07000f;
         public static final int summary=0x7f070016;
         public static final int title=0x7f070015;
         public static final int vertical=0x7f070000;
-        public static final int wallpaper=0x7f07001f;
-        public static final int widget_search=0x7f070022;
+        public static final int wallpaper=0x7f070021;
+        public static final int widget_search=0x7f070024;
         public static final int workspace=0x7f070006;
     }
     public static final class layout {
@@ -356,19 +358,20 @@ containing a value of this type.
         public static final int launcher=0x7f030006;
         public static final int list_category=0x7f030007;
         public static final int list_checkbox_2lines=0x7f030008;
-        public static final int live_folder_grid=0x7f030009;
-        public static final int live_folder_icon=0x7f03000a;
-        public static final int live_folder_list=0x7f03000b;
-        public static final int mobject=0x7f03000c;
-        public static final int rename_folder=0x7f03000d;
-        public static final int screen_switcher=0x7f03000e;
-        public static final int speechbubbleview=0x7f03000f;
-        public static final int user_folder=0x7f030010;
-        public static final int wallpaper_chooser=0x7f030011;
-        public static final int wallpaper_item=0x7f030012;
-        public static final int widget_search=0x7f030013;
-        public static final int workspace_mscreen=0x7f030014;
-        public static final int workspace_screen=0x7f030015;
+        public static final int list_layout=0x7f030009;
+        public static final int live_folder_grid=0x7f03000a;
+        public static final int live_folder_icon=0x7f03000b;
+        public static final int live_folder_list=0x7f03000c;
+        public static final int mobject=0x7f03000d;
+        public static final int rename_folder=0x7f03000e;
+        public static final int screen_switcher=0x7f03000f;
+        public static final int speechbubbleview=0x7f030010;
+        public static final int user_folder=0x7f030011;
+        public static final int wallpaper_chooser=0x7f030012;
+        public static final int wallpaper_item=0x7f030013;
+        public static final int widget_search=0x7f030014;
+        public static final int workspace_mscreen=0x7f030015;
+        public static final int workspace_screen=0x7f030016;
     }
     public static final class string {
         /**  Displayed when user selects a shortcut for an app that was uninstalled 

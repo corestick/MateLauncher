@@ -718,7 +718,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return A View inflated from R.layout.application.
 	 */
 	View createShortcut(ItemType info) {
-//		Log.e("RRR", "createShortcut ApplicationInfo");
+		// Log.e("RRR", "createShortcut ApplicationInfo");
 
 		if (info instanceof ApplicationInfo) {
 
@@ -757,7 +757,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				appInfo.filtered = true;
 			}
 		} else {
-//			Log.e("RRR", "createShortcut");
+			// Log.e("RRR", "createShortcut");
 			Mobject appInfo = (Mobject) info;
 
 			favorite.setImageResource(MImageList.getInstance().getIcon(
@@ -1748,6 +1748,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
+					if(mSpeechBubbleview.getVisibility() == View.VISIBLE){
+						mSpeechBubbleview.setVisibility(View.GONE);
+					}
 				}
 				return true;
 			case KeyEvent.KEYCODE_HOME:
@@ -1903,13 +1906,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			switch (item.itemType) {
 			case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 			case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-//				Log.e("RRR", "bindItems");
+				// Log.e("RRR", "bindItems");
 
 				final View shortcut;
 				if (item instanceof ApplicationInfo) {
 					shortcut = createShortcut((ApplicationInfo) item);
 				} else {
-//					Log.e("RRR", "itemType Mobject");
+					// Log.e("RRR", "itemType Mobject");
 					shortcut = createShortcut((Mobject) item);
 
 				}
@@ -2125,19 +2128,32 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The view representing the clicked shortcut.
 	 */
 	public void onClick(View v) {
-		Object tag = v.getTag();
-		if (tag instanceof ApplicationInfo) {
-			// Open shortcut
-			final Intent intent = ((ApplicationInfo) tag).intent;
-			// set bound
-			if (v != null) {
-				Rect targetRect = new Rect();
-				v.getGlobalVisibleRect(targetRect);
-				intent.setSourceBounds(targetRect);
+		if (modifyMode == false) {
+			Object tag = v.getTag();
+			if (tag instanceof ApplicationInfo) {
+				// Open shortcut
+				final Intent intent = ((ApplicationInfo) tag).intent;
+				// set bound
+				if (v != null) {
+					Rect targetRect = new Rect();
+					v.getGlobalVisibleRect(targetRect);
+					intent.setSourceBounds(targetRect);
+				}
+				startActivitySafely(intent);
+			} else if (tag instanceof FolderInfo) {
+				handleFolderClick((FolderInfo) tag);
 			}
-			startActivitySafely(intent);
-		} else if (tag instanceof FolderInfo) {
-			handleFolderClick((FolderInfo) tag);
+		}
+		else{
+			Object tag = v.getTag();
+			if(tag instanceof Mobject){
+				mSpeechBubbleview.removeAllViews();
+				mSpeechBubbleview.selectApp(v);
+				mSpeechBubbleview.setVisibility(View.VISIBLE);
+			}
+//			ApplicationInfo a = (ApplicationInfo) v.getTag();			
+//			mSpeechBubbleview.InputPhonenumView();
+//			mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0, 0);						
 		}
 	}
 
