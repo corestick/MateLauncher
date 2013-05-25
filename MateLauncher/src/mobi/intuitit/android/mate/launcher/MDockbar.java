@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -46,7 +47,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	ArrayList<Mobject> mFlooringList;
 	ArrayList<Mobject> mAvatarList;
 	
-	Workspace captureView;
+
 //	View CaptureView;
 	Button screenBtn;
 	Bitmap bm = null;
@@ -228,9 +229,9 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			File cfile = new File(sdcard + "/ScreenShotTest");
 			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
 //			for (int i = 0; i < 3; i++) {
-				captureView = (Workspace)findViewById(R.id.workspace);
-				captureView.buildDrawingCache();
-				bm = captureView.getDrawingCache();
+				View captureView = launcher.getWorkspace();
+				captureView.getRootView().buildDrawingCache();
+				bm = captureView.getRootView().getDrawingCache();
 
 				String path = sdcard + "/ScreenShotTest/" + "screen.jpg"; 
 				try {
