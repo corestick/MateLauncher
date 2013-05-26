@@ -2138,12 +2138,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
 			}
-			else if(tag instanceof ItemInfo){
-				final Intent intent = ((ItemInfo) tag).intent;
-				Log.e("id", (String.valueOf(((ItemInfo) tag).id)));
-				Log.e("num",(String.valueOf(((ItemInfo) tag).mobjectType)));
-				Log.e("X", (String.valueOf(((ItemInfo) tag).cellX)));
-				Log.e("Intent", ((ItemInfo) tag).intent.toString());				
+			else if(tag instanceof Mobject){
+				final Intent intent = ((Mobject) tag).intent;
+				Log.e("id", (String.valueOf(((Mobject) tag).id)));
+				Log.e("num",(String.valueOf(((Mobject) tag).mobjectType)));
+				Log.e("X", (String.valueOf(((Mobject) tag).cellX)));
+				Log.e("Intent", ((Mobject) tag).intent.toString());				
 //				Intent intent = this.getPackageManager().getLaunchIntentForPackage(((Mobject) tag).intent.toString());
 				startActivitySafely(intent);
 			}

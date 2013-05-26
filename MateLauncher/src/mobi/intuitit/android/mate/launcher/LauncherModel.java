@@ -883,7 +883,7 @@ public class LauncherModel {
 				final int mobjectIcon = c
 						.getColumnIndex(LauncherSettings.Favorites.MOBJECT_ICON);
 
-				ItemInfo appinfo;
+				Mobject appinfo;
 				ApplicationInfo info;
 				String intentDescription;
 				Widget widgetInfo;
@@ -902,8 +902,8 @@ public class LauncherModel {
 						case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 						case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
 							//처음 읽어오는부분
-							if (MobjectType == 0) {
-								appinfo = new ItemInfo();
+							if (MobjectType == 0 || MobjectType == 1 ) {
+								appinfo = new Mobject();
 								intentDescription = c.getString(intentIndex);
 								try {
 									intent = Intent.parseUri(intentDescription,
@@ -912,7 +912,6 @@ public class LauncherModel {
 									continue;
 								}
 								appinfo.mobjectIcon = c.getInt(mobjectIcon);
-//								Log.e("Icon", String.valueOf(info.mobjectIcon));
 								appinfo.title = c.getString(titleIndex);
 								appinfo.intent = intent;
 
@@ -935,8 +934,6 @@ public class LauncherModel {
 									folderInfo.add(appinfo);
 									break;
 								}
-							} else if (MobjectType == 1) {
-
 							} else {
 								intentDescription = c.getString(intentIndex);
 								try {
