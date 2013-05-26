@@ -16,11 +16,9 @@
 
 package mobi.intuitit.android.mate.launcher;
 
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 /**
  * Represents a launchable application. An application is made of a name (or title),

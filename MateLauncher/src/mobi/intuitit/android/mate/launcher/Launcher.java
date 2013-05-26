@@ -1745,6 +1745,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
+					
+					if(mSpeechBubbleview.getVisibility() == View.VISIBLE){
+						mSpeechBubbleview.setVisibility(View.GONE);
+					}
 				}
 				return true;
 			case KeyEvent.KEYCODE_HOME:
@@ -1901,7 +1905,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 			case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
 				final View shortcut;
-				
+
 				if (item instanceof ApplicationInfo) {
 					shortcut = createShortcut((ApplicationInfo) item);
 				} else {
@@ -2119,22 +2123,38 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 *            The view representing the clicked shortcut.
 	 */
 	public void onClick(View v) {
-		Object tag = v.getTag();
-		if (tag instanceof ApplicationInfo) {
-			// Open shortcut
-			final Intent intent = ((ApplicationInfo) tag).intent;
-			// set bound
-			if (v != null) {
-				Rect targetRect = new Rect();
-				v.getGlobalVisibleRect(targetRect);
-				intent.setSourceBounds(targetRect);
+		if (modifyMode == false) {
+			Object tag = v.getTag();
+			if (tag instanceof ApplicationInfo) {
+				// Open shortcut
+				final Intent intent = ((ApplicationInfo) tag).intent;
+				// set bound
+				if (v != null) {
+					Rect targetRect = new Rect();
+					v.getGlobalVisibleRect(targetRect);
+					intent.setSourceBounds(targetRect);
+				}
+				startActivitySafely(intent);
+			} else if (tag instanceof FolderInfo) {
+				handleFolderClick((FolderInfo) tag);
 			}
-			startActivitySafely(intent);
-		} else if (tag instanceof FolderInfo) {
-			handleFolderClick((FolderInfo) tag);
-		}
-		else if(tag instanceof Mobject) {
-			
+			else if(tag instanceof Mobject){
+				Log.e("intent", (String.valueOf(((Mobject) tag).id)));
+				Log.e("num",(String.valueOf(((Mobject) tag).mobjectType)));
+				Log.e("X", (String.valueOf(((Mobject) tag).cellX)));
+//				Intent intent = this.getPackageManager().getLaunchIntentForPackage(((Mobject) tag).intent.toString());
+//				startActivitySafely(intent);
+			}
+		} else {
+			Object tag = v.getTag();
+			if (tag instanceof Mobject) {				
+				mSpeechBubbleview.removeAllViews();
+				mSpeechBubbleview.selectApp(((Mobject) tag).id);
+				// mSpeechBubbleview.InputPhonenumView();
+				// mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0,
+				// 0);
+				mSpeechBubbleview.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
