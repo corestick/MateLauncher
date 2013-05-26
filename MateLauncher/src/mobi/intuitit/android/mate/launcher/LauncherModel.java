@@ -570,7 +570,7 @@ public class LauncherModel {
 
 				for (int i = 0; i < count && !mStopped; i++) {
 					ResolveInfo info = apps.get(i);
-					
+
 					ItemInfo application = makeAndCacheApplicationInfo(manager,
 							appInfoCache, info, launcher);
 
@@ -877,7 +877,8 @@ public class LauncherModel {
 						.getColumnIndexOrThrow(LauncherSettings.Favorites.URI);
 				final int displayModeIndex = c
 						.getColumnIndexOrThrow(LauncherSettings.Favorites.DISPLAY_MODE);
-				final int mobjectType = c.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_TYPE);
+				final int mobjectType = c
+						.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_TYPE);
 				final int mobjectIcon = c
 						.getColumnIndex(LauncherSettings.Favorites.MOBJECT_ICON);
 
@@ -887,7 +888,7 @@ public class LauncherModel {
 				LauncherAppWidgetInfo appWidgetInfo;
 				int container;
 				long id;
-				Intent intent;
+				Intent intent = null;
 
 				final HashMap<Long, FolderInfo> folders = mFolders;
 
@@ -900,7 +901,11 @@ public class LauncherModel {
 						case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
 							intentDescription = c.getString(intentIndex);
 							try {
-								intent = Intent.parseUri(intentDescription, 0);
+								if (intentDescription.equals(null)) {
+
+								} else
+									intent = Intent.parseUri(intentDescription,
+											0);
 							} catch (java.net.URISyntaxException e) {
 								continue;
 							}
@@ -929,7 +934,7 @@ public class LauncherModel {
 								info.screen = c.getInt(screenIndex);
 								info.cellX = c.getInt(cellXIndex);
 								info.cellY = c.getInt(cellYIndex);
-								
+
 								info.mobjectType = c.getInt(mobjectType);
 								info.mobjectIcon = c.getInt(mobjectIcon);
 
