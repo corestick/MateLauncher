@@ -104,8 +104,8 @@ class ItemInfo {
      */
     boolean filtered;
     
-    int mobjectType = -1;
-    int mobjectIcon = -1;
+    int mobjectType;
+    int mobjectIcon;
 
     ItemInfo() {
     }
@@ -140,10 +140,10 @@ class ItemInfo {
             values.put(LauncherSettings.Favorites.MOBJECT_TYPE, mobjectType);
             values.put(LauncherSettings.Favorites.MOBJECT_ICON, mobjectIcon);
 
-            String titleStr = title != null ? title.toString() : null;
+            String titleStr = "null";
     		values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
 
-    		String uri = intent != null ? intent.toUri(0) : null;
+    		String uri = "null";
     		values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
         }
     }
