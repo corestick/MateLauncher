@@ -755,7 +755,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				appInfo.filtered = true;
 			}
 		} else {
-			Mobject appInfo = (Mobject) info;
+			ItemInfo appInfo = (ItemInfo) info;
 
 			favorite.setImageResource(MImageList.getInstance().getIcon(
 					appInfo.mobjectType, appInfo.mobjectIcon));
@@ -1909,7 +1909,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if (item instanceof ApplicationInfo) {
 					shortcut = createShortcut((ApplicationInfo) item);
 				} else {
-					shortcut = createShortcut((Mobject) item);
+					shortcut = createShortcut((ItemInfo) item);
 				}
 
 				workspace.addInScreen(shortcut, item.screen, item.cellX,
@@ -2138,22 +2138,27 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
 			}
-			else if(tag instanceof Mobject){
-				Log.e("intent", (String.valueOf(((Mobject) tag).id)));
-				Log.e("num",(String.valueOf(((Mobject) tag).mobjectType)));
-				Log.e("X", (String.valueOf(((Mobject) tag).cellX)));
+			else if(tag instanceof ItemInfo){
+				final Intent intent = ((ItemInfo) tag).intent;
+				Log.e("id", (String.valueOf(((ItemInfo) tag).id)));
+				Log.e("num",(String.valueOf(((ItemInfo) tag).mobjectType)));
+				Log.e("X", (String.valueOf(((ItemInfo) tag).cellX)));
+				Log.e("Intent", ((ItemInfo) tag).intent.toString());				
 //				Intent intent = this.getPackageManager().getLaunchIntentForPackage(((Mobject) tag).intent.toString());
-//				startActivitySafely(intent);
+				startActivitySafely(intent);
 			}
 		} else {
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {				
 				mSpeechBubbleview.removeAllViews();
-				mSpeechBubbleview.selectApp(((Mobject) tag).id);
+				ItemInfo info =mSpeechBubbleview.selectApp(tag);
+				mSpeechBubbleview.setVisibility(View.VISIBLE);
+//				((Mobject) tag).intent = info.intent;				
+//				v.setTag(tag);			
 				// mSpeechBubbleview.InputPhonenumView();
 				// mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0,
 				// 0);
-				mSpeechBubbleview.setVisibility(View.VISIBLE);
+				
 			}
 		}
 	}

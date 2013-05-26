@@ -30,7 +30,7 @@ public class MobjectView extends GridView implements
 	MobjectAdapter mWallpaperAdapter;
 	MobjectAdapter mFlooringAdapter;
 	MobjectAdapter mAvatarAdapter;
-	ArrayList<Mobject> mFurnitureList;
+	static ArrayList<Mobject> mFurnitureList;
 	ArrayList<Mobject> mWallpaperList;
 	ArrayList<Mobject> mFlooringList;
 	ArrayList<Mobject> mAvatarList;

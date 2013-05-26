@@ -99,7 +99,7 @@ public class AllAppsGridView extends GridView implements AdapterView.OnItemClick
     }
 
     public void onItemClick(AdapterView parent, View v, int position, long id) {
-        ApplicationInfo app = (ApplicationInfo) parent.getItemAtPosition(position);
+    	ItemInfo app = (ItemInfo) parent.getItemAtPosition(position);
         mLauncher.closeAllApplications();
         mLauncher.startActivitySafely(app.intent);
     }
