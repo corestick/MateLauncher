@@ -1745,8 +1745,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
-					
-					if(mSpeechBubbleview.getVisibility() == View.VISIBLE){
+
+					if (mSpeechBubbleview.getVisibility() == View.VISIBLE) {
 						mSpeechBubbleview.setVisibility(View.GONE);
 					}
 				}
@@ -2137,28 +2137,33 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				startActivitySafely(intent);
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
-			}
-			else if(tag instanceof Mobject){
-				final Intent intent = ((Mobject) tag).intent;
-				Log.e("id", (String.valueOf(((Mobject) tag).id)));
-				Log.e("num",(String.valueOf(((Mobject) tag).mobjectType)));
-				Log.e("X", (String.valueOf(((Mobject) tag).cellX)));
-				Log.e("Intent", ((Mobject) tag).intent.toString());				
-//				Intent intent = this.getPackageManager().getLaunchIntentForPackage(((Mobject) tag).intent.toString());
-				startActivitySafely(intent);
+			} else if (tag instanceof Mobject) {
+				if (((Mobject) tag).mobjectType == 0) {
+					final Intent intent = ((Mobject) tag).intent;
+					startActivitySafely(intent); // 앱매칭 실행
+				} else { // 아바타 선택화면
+					mSpeechBubbleview.removeAllViews();
+					mSpeechBubbleview.CreateSelectView();
+					mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40,
+							((Mobject) tag).cellX - 50, 0, 0);
+					mSpeechBubbleview.setVisibility(View.VISIBLE);
+				}
 			}
 		} else {
 			Object tag = v.getTag();
-			if (tag instanceof Mobject) {				
-				mSpeechBubbleview.removeAllViews();
-				Mobject info = mSpeechBubbleview.selectApp(tag);
-				mSpeechBubbleview.setVisibility(View.VISIBLE);
-//				((Mobject) tag).intent = info.intent;				
-				v.setTag(info);			
-				// mSpeechBubbleview.InputPhonenumView();
-				// mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0,
-				// 0);
-				
+			if (tag instanceof Mobject) {
+				if (((Mobject) tag).mobjectType == 0) {
+					mSpeechBubbleview.removeAllViews();
+					Mobject info = mSpeechBubbleview.selectApp(tag);
+					mSpeechBubbleview.setVisibility(View.VISIBLE);
+					v.setTag(info); //앱선택화면
+				} else {
+					mSpeechBubbleview.removeAllViews();
+					mSpeechBubbleview.InputPhonenumView();
+					mSpeechBubbleview.setVisibility(View.VISIBLE);
+					//전화번호부 선택화면
+				}
+
 			}
 		}
 	}
