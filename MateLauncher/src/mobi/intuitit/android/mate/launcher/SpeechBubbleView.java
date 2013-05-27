@@ -17,6 +17,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -45,10 +46,13 @@ public class SpeechBubbleView extends LinearLayout implements
 	private ImageView smsButton;
 	private ImageView faceButton;
 	private ImageView twiterButton;
+	private ImageView callButton;
+	private ImageView kakaoButton;
 	private Button sendButton;
 	private EditText edit;
 
 	private Button b; // 전환용 임시버튼
+	private String Pre;
 
 	private ListView listview;
 	ArrayAdapter<String> itemAdapter;
@@ -58,6 +62,7 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	ArrayList<String> contactlist = new ArrayList<String>();
 	Mobject Apptag;
+	
 
 	public SpeechBubbleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -87,16 +92,30 @@ public class SpeechBubbleView extends LinearLayout implements
 	}
 
 	public void CreateSelectView() {
+		callButton = new ImageView(mLauncher);
 		smsButton = new ImageView(mLauncher);
+		kakaoButton = new ImageView(mLauncher);
 		faceButton = new ImageView(mLauncher);
 		twiterButton = new ImageView(mLauncher);
 
+		callButton.setOnClickListener(this);
 		smsButton.setOnClickListener(this);
 		faceButton.setOnClickListener(this);
+		kakaoButton.setOnClickListener(this);
 
+		addView(callButton);
 		addView(smsButton);
+		addView(kakaoButton);
 		addView(faceButton);
 		addView(twiterButton);
+
+		LayoutParams param = (LayoutParams) callButton.getLayoutParams();
+		param.width = 60;
+		param.height = 60;
+
+		LayoutParams param1 = (LayoutParams) kakaoButton.getLayoutParams();
+		param1.width = 60;
+		param1.height = 60;
 
 		LayoutParams param2 = (LayoutParams) smsButton.getLayoutParams();
 		param2.width = 60;
@@ -110,10 +129,14 @@ public class SpeechBubbleView extends LinearLayout implements
 		param4.width = 60;
 		param4.height = 60;
 
+		callButton.setLayoutParams(param);
+		kakaoButton.setLayoutParams(param1);
 		smsButton.setLayoutParams(param2);
 		faceButton.setLayoutParams(param3);
 		twiterButton.setLayoutParams(param4);
 
+		callButton.setImageResource(R.drawable.ico_tweet);
+		kakaoButton.setImageResource(R.drawable.ico_tweet);
 		smsButton.setImageResource(R.drawable.ico_sms);
 		faceButton.setImageResource(R.drawable.ico_facebook);
 		twiterButton.setImageResource(R.drawable.ico_tweet);
@@ -405,21 +428,38 @@ public class SpeechBubbleView extends LinearLayout implements
 		} else if (v.equals(sendButton)) {
 			String message = edit.getText().toString();
 			if (message.length() != 0) {
-				mLauncher.sendtoSMS("5556", message);
-				removeAllViews();
-				CreateSelectView();
-				InputMethodManager imm = (InputMethodManager) mLauncher
-						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
-
+				if (Pre.equals("sms")) {
+					mLauncher.sendtoSMS("5556", message);
+					removeAllViews();
+					CreateSelectView();
+					InputMethodManager imm = (InputMethodManager) mLauncher
+							.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+				} else if (Pre.equals("kakkao")) {
+					KakaoLink kakao = new KakaoLink(mLauncher);
+					kakao.openKakaoLink(mLauncher, message,
+							mLauncher.getPackageName(), "0.9.2", "UTF-8");
+				}
 				this.setVisibility(View.GONE);
-			} else {
+			}
+			else {
 				Toast.makeText(mLauncher, "문자를 입력하세요", Toast.LENGTH_SHORT)
 						.show();
 				removeAllViews();
 				CreateSelectView();
 				this.setVisibility(View.GONE);
 			}
+		}
+		else if (v.equals(callButton)) {
+			Intent intent = new Intent(Intent.ACTION_CALL);
+			intent.setData(Uri.parse("tel:01095485995"));
+			mLauncher.startActivity(intent);
+			return;
+		} else if (v.equals(kakaoButton)) {
+			Pre = "kakkao";
+			removeAllViews();
+			CreateSendView();
+			return;
 		}
 
 	}

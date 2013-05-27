@@ -1,10 +1,10 @@
 package mobi.intuitit.android.mate.launcher;
 
 import android.content.ContentValues;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 
 public class Mobject extends ItemInfo {	
+	
+	String Contract;
 	
 	Mobject() {
 		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;

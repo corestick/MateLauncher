@@ -2142,15 +2142,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 			else if(tag instanceof Mobject){
 				if(((Mobject) tag).mobjectType == 0){
-					final Intent intent = ((Mobject) tag).intent;
-					Log.e("id", (String.valueOf(((Mobject) tag).id)));
-					Log.e("num",(String.valueOf(((Mobject) tag).mobjectType)));
-					Log.e("X", (String.valueOf(((Mobject) tag).cellX)));
-					Log.e("Intent", ((Mobject) tag).intent.toString());	
+					final Intent intent = ((Mobject) tag).intent;				
 					startActivitySafely(intent);
 				}
 				else{
-					
+					mSpeechBubbleview.removeAllViews();
+					mSpeechBubbleview.setVisibility(View.VISIBLE);
+					mSpeechBubbleview.CreateSelectView();
+					 mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40, ((Mobject) tag).cellY - 50, 0,
+					 0);
 				}			
 			}
 		} else {
@@ -2158,17 +2158,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (tag instanceof Mobject) {
 				if(((Mobject) tag).mobjectType ==0){
 					mSpeechBubbleview.removeAllViews();
-					Mobject info = mSpeechBubbleview.selectApp(tag);
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
+					Mobject info = mSpeechBubbleview.selectApp(tag);					
 					v.setTag(info);	
 				}
 				else{
-					
+					mSpeechBubbleview.removeAllViews();
+					mSpeechBubbleview.setVisibility(View.VISIBLE);
+					mSpeechBubbleview.InputPhonenumView();
 				}				
 //				((Mobject) tag).intent = info.intent;
-				// mSpeechBubbleview.InputPhonenumView();
-				// mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0,
-				// 0);
+				
+				
 				
 			}
 		}
