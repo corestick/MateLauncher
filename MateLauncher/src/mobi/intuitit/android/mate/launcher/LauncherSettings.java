@@ -233,21 +233,4 @@ class LauncherSettings {
         
         static final String MOBJECT_ICON = "mobjectIcon";
     }
-    
-    static final class MScreens {
-    	
-    	static final Uri CONTENT_URI = Uri.parse("content://" +
-                LauncherProvider.AUTHORITY + "/" + LauncherProvider.TABLE_MSCREENS);
-    	
-    	/**
-    	 * 스크린 인덱스
-    	 */
-    	static final String SCREEN_IDX = "screendIdx";
-    	
-    	static final String WALLPAPER_ICON = "wallpaperIdx";
-    	
-    	static final String FLOORING_ICON = "flooringIdx";
-    	
-    	
-    }
 }

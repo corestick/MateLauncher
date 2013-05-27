@@ -1054,7 +1054,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			LayoutType layoutType, boolean insertAtFirst) {
 		// Drag from somewhere else
 		ItemInfo info = (ItemInfo) dragInfo;
-		
+
 		View view = null;
 
 		switch (info.itemType) {
@@ -1071,7 +1071,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			} else if (info instanceof Mobject) {
 				Log.e("RRR", "onDropExternal, Mobject");
 				info = new Mobject((Mobject) info);
-				
+
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
 						(Mobject) info);
 			}
@@ -1102,7 +1102,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 					mTargetCell);
 			layoutType.onDropChild(view, mTargetCell);
 		}
-		
+
 		final LauncherModel model = Launcher.getModel();
 		model.addDesktopItem(info);
 		LauncherModel.addOrMoveItemInDatabase(mLauncher, info,
@@ -1552,5 +1552,33 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 
 	public void unbindWidgetScrollableViews() {
 		unbindWidgetScrollable();
+	}
+	
+	public void setMScreens() {
+		
+		for(int i = 0; i < this.getChildCount(); i++) {
+			LayoutType layout = (LayoutType) this.getChildAt(i);
+			if (layout instanceof MLayout) {
+				MLayout mLayout = (MLayout) layout;	
+				
+				int wIdx = SharedPreference.getIntSharedPreference(mLauncher, i + "|w");
+				if(wIdx > 0)
+					mLayout.setWallpaperResIdx(wIdx);
+				
+				int fIdx = SharedPreference.getIntSharedPreference(mLauncher, i + "|f");
+				if(fIdx > 0)
+					mLayout.setWallpaperResIdx(fIdx);
+			}
+		}
+		
+		for(int i = 0; i < this.getChildCount(); i++) {
+			LayoutType layout = (LayoutType) this.getChildAt(i);
+			if (layout instanceof MLayout) {
+				MLayout mLayout = (MLayout) layout;	
+				
+				SharedPreference.putSharedPreference(mLauncher, i + "|w", mLayout.getWallpaperResIdx());
+				SharedPreference.putSharedPreference(mLauncher, i + "|f", mLayout.getFlooringResIdx());
+			}
+		}
 	}
 }

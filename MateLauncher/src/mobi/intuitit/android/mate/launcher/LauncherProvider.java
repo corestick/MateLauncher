@@ -243,13 +243,6 @@ public class LauncherProvider extends ContentProvider {
                     "icon BLOB" +
                     ");");
             
-            db.execSQL("CREATE TABLE mscreens (" + 
-            		"_id INTEGER PRIMARY KEY, " +
-            		LauncherSettings.MScreens.SCREEN_IDX + " TEXT, " +
-            		LauncherSettings.MScreens.WALLPAPER_ICON + " INTEGER, " +
-            		LauncherSettings.MScreens.FLOORING_ICON + " INTEGER " +
-            		");");
-            
             // Database was just created, so wipe any previous widgets
             if (mAppWidgetHost != null) {
                 mAppWidgetHost.deleteHost();

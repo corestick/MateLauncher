@@ -23,8 +23,8 @@ public class MLayout extends LayoutType {
 
 	int[] mCellXY = new int[2];
 	
-	Drawable mFlooringRes;
-	Drawable mWallpaperRes;
+	private int mFlooringResIdx;
+	private int mWallpaperResIdx;
 
 	public MLayout(Context context) {
 		this(context, null);
@@ -41,8 +41,8 @@ public class MLayout extends LayoutType {
 
 		a.recycle();
 		
-		mFlooringRes = getResources().getDrawable(MImageList.getInstance().flooringList.get(0));
-		mWallpaperRes = getResources().getDrawable(MImageList.getInstance().wallpaperList.get(0));
+		setFlooringResIdx(0);
+		setWallpaperResIdx(0);
 		
 		setAlwaysDrawnWithCacheEnabled(false);
 	}
@@ -395,12 +395,12 @@ public class MLayout extends LayoutType {
 		MBackground mBack = new MBackground(canvas.getWidth(), canvas.getHeight());
 		
 		//벽지 그리기
-		mBack.setBitmap((BitmapDrawable)mWallpaperRes);
+		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(MImageList.getInstance().wallpaperList.get(mWallpaperResIdx)));
 		canvas.drawPath(mBack.getLeftPath(), mBack.getPaint());
 		canvas.drawPath(mBack.getRightPath(), mBack.getPaint());
 		
 		//바닥 그리기
-		mBack.setBitmap((BitmapDrawable)mFlooringRes);
+		mBack.setBitmap((BitmapDrawable)getResources().getDrawable(MImageList.getInstance().flooringList.get(mFlooringResIdx)));
 		canvas.drawPath(mBack.getBottomPath(), mBack.getPaint());
 		
 		//테투리 그리기
@@ -408,5 +408,21 @@ public class MLayout extends LayoutType {
 		
 		super.dispatchDraw(canvas);
 //		invalidate();
+	}
+	
+	public void setWallpaperResIdx(int idx) {
+		this.mWallpaperResIdx = idx;
+	}
+	
+	public void setFlooringResIdx(int idx) {
+		this.mFlooringResIdx = idx;
+	}
+	
+	public int getWallpaperResIdx() {
+		return this.mWallpaperResIdx;
+	}
+	
+	public int getFlooringResIdx() {
+		return this.mFlooringResIdx;
 	}
 }

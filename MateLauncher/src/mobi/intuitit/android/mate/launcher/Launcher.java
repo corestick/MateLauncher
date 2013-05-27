@@ -688,6 +688,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
 		workspace.setLauncher(this);
+//		workspace.setMScreens();
 
 		mDeleteZone.setLauncher(this);
 		mDeleteZone.setDragController(dragLayer);
@@ -2837,7 +2838,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else {
 				for (int i = number - count; i >= 1; i--)
 					mWorkspace.addView(mInflater.inflate(
-							R.layout.workspace_screen, null));
+							R.layout.workspace_mscreen, null));
 				return true;
 			}
 		} catch (Exception e) {
@@ -2975,9 +2976,5 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
 				Toast.LENGTH_SHORT).show();
-	}
-
-	public MLayout getCurrentMLayout() {
-		return (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
 	}
 }
