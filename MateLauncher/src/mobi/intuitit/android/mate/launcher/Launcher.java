@@ -700,8 +700,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
-		mSpeechBubbleview.setLauncher(this);
-		mSpeechBubbleview.CreateSelectView();
+		mSpeechBubbleview.setLauncher(this);	
 		mSpeechBubbleview.setVisibility(View.GONE);
 
 		dragLayer.setIgnoredDropTarget(grid);
@@ -2146,9 +2145,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					startActivitySafely(intent);
 				}
 				else{
+					Log.e("Contacts",((Mobject) tag).Contacts);					
+					String contacts =((Mobject) tag).Contacts;
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
-					mSpeechBubbleview.CreateSelectView();
+					mSpeechBubbleview.CreateSelectView(contacts);
 					 mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40, ((Mobject) tag).cellY - 50, 0,
 					 0);
 				}			
@@ -2159,18 +2160,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if(((Mobject) tag).mobjectType ==0){
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
-					Mobject info = mSpeechBubbleview.selectApp(tag);					
+					Mobject info = new Mobject();
+					info = mSpeechBubbleview.selectApp(tag);					
 					v.setTag(info);	
 				}
 				else{
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
-					mSpeechBubbleview.InputPhonenumView();
-				}				
-//				((Mobject) tag).intent = info.intent;
-				
-				
-				
+					Mobject info = new Mobject();
+					info = mSpeechBubbleview.InputPhonenumView(tag);
+					 mSpeechBubbleview.setLocation(0, 0, 0,
+							 0);
+					v.setTag(info);	
+				}
 			}
 		}
 	}
