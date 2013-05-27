@@ -189,19 +189,23 @@ public class MobjectView extends GridView implements
 		// TODO Auto-generated method stub
 
 		if (mObjectViewType == WALLPAPER) {
-			MLayout mLayout = mLauncher.getCurrentMLayout();
-			mLayout.mWallpaperRes = getResources().getDrawable(
-					MImageList.getInstance().wallpaperList.get(arg2));
-
+			Workspace mWorkspace = mLauncher.getWorkspace();
+			
+			MLayout mLayout = (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
+			mLayout.setWallpaperResIdx(arg2);			
+			SharedPreference.putSharedPreference(mLauncher, mWorkspace.getCurrentScreen() + "|w", arg2);
+			
 			hideMobjectView();
 		}
 
 		if (mObjectViewType == FLOORING) {
-			MLayout mLayout = mLauncher.getCurrentMLayout();
-			mLayout.mFlooringRes = getResources().getDrawable(
-					MImageList.getInstance().flooringList.get(arg2));
-
-			mLauncher.mMDockbar.invalidate();
+			Workspace mWorkspace = mLauncher.getWorkspace();
+			
+			MLayout mLayout = (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
+			mLayout.setFlooringResIdx(arg2);			
+			SharedPreference.putSharedPreference(mLauncher, mWorkspace.getCurrentScreen() + "|f", arg2);
+			
+			mLauncher.mMDockbar.invalidate(); // µ¶¹Ù Refresh
 			hideMobjectView();
 		}
 	}

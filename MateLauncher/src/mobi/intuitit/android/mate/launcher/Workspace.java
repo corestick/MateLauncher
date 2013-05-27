@@ -176,6 +176,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
+		
 		super.addView(child, index, params);
 	}
 
@@ -185,6 +186,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
+		
 		super.addView(child);
 	}
 
@@ -194,6 +196,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
+		
 		super.addView(child, index);
 	}
 
@@ -203,6 +206,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// throw new IllegalArgumentException(
 		// "A Workspace can only have CellLayout children.");
 		// }
+
 		super.addView(child, width, height);
 	}
 
@@ -1054,7 +1058,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			LayoutType layoutType, boolean insertAtFirst) {
 		// Drag from somewhere else
 		ItemInfo info = (ItemInfo) dragInfo;
-		
+
 		View view = null;
 
 		switch (info.itemType) {
@@ -1071,7 +1075,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			} else if (info instanceof Mobject) {
 				Log.e("RRR", "onDropExternal, Mobject");
 				info = new Mobject((Mobject) info);
-				
+
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
 						(Mobject) info);
 			}
@@ -1102,7 +1106,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 					mTargetCell);
 			layoutType.onDropChild(view, mTargetCell);
 		}
-		
+
 		final LauncherModel model = Launcher.getModel();
 		model.addDesktopItem(info);
 		LauncherModel.addOrMoveItemInDatabase(mLauncher, info,
@@ -1552,5 +1556,17 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 
 	public void unbindWidgetScrollableViews() {
 		unbindWidgetScrollable();
+	}
+	
+	public void initMScreens() {
+		Log.e("RRR", "initMScreens>>");
+		
+		for(int i = 0; i < this.getChildCount(); i++) {
+			LayoutType layout = (LayoutType) this.getChildAt(i);
+			if (layout instanceof MLayout) {
+				MLayout mLayout = (MLayout) layout;
+				mLayout.initMLayout(mLauncher, i);
+			}
+		}
 	}
 }

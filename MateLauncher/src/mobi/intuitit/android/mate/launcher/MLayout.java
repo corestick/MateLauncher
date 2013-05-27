@@ -3,14 +3,17 @@ package mobi.intuitit.android.mate.launcher;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +25,12 @@ public class MLayout extends LayoutType {
 	private final CellInfo mCellInfo = new CellInfo();
 
 	int[] mCellXY = new int[2];
+
+	private int mFlooringResIdx;
+	private int mWallpaperResIdx;
 	
-	Drawable mFlooringRes;
-	Drawable mWallpaperRes;
+	private Launcher mLauncher;
+	private int mScreenIdx;
 
 	public MLayout(Context context) {
 		this(context, null);
@@ -40,10 +46,7 @@ public class MLayout extends LayoutType {
 				R.styleable.CellLayout, defStyle, 0);
 
 		a.recycle();
-		
-		mFlooringRes = getResources().getDrawable(MImageList.getInstance().flooringList.get(0));
-		mWallpaperRes = getResources().getDrawable(MImageList.getInstance().wallpaperList.get(0));
-		
+
 		setAlwaysDrawnWithCacheEnabled(false);
 	}
 
@@ -203,6 +206,8 @@ public class MLayout extends LayoutType {
 				child.layout(childLeft, childTop, childRight, childBottom);
 			}
 		}
+		
+		loadMBackground();
 	}
 
 	Bitmap mThumb;
@@ -227,8 +232,8 @@ public class MLayout extends LayoutType {
 	}
 
 	synchronized void saveThumb() {
-//		if (layoutDrawed)  벽지, 바닥 바뀌면 적용을 위해
-//			return;
+		// if (layoutDrawed) 벽지, 바닥 바뀌면 적용을 위해
+		// return;
 
 		if (mThumbCanvas == null)
 			initThumb(getWidth() >> 2, getHeight() >> 2);
@@ -392,21 +397,75 @@ public class MLayout extends LayoutType {
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		MBackground mBack = new MBackground(canvas.getWidth(), canvas.getHeight());
-		
-		//벽지 그리기
-		mBack.setBitmap((BitmapDrawable)mWallpaperRes);
-		canvas.drawPath(mBack.getLeftPath(), mBack.getPaint());
-		canvas.drawPath(mBack.getRightPath(), mBack.getPaint());
-		
-		//바닥 그리기
-		mBack.setBitmap((BitmapDrawable)mFlooringRes);
-		canvas.drawPath(mBack.getBottomPath(), mBack.getPaint());
-		
-		//테투리 그리기
-		canvas.drawPath(mBack.getStrokePath(), mBack.getStrokePaint());
-		
 		super.dispatchDraw(canvas);
-//		invalidate();
+	}
+	
+	public void initMLayout(Launcher launcher, int screenIdx)
+	{
+		this.mLauncher = launcher;
+		this.mScreenIdx = screenIdx;
+	}
+
+	public void setWallpaperResIdx(int idx) {
+		this.mWallpaperResIdx = idx;
+		drawMBackground();
+	}
+
+	public void setFlooringResIdx(int idx) {
+		this.mFlooringResIdx = idx;
+		drawMBackground();
+	}
+	
+	public void loadMBackground() {
+		int wIdx = SharedPreference.getIntSharedPreference(mLauncher, mScreenIdx + "|w");
+		wIdx = wIdx > 0 ? wIdx : 0;
+		this.mWallpaperResIdx = wIdx;
+		
+		int fIdx = SharedPreference.getIntSharedPreference(mLauncher, mScreenIdx + "|f");
+		fIdx = fIdx > 0 ? fIdx : 0;
+		this.mFlooringResIdx = fIdx;
+		
+		drawMBackground();
+	}
+
+	public void drawMBackground() {
+		if (this.getWidth() > 0 && this.getHeight() > 0) {
+//			Log.e("RRRR", "drawMBackground");
+			
+			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|w", mWallpaperResIdx);
+			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|f", mFlooringResIdx);
+			
+			Bitmap bitmap = Bitmap.createBitmap(this.getWidth(),
+					this.getHeight(), Bitmap.Config.ARGB_4444);
+			Canvas canvas = new Canvas(bitmap);
+
+			MBackground mBack = new MBackground(canvas.getWidth(),
+					canvas.getHeight());
+
+			// 벽지 그리기
+			mBack.setBitmap((BitmapDrawable) getResources().getDrawable(
+					MImageList.getInstance().wallpaperList
+							.get(mWallpaperResIdx)));
+			canvas.drawPath(mBack.getLeftPath(), mBack.getPaint());
+			canvas.drawPath(mBack.getRightPath(), mBack.getPaint());
+
+			// 바닥 그리기
+			mBack.setBitmap((BitmapDrawable) getResources().getDrawable(
+					MImageList.getInstance().flooringList.get(mFlooringResIdx)));
+			canvas.drawPath(mBack.getBottomPath(), mBack.getPaint());
+
+			// 테투리 그리기
+			canvas.drawPath(mBack.getStrokePath(), mBack.getStrokePaint());
+
+			this.setBackgroundDrawable((Drawable) (new BitmapDrawable(bitmap)));
+		}
+	}
+
+	public int getWallpaperResIdx() {
+		return this.mWallpaperResIdx;
+	}
+
+	public int getFlooringResIdx() {
+		return this.mFlooringResIdx;
 	}
 }

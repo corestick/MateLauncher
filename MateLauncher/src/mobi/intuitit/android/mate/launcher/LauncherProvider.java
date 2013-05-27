@@ -70,6 +70,8 @@ public class LauncherProvider extends ContentProvider {
     static final String TABLE_FAVORITES = "favorites";
     static final String TABLE_GESTURES = "gestures";
     static final String PARAMETER_NOTIFY = "notify";
+    
+    static final String TABLE_MSCREENS = "mscreens";
 
     /**
      * {@link Uri} triggered at any registered {@link android.database.ContentObserver} when
@@ -207,9 +209,6 @@ public class LauncherProvider extends ContentProvider {
             if (LOGD) Log.d(LOG_TAG, "creating new launcher database");
             
             Log.e("RRR", "onCreate DB");
-            
-            db.execSQL("DROP TABLE IF EXISTS favorites");
-            
             db.execSQL("CREATE TABLE favorites (" +
                     "_id INTEGER PRIMARY KEY," +
                     "title TEXT," +
@@ -243,7 +242,7 @@ public class LauncherProvider extends ContentProvider {
                     "iconResource TEXT," +
                     "icon BLOB" +
                     ");");
-
+            
             // Database was just created, so wipe any previous widgets
             if (mAppWidgetHost != null) {
                 mAppWidgetHost.deleteHost();
@@ -253,8 +252,6 @@ public class LauncherProvider extends ContentProvider {
             if (!convertDatabase(db)) {
                 // Populate favorites table with initial favorites
 //                loadFavorites(db);
-            	
-            	
             }
         }
 
