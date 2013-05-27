@@ -762,6 +762,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 		info.title="null";
 		info.intent = new Intent();
+		info.Contacts = "null";
 		
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);

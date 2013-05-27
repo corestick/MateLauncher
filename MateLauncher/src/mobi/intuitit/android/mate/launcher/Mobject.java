@@ -2,9 +2,8 @@ package mobi.intuitit.android.mate.launcher;
 
 import android.content.ContentValues;
 
-public class Mobject extends ItemInfo {	
+public class Mobject extends ItemInfo {		
 	
-	String Contacts;
 	
 	Mobject() {
 		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
