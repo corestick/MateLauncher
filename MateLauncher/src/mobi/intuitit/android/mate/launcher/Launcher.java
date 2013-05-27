@@ -633,7 +633,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public MobjectView mObjectView;
 	public Dockbar mDockbar;
 	public MDockbar mMDockbar;
-	private SpeechBubbleView mSpeechBubbleview;
+	public SpeechBubbleView mSpeechBubbleview;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -760,7 +760,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			favorite.setImageResource(MImageList.getInstance().getIcon(
 					appInfo.mobjectType, appInfo.mobjectIcon));
 		}
-
+		info.title="null";
+		info.intent = new Intent();
+		
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -2139,22 +2141,31 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				handleFolderClick((FolderInfo) tag);
 			}
 			else if(tag instanceof Mobject){
-				final Intent intent = ((Mobject) tag).intent;
-				Log.e("id", (String.valueOf(((Mobject) tag).id)));
-				Log.e("num",(String.valueOf(((Mobject) tag).mobjectType)));
-				Log.e("X", (String.valueOf(((Mobject) tag).cellX)));
-				Log.e("Intent", ((Mobject) tag).intent.toString());				
-//				Intent intent = this.getPackageManager().getLaunchIntentForPackage(((Mobject) tag).intent.toString());
-				startActivitySafely(intent);
+				if(((Mobject) tag).mobjectType == 0){
+					final Intent intent = ((Mobject) tag).intent;
+					Log.e("id", (String.valueOf(((Mobject) tag).id)));
+					Log.e("num",(String.valueOf(((Mobject) tag).mobjectType)));
+					Log.e("X", (String.valueOf(((Mobject) tag).cellX)));
+					Log.e("Intent", ((Mobject) tag).intent.toString());	
+					startActivitySafely(intent);
+				}
+				else{
+					
+				}			
 			}
 		} else {
 			Object tag = v.getTag();
-			if (tag instanceof Mobject) {				
-				mSpeechBubbleview.removeAllViews();
-				Mobject info = mSpeechBubbleview.selectApp(tag);
-				mSpeechBubbleview.setVisibility(View.VISIBLE);
-//				((Mobject) tag).intent = info.intent;				
-				v.setTag(info);			
+			if (tag instanceof Mobject) {
+				if(((Mobject) tag).mobjectType ==0){
+					mSpeechBubbleview.removeAllViews();
+					Mobject info = mSpeechBubbleview.selectApp(tag);
+					mSpeechBubbleview.setVisibility(View.VISIBLE);
+					v.setTag(info);	
+				}
+				else{
+					
+				}				
+//				((Mobject) tag).intent = info.intent;
 				// mSpeechBubbleview.InputPhonenumView();
 				// mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0,
 				// 0);
