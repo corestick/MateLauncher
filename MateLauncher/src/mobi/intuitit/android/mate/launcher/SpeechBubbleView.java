@@ -155,7 +155,9 @@ public class SpeechBubbleView extends LinearLayout implements
 	public Mobject selectApp(Object tag) {		
 		final long App_id = ((Mobject) tag).id;
 		Apptag = (Mobject) tag;
-	
+		
+		Apptag.title ="null";
+		Apptag.intent = new Intent();
 		
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;

@@ -760,7 +760,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			favorite.setImageResource(MImageList.getInstance().getIcon(
 					appInfo.mobjectType, appInfo.mobjectIcon));
 		}
-
+		info.title  = "null";
+		info.intent = new Intent();
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
@@ -2140,7 +2141,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
 					final Intent intent = ((Mobject) tag).intent;
-//					Log.e("APPINTENT", ((Mobject) tag).title.toString());
+					Log.e("APPTitle", ((Mobject) tag).title.toString());
+					Log.e("APPINTENT", ((Mobject) tag).intent.toString());
 					startActivitySafely(intent); // 앱매칭 실행
 				} else { // 아바타 선택화면
 					mSpeechBubbleview.removeAllViews();
