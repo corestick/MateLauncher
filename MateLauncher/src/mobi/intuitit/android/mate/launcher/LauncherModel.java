@@ -882,6 +882,8 @@ public class LauncherModel {
 						.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_TYPE);
 				final int mobjectIcon = c
 						.getColumnIndex(LauncherSettings.Favorites.MOBJECT_ICON);
+				final int contacts = c
+						.getColumnIndex(LauncherSettings.Favorites.CONTACTS);
 
 				Mobject appinfo;
 				ApplicationInfo info;
@@ -921,8 +923,9 @@ public class LauncherModel {
 								appinfo.screen = c.getInt(screenIndex);
 								appinfo.cellX = c.getInt(cellXIndex);
 								appinfo.cellY = c.getInt(cellYIndex);
-								appinfo.mobjectType = c.getInt(mobjectType);								
-
+								appinfo.mobjectType = c.getInt(mobjectType);
+								appinfo.Contacts = c.getString(contacts);
+								Log.e("getContacts", appinfo.Contacts);
 								switch (container) {
 								case LauncherSettings.Favorites.CONTAINER_DESKTOP:
 									desktopItems.add(appinfo);

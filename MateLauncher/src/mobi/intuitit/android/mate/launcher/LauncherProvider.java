@@ -230,7 +230,8 @@ public class LauncherProvider extends ContentProvider {
                     "uri TEXT," +
                     "displayMode INTEGER, " +
                     "mobjectType INTEGER, " +
-                    "mobjectIcon INTEGER" +
+                    "mobjectIcon INTEGER," +
+                    "contacts TEXT"+
                     ");");
 
             db.execSQL("CREATE TABLE gestures (" +
@@ -312,7 +313,8 @@ public class LauncherProvider extends ContentProvider {
             final int displayModeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.DISPLAY_MODE);
             final int mobjectIcon = c.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_ICON);
             final int mobjectType = c.getColumnIndexOrThrow(LauncherSettings.Favorites.MOBJECT_TYPE);
-
+            final int contacts = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CONTACTS);
+            
             ContentValues[] rows = new ContentValues[c.getCount()];
             int i = 0;
             while (c.moveToNext()) {
@@ -334,6 +336,7 @@ public class LauncherProvider extends ContentProvider {
                 values.put(LauncherSettings.Favorites.DISPLAY_MODE, c.getInt(displayModeIndex));
                 values.put(LauncherSettings.Favorites.MOBJECT_ICON, c.getInt(mobjectIcon));
                 values.put(LauncherSettings.Favorites.MOBJECT_TYPE, c.getInt(mobjectType));
+                values.put(LauncherSettings.Favorites.CONTACTS, c.getInt(contacts));
                 rows[i++] = values;
             }
 

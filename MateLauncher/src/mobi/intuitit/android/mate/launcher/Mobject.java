@@ -4,7 +4,7 @@ import android.content.ContentValues;
 
 public class Mobject extends ItemInfo {	
 	
-	String Contract;
+	String Contacts;
 	
 	Mobject() {
 		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;

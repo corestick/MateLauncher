@@ -53,6 +53,7 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	private Button b; // 전환용 임시버튼
 	private String Pre;
+	private String Contacts; //보낼전화번호
 
 	private ListView listview;
 	ArrayAdapter<String> itemAdapter;
@@ -61,8 +62,8 @@ public class SpeechBubbleView extends LinearLayout implements
 	ArrayList<Drawable> setupAppIcon = new ArrayList<Drawable>();
 
 	ArrayList<String> contactlist = new ArrayList<String>();
-	Mobject Apptag;
-	
+	Mobject Apptag = new Mobject();
+	Mobject contactsTag = new Mobject();	
 
 	public SpeechBubbleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -91,7 +92,8 @@ public class SpeechBubbleView extends LinearLayout implements
 		b.setOnClickListener(this);
 	}
 
-	public void CreateSelectView() {
+	public void CreateSelectView(String contacts) {
+		Contacts = contacts;
 		callButton = new ImageView(mLauncher);
 		smsButton = new ImageView(mLauncher);
 		kakaoButton = new ImageView(mLauncher);
@@ -177,9 +179,7 @@ public class SpeechBubbleView extends LinearLayout implements
 	// 설치된 앱 목록 알아오기
 	public Mobject selectApp(Object tag) {		
 		final long App_id = ((Mobject) tag).id;
-		Apptag = (Mobject) tag;
-		Apptag.title ="null";
-		Apptag.intent = new Intent();
+		Apptag = (Mobject) tag;		
 		
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;
@@ -262,8 +262,10 @@ public class SpeechBubbleView extends LinearLayout implements
 	}
 
 	// 아바타 핸드폰 번호 매칭
-	public void InputPhonenumView() {
-
+	public Mobject InputPhonenumView(Object tag) {
+		final long App_id = ((Mobject) tag).id;
+		contactsTag = (Mobject) tag;
+		
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;
 		linear.getLayoutParams().width = LayoutParams.FILL_PARENT;
@@ -287,12 +289,20 @@ public class SpeechBubbleView extends LinearLayout implements
 			@Override
 			public void onItemClick(AdapterView<?> parentView, View view,
 					int position, long id) {
+				final ContentValues values = new ContentValues();				
+				final ContentResolver cr = mLauncher.getContentResolver();
 				String name = contactlist.get(position);
 				int num = name.indexOf(':');
-				String str = name.substring(num + 1, name.length());
-				Toast.makeText(mLauncher, str, 30).show();
+				String Num = name.substring(num + 1, name.length());
+				Toast.makeText(mLauncher, Num, 30).show();				
+				contactsTag.Contacts = Num;
+				values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
+				cr.update(
+						LauncherSettings.Favorites.getContentUri(App_id, false),
+						values, null, null);
 			}
 		});
+		return contactsTag;
 	}
 
 	// 설치 앱 얻어오기
@@ -373,8 +383,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		TextView name;
 		LayoutInflater inflater;
 
-		public MyAdapter() {
-			// TODO Auto-generated constructor stub
+		public MyAdapter() {			
 			inflater = (LayoutInflater) mLauncher
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
@@ -420,8 +429,7 @@ public class SpeechBubbleView extends LinearLayout implements
 	@Override
 	public void onClick(View v) {
 		if (v.equals(b)) {
-			removeAllViews();
-			CreateSelectView();
+			removeAllViews();		
 		} else if (v.equals(smsButton)) {
 			removeAllViews();
 			CreateSendView();
@@ -429,9 +437,8 @@ public class SpeechBubbleView extends LinearLayout implements
 			String message = edit.getText().toString();
 			if (message.length() != 0) {
 				if (Pre.equals("sms")) {
-					mLauncher.sendtoSMS("5556", message);
-					removeAllViews();
-					CreateSelectView();
+					mLauncher.sendtoSMS(Contacts, message);
+					removeAllViews();					
 					InputMethodManager imm = (InputMethodManager) mLauncher
 							.getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
@@ -445,23 +452,23 @@ public class SpeechBubbleView extends LinearLayout implements
 			else {
 				Toast.makeText(mLauncher, "문자를 입력하세요", Toast.LENGTH_SHORT)
 						.show();
-				removeAllViews();
-				CreateSelectView();
+				removeAllViews();				
 				this.setVisibility(View.GONE);
 			}
 		}
 		else if (v.equals(callButton)) {
 			Intent intent = new Intent(Intent.ACTION_CALL);
-			intent.setData(Uri.parse("tel:01095485995"));
+			intent.setData(Uri.parse("tel:"+Contacts));
 			mLauncher.startActivity(intent);
+			mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
 			return;
 		} else if (v.equals(kakaoButton)) {
 			Pre = "kakkao";
 			removeAllViews();
 			CreateSendView();
+			mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
 			return;
 		}
-
 	}
-
+	
 }

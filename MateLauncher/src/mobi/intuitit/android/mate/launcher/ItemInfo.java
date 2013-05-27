@@ -139,12 +139,12 @@ class ItemInfo {
             values.put(LauncherSettings.Favorites.SPANY, spanY);
             values.put(LauncherSettings.Favorites.MOBJECT_TYPE, mobjectType);
             values.put(LauncherSettings.Favorites.MOBJECT_ICON, mobjectIcon);
-
             String titleStr = "null";
     		values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
-
     		String uri = "null";
     		values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
+    		String PhoneNum = "null";
+    		values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, PhoneNum);
         }
     }
 
