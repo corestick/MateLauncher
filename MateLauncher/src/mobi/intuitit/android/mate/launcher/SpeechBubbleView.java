@@ -57,7 +57,7 @@ public class SpeechBubbleView extends LinearLayout implements
 	ArrayList<Drawable> setupAppIcon = new ArrayList<Drawable>();
 
 	ArrayList<String> contactlist = new ArrayList<String>();
-	ItemInfo match_info;
+	Mobject Apptag;
 
 	public SpeechBubbleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -152,8 +152,10 @@ public class SpeechBubbleView extends LinearLayout implements
 	}
 
 	// 설치된 앱 목록 알아오기
-	public ItemInfo selectApp(Object tag) {
+	public Mobject selectApp(Object tag) {		
 		final long App_id = ((Mobject) tag).id;
+		Apptag = (Mobject) tag;
+		
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;
 		linear.getLayoutParams().width = LayoutParams.FILL_PARENT;
@@ -212,8 +214,9 @@ public class SpeechBubbleView extends LinearLayout implements
 									| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 					itemInfo.container = ItemInfo.NO_ID;
 				}
-
-				match_info = itemInfo;
+				Apptag.intent = itemInfo.intent;
+				Apptag.title =  itemInfo.title;
+				
 				String titleStr = itemInfo.title.toString();
 				values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
 
@@ -227,7 +230,7 @@ public class SpeechBubbleView extends LinearLayout implements
 				// startActivity(intent); 패키지 이름으로 실행시키는 로직
 			}
 		});
-		return match_info;
+		return Apptag;		
 
 	}
 

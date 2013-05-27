@@ -2151,10 +2151,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {				
 				mSpeechBubbleview.removeAllViews();
-				ItemInfo info =mSpeechBubbleview.selectApp(tag);
+				Mobject info = mSpeechBubbleview.selectApp(tag);
 				mSpeechBubbleview.setVisibility(View.VISIBLE);
 //				((Mobject) tag).intent = info.intent;				
-//				v.setTag(tag);			
+				v.setTag(info);			
 				// mSpeechBubbleview.InputPhonenumView();
 				// mSpeechBubbleview.setLocation(a.cellX - 40, a.cellY - 50, 0,
 				// 0);
