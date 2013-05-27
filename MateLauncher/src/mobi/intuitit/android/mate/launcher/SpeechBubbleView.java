@@ -155,6 +155,7 @@ public class SpeechBubbleView extends LinearLayout implements
 	public Mobject selectApp(Object tag) {		
 		final long App_id = ((Mobject) tag).id;
 		Apptag = (Mobject) tag;
+	
 		
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;
@@ -281,9 +282,7 @@ public class SpeechBubbleView extends LinearLayout implements
 			Drawable drawble = pi.applicationInfo.loadIcon(pm);
 			setupAppIcon.add(drawble);
 			setupAppName.add(appname);
-			setupAppPacName.add(pacname);
-
-			// Log.e("image", drawble.toString());
+			setupAppPacName.add(pacname);			
 		}
 	}
 

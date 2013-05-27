@@ -1597,6 +1597,9 @@ public class LauncherModel {
 		item.screen = screen;
 		item.cellX = cellX;
 		item.cellY = cellY;
+		
+		item.title = "null";
+		item.intent = new Intent();
 
 		final ContentValues values = new ContentValues();
 		final ContentResolver cr = context.getContentResolver();

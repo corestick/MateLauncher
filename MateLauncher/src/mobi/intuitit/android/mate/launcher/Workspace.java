@@ -1088,8 +1088,8 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		}
 
 		layoutType.addView(view, insertAtFirst ? 0 : -1);
-		view.setOnLongClickListener(mLongClickListener);
-
+		view.setOnLongClickListener(mLongClickListener);		
+		
 		// -- MLayout ฐüทร
 		LayoutType.LayoutParams lp = (LayoutType.LayoutParams) view
 				.getLayoutParams();

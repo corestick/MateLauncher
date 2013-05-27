@@ -2140,6 +2140,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
 					final Intent intent = ((Mobject) tag).intent;
+//					Log.e("APPINTENT", ((Mobject) tag).title.toString());
 					startActivitySafely(intent); // 앱매칭 실행
 				} else { // 아바타 선택화면
 					mSpeechBubbleview.removeAllViews();
@@ -2154,9 +2155,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
 					mSpeechBubbleview.removeAllViews();
-					Mobject info = mSpeechBubbleview.selectApp(tag);
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
-					v.setTag(info); //앱선택화면
+					Mobject info = mSpeechBubbleview.selectApp(tag);					
+					 v.setTag(info); //앱선택화면
 				} else {
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.InputPhonenumView();
