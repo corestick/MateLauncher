@@ -155,6 +155,8 @@ public class SpeechBubbleView extends LinearLayout implements
 	public Mobject selectApp(Object tag) {		
 		final long App_id = ((Mobject) tag).id;
 		Apptag = (Mobject) tag;
+		Apptag.title ="null";
+		Apptag.intent = new Intent();
 		
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;
@@ -176,9 +178,7 @@ public class SpeechBubbleView extends LinearLayout implements
 
 			@Override
 			public void onItemClick(AdapterView<?> parentView, View view,
-					int position, long id) {
-				Toast.makeText(mLauncher, setupAppPacName.get(position), 30)
-						.show();
+					int position, long id) {			
 				final ContentValues values = new ContentValues();
 				final ContentResolver cr = mLauncher.getContentResolver();
 				ItemInfo itemInfo = new ItemInfo();
@@ -225,7 +225,8 @@ public class SpeechBubbleView extends LinearLayout implements
 				cr.update(
 						LauncherSettings.Favorites.getContentUri(App_id, false),
 						values, null, null);
-
+				Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT).show();
+				mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
 				// this.getPackageManager().getLaunchIntentForPackage(packageName);
 				// startActivity(intent); 패키지 이름으로 실행시키는 로직
 			}

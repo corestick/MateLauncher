@@ -4,27 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-public class Mobject extends ItemInfo {
-
-	/**
-	 * The application name.
-	 */
-	CharSequence title;
-
-	/**
-	 * The intent used to start the application.
-	 */
-	Intent intent;
-
-	/**
-	 * The application icon.
-	 */
-	Drawable icon;
-
-	/**
-	 * 아이콘 사이즈
-	 */
-	// float scale;
+public class Mobject extends ItemInfo {	
 	
 	Mobject() {
 		itemType = LauncherSettings.BaseLauncherColumns.ITEM_TYPE_SHORTCUT;
