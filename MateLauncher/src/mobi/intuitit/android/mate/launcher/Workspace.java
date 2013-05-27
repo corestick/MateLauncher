@@ -176,6 +176,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
+		
 		super.addView(child, index, params);
 	}
 
@@ -185,6 +186,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
+		
 		super.addView(child);
 	}
 
@@ -194,6 +196,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
+		
 		super.addView(child, index);
 	}
 
@@ -203,6 +206,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// throw new IllegalArgumentException(
 		// "A Workspace can only have CellLayout children.");
 		// }
+
 		super.addView(child, width, height);
 	}
 
@@ -1554,30 +1558,14 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		unbindWidgetScrollable();
 	}
 	
-	public void setMScreens() {
+	public void initMScreens() {
+		Log.e("RRR", "initMScreens>>");
 		
 		for(int i = 0; i < this.getChildCount(); i++) {
 			LayoutType layout = (LayoutType) this.getChildAt(i);
 			if (layout instanceof MLayout) {
-				MLayout mLayout = (MLayout) layout;	
-				
-				int wIdx = SharedPreference.getIntSharedPreference(mLauncher, i + "|w");
-				if(wIdx > 0)
-					mLayout.setWallpaperResIdx(wIdx);
-				
-				int fIdx = SharedPreference.getIntSharedPreference(mLauncher, i + "|f");
-				if(fIdx > 0)
-					mLayout.setWallpaperResIdx(fIdx);
-			}
-		}
-		
-		for(int i = 0; i < this.getChildCount(); i++) {
-			LayoutType layout = (LayoutType) this.getChildAt(i);
-			if (layout instanceof MLayout) {
-				MLayout mLayout = (MLayout) layout;	
-				
-				SharedPreference.putSharedPreference(mLauncher, i + "|w", mLayout.getWallpaperResIdx());
-				SharedPreference.putSharedPreference(mLauncher, i + "|f", mLayout.getFlooringResIdx());
+				MLayout mLayout = (MLayout) layout;
+				mLayout.initMLayout(mLauncher, i);
 			}
 		}
 	}

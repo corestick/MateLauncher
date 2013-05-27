@@ -688,7 +688,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		workspace.setOnLongClickListener(this);
 		workspace.setDragger(dragLayer);
 		workspace.setLauncher(this);
-//		workspace.setMScreens();
+		workspace.initMScreens();
 
 		mDeleteZone.setLauncher(this);
 		mDeleteZone.setDragController(dragLayer);
@@ -2814,6 +2814,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return
 	 */
 	private boolean syncScreenNumber() {
+		Log.e("RRR", "syncScreenNumber");
+		
 		if (mWorkspace == null)
 			return false;
 		try {

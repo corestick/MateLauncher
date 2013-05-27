@@ -1214,7 +1214,7 @@ public class LauncherModel {
 				switch (item.itemType) {
 				case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 				case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-					((ApplicationInfo) item).icon.setCallback(null);
+					((ItemInfo) item).icon.setCallback(null);
 					break;
 				}
 			}
