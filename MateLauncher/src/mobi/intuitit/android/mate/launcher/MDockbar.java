@@ -153,14 +153,15 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			File cfile = new File(sdcard+ "/Test");
 			cfile.mkdirs();
 			
-			LayoutType screenView;					
+			LayoutType screenView;	
+			
 			
 			for (int i = 0; i < count; i++) {
 				screenView = (LayoutType) mLauncher.getWorkspace().getChildAt(i);
 				screenView.saveThumb();
 				captureView[i] = screenView.getThumb();
 				
-				String path = sdcard + "/Test/"+"screen"+i+".jpg";		
+				String path = sdcard + "/Test/screen"+i+".jpg";		
 				try {
 					FileOutputStream fos = new FileOutputStream(path);
 					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
