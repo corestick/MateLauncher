@@ -246,7 +246,6 @@ public class MLayout extends LayoutType {
 			mThumbCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
 			mThumbCanvas.drawBitmap(bmp, 0, 0, mThumbPaint);
 		}
-
 		// Clean up
 		destroyDrawingCache();
 		setDrawingCacheEnabled(false);

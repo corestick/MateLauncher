@@ -2082,7 +2082,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				screenView.saveThumb();
 				sScreens[i] = screenView.getThumb();
 			}
-
 			return null;
 		}
 
