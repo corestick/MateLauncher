@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -53,7 +54,7 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	private Button b; // 전환용 임시버튼
 	private String Pre;
-	private String Contacts; //보낼전화번호
+	private String Contacts; // 보낼전화번호
 
 	private ListView listview;
 	ArrayAdapter<String> itemAdapter;
@@ -63,7 +64,7 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	ArrayList<String> contactlist = new ArrayList<String>();
 	Mobject Apptag = new Mobject();
-	Mobject contactsTag = new Mobject();	
+	Mobject contactsTag = new Mobject();
 
 	public SpeechBubbleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -177,10 +178,10 @@ public class SpeechBubbleView extends LinearLayout implements
 	}
 
 	// 설치된 앱 목록 알아오기
-	public Mobject selectApp(Object tag) {		
+	public Mobject selectApp(Object tag) {
 		final long App_id = ((Mobject) tag).id;
-		Apptag = (Mobject) tag;		
-		
+		Apptag = (Mobject) tag;
+
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;
 		linear.getLayoutParams().width = LayoutParams.FILL_PARENT;
@@ -202,8 +203,7 @@ public class SpeechBubbleView extends LinearLayout implements
 			@Override
 			public void onItemClick(AdapterView<?> parentView, View view,
 
-					int position, long id) {
-
+			int position, long id) {
 
 				final ContentValues values = new ContentValues();
 				final ContentResolver cr = mLauncher.getContentResolver();
@@ -212,10 +212,8 @@ public class SpeechBubbleView extends LinearLayout implements
 				Intent intent = mLauncher.getPackageManager()
 						.getLaunchIntentForPackage(
 								setupAppPacName.get(position));
-				Log.e("app-intent", intent.toString());
 				ComponentName component = new ComponentName(setupAppPacName
 						.get(position), intent.getComponent().getClassName());
-				Log.e("app-componet", component.toString());
 				PackageManager packageManager = mLauncher.getPackageManager();
 				ActivityInfo activityInfo = null;
 				try {
@@ -241,8 +239,8 @@ public class SpeechBubbleView extends LinearLayout implements
 					itemInfo.container = ItemInfo.NO_ID;
 				}
 				Apptag.intent = itemInfo.intent;
-				Apptag.title =  itemInfo.title;
-				
+				Apptag.title = itemInfo.title;
+
 				String titleStr = itemInfo.title.toString();
 				values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
 
@@ -257,7 +255,7 @@ public class SpeechBubbleView extends LinearLayout implements
 				// startActivity(intent); 패키지 이름으로 실행시키는 로직
 			}
 		});
-		return Apptag;		
+		return Apptag;
 
 	}
 
@@ -265,7 +263,7 @@ public class SpeechBubbleView extends LinearLayout implements
 	public Mobject InputPhonenumView(Object tag) {
 		final long App_id = ((Mobject) tag).id;
 		contactsTag = (Mobject) tag;
-		
+
 		LinearLayout linear = (LinearLayout) findViewById(R.id.speechbubbleview);
 		linear.getLayoutParams().height = LayoutParams.FILL_PARENT;
 		linear.getLayoutParams().width = LayoutParams.FILL_PARENT;
@@ -289,12 +287,12 @@ public class SpeechBubbleView extends LinearLayout implements
 			@Override
 			public void onItemClick(AdapterView<?> parentView, View view,
 					int position, long id) {
-				final ContentValues values = new ContentValues();				
+				final ContentValues values = new ContentValues();
 				final ContentResolver cr = mLauncher.getContentResolver();
 				String name = contactlist.get(position);
 				int num = name.indexOf(':');
 				String Num = name.substring(num + 1, name.length());
-				Toast.makeText(mLauncher, Num, 30).show();				
+				Toast.makeText(mLauncher, Num, 30).show();
 				contactsTag.Contacts = Num;
 				values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
 				cr.update(
@@ -308,20 +306,35 @@ public class SpeechBubbleView extends LinearLayout implements
 	// 설치 앱 얻어오기
 	public void loadApp() {
 		PackageManager pm = mLauncher.getPackageManager();
-		List appinfo = mLauncher.getPackageManager().getInstalledPackages(
-				PackageManager.GET_INSTRUMENTATION
-						| PackageManager.GET_UNINSTALLED_PACKAGES);
-		for (int i = 0; i < appinfo.size(); i++) {
-			PackageInfo pi = (PackageInfo) appinfo.get(i);
-			String pacname = pi.packageName;
-			String appname = pi.applicationInfo.loadLabel(pm).toString();
-			Drawable drawble = pi.applicationInfo.loadIcon(pm);
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		final List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
+		final int count = apps.size();
+		for (int i = 0; i < count; i++) {
+			ResolveInfo info = apps.get(i);
+			String pacname = info.activityInfo.packageName;
+			String appname = info.activityInfo.applicationInfo.loadLabel(pm)
+					.toString();
+			Drawable drawble = info.activityInfo.applicationInfo.loadIcon(pm);
+
 			setupAppIcon.add(drawble);
 			setupAppName.add(appname);
 			setupAppPacName.add(pacname);
 
-			// Log.e("image", drawble.toString());
 		}
+
+		/*
+		 * List<PackageInfo> appinfo = mLauncher.getPackageManager()
+		 * .getInstalledPackages(
+		 * PackageManager.COMPONENT_ENABLED_STATE_DEFAULT); for (int i = 0; i <
+		 * appinfo.size(); i++) { PackageInfo pi = (PackageInfo) appinfo.get(i);
+		 * String pacname = pi.packageName; String appname =
+		 * pi.applicationInfo.loadLabel(pm).toString(); Drawable drawble =
+		 * pi.applicationInfo.loadIcon(pm); setupAppIcon.add(drawble);
+		 * setupAppName.add(appname); setupAppPacName.add(pacname);
+		 * 
+		 * }
+		 */
 	}
 
 	// 연락처 읽어오기
@@ -383,7 +396,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		TextView name;
 		LayoutInflater inflater;
 
-		public MyAdapter() {			
+		public MyAdapter() {
 			inflater = (LayoutInflater) mLauncher
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
@@ -429,7 +442,7 @@ public class SpeechBubbleView extends LinearLayout implements
 	@Override
 	public void onClick(View v) {
 		if (v.equals(b)) {
-			removeAllViews();		
+			removeAllViews();
 		} else if (v.equals(smsButton)) {
 			removeAllViews();
 			CreateSendView();
@@ -438,7 +451,7 @@ public class SpeechBubbleView extends LinearLayout implements
 			if (message.length() != 0) {
 				if (Pre.equals("sms")) {
 					mLauncher.sendtoSMS(Contacts, message);
-					removeAllViews();					
+					removeAllViews();
 					InputMethodManager imm = (InputMethodManager) mLauncher
 							.getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
@@ -448,17 +461,15 @@ public class SpeechBubbleView extends LinearLayout implements
 							mLauncher.getPackageName(), "0.9.2", "UTF-8");
 				}
 				this.setVisibility(View.GONE);
-			}
-			else {
+			} else {
 				Toast.makeText(mLauncher, "문자를 입력하세요", Toast.LENGTH_SHORT)
 						.show();
-				removeAllViews();				
+				removeAllViews();
 				this.setVisibility(View.GONE);
 			}
-		}
-		else if (v.equals(callButton)) {
+		} else if (v.equals(callButton)) {
 			Intent intent = new Intent(Intent.ACTION_CALL);
-			intent.setData(Uri.parse("tel:"+Contacts));
+			intent.setData(Uri.parse("tel:" + Contacts));
 			mLauncher.startActivity(intent);
 			mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
 			return;
@@ -470,5 +481,5 @@ public class SpeechBubbleView extends LinearLayout implements
 			return;
 		}
 	}
-	
+
 }
