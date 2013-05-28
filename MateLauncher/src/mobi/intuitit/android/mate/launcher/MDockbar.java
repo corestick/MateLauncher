@@ -1,7 +1,12 @@
 package mobi.intuitit.android.mate.launcher;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -23,6 +28,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 
 	Launcher mLauncher;
 	Context context;
+	
 
 	public MDockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -95,6 +101,9 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		this.setVisibility(INVISIBLE);
 	}
 
+
+	static Bitmap captureView[];
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stubs
@@ -135,7 +144,34 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			}
 			return;
 		}
-		if (v.equals(mHomepage)) {
+		if (v.equals(mHomepage)) {		
+			//captureView »ý¼º
+			int count = mLauncher.getWorkspace().getChildCount();
+			if (captureView == null || captureView.length != count)
+				captureView = new Bitmap[count];
+			
+			LayoutType screenView;
+			
+			String sdcard = Environment.getExternalStorageDirectory()
+					.getAbsolutePath();
+			File cfile = new File(sdcard+ "/Test");
+			cfile.mkdirs();
+			
+			for (int i = 0; i < count; i++) {
+				screenView = (LayoutType) mLauncher.getWorkspace().getChildAt(i);
+				screenView.saveThumb();
+				captureView[i] = screenView.getThumb();
+				
+				String path = sdcard + "/Test/"+"screen"+i+".jpg";		
+				try {
+					FileOutputStream fos = new FileOutputStream(path);
+					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
+					fos.flush();
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			Intent intent = new Intent(Intent.ACTION_MAIN);
 			intent.setClassName("com.LBL.launcherhome",
 					"com.LBL.launcherhome.Main");
