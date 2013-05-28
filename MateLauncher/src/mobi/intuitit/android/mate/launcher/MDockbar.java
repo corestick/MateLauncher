@@ -29,6 +29,8 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	Launcher mLauncher;
 	Context context;
 	
+	Bitmap captureView[]; 
+	
 
 	public MDockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -100,10 +102,6 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	public void hideMDockbar() {
 		this.setVisibility(INVISIBLE);
 	}
-
-
-	static Bitmap captureView[];
-	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stubs
@@ -150,12 +148,12 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			if (captureView == null || captureView.length != count)
 				captureView = new Bitmap[count];
 			
-			LayoutType screenView;
-			
 			String sdcard = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();
 			File cfile = new File(sdcard+ "/Test");
 			cfile.mkdirs();
+			
+			LayoutType screenView;					
 			
 			for (int i = 0; i < count; i++) {
 				screenView = (LayoutType) mLauncher.getWorkspace().getChildAt(i);
