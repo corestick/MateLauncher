@@ -95,6 +95,7 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	public void CreateSelectView(String contacts) {
 		Contacts = contacts;
+		Pre = null;
 		callButton = new ImageView(mLauncher);
 		smsButton = new ImageView(mLauncher);
 		kakaoButton = new ImageView(mLauncher);
@@ -138,8 +139,8 @@ public class SpeechBubbleView extends LinearLayout implements
 		faceButton.setLayoutParams(param3);
 		twiterButton.setLayoutParams(param4);
 
-		callButton.setImageResource(R.drawable.ico_tweet);
-		kakaoButton.setImageResource(R.drawable.ico_tweet);
+		callButton.setImageResource(R.drawable.call);
+		kakaoButton.setImageResource(R.drawable.btn_small_01_android);
 		smsButton.setImageResource(R.drawable.ico_sms);
 		faceButton.setImageResource(R.drawable.ico_facebook);
 		twiterButton.setImageResource(R.drawable.ico_tweet);
@@ -291,13 +292,14 @@ public class SpeechBubbleView extends LinearLayout implements
 				final ContentResolver cr = mLauncher.getContentResolver();
 				String name = contactlist.get(position);
 				int num = name.indexOf(':');
-				String Num = name.substring(num + 1, name.length());
-				Toast.makeText(mLauncher, Num, 30).show();
+				String Num = name.substring(num + 1, name.length());				
 				contactsTag.Contacts = Num;
 				values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
 				cr.update(
 						LauncherSettings.Favorites.getContentUri(App_id, false),
 						values, null, null);
+				Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT).show();
+				mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
 			}
 		});
 		return contactsTag;
@@ -444,6 +446,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		if (v.equals(b)) {
 			removeAllViews();
 		} else if (v.equals(smsButton)) {
+			Pre = "sms";
 			removeAllViews();
 			CreateSendView();
 		} else if (v.equals(sendButton)) {
@@ -460,7 +463,7 @@ public class SpeechBubbleView extends LinearLayout implements
 					kakao.openKakaoLink(mLauncher, message,
 							mLauncher.getPackageName(), "0.9.2", "UTF-8");
 				}
-				this.setVisibility(View.GONE);
+				mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
 			} else {
 				Toast.makeText(mLauncher, "문자를 입력하세요", Toast.LENGTH_SHORT)
 						.show();
@@ -475,9 +478,8 @@ public class SpeechBubbleView extends LinearLayout implements
 			return;
 		} else if (v.equals(kakaoButton)) {
 			Pre = "kakkao";
-			removeAllViews();
-			CreateSendView();
-			mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
+			removeAllViews();		
+			CreateSendView();			
 			return;
 		}
 	}
