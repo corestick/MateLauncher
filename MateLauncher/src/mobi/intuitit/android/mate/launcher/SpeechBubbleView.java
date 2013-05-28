@@ -292,13 +292,14 @@ public class SpeechBubbleView extends LinearLayout implements
 				final ContentResolver cr = mLauncher.getContentResolver();
 				String name = contactlist.get(position);
 				int num = name.indexOf(':');
-				String Num = name.substring(num + 1, name.length());				
+				String Num = name.substring(num + 1, name.length());
 				contactsTag.Contacts = Num;
 				values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
 				cr.update(
 						LauncherSettings.Favorites.getContentUri(App_id, false),
 						values, null, null);
-				Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT)
+						.show();
 				mLauncher.mSpeechBubbleview.setVisibility(View.GONE);
 			}
 		});
@@ -318,11 +319,23 @@ public class SpeechBubbleView extends LinearLayout implements
 			String appname = info.activityInfo.applicationInfo.loadLabel(pm)
 					.toString();
 			Drawable drawble = info.activityInfo.applicationInfo.loadIcon(pm);
-
-			setupAppIcon.add(drawble);
-			setupAppName.add(appname);
-			setupAppPacName.add(pacname);
-
+			if (i == 0) {
+				setupAppIcon.add(drawble);
+				setupAppName.add(appname);
+				setupAppPacName.add(pacname);
+			} else {
+				for (int j = 0; j <= setupAppName.size(); j++) {
+					if (setupAppName.get(j).equals(appname) == true)
+						break;
+					else {
+						if (j == setupAppName.size() - 1) {
+							setupAppIcon.add(drawble);
+							setupAppName.add(appname);
+							setupAppPacName.add(pacname);
+						}
+					}
+				}
+			}
 		}
 
 		/*
@@ -478,8 +491,8 @@ public class SpeechBubbleView extends LinearLayout implements
 			return;
 		} else if (v.equals(kakaoButton)) {
 			Pre = "kakkao";
-			removeAllViews();		
-			CreateSendView();			
+			removeAllViews();
+			CreateSendView();
 			return;
 		}
 	}
