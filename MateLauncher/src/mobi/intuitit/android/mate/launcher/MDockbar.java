@@ -32,6 +32,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	private ImageButton mRight;
 
 	Launcher launcher;
+	
 
 	Context context;
 
@@ -44,7 +45,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	ArrayList<Mobject> mFlooringList;
 	ArrayList<Mobject> mAvatarList;
 
-//	Bitmap bm = null; // ½ºÅ©¸°¼¦¿ë ºñÆ®¸Ê
+	Bitmap bm[] = new Bitmap[3]; // ½ºÅ©¸°¼¦¿ë ºñÆ®¸Ê
 
 	public MDockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -215,24 +216,30 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			return;
 		}
 		if (v.equals(mHomepage)) {
-
 			// Ä¸ÃÄ
-			// int ScreenNum[] = {R.id.cell1, R.id.cell2, R.id.cell3};
+			final int count = launcher.getWorkspace().getChildCount();
+			LayoutType screenView;
 			String sdcard = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();
-			File cfile = new File(sdcard
-					+ "/Android/data/mobi.intuitit.android/");
+			File cfile = new File(sdcard+ "/Test");
 			cfile.mkdirs();
 //			View captureView = launcher.getWorkspace();
 //			captureView.getRootView().buildDrawingCache();
-//			bm = captureView.getRootView().getDrawingCache();
-
-			for (int i = 0; i < 3; i++) {
-				String path = sdcard + "/Android/data/mobi.intuitit.android/"
-						+ "screen"+i+".jpg";
+//			View captureView = (LayoutType) launcher.getWorkspace().getChildAt(i);
+//			captureView.buildDrawingCache();
+//			bm = captureView.getDrawingCache();		
+			
+			for (int i = 0; i < count; i++) {
+				// Prepare Cache
+				screenView = (LayoutType) launcher.getWorkspace().getChildAt(i);
+				screenView.saveThumb();
+				bm[i] = screenView.getThumb();
+				
+				String path = sdcard + "/Test/"
+						+ "screen"+i+".jpg";		
 				try {
 					FileOutputStream fos = new FileOutputStream(path);
-					launcher.sScreens[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
+					bm[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
 					fos.flush();
 					fos.close();
 				} catch (Exception e) {

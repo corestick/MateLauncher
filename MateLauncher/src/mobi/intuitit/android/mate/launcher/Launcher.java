@@ -812,7 +812,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if ((info.title).equals("Contacts")) {
 			favorite.setImageResource(R.drawable.m_avatar_01);
 		} else if ((info.title).equals("Gallery")) {
-			favorite.setImageResource(R.drawable.m_furniture_02);
+			favorite.setImageResource(R.drawable.m_furniture_01);
 		} else {
 			favorite.setImageDrawable(info.icon);
 		}
@@ -2155,7 +2155,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	}
 
-	static Bitmap[] sScreens;
+	static public Bitmap[] sScreens;
 
 	final onScreenChangeListener mScreenChangeListener = new onScreenChangeListener() {
 
