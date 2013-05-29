@@ -3,6 +3,7 @@ package mobi.intuitit.android.mate.launcher;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -435,7 +436,8 @@ public class MLayout extends LayoutType {
 			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|f", mFlooringResIdx);
 			
 			Bitmap bitmap = Bitmap.createBitmap(this.getWidth(),
-					this.getHeight(), Bitmap.Config.ARGB_4444);
+					this.getHeight(), Bitmap.Config.ARGB_8888);
+						
 			Canvas canvas = new Canvas(bitmap);
 
 			MBackground mBack = new MBackground(canvas.getWidth(),

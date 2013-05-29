@@ -2985,6 +2985,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public class SmsReceiver extends BroadcastReceiver {
 
 		public void onReceive(Context context, Intent intent) {
+			String reciptent = intent.getStringExtra("recipient");
+			
+			Log.e("sms-change", "==>" + reciptent);
+			
+			Toast.makeText(getApplicationContext(), "문자메시지=>" + reciptent,
+					Toast.LENGTH_SHORT).show();
+			
 			Bundle bundle = intent.getExtras();
 			SmsMessage[] msgs = null;
 			String str = "";
@@ -2998,6 +3005,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					// str += msgs[i].getMessageBody().toString();
 					// str += "\n";
 				}
+				
+//				String reciptent = intent.getStringExtra("recipient");
+				
+				Log.e("sms-change", "11==>" + reciptent);
+				
 				// mSpeechBubbleview.getMainView().setText(
 				// msgs[0].getMessageBody().toString());
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
