@@ -71,6 +71,17 @@
                 <category android:name="android.intent.category.MONKEY" />
             </intent-filter>
         </activity>
+        
+        <activity android:name="mobi.intuitit.android.homepage.GuestHome"
+            android:label="tab1"></activity>
+        <activity android:name="mobi.intuitit.android.homepage.FriendsList"
+            android:label="tab2"></activity>
+        <activity android:name="mobi.intuitit.android.homepage.RankList"
+            android:label="tab3"></activity>
+        <activity android:name="mobi.intuitit.android.homepage.Setting"
+            android:label="tab4"></activity>
+        <activity android:name="mobi.intuitit.android.homepage.OwnerHome"></activity>
+         <activity android:name="mobi.intuitit.android.homepage.HomeMain"></activity>
 
         <!-- Enable system-default search mode for any activity in Home -->
         <meta-data

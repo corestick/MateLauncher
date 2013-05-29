@@ -1,7 +1,8 @@
 package mobi.intuitit.android.mate.launcher;
-
 import java.io.File;
 import java.io.FileOutputStream;
+
+import mobi.intuitit.android.homepage.HomeMain;
 
 import android.content.Context;
 import android.content.Intent;
@@ -171,15 +172,11 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 					e.printStackTrace();
 				}
 			}
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.setClassName("com.LBL.launcherhome",
-					"com.LBL.launcherhome.Main");
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			mLauncher.startActivity(intent);
-			return;
+			Intent intent = new Intent(mLauncher,HomeMain.class);			
+			mLauncher.startActivity(intent); 
+			return; 
 		}
-
+			
 		if (v.equals(mRight)) {
 			mLauncher.mObjectView.hideMobjectView();
 			hideMDockbar();

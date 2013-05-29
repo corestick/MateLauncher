@@ -2,15 +2,16 @@ package mobi.intuitit.android.mate.launcher;
 
 import mobi.intuitit.android.mate.launcher.R.color;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Dockbar extends LinearLayout implements View.OnClickListener {
 
@@ -98,13 +99,18 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.equals(mDockButton[0])) {
-			Toast.makeText(mLauncher, "b1", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(Intent.ACTION_CALL_BUTTON);
+			mLauncher.startActivity(intent);
 			return;
 		} else if (v.equals(mDockButton[1])) {
-			Toast.makeText(mLauncher, "b2", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setData(Uri.parse("content://contacts/people/"));
+			mLauncher.startActivity(intent);
 			return;
 		} else if (v.equals(mDockButton[2])) {
-			Toast.makeText(mLauncher, "b3", Toast.LENGTH_SHORT).show();
+			Intent intent = mLauncher.getPackageManager()
+					.getLaunchIntentForPackage("com.android.mms");
+			mLauncher.startActivity(intent);		
 			return;
 		} else if (v.equals(mDockButton[3])) {
 			final Rect bounds = mWorkspace.mDrawerBounds;
