@@ -387,7 +387,7 @@ public class OwnerHome extends Activity implements OnScrollListener {
 		Log.e("1111111", str);
 		MyGson gson = new MyGson();
 		try {
-			JSONObject json = new JSONObject(gson.toJson(str));
+			JSONObject json = new JSONObject(str);
 			Log.e("user", json.getString("user"));
 			Log.e("cellX", json.getString("cellX"));
 			Log.e("cellY", json.getString("cellY"));			
