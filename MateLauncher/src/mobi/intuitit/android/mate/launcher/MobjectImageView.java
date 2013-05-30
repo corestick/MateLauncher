@@ -5,11 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.text.Layout;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 
-public class MobjectImageView extends ImageView {
+public class MobjectImageView extends ViewGroup {
 	private static final float CORNER_RADIUS = 8.0f;
 	private static final float PADDING_H = 5.0f;
 	private static final float PADDING_V = 1.0f;
@@ -43,16 +42,6 @@ public class MobjectImageView extends ImageView {
 		mBackground = getBackground();
 		setBackgroundDrawable(null);
 		mBackground.setCallback(this);
-
-		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mPaint.setColor(getContext().getResources().getColor(
-				R.color.bubble_dark_background));
-
-		final float scale = getContext().getResources().getDisplayMetrics().density;
-		mCornerRadius = CORNER_RADIUS * scale;
-		mPaddingH = PADDING_H * scale;
-		// noinspection PointlessArithmeticExpression
-		mPaddingV = PADDING_V * scale;
 	}
 
 	@Override
@@ -113,5 +102,11 @@ public class MobjectImageView extends ImageView {
 //		canvas.drawRoundRect(rect, mCornerRadius, mCornerRadius, mPaint);
 
 		super.draw(canvas);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		// TODO Auto-generated method stub
+		
 	}
 }

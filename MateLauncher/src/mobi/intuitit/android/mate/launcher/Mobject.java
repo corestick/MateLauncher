@@ -2,7 +2,7 @@ package mobi.intuitit.android.mate.launcher;
 
 import android.content.ContentValues;
 
-public class Mobject extends ItemInfo {		
+public class Mobject extends ItemInfo {
 	
 	
 	Mobject() {

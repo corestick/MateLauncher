@@ -700,7 +700,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
-		mSpeechBubbleview.setLauncher(this);	
+		mSpeechBubbleview.setLauncher(this);
 		mSpeechBubbleview.setVisibility(View.GONE);
 
 		dragLayer.setIgnoredDropTarget(grid);
@@ -724,9 +724,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					(ViewGroup) mWorkspace.getChildAt(mWorkspace
 							.getCurrentScreen()), info);
 		} else {
-			return createShortcut(R.layout.mobject,
-					(ViewGroup) mWorkspace.getChildAt(mWorkspace
-							.getCurrentScreen()), info);
+
+			if (info.mobjectType == 0)
+				return createShortcut(R.layout.mobject,
+						(ViewGroup) mWorkspace.getChildAt(mWorkspace
+								.getCurrentScreen()), info);
+			else
+				return createShortcut(R.layout.mavatar,
+						(ViewGroup) mWorkspace.getChildAt(mWorkspace
+								.getCurrentScreen()), info);
 		}
 	}
 
@@ -744,30 +750,65 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return A View inflated from layoutResId.
 	 */
 	View createShortcut(int layoutResId, ViewGroup parent, ItemInfo info) {
-		ImageView favorite = (ImageView) mInflater.inflate(layoutResId, parent,
-				false);
-
+		
+		info.title = "null";
+		info.intent = new Intent();
+		info.Contacts = "null";
+		
 		if (info instanceof ApplicationInfo) {
+			ImageView favorite = (ImageView) mInflater.inflate(layoutResId,
+					parent, false);
+
 			ApplicationInfo appInfo = (ApplicationInfo) info;
 			if (!appInfo.filtered) {
 				appInfo.icon = Utilities
 						.createIconThumbnail(appInfo.icon, this);
 				appInfo.filtered = true;
 			}
+
+			favorite.setTag(info);
+			favorite.setOnClickListener(this);
+
+			return favorite;
 		} else {
 			ItemInfo appInfo = (Mobject) info;
 
-			favorite.setImageResource(MImageList.getInstance().getIcon(
-					appInfo.mobjectType, appInfo.mobjectIcon));
-		}
-		info.title="null";
-		info.intent = new Intent();
-		info.Contacts = "null";
-		
-		favorite.setTag(info);
-		favorite.setOnClickListener(this);
+			if (info.mobjectType == 0) {
+				ImageView favorite = (ImageView) mInflater.inflate(layoutResId,
+						parent, false);
+				
+				favorite.setImageResource(MImageList.getInstance().getIcon(
+						appInfo.mobjectType, appInfo.mobjectIcon));
 
-		return favorite;
+				favorite.setTag(info);
+				favorite.setOnClickListener(this);
+
+				return favorite;
+			} else {
+
+				MAvatarView avatar = (MAvatarView) mInflater.inflate(
+						layoutResId, parent, false);
+				
+				avatar.setLauncher(this);
+				
+				avatar.initMAvatarView();
+//				avatar.setAvatarImage(MImageList.getInstance().getIcon(
+//						appInfo.mobjectType, appInfo.mobjectIcon));
+
+				avatar.setTag(info);
+				avatar.setOnClickListener(this);
+
+				return avatar;
+			}
+
+		}
+
+		
+
+		// favorite.setTag(info);
+		// favorite.setOnClickListener(this);
+		//
+		// return favorite;
 	}
 
 	/**
@@ -1748,8 +1789,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
-					
-					if(mSpeechBubbleview.getVisibility() == View.VISIBLE){
+
+					if (mSpeechBubbleview.getVisibility() == View.VISIBLE) {
 						mSpeechBubbleview.setVisibility(View.GONE);
 					}
 				}
@@ -2138,40 +2179,36 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				startActivitySafely(intent);
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
-			}
-			else if(tag instanceof Mobject){
-				if(((Mobject) tag).mobjectType == 0){
-					final Intent intent = ((Mobject) tag).intent;				
+			} else if (tag instanceof Mobject) {
+				if (((Mobject) tag).mobjectType == 0) {
+					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
-				}
-				else{
-					Log.e("Contacts",((Mobject) tag).Contacts);					
-					String contacts =((Mobject) tag).Contacts;
+				} else {
+					Log.e("Contacts", ((Mobject) tag).Contacts);
+					String contacts = ((Mobject) tag).Contacts;
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
 					mSpeechBubbleview.CreateSelectView(contacts);
-					 mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40, ((Mobject) tag).cellY - 50, 0,
-					 0);
-				}			
+					mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40,
+							((Mobject) tag).cellY - 50, 0, 0);
+				}
 			}
 		} else {
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {
-				if(((Mobject) tag).mobjectType ==0){
+				if (((Mobject) tag).mobjectType == 0) {
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
 					Mobject info = new Mobject();
-					info = mSpeechBubbleview.selectApp(tag);					
-					v.setTag(info);	
-				}
-				else{
+					info = mSpeechBubbleview.selectApp(tag);
+					v.setTag(info);
+				} else {
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
 					Mobject info = new Mobject();
 					info = mSpeechBubbleview.InputPhonenumView(tag);
-					 mSpeechBubbleview.setLocation(0, 0, 0,
-							 0);
-					v.setTag(info);	
+					mSpeechBubbleview.setLocation(0, 0, 0, 0);
+					v.setTag(info);
 				}
 			}
 		}
@@ -2849,7 +2886,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 */
 	private boolean syncScreenNumber() {
 		Log.e("RRR", "syncScreenNumber");
-		
+
 		if (mWorkspace == null)
 			return false;
 		try {
@@ -2986,12 +3023,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public void onReceive(Context context, Intent intent) {
 			String reciptent = intent.getStringExtra("recipient");
-			
+
 			Log.e("sms-change", "==>" + reciptent);
-			
-			Toast.makeText(getApplicationContext(), "문자메시지=>" + reciptent,
-					Toast.LENGTH_SHORT).show();
-			
+
 			Bundle bundle = intent.getExtras();
 			SmsMessage[] msgs = null;
 			String str = "";
@@ -3000,16 +3034,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				msgs = new SmsMessage[pdus.length];
 				for (int i = 0; i < msgs.length; i++) {
 					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-					// str += "SMS from " + msgs[i].getOriginatingAddress();
-					// str += " :";
-					// str += msgs[i].getMessageBody().toString();
-					// str += "\n";
+					str += "SMS from " + msgs[i].getOriginatingAddress();
+					str += " :";
+					str += msgs[i].getMessageBody().toString();
+					str += "\n";
 				}
-				
-//				String reciptent = intent.getStringExtra("recipient");
-				
-				Log.e("sms-change", "11==>" + reciptent);
-				
+				Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT)
+						.show();
+
 				// mSpeechBubbleview.getMainView().setText(
 				// msgs[0].getMessageBody().toString());
 				Log.e("sms-change", msgs[0].getMessageBody().toString());
@@ -3020,6 +3052,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public void sendtoSMS(String phoneNumber, String message) {
 		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
 				Launcher.class), 0);
+
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
