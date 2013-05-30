@@ -2,22 +2,26 @@ package mobi.intuitit.android.homepage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
 
 import mobi.intuitit.android.mate.launcher.LauncherProvider;
 import mobi.intuitit.android.mate.launcher.R;
-import mobi.intuitit.android.mate.launcher.Workspace;
-import android.R.layout;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,22 +32,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
 //import org.omg.CORBA.portable.CustomValue;
 
 public class OwnerHome extends Activity implements OnScrollListener {
+	
+	final String serverUrl = "http://kimsunghyuntest2.appspot.com/simpleservletapp";
 
 	private static final int PICK_FROM_CAMERA = 0;
 	private static final int PICK_FROM_ALBUM = 1;
@@ -141,7 +146,8 @@ public class OwnerHome extends Activity implements OnScrollListener {
 				// Intent intent = new Intent(OwnerHome.this, GuestHome.class);
 				// startActivity(intent);
 //				get_DB();
-				remove_DB();
+//				remove_DB();
+				insert_DB();
 			}
 		});
 
@@ -374,6 +380,30 @@ public class OwnerHome extends Activity implements OnScrollListener {
 		 LauncherProvider lp = new LauncherProvider();
 		 lp.delete_table();
 	}
+	
+	public void insert_DB(){
+		
+		String str = JSONfunctions.getJSONfromURL(serverUrl);
+		Log.e("1111111", str);
+		MyGson gson = new MyGson();
+		try {
+			JSONObject json = new JSONObject(gson.toJson(str));
+			Log.e("user", json.getString("user"));
+			Log.e("cellX", json.getString("cellX"));
+			Log.e("cellY", json.getString("cellY"));			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+		
+		final ContentValues values = new ContentValues();
+		final ContentResolver cr = getContentResolver();
+//		cr.insert(notify ? LauncherSettings.Favorites.CONTENT_URI
+//				: LauncherSettings.Favorites.CONTENT_URI_NO_NOTIFICATION,
+//				values);
+	
+	}
 
 	public void get_DB() {	
 		ContentResolver contentResolver = getContentResolver();
@@ -405,11 +435,22 @@ public class OwnerHome extends Activity implements OnScrollListener {
 			int cellY = c.getInt(cellYIndex);
 			int MobjectType = c.getInt(mobjectType);
 			int MobjectIcon = c.getInt(mobjectIcon);
-			int contacts = c.getInt(contactsIndex);
+			String contacts = c.getString(contactsIndex);
 
-			Log.e("Icon-cellX", String.valueOf(cellX));
-			Log.e("Icon-cellX", String.valueOf(cellY));
-			Log.e("Icon-Intent", intentDescription);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("user", "123");
+			map.put("intent", intentDescription);
+			map.put("container", container);
+			map.put("itemType", itemType);
+			map.put("screen", screen);
+			map.put("cellX", cellX);
+			map.put("cellY", cellY);
+			map.put("MobjectType", MobjectType);			
+			map.put("MobjectIcon", MobjectIcon);
+			map.put("contacts", contacts);
+			
+			JSONfunctions.postSONfromURL(serverUrl, map);
 		}
-	}
+	}	
+	
 }
