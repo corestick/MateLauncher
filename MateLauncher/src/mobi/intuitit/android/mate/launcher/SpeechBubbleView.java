@@ -42,7 +42,7 @@ import android.widget.Toast;
 public class SpeechBubbleView extends LinearLayout implements
 		View.OnClickListener {
 
-	private Launcher mLauncher;
+	public Launcher mLauncher;
 	private TextView mainview;
 	private ImageView smsButton;
 	private ImageView faceButton;

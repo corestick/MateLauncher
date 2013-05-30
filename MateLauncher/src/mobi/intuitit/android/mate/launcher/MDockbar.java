@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import mobi.intuitit.android.homepage.HomeMain;
+import mobi.intuitit.android.homepage.OwnerHome;
 
 import android.content.Context;
 import android.content.Intent;
@@ -172,7 +173,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 					e.printStackTrace();
 				}
 			}
-			Intent intent = new Intent(mLauncher,HomeMain.class);			
+			Intent intent = new Intent(mLauncher,HomeMain.class);
 			mLauncher.startActivity(intent); 
 			return; 
 		}

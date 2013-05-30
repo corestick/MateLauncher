@@ -1368,6 +1368,10 @@ public class LauncherModel {
 		// list
 		mDesktopItems.remove(info);
 	}
+	
+	public void allRemoveDesktopItem(){
+		mDesktopItems.clear();
+	}
 
 	/**
 	 * Add a widget to the desktop

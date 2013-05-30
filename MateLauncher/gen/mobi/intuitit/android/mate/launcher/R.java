@@ -423,18 +423,17 @@ containing a value of this type.
         public static final int ranklist=0x7f030016;
         public static final int rename_folder=0x7f030017;
         public static final int row=0x7f030018;
-        public static final int screen_dialog=0x7f030019;
-        public static final int screen_switcher=0x7f03001a;
-        public static final int setting=0x7f03001b;
-        public static final int speechbubbleview=0x7f03001c;
-        public static final int textdialog=0x7f03001d;
-        public static final int user_folder=0x7f03001e;
-        public static final int visitorbook=0x7f03001f;
-        public static final int wallpaper_chooser=0x7f030020;
-        public static final int wallpaper_item=0x7f030021;
-        public static final int widget_search=0x7f030022;
-        public static final int workspace_mscreen=0x7f030023;
-        public static final int workspace_screen=0x7f030024;
+        public static final int screen_switcher=0x7f030019;
+        public static final int setting=0x7f03001a;
+        public static final int speechbubbleview=0x7f03001b;
+        public static final int textdialog=0x7f03001c;
+        public static final int user_folder=0x7f03001d;
+        public static final int visitorbook=0x7f03001e;
+        public static final int wallpaper_chooser=0x7f03001f;
+        public static final int wallpaper_item=0x7f030020;
+        public static final int widget_search=0x7f030021;
+        public static final int workspace_mscreen=0x7f030022;
+        public static final int workspace_screen=0x7f030023;
     }
     public static final class string {
         /**  Displayed when user selects a shortcut for an app that was uninstalled 

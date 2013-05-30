@@ -6,11 +6,14 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Window;
 import android.widget.TabHost;
 
-public class HomeMain extends TabActivity {
+public class HomeMain extends TabActivity {	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		TabHost tabHost = getTabHost();
 		for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
@@ -30,4 +33,5 @@ public class HomeMain extends TabActivity {
 				.setContent(new Intent(this, Setting.class)				
 				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
 	}
+	
 }
