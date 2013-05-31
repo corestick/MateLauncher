@@ -2,56 +2,77 @@ package mobi.intuitit.android.mate.launcher;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 public class MobjectImageView extends ViewGroup {
-	private static final float CORNER_RADIUS = 8.0f;
-	private static final float PADDING_H = 5.0f;
-	private static final float PADDING_V = 1.0f;
-
-	private final RectF mRect = new RectF();
-	private Paint mPaint;
-
 	private boolean mBackgroundSizeChanged;
 	private Drawable mBackground;
-	private float mCornerRadius;
-	private float mPaddingH;
-	private float mPaddingV;
-
+	
+	private Launcher mLauncher;
+	private ImageView mobjectImageView;
+	private TextView txtSpeechBubble;
+	private ScrollView scrollView;
+	
 	public MobjectImageView(Context context) {
 		super(context);
-		init();
 	}
 
 	public MobjectImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
 	}
 
 	public MobjectImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init();
+	}
+	
+	public void setLauncher(Launcher launcher) {
+		this.mLauncher = launcher;
+	}
+	
+	public void initMAvatarView() {
+		
+//		setFocusable(true);
+//		mBackground = getBackground();
+//		setBackgroundDrawable(null);
+//		mBackground.setCallback(this);
+		
+		this.setBackgroundDrawable(getResources().getDrawable(R.drawable.screen_plate));
+		
+		Log.e("RRR", "initMAvatarView");
+		
+		mobjectImageView = new ImageView(mLauncher);
+		scrollView = new ScrollView(mLauncher);
+		txtSpeechBubble = new TextView(mLauncher);
+		txtSpeechBubble.setBackgroundDrawable(getResources().getDrawable(R.drawable.speechbubble));
+		
+//		txtSpeechBubble.
+		
+		
+		
+		
+		
+		this.addView(scrollView);
+		this.addView(mobjectImageView);
+		
+		Log.e("RRR", "initMAvatarView22");
+		
 	}
 
-	private void init() {
-		setFocusable(true);
-		mBackground = getBackground();
-		setBackgroundDrawable(null);
-		mBackground.setCallback(this);
-	}
-
-	@Override
-	protected boolean setFrame(int left, int top, int right, int bottom) {
-		if (getLeft() != left || getRight() != right || getTop() != top
-				|| getBottom() != bottom) {
-			mBackgroundSizeChanged = true;
-		}
-		return super.setFrame(left, top, right, bottom);
-	}
+//	@Override
+//	protected boolean setFrame(int left, int top, int right, int bottom) {
+//		if (getLeft() != left || getRight() != right || getTop() != top
+//				|| getBottom() != bottom) {
+//			mBackgroundSizeChanged = true;
+//		}
+//		return super.setFrame(left, top, right, bottom);
+//	}
 
 	@Override
 	protected boolean verifyDrawable(Drawable who) {
@@ -89,18 +110,6 @@ public class MobjectImageView extends ViewGroup {
 			}
 		}
 
-//		final Layout layout = getLayout();
-//		final RectF rect = mRect;
-//		final int left = getCompoundPaddingLeft();
-//		final int top = getExtendedPaddingTop();
-//
-//		rect.set(left + layout.getLineLeft(0) - mPaddingH,
-//				top + layout.getLineTop(0) - mPaddingV, Math.min(
-//						left + layout.getLineRight(0) + mPaddingH, getScrollX()
-//								+ getRight() - getLeft()),
-//				top + layout.getLineBottom(0) + mPaddingV);
-//		canvas.drawRoundRect(rect, mCornerRadius, mCornerRadius, mPaint);
-
 		super.draw(canvas);
 	}
 
@@ -108,5 +117,10 @@ public class MobjectImageView extends ViewGroup {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		// TODO Auto-generated method stub
 		
+		Log.e("RRR", "onLayout=" + changed);
+	}
+	
+	public void setObjectImage(int resId) {
+		mobjectImageView.setImageResource(resId);
 	}
 }

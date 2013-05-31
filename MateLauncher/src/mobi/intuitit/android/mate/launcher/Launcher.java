@@ -724,13 +724,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					(ViewGroup) mWorkspace.getChildAt(mWorkspace
 							.getCurrentScreen()), info);
 		} else {
-
-			if (info.mobjectType == 0)
 				return createShortcut(R.layout.mobject,
-						(ViewGroup) mWorkspace.getChildAt(mWorkspace
-								.getCurrentScreen()), info);
-			else
-				return createShortcut(R.layout.mavatar,
 						(ViewGroup) mWorkspace.getChildAt(mWorkspace
 								.getCurrentScreen()), info);
 		}
@@ -771,36 +765,20 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			return favorite;
 		} else {
-			ItemInfo appInfo = (Mobject) info;
+				ItemInfo appInfo = (Mobject) info;
 
-			if (info.mobjectType == 0) {
-				ImageView favorite = (ImageView) mInflater.inflate(layoutResId,
+				MobjectImageView favorite = (MobjectImageView) mInflater.inflate(layoutResId,
 						parent, false);
 				
-				favorite.setImageResource(MImageList.getInstance().getIcon(
+				favorite.setLauncher(this);
+				favorite.initMAvatarView();
+				favorite.setObjectImage(MImageList.getInstance().getIcon(
 						appInfo.mobjectType, appInfo.mobjectIcon));
-
+				
 				favorite.setTag(info);
 				favorite.setOnClickListener(this);
 
 				return favorite;
-			} else {
-
-				MAvatarView avatar = (MAvatarView) mInflater.inflate(
-						layoutResId, parent, false);
-				
-				avatar.setLauncher(this);
-				
-				avatar.initMAvatarView();
-//				avatar.setAvatarImage(MImageList.getInstance().getIcon(
-//						appInfo.mobjectType, appInfo.mobjectIcon));
-
-				avatar.setTag(info);
-				avatar.setOnClickListener(this);
-
-				return avatar;
-			}
-
 		}
 
 		
