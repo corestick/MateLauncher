@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mobi.intuitit.android.mate.launcher.LauncherProvider;
+import mobi.intuitit.android.mate.launcher.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.JsonObject;
-
-import mobi.intuitit.android.mate.launcher.LauncherProvider;
-import mobi.intuitit.android.mate.launcher.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -30,8 +29,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -43,17 +42,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //import org.omg.CORBA.portable.CustomValue;
 
-public class OwnerHome extends Activity implements OnScrollListener {
-	
+public class OwnerHome extends Activity implements OnScrollListener,
+		OnClickListener {
+
 	final String serverUrl = "http://kimsunghyuntest2.appspot.com/simpleservletapp";
 
 	private static final int PICK_FROM_CAMERA = 0;
 	private static final int PICK_FROM_ALBUM = 1;
-	private static final int CROP_FROM_CAMERA = 2;	
-	
+	private static final int CROP_FROM_CAMERA = 2;
+
 	private String sdcard = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
 
@@ -65,7 +66,6 @@ public class OwnerHome extends Activity implements OnScrollListener {
 	private EditText editText;
 	private String data;
 	private Gallery gallery; // 런처 이미지 보여주기
-	private Button btnDown;
 
 	private ScrollAdapter mAdapter;
 	private ListView mListView;
@@ -82,29 +82,33 @@ public class OwnerHome extends Activity implements OnScrollListener {
 	public int count_Download = 0;
 	public int count_Visit = 0;
 
+	public Button upload;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_owner_home);
+		upload = (Button) findViewById(R.id.owner_download);
+		upload.setOnClickListener(this);
 
-		mRowList = new ArrayList<String>();
-		mLockListView = true;
+		// mRowList = new ArrayList<String>();
+		// mLockListView = true;
 
-		mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
-		mListView = (ListView) findViewById(R.id.owner_listView);
-
-		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
-
-		mListView.setOnScrollListener((OnScrollListener) this);
-		mListView.setAdapter(mAdapter);
+		// mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
+		// mListView = (ListView) findViewById(R.id.owner_listView);
+		//
+		// mInflater = (LayoutInflater)
+		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		// mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
+		//
+		// mListView.setOnScrollListener((OnScrollListener) this);
+		// mListView.setAdapter(mAdapter);
 
 		btnProfile = (ImageView) findViewById(R.id.owner_profile);
 		// btnProfile.setImageURI(Uri.fromFile(new File(sdcard+"screen1.jpg")));
 		profileMsg = (TextView) findViewById(R.id.owner_state);
-		btnDown = (Button) findViewById(R.id.btnDown);
 
 		// 추천, 다운, 방문 텍스트뷰
 		tv_Recommend = (TextView) findViewById(R.id.owner_recommend);
@@ -127,29 +131,29 @@ public class OwnerHome extends Activity implements OnScrollListener {
 					int position, long id) {
 				CustomDialog dialog = new CustomDialog(OwnerHome.this, position);
 				dialog.setCancelable(true);
-				android.view.WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+				android.view.WindowManager.LayoutParams params = dialog
+						.getWindow().getAttributes();
 				params.width = LayoutParams.MATCH_PARENT;
 				params.height = LayoutParams.MATCH_PARENT;
-				dialog.getWindow().setAttributes(params);				
+				dialog.getWindow().setAttributes(params);
 				dialog.show();
 			}
 		});
 
-		addItems(10);
-
-		// Guest 홈화면으로 가기 위한 임시
-		btnDown.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// Intent intent = new Intent(OwnerHome.this, GuestHome.class);
-				// startActivity(intent);
-//				get_DB();
-//				remove_DB();
-				insert_DB();
-			}
-		});
+		// addItems(10);
+		//
+		// // Guest 홈화면으로 가기 위한 임시
+		// btnDown.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		//
+		// get_DB();
+		// remove_DB();
+		// insert_DB();
+		// }
+		// });
 
 		profileMsg.setOnClickListener(new View.OnClickListener() {
 			@SuppressWarnings("deprecation")
@@ -357,13 +361,13 @@ public class OwnerHome extends Activity implements OnScrollListener {
 		ImageView iv;
 
 		public CustomDialog(Context context, int position) {
-			super(context);		
+			super(context);
 			setContentView(R.layout.dialog_screen);
 
 			iv = (ImageView) findViewById(R.id.dialog_imageview);
 			Uri uri = Uri.fromFile(new File(sdcard + "/Test/screen" + position
 					+ ".jpg"));
-			iv.setImageURI(uri);			
+			iv.setImageURI(uri);
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.setOnClickListener(this);
 		}
@@ -374,38 +378,64 @@ public class OwnerHome extends Activity implements OnScrollListener {
 			}
 		}
 	}
-	
-	public void remove_DB(){
-		 ContentResolver cr = getContentResolver();
-		 LauncherProvider lp = new LauncherProvider();
-		 lp.delete_table();
+
+	// DB 삭제와 화면지우기
+	public void remove_DB() {
+		LauncherProvider lp = new LauncherProvider();
+		lp.delete_table();
 	}
-	
-	public void insert_DB(){
-		
+
+	public String[] getJSONString(String str) {
+		int bracketCnt = 0;
+		int arrCnt = 0;
+		int tmpCnt = 0;
+		String[] strArr = new String[20];
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) == '{') {
+				bracketCnt++;
+			}
+			if (str.charAt(i) == '}') {
+				bracketCnt--;
+				if (bracketCnt == 0) {
+					strArr[arrCnt] = str.substring(tmpCnt, i + 1);
+					arrCnt++;
+					tmpCnt = i + 1;
+				}
+			}
+		}
+		return strArr;
+	}
+
+	public void insert_DB() {
+		remove_DB();
 		String str = JSONfunctions.getJSONfromURL(serverUrl);
-		Log.e("1111111", str);
-		MyGson gson = new MyGson();
+		String[] jsonArr = getJSONString(str);
+
 		try {
-			JSONObject json = new JSONObject(str);
-			Log.e("user", json.getString("user"));
-			Log.e("cellX", json.getString("cellX"));
-			Log.e("cellY", json.getString("cellY"));			
+			for (int i = 0; i < jsonArr.length; i++) {
+				if (jsonArr[i] == null) {
+					break;
+				}
+				JSONObject json = new JSONObject(jsonArr[i]);
+				Log.e("user", json.getString("user"));
+				Log.e("cellX", json.getString("cellX"));
+				Log.e("cellY", json.getString("cellY"));
+			}
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
-		
-		
+		}
+
 		final ContentValues values = new ContentValues();
 		final ContentResolver cr = getContentResolver();
-//		cr.insert(notify ? LauncherSettings.Favorites.CONTENT_URI
-//				: LauncherSettings.Favorites.CONTENT_URI_NO_NOTIFICATION,
-//				values);
-	
+		// cr.insert(notify ? LauncherSettings.Favorites.CONTENT_URI
+		// : LauncherSettings.Favorites.CONTENT_URI_NO_NOTIFICATION,
+		// values);
+
 	}
 
-	public void get_DB() {	
+	public void get_DB() {
 		ContentResolver contentResolver = getContentResolver();
 		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
 		String TABLE_FAVORITES = "favorites";
@@ -426,7 +456,7 @@ public class OwnerHome extends Activity implements OnScrollListener {
 		final int contactsIndex = c.getColumnIndex("contacts");
 
 		while (c.moveToNext()) {
-			
+
 			String intentDescription = c.getString(intentIndex);
 			int container = c.getInt(containerIndex);
 			int itemType = c.getInt(itemTypeIndex);
@@ -445,12 +475,23 @@ public class OwnerHome extends Activity implements OnScrollListener {
 			map.put("screen", screen);
 			map.put("cellX", cellX);
 			map.put("cellY", cellY);
-			map.put("MobjectType", MobjectType);			
+			map.put("MobjectType", MobjectType);
 			map.put("MobjectIcon", MobjectIcon);
 			map.put("contacts", contacts);
-			
+			Log.e("String", intentDescription);
+
 			JSONfunctions.postSONfromURL(serverUrl, map);
 		}
-	}	
-	
+		c.close();
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.equals(upload)) {
+			Log.e("upload", "upload");
+			insert_DB();
+			// get_DB();
+		}
+	}
+
 }

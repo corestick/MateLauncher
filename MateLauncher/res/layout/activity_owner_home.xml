@@ -7,7 +7,8 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -21,15 +22,16 @@
                 android:layout_height="wrap_content"
                 android:background="#f0000000" >
 
-      	      <ImageView 
-                android:id="@+id/owner_profile" 
-       		    android:layout_width="60dp"
-       			android:layout_height="60dp"
-                android:layout_alignParentLeft="true" 
-                android:layout_alignParentTop="true" 
-                android:layout_margin="1dp"                
-                android:background="#ffffffff"
-                android:src="@drawable/ic_delete" />
+      	      <ImageView
+      	          android:id="@+id/owner_profile"
+      	          android:layout_width="50dp"
+      	          android:layout_height="50dp"
+      	          android:layout_alignParentLeft="true"
+      	          android:layout_alignParentTop="true"
+      	          android:layout_margin="1dp"
+      	          android:background="#ffffffff"
+      	          android:src="@drawable/ic_delete" />
+
             </LinearLayout>
             <TextView
                 android:id="@+id/owner_state"
@@ -41,13 +43,12 @@
                 android:text=""
                 android:textSize="30sp" />
 
-            <Button
-                android:id="@+id/btnDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView                
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="다운하기" />
+                android:layout_centerVertical="true" 
+                android:src="@drawable/logo"/>
 
         </RelativeLayout>
     </LinearLayout>
@@ -55,42 +56,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:background="#f0000000" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <Gallery
+            android:id="@+id/gallery1"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
             android:layout_margin="2dp"
-            android:background="#ffffffff"
-            android:paddingLeft="2dp" 
-            android:paddingRight="2dp">
+            android:layout_weight="1"
+            android:animationDuration="1500"
+            android:gravity="center_vertical"
+            android:spacing="5dp" />
 
-            <Gallery
-                android:id="@+id/gallery1"
-                android:layout_width="wrap_content"
-                android:layout_height="120dp"
-                android:layout_margin="2dp"
-                android:layout_weight="1"
-                android:animationDuration="1500"
-                android:gravity="center_vertical"
-                android:spacing="5dp"
-                />
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f0000000" >
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:background="#f0000000"
+        android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"            
-            android:layout_marginLeft="2dp"
-            android:layout_marginBottom="2dp"
-            android:background="#ffffffff"
-            android:padding="2dp" >
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="#ff494747" >
 
             <TextView
                 android:id="@+id/owner_recommend"
@@ -99,63 +93,85 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="추천 : " />
-            <!-- 
+                android:text="100" />
 
-            <TextView
-                android:id="@+id/recommendValue"
+            <ImageView
+                android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="00" />
-                
-                 -->
+                android:src="@drawable/home" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="#ff494747"  >
 
             <TextView
                 android:id="@+id/owner_down"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="다운 : " />            
+                android:gravity="center" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/home" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="#ff494747"  >
 
             <TextView
                 android:id="@+id/owner_visit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="방문 : " />
+                android:gravity="center" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/home" />
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </LinearLayout>
-
-    <LinearLayout
+        <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#f0000000" >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginBottom="2dp"
-            android:background="#ffffffff"
-             >
+        android:layout_weight="10"
+        android:background="#f0000000"
+        android:orientation="vertical" >
 
-            <ListView
-                android:id="@+id/owner_listView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="1" >
-            </ListView>
-        </LinearLayout>
+        <Button
+            android:id="@+id/owner_like_it"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/like_it" />
+
+        <Button
+            android:id="@+id/owner_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/comment" />
+
+        <Button
+            android:id="@+id/owner_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/download" />
+
     </LinearLayout>
 
 </LinearLayout>
