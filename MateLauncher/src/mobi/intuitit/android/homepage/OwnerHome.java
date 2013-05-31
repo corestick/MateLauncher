@@ -29,8 +29,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -42,7 +42,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 //import org.omg.CORBA.portable.CustomValue;
 
@@ -407,32 +406,48 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	public void insert_DB() {
-		remove_DB();
+		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
+		String TABLE_FAVORITES = "favorites";
+		String PARAMETER_NOTIFY = "notify";
+		final Uri CONTENT_URI_NO_NOTIFICATION = Uri.parse("content://"
+				+ AUTHORITY + "/" + TABLE_FAVORITES + "?" + PARAMETER_NOTIFY
+				+ "=false");
+		final ContentValues values = new ContentValues();
+		final ContentResolver cr = getContentResolver();
+		
+		remove_DB(); //DB 지우고, 화면 View 삭제
+	
 		String str = JSONfunctions.getJSONfromURL(serverUrl);
-		String[] jsonArr = getJSONString(str);
-
+		String[] jsonArr = getJSONString(str);		
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {
 				if (jsonArr[i] == null) {
 					break;
 				}
 				JSONObject json = new JSONObject(jsonArr[i]);
-				Log.e("user", json.getString("user"));
-				Log.e("cellX", json.getString("cellX"));
-				Log.e("cellY", json.getString("cellY"));
+				values.put("container", json.getString("container"));
+		        values.put("screen", json.getString("screen"));
+		        values.put("cellX", json.getString("cellX"));
+		        values.put("cellY", json.getString("cellY"));     
+		        values.put("mobjectType",json.getString("MobjectType"));
+		        values.put("mobjectIcon", json.getString("MobjectIcon"));
+		        values.put("itemType", json.getString("itemType"));
+				if(json.getString("intent")!=null) values.put("intent", json.getString("intent"));
+				else{ 
+					String intent = null;
+					values.put("intent", intent);
+				}
+				if(json.getString("contacts")!=null) values.put("contacts", json.getString("contacts"));				
+				else{
+					String contacts = null;
+					values.put("contacts", contacts);
+				}
+				cr.insert(CONTENT_URI_NO_NOTIFICATION, values);
 			}
-
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		final ContentValues values = new ContentValues();
-		final ContentResolver cr = getContentResolver();
-		// cr.insert(notify ? LauncherSettings.Favorites.CONTENT_URI
-		// : LauncherSettings.Favorites.CONTENT_URI_NO_NOTIFICATION,
-		// values);
-
+		}				
 	}
 
 	public void get_DB() {

@@ -222,7 +222,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		Log.e("Launcher-Start", "Start");
 		if (DOWNLOAR_VIEW) {
 			Log.e("Launcher-Start-change", "Start-change");
-			startLoaders();
+			start_reLoad();
 			DOWNLOAR_VIEW = false;
 		}
 		super.onStart();
@@ -370,6 +370,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		sModel.loadUserItems(!mLocaleChanged, this, mLocaleChanged,
 				loadApplications);
 
+		mRestoring = false;
+	}
+	
+	public void start_reLoad(){
+		sModel.loadUserItems(false, this, mLocaleChanged,
+				false);
 		mRestoring = false;
 	}
 
@@ -766,10 +772,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			favorite.setImageResource(MImageList.getInstance().getIcon(
 					appInfo.mobjectType, appInfo.mobjectIcon));
 		}
-		info.title = "null";
-		info.intent = new Intent();
-		info.Contacts = "null";
-
+		if(info.intent == null)	info.intent = null;
+		if(info.Contacts == null) info.Contacts = null;
+		
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
 
