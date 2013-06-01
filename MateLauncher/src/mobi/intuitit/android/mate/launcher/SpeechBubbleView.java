@@ -2,7 +2,10 @@ package mobi.intuitit.android.mate.launcher;
 
 import static android.util.Log.e;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.ComponentName;
@@ -11,17 +14,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,13 +59,16 @@ public class SpeechBubbleView extends LinearLayout implements
 
 	private ListView listview;
 	ArrayAdapter<String> itemAdapter;
-	ArrayList<String> setupAppName = new ArrayList<String>();
-	ArrayList<String> setupAppPacName = new ArrayList<String>();
-	ArrayList<Drawable> setupAppIcon = new ArrayList<Drawable>();
+	MyAdapter myadapter;
+	ArrayList<appInfo> appInfoArry = new ArrayList<appInfo>();	
 
 	ArrayList<String> contactlist = new ArrayList<String>();
 	Mobject Apptag = new Mobject();
 	Mobject contactsTag = new Mobject();
+	
+	
+	
+	
 
 	public SpeechBubbleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -196,7 +200,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		param.height = LayoutParams.FILL_PARENT;
 		listview.setLayoutParams(param);
 		listview.setBackgroundColor(Color.DKGRAY);
-		MyAdapter myadapter = new MyAdapter();
+		myadapter = new MyAdapter();
 		listview.setAdapter(myadapter);
 		loadApp();
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -212,9 +216,8 @@ public class SpeechBubbleView extends LinearLayout implements
 
 				Intent intent = mLauncher.getPackageManager()
 						.getLaunchIntentForPackage(
-								setupAppPacName.get(position));
-				ComponentName component = new ComponentName(setupAppPacName
-						.get(position), intent.getComponent().getClassName());
+								appInfoArry.get(position).packagename);
+				ComponentName component = new ComponentName(appInfoArry.get(position).packagename, intent.getComponent().getClassName());
 				PackageManager packageManager = mLauncher.getPackageManager();
 				ActivityInfo activityInfo = null;
 				try {
@@ -307,7 +310,14 @@ public class SpeechBubbleView extends LinearLayout implements
 	}
 
 	// 설치 앱 얻어오기
-	public void loadApp() {
+	public void loadApp() {		
+		Comparator<appInfo> myComparator= new Comparator<appInfo>(){
+			Collator app_Collator = Collator.getInstance();
+			@Override
+			public int compare(appInfo a, appInfo b) {
+				return app_Collator.compare(a.appName, b.appName);			
+			}		
+		};
 		PackageManager pm = mLauncher.getPackageManager();
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -315,28 +325,27 @@ public class SpeechBubbleView extends LinearLayout implements
 		final int count = apps.size();
 		for (int i = 0; i < count; i++) {
 			ResolveInfo info = apps.get(i);
-			String pacname = info.activityInfo.packageName;
-			String appname = info.activityInfo.applicationInfo.loadLabel(pm)
+			appInfo appinfo = new appInfo();
+			appinfo.packagename = info.activityInfo.packageName;
+			appinfo.appName = info.activityInfo.applicationInfo.loadLabel(pm)
 					.toString();
-			Drawable drawble = info.activityInfo.applicationInfo.loadIcon(pm);
+			appinfo.appIcon = info.activityInfo.applicationInfo.loadIcon(pm);
 			if (i == 0) {
-				setupAppIcon.add(drawble);
-				setupAppName.add(appname);
-				setupAppPacName.add(pacname);
+				appInfoArry.add(appinfo);
 			} else {
-				for (int j = 0; j <= setupAppName.size(); j++) {
-					if (setupAppName.get(j).equals(appname) == true)
+				for (int j = 0; j <= appInfoArry.size(); j++) {
+					if ((appInfoArry.get(j).appName).equals(appinfo.appName) == true)
 						break;
 					else {
-						if (j == setupAppName.size() - 1) {
-							setupAppIcon.add(drawble);
-							setupAppName.add(appname);
-							setupAppPacName.add(pacname);
+						if (j == appInfoArry.size() - 1) {
+							appInfoArry.add(appinfo);						
 						}
 					}
 				}
 			}
-		}
+		}		
+		Collections.sort(appInfoArry, myComparator);
+		myadapter.notifyDataSetChanged();
 
 		/*
 		 * List<PackageInfo> appinfo = mLauncher.getPackageManager()
@@ -350,6 +359,13 @@ public class SpeechBubbleView extends LinearLayout implements
 		 * 
 		 * }
 		 */
+	}
+	
+	//앱 정보 저장할 클래스
+	class appInfo{
+		public String packagename;
+		public String appName;
+		public Drawable appIcon;
 	}
 
 	// 연락처 읽어오기
@@ -419,7 +435,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return setupAppIcon.size();
+			return appInfoArry.size();
 		}
 
 		@Override
@@ -442,13 +458,11 @@ public class SpeechBubbleView extends LinearLayout implements
 			}
 			image = (ImageView) convertView.findViewById(R.id.applist_image);
 			name = (TextView) convertView.findViewById(R.id.applist_name);
-
-			Log.e("name", setupAppName.get(position));
-			Log.e("image", setupAppIcon.get(position).toString());
+			
 			Drawable icon = Utilities.createIconThumbnail(
-					setupAppIcon.get(position), getContext());
+					appInfoArry.get(position).appIcon, getContext());
 			image.setImageDrawable(icon);
-			name.setText(setupAppName.get(position));
+			name.setText(appInfoArry.get(position).appName);
 			return convertView;
 
 		}

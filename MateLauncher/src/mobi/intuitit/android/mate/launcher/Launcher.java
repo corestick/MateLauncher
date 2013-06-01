@@ -2171,6 +2171,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
 					Mobject info = new Mobject();
 					info = mSpeechBubbleview.selectApp(tag);
+					mSpeechBubbleview.setLocation(0, 0, 0, 0);
 					v.setTag(info);
 				} else {
 					mSpeechBubbleview.removeAllViews();
