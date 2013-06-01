@@ -19,9 +19,9 @@ public class OwnerImageAdapter extends BaseAdapter {
 
 	// private int[] mImageID = {
 	private String[] mImagePath = {
-			sdcard + "/Test/screen0.jpg",
-			sdcard + "/Test/screen1.jpg", 
-			sdcard + "/Test/screen2.jpg"
+			sdcard + "/MateLauncher/Owner/screen0.jpg",
+			sdcard + "/MateLauncher/Owner/screen1.jpg", 
+			sdcard + "/MateLauncher/Owner/screen2.jpg"
 	// R.drawable.sample_0,
 	// R.drawable.sample_1,
 	// R.drawable.sample_2

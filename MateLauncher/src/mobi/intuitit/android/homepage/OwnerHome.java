@@ -367,7 +367,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			setContentView(R.layout.dialog_screen);
 
 			iv = (ImageView) findViewById(R.id.dialog_imageview);
-			Uri uri = Uri.fromFile(new File(sdcard + "/Test/screen" + position
+			Uri uri = Uri.fromFile(new File(sdcard + "/MateLauncher/Owner/screen" + position
 					+ ".jpg"));
 			iv.setImageURI(uri);
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
