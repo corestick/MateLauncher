@@ -322,7 +322,6 @@ containing a value of this type.
         public static final int all_apps=0x7f07002e;
         public static final int applist_image=0x7f07003b;
         public static final int applist_name=0x7f07003c;
-        public static final int cancle=0x7f07004c;
         public static final int cell1=0x7f07002a;
         public static final int cell2=0x7f07002b;
         public static final int cell3=0x7f07002c;
@@ -334,8 +333,6 @@ containing a value of this type.
         public static final int dockbar=0x7f070034;
         public static final int drag_layer=0x7f070028;
         public static final int drawer=0x7f07002d;
-        public static final int editProfile=0x7f070048;
-        public static final int editText1=0x7f07004a;
         public static final int folder_close=0x7f07003d;
         public static final int folder_content=0x7f07003e;
         public static final int folder_name=0x7f070041;
@@ -343,7 +340,7 @@ containing a value of this type.
         public static final int friend_name=0x7f07001d;
         public static final int friend_profile=0x7f07001b;
         public static final int friend_statemessage=0x7f07001c;
-        public static final int gallery=0x7f07004e;
+        public static final int gallery=0x7f070048;
         public static final int gallery1=0x7f070011;
         public static final int gallery_guest=0x7f070005;
         public static final int guestMsg=0x7f070043;
@@ -369,7 +366,6 @@ containing a value of this type.
         public static final int mdockbar=0x7f070035;
         public static final int name=0x7f070018;
         public static final int objectview=0x7f070036;
-        public static final int ok=0x7f07004b;
         public static final int owner_comment=0x7f070016;
         public static final int owner_down=0x7f070013;
         public static final int owner_download=0x7f070017;
@@ -383,11 +379,10 @@ containing a value of this type.
         public static final int rank_statemessage=0x7f07001f;
         public static final int screen_indicator=0x7f070031;
         public static final int screen_switcher=0x7f070033;
-        public static final int search_plate=0x7f070051;
-        public static final int search_src_text=0x7f070052;
-        public static final int search_voice_btn=0x7f070053;
-        public static final int set=0x7f07004f;
-        public static final int setTextDialog=0x7f070047;
+        public static final int search_plate=0x7f07004b;
+        public static final int search_src_text=0x7f07004c;
+        public static final int search_voice_btn=0x7f07004d;
+        public static final int set=0x7f070049;
         public static final int speechbubbleview=0x7f070037;
         public static final int stub_screen_switcher=0x7f070032;
         public static final int summary=0x7f070039;
@@ -397,11 +392,10 @@ containing a value of this type.
         public static final int tab4=0x7f070027;
         public static final int tabhost=0x7f070023;
         public static final int textLabel=0x7f070021;
-        public static final int textView1=0x7f070049;
         public static final int title=0x7f070038;
         public static final int vertical=0x7f070000;
-        public static final int wallpaper=0x7f07004d;
-        public static final int widget_search=0x7f070050;
+        public static final int wallpaper=0x7f070047;
+        public static final int widget_search=0x7f07004a;
         public static final int workspace=0x7f070029;
     }
     public static final class layout {
@@ -433,14 +427,12 @@ containing a value of this type.
         public static final int screen_switcher=0x7f030019;
         public static final int setting=0x7f03001a;
         public static final int speechbubbleview=0x7f03001b;
-        public static final int textdialog=0x7f03001c;
-        public static final int user_folder=0x7f03001d;
-        public static final int visitorbook=0x7f03001e;
-        public static final int wallpaper_chooser=0x7f03001f;
-        public static final int wallpaper_item=0x7f030020;
-        public static final int widget_search=0x7f030021;
-        public static final int workspace_mscreen=0x7f030022;
-        public static final int workspace_screen=0x7f030023;
+        public static final int user_folder=0x7f03001c;
+        public static final int wallpaper_chooser=0x7f03001d;
+        public static final int wallpaper_item=0x7f03001e;
+        public static final int widget_search=0x7f03001f;
+        public static final int workspace_mscreen=0x7f030020;
+        public static final int workspace_screen=0x7f030021;
     }
     public static final class string {
         /**  Displayed when user selects a shortcut for an app that was uninstalled 
