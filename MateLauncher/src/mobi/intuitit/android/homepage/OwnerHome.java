@@ -165,7 +165,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				AlertDialog dialog;
 				LayoutInflater inflater = (LayoutInflater) mContext
 						.getSystemService(LAYOUT_INFLATER_SERVICE);
-				View layout = inflater.inflate(R.layout.textdialog,
+				View layout = inflater.inflate(R.layout.profilemsg,
 						(ViewGroup) findViewById(R.id.setTextDialog));
 
 				editText = (EditText) layout.findViewById(R.id.editProfile);
