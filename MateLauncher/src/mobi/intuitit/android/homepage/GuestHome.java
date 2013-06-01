@@ -46,9 +46,9 @@ public class GuestHome extends Activity implements OnScrollListener {
 	public TextView m_Name;
 	public ImageView m_Profile;
 
-	private ImageView btnRecommend;
-	private ImageView btnDown;
-	private ImageView btnWrite;
+//	private ImageView btnRecommend;
+//	private ImageView btnDown;
+//	private ImageView btnWrite;
 	
 	private TextView tv_Recommend;
 	private TextView tv_Download;
@@ -66,21 +66,21 @@ public class GuestHome extends Activity implements OnScrollListener {
 
 		setContentView(R.layout.activity_guest_home);
 
-		mRowList = new ArrayList<String>();
-		mLockListView = true;
+//		mRowList = new ArrayList<String>();
+//		mLockListView = true;
+//
+//		mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
+//		mListView = (ListView) findViewById(R.id.guest_listView);
 
-		mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
-		mListView = (ListView) findViewById(R.id.guest_listView);
+//		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
+//
+//		mListView.setOnScrollListener((OnScrollListener) this);
+//		mListView.setAdapter(mAdapter);
 
-		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
-
-		mListView.setOnScrollListener((OnScrollListener) this);
-		mListView.setAdapter(mAdapter);
-
-		btnRecommend = (ImageView) findViewById(R.id.btnRecommend);
-		btnDown = (ImageView) findViewById(R.id.btnDown);
-		btnWrite = (ImageView) findViewById(R.id.btnWirte);
+//		btnRecommend = (ImageView) findViewById(R.id.btnRecommend);
+//		btnDown = (ImageView) findViewById(R.id.btnDown);
+//		btnWrite = (ImageView) findViewById(R.id.btnWirte);
 		// 추천, 다운, 방문 텍스트뷰
 		tv_Recommend = (TextView) findViewById(R.id.guest_recommend);
 		tv_Download = (TextView) findViewById(R.id.guest_down);
@@ -100,56 +100,56 @@ public class GuestHome extends Activity implements OnScrollListener {
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
 		gallery.setAdapter(new GuestImageAdapter(this));
 
-		addItems(10);		
+//		addItems(10);		
 
 		// 방명록 작성 버튼
-		btnWrite.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				final Dialog dia = new Dialog(GuestHome.this);
-				dia.setContentView(R.layout.visitorbook);
-				dia.show();
-
-				Button visit_ok = (Button) dia.findViewById(R.id.ok);
-				Button visit_cancle = (Button) dia.findViewById(R.id.cancle);
-				EditText visitbook = (EditText) dia
-						.findViewById(R.id.editText1);
-
-				visit_ok.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Toast.makeText(GuestHome.this, "방명록",
-								Toast.LENGTH_SHORT).show();
-						dia.dismiss();
-					}
-				});
-				visit_cancle.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						dia.dismiss();
-					}
-				});
-			}
-		});
-
-		// 추천
-		btnRecommend.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(GuestHome.this, "추천", Toast.LENGTH_SHORT).show();
-			}
-		});
-
-		// 다운로드
-		btnDown.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(GuestHome.this, "다운로드", Toast.LENGTH_SHORT)
-						.show();
-			}
-		});
+//		btnWrite.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//
+//				final Dialog dia = new Dialog(GuestHome.this);
+//				dia.setContentView(R.layout.visitorbook);
+//				dia.show();
+//
+//				Button visit_ok = (Button) dia.findViewById(R.id.ok);
+//				Button visit_cancle = (Button) dia.findViewById(R.id.cancle);
+//				EditText visitbook = (EditText) dia
+//						.findViewById(R.id.editText1);
+//
+//				visit_ok.setOnClickListener(new OnClickListener() {
+//					@Override
+//					public void onClick(View v) {
+//						Toast.makeText(GuestHome.this, "방명록",
+//								Toast.LENGTH_SHORT).show();
+//						dia.dismiss();
+//					}
+//				});
+//				visit_cancle.setOnClickListener(new OnClickListener() {
+//					@Override
+//					public void onClick(View v) {
+//						dia.dismiss();
+//					}
+//				});
+//			}
+//		});
+//
+//		// 추천
+//		btnRecommend.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Toast.makeText(GuestHome.this, "추천", Toast.LENGTH_SHORT).show();
+//			}
+//		});
+//
+//		// 다운로드
+//		btnDown.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Toast.makeText(GuestHome.this, "다운로드", Toast.LENGTH_SHORT)
+//						.show();
+//			}
+//		});
 	}
 
 	public TextView setRecommend(int n){

@@ -5,12 +5,21 @@ import mobi.intuitit.android.mate.launcher.R;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Window;
 import android.widget.TabHost;
 
-public class HomeMain extends TabActivity {
+public class HomeMain extends TabActivity {	
+	
+	static int ChildCount ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		Intent intent = new Intent(this.getIntent());
+		ChildCount = intent.getIntExtra("ChildCount", 0);
+		Log.e("Home", String.valueOf(ChildCount));
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		TabHost tabHost = getTabHost();
 		for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
@@ -30,4 +39,5 @@ public class HomeMain extends TabActivity {
 				.setContent(new Intent(this, Setting.class)				
 				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
 	}
+	
 }

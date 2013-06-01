@@ -109,7 +109,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	final Rect mDrawerBounds = new Rect();
 	final Rect mClipBounds = new Rect();
 	int mDrawerContentHeight;
-	int mDrawerContentWidth;
+	int mDrawerContentWidth;	
 
 	/**
 	 * Used to inflate the Workspace from XML.

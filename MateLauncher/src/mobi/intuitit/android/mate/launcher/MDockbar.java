@@ -3,12 +3,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import mobi.intuitit.android.homepage.HomeMain;
+import mobi.intuitit.android.homepage.OwnerHome;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -146,23 +148,21 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		if (v.equals(mHomepage)) {		
 			//captureView 생성
 			int count = mLauncher.getWorkspace().getChildCount();
+			
 			if (captureView == null || captureView.length != count)
 				captureView = new Bitmap[count];
 			
 			String sdcard = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();
-			File cfile = new File(sdcard+ "/Test");
-			cfile.mkdirs();
 			
-			LayoutType screenView;	
-			
-			
+			File cfile = new File(sdcard+ "/MateLauncher/Owner");
+			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
 			for (int i = 0; i < count; i++) {
-				screenView = (LayoutType) mLauncher.getWorkspace().getChildAt(i);
-				screenView.saveThumb();
-				captureView[i] = screenView.getThumb();
+				View tempCapture = mLauncher.getWorkspace().getChildAt(i);
+				tempCapture.buildDrawingCache();
+				captureView[i] = tempCapture.getDrawingCache();
 				
-				String path = sdcard + "/Test/screen"+i+".jpg";		
+				String path = sdcard + "/MateLauncher/Owner/screen"+i+".jpg";		
 				try {
 					FileOutputStream fos = new FileOutputStream(path);
 					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -172,7 +172,8 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 					e.printStackTrace();
 				}
 			}
-			Intent intent = new Intent(mLauncher,HomeMain.class);			
+			Intent intent = new Intent(mLauncher,HomeMain.class);
+			intent.putExtra("ChildCount", mLauncher.Child_Count());			
 			mLauncher.startActivity(intent); 
 			return; 
 		}

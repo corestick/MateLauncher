@@ -903,29 +903,33 @@ public class LauncherModel {
 						switch (itemType) {
 						case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 						case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-							//처음 읽어오는부분
-							if (MobjectType == 0 || MobjectType == 1 ) {
+							// 처음 읽어오는부분
+							if (MobjectType == 0 || MobjectType == 1) {
 								appinfo = new Mobject();
-								intentDescription = c.getString(intentIndex);
-								try {
-									intent = Intent.parseUri(intentDescription,
-											0);
-								} catch (java.net.URISyntaxException e) {
-									continue;
+								if (c.getString(intentIndex) != null) {
+									intentDescription = c
+											.getString(intentIndex);
+									try {
+										intent = Intent.parseUri(
+												intentDescription, 0);
+										appinfo.intent = intent;
+									} catch (java.net.URISyntaxException e) {
+										continue;
+									}
 								}
+								else appinfo.intent = null;
+								if(c.getString(contacts)!=null) appinfo.Contacts = c.getString(contacts);
+								else appinfo.Contacts =null;
 								appinfo.mobjectIcon = c.getInt(mobjectIcon);
-								appinfo.title = c.getString(titleIndex);
-								appinfo.intent = intent;
-
+								appinfo.title = c.getString(titleIndex);								
 								appinfo.id = c.getLong(idIndex);
 								container = c.getInt(containerIndex);
 								appinfo.container = container;
 								appinfo.screen = c.getInt(screenIndex);
 								appinfo.cellX = c.getInt(cellXIndex);
 								appinfo.cellY = c.getInt(cellYIndex);
-								appinfo.mobjectType = c.getInt(mobjectType);
-								appinfo.Contacts = c.getString(contacts);
-								Log.e("getContacts", appinfo.Contacts);
+								appinfo.mobjectType = c.getInt(mobjectType);								
+								
 								switch (container) {
 								case LauncherSettings.Favorites.CONTAINER_DESKTOP:
 									desktopItems.add(appinfo);
@@ -1367,6 +1371,10 @@ public class LauncherModel {
 		// TODO: write to DB; figure out if we should remove folder from folders
 		// list
 		mDesktopItems.remove(info);
+	}
+
+	public void allRemoveDesktopItem() {
+		mDesktopItems.clear();
 	}
 
 	/**

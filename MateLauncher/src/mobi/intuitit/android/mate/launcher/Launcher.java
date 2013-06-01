@@ -59,7 +59,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -80,7 +79,6 @@ import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -90,14 +88,10 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import android.widget.SlidingDrawer;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -187,7 +181,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public LayoutInflater mInflater;
 
 	private DragLayer mDragLayer;
-	private Workspace mWorkspace;
+	private static Workspace mWorkspace;
 
 	private AppWidgetManager mAppWidgetManager;
 	private LauncherAppWidgetHost mAppWidgetHost;
@@ -221,9 +215,21 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private DesktopBinder mBinder;
 
 	static boolean modifyMode = false; // 수정모드 플래그
+	static boolean DOWNLOAR_VIEW = false;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onStart() {
+		Log.e("Launcher-Start", "Start");
+		if (DOWNLOAR_VIEW) {
+			Log.e("Launcher-Start-change", "Start-change");
+			start_reLoad(); //다운받기 누르면 처음부터 다시 읽어서 화면에 뿌림.
+			DOWNLOAR_VIEW = false;
+		}
+		super.onStart();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mInflater = getLayoutInflater();
 
@@ -364,6 +370,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		sModel.loadUserItems(!mLocaleChanged, this, mLocaleChanged,
 				loadApplications);
 
+		mRestoring = false;
+	}
+	
+	public void start_reLoad(){
+		sModel.loadUserItems(false, this, mLocaleChanged,
+				false);
 		mRestoring = false;
 	}
 
@@ -700,7 +712,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mSpeechBubbleview = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
-		mSpeechBubbleview.setLauncher(this);	
+		mSpeechBubbleview.setLauncher(this);
 		mSpeechBubbleview.setVisibility(View.GONE);
 
 		dragLayer.setIgnoredDropTarget(grid);
@@ -760,9 +772,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			favorite.setImageResource(MImageList.getInstance().getIcon(
 					appInfo.mobjectType, appInfo.mobjectIcon));
 		}
-		info.title="null";
-		info.intent = new Intent();
-		info.Contacts = "null";
+		if(info.intent == null)	info.intent = null;
+		if(info.Contacts == null) info.Contacts = null;
 		
 		favorite.setTag(info);
 		favorite.setOnClickListener(this);
@@ -1748,8 +1759,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
-					
-					if(mSpeechBubbleview.getVisibility() == View.VISIBLE){
+
+					if (mSpeechBubbleview.getVisibility() == View.VISIBLE) {
 						mSpeechBubbleview.setVisibility(View.GONE);
 					}
 				}
@@ -2138,40 +2149,37 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				startActivitySafely(intent);
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
-			}
-			else if(tag instanceof Mobject){
-				if(((Mobject) tag).mobjectType == 0){
-					final Intent intent = ((Mobject) tag).intent;				
+			} else if (tag instanceof Mobject) {
+				if (((Mobject) tag).mobjectType == 0) {
+					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
-				}
-				else{
-					Log.e("Contacts",((Mobject) tag).Contacts);					
-					String contacts =((Mobject) tag).Contacts;
+				} else {
+					Log.e("Contacts", ((Mobject) tag).Contacts);
+					String contacts = ((Mobject) tag).Contacts;
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
 					mSpeechBubbleview.CreateSelectView(contacts);
-					 mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40, ((Mobject) tag).cellY - 50, 0,
-					 0);
-				}			
+					mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40,
+							((Mobject) tag).cellY - 50, 0, 0);
+				}
 			}
 		} else {
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {
-				if(((Mobject) tag).mobjectType ==0){
+				if (((Mobject) tag).mobjectType == 0) {
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
 					Mobject info = new Mobject();
-					info = mSpeechBubbleview.selectApp(tag);					
-					v.setTag(info);	
-				}
-				else{
+					info = mSpeechBubbleview.selectApp(tag);
+					mSpeechBubbleview.setLocation(0, 0, 0, 0);
+					v.setTag(info);
+				} else {
 					mSpeechBubbleview.removeAllViews();
 					mSpeechBubbleview.setVisibility(View.VISIBLE);
 					Mobject info = new Mobject();
 					info = mSpeechBubbleview.InputPhonenumView(tag);
-					 mSpeechBubbleview.setLocation(0, 0, 0,
-							 0);
-					v.setTag(info);	
+					mSpeechBubbleview.setLocation(0, 0, 0, 0);
+					v.setTag(info);
 				}
 			}
 		}
@@ -2324,7 +2332,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	// return mDrawer.isMoving();
 	// }
 
-	Workspace getWorkspace() {
+	static Workspace getWorkspace() {
 		return mWorkspace;
 	}
 
@@ -2849,7 +2857,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 */
 	private boolean syncScreenNumber() {
 		Log.e("RRR", "syncScreenNumber");
-		
+
 		if (mWorkspace == null)
 			return false;
 		try {
@@ -3013,4 +3021,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
 				Toast.LENGTH_SHORT).show();
 	}
+	
+	public int Child_Count(){
+		return mWorkspace.getChildCount();
+	}
+
 }
