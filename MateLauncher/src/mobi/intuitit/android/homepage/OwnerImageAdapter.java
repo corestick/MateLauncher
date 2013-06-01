@@ -18,9 +18,9 @@ public class OwnerImageAdapter extends BaseAdapter {
 			.getAbsolutePath(); // sdcard °æ·Î
 
 	private String[] mImagePath = {
-			sdcard + "Android/data/mobi.intuitit.android/owner/screen0.jpg",
-			sdcard + "Android/data/mobi.intuitit.android/owner/screen1.jpg", 
-			sdcard + "Android/data/mobi.intuitit.android/owner/screen2.jpg"
+			sdcard + "/MateLauncher/Owner/screen0.jpg",
+			sdcard + "/MateLauncher/Owner/screen1.jpg", 
+			sdcard + "/MateLauncher/Owner/screen2.jpg"
 	};
 
 	public OwnerImageAdapter(Context c) {

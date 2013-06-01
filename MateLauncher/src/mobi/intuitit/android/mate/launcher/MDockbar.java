@@ -153,14 +153,14 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			String sdcard = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();
 			
-			File cfile = new File(sdcard+ "Android/data/mobi.intuitit.android/owner");
+			File cfile = new File(sdcard+ "/MateLauncher/Owner");
 			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
 			for (int i = 0; i < count; i++) {
 				View tempCapture = mLauncher.getWorkspace().getChildAt(i);
 				tempCapture.buildDrawingCache();
 				captureView[i] = tempCapture.getDrawingCache();
 				
-				String path = sdcard + "Android/data/mobi.intuitit.android/owner/screen"+i+".jpg";		
+				String path = sdcard + "/MateLauncher/Owner/screen"+i+".jpg";		
 				try {
 					FileOutputStream fos = new FileOutputStream(path);
 					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
