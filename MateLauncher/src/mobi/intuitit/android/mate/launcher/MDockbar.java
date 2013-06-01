@@ -143,26 +143,24 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			}
 			return;
 		}
-		if (v.equals(mHomepage)) {		
+		if (v.equals(mHomepage)) {
 			//captureView 생성
 			int count = mLauncher.getWorkspace().getChildCount();
+			
 			if (captureView == null || captureView.length != count)
 				captureView = new Bitmap[count];
 			
 			String sdcard = Environment.getExternalStorageDirectory()
 					.getAbsolutePath();
-			File cfile = new File(sdcard+ "/Test");
-			cfile.mkdirs();
 			
-			LayoutType screenView;	
-			
-			
+			File cfile = new File(sdcard+ "Android/data/mobi.intuitit.android/owner");
+			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
 			for (int i = 0; i < count; i++) {
-				screenView = (LayoutType) mLauncher.getWorkspace().getChildAt(i);
-				screenView.saveThumb();
-				captureView[i] = screenView.getThumb();
+				View tempCapture = mLauncher.getWorkspace().getChildAt(i);
+				tempCapture.buildDrawingCache();
+				captureView[i] = tempCapture.getDrawingCache();
 				
-				String path = sdcard + "/Test/screen"+i+".jpg";		
+				String path = sdcard + "Android/data/mobi.intuitit.android/owner/screen"+i+".jpg";		
 				try {
 					FileOutputStream fos = new FileOutputStream(path);
 					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
@@ -172,6 +170,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 					e.printStackTrace();
 				}
 			}
+			
 			Intent intent = new Intent(mLauncher,HomeMain.class);			
 			mLauncher.startActivity(intent); 
 			return; 

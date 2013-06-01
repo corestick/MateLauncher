@@ -219,10 +219,10 @@ public class MLayout extends LayoutType {
 	private void initThumb(int width, int height) {
 		if (mThumb == null || mThumb.isRecycled())
 			mThumb = Bitmap
-					.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+					.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
 		Matrix matrix = new Matrix();
-		matrix.setScale(0.25f, 0.25f);
+		matrix.setScale(0.0f, 0.75f);
 		mThumbCanvas = new Canvas(mThumb);
 		mThumbCanvas.concat(matrix);
 

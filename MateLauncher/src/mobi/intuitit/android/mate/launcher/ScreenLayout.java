@@ -174,7 +174,7 @@ public class ScreenLayout implements Animation.AnimationListener, OnClickListene
 
         mScreenViews[i] = new ImageView(line.getContext());
 
-        mScreenViews[i].setScaleType(ScaleType.MATRIX);
+//        mScreenViews[i].setScaleType(ScaleType.MATRIX);
         mScreenViews[i].setImageBitmap(screenThumb);
         mScreenViews[i].setBackgroundResource(BACK_ID);
         mScreenViews[i].setOnClickListener(this);
