@@ -157,46 +157,46 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		// }
 		// });
 
-		profileMsg.setOnClickListener(new View.OnClickListener() {
-			@SuppressWarnings("deprecation")
-			public void onClick(View v) {
-				Context mContext = OwnerHome.this;
-				AlertDialog.Builder builder;
-				AlertDialog dialog;
-				LayoutInflater inflater = (LayoutInflater) mContext
-						.getSystemService(LAYOUT_INFLATER_SERVICE);
-				View layout = inflater.inflate(R.layout.profilemsg,
-						(ViewGroup) findViewById(R.id.setTextDialog));
-
-				editText = (EditText) layout.findViewById(R.id.editProfile);
-
-				builder = new AlertDialog.Builder(mContext);
-				builder.setView(layout);
-				dialog = builder.create();
-				dialog.setTitle("프로필 변경");
-
-				dialog.setButton("확인", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(final DialogInterface dialog,
-							final int which) {
-						// TODO Auto-generated method stub
-						data = editText.getText().toString();
-						profileMsg.setText(data);
-						dialog.dismiss();
-					}
-				});
-				dialog.setButton2("취소", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(final DialogInterface dialog,
-							final int which) {
-						dialog.dismiss();
-					}
-				});
-				dialog.show();
-			}
-		});
+//		profileMsg.setOnClickListener(new View.OnClickListener() {
+//			@SuppressWarnings("deprecation")
+//			public void onClick(View v) {
+//				Context mContext = OwnerHome.this;
+//				AlertDialog.Builder builder;
+//				AlertDialog dialog;
+//				LayoutInflater inflater = (LayoutInflater) mContext
+//						.getSystemService(LAYOUT_INFLATER_SERVICE);
+//				View layout = inflater.inflate(R.layout.profilemsg,
+//						(ViewGroup) findViewById(R.id.setTextDialog));
+//
+//				editText = (EditText) layout.findViewById(R.id.editProfile);
+//
+//				builder = new AlertDialog.Builder(mContext);
+//				builder.setView(layout);
+//				dialog = builder.create();
+//				dialog.setTitle("프로필 변경");
+//
+//				dialog.setButton("확인", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(final DialogInterface dialog,
+//							final int which) {
+//						// TODO Auto-generated method stub
+//						data = editText.getText().toString();
+//						profileMsg.setText(data);
+//						dialog.dismiss();
+//					}
+//				});
+//				dialog.setButton2("취소", new DialogInterface.OnClickListener() {
+//
+//					@Override
+//					public void onClick(final DialogInterface dialog,
+//							final int which) {
+//						dialog.dismiss();
+//					}
+//				});
+//				dialog.show();
+//			}
+//		});
 
 		btnProfile.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {

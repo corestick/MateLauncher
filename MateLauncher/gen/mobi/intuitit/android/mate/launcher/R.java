@@ -333,19 +333,18 @@ containing a value of this type.
         public static final int dockbar=0x7f070034;
         public static final int drag_layer=0x7f070028;
         public static final int drawer=0x7f07002d;
-        public static final int editProfile=0x7f070040;
         public static final int folder_close=0x7f07003d;
         public static final int folder_content=0x7f07003e;
-        public static final int folder_name=0x7f070043;
+        public static final int folder_name=0x7f070041;
         public static final int friend_listview=0x7f070022;
         public static final int friend_name=0x7f07001d;
         public static final int friend_profile=0x7f07001b;
         public static final int friend_statemessage=0x7f07001c;
-        public static final int gallery=0x7f07004a;
+        public static final int gallery=0x7f070048;
         public static final int gallery1=0x7f070011;
         public static final int gallery_guest=0x7f070005;
-        public static final int guestMsg=0x7f070045;
-        public static final int guestPoto=0x7f070044;
+        public static final int guestMsg=0x7f070043;
+        public static final int guestPoto=0x7f070042;
         public static final int guest_comment=0x7f07000d;
         public static final int guest_down=0x7f070008;
         public static final int guest_download=0x7f07000e;
@@ -359,11 +358,11 @@ containing a value of this type.
         public static final int imageView1=0x7f070007;
         public static final int imageView2=0x7f070009;
         public static final int imageView3=0x7f07000b;
-        public static final int label=0x7f070042;
+        public static final int label=0x7f070040;
         public static final int layout1=0x7f070002;
-        public static final int line1=0x7f070046;
-        public static final int line2=0x7f070047;
-        public static final int line3=0x7f070048;
+        public static final int line1=0x7f070044;
+        public static final int line2=0x7f070045;
+        public static final int line3=0x7f070046;
         public static final int mdockbar=0x7f070035;
         public static final int name=0x7f070018;
         public static final int objectview=0x7f070036;
@@ -375,16 +374,15 @@ containing a value of this type.
         public static final int owner_recommend=0x7f070012;
         public static final int owner_state=0x7f070010;
         public static final int owner_visit=0x7f070014;
-        public static final int rank_listview=0x7f070041;
+        public static final int rank_listview=0x7f07003f;
         public static final int rank_profile=0x7f07001e;
         public static final int rank_statemessage=0x7f07001f;
         public static final int screen_indicator=0x7f070031;
         public static final int screen_switcher=0x7f070033;
-        public static final int search_plate=0x7f07004d;
-        public static final int search_src_text=0x7f07004e;
-        public static final int search_voice_btn=0x7f07004f;
-        public static final int set=0x7f07004b;
-        public static final int setTextDialog=0x7f07003f;
+        public static final int search_plate=0x7f07004b;
+        public static final int search_src_text=0x7f07004c;
+        public static final int search_voice_btn=0x7f07004d;
+        public static final int set=0x7f070049;
         public static final int speechbubbleview=0x7f070037;
         public static final int stub_screen_switcher=0x7f070032;
         public static final int summary=0x7f070039;
@@ -396,8 +394,8 @@ containing a value of this type.
         public static final int textLabel=0x7f070021;
         public static final int title=0x7f070038;
         public static final int vertical=0x7f070000;
-        public static final int wallpaper=0x7f070049;
-        public static final int widget_search=0x7f07004c;
+        public static final int wallpaper=0x7f070047;
+        public static final int widget_search=0x7f07004a;
         public static final int workspace=0x7f070029;
     }
     public static final class layout {
@@ -423,19 +421,18 @@ containing a value of this type.
         public static final int live_folder_icon=0x7f030013;
         public static final int live_folder_list=0x7f030014;
         public static final int mobject=0x7f030015;
-        public static final int profilemsg=0x7f030016;
-        public static final int ranklist=0x7f030017;
-        public static final int rename_folder=0x7f030018;
-        public static final int row=0x7f030019;
-        public static final int screen_switcher=0x7f03001a;
-        public static final int setting=0x7f03001b;
-        public static final int speechbubbleview=0x7f03001c;
-        public static final int user_folder=0x7f03001d;
-        public static final int wallpaper_chooser=0x7f03001e;
-        public static final int wallpaper_item=0x7f03001f;
-        public static final int widget_search=0x7f030020;
-        public static final int workspace_mscreen=0x7f030021;
-        public static final int workspace_screen=0x7f030022;
+        public static final int ranklist=0x7f030016;
+        public static final int rename_folder=0x7f030017;
+        public static final int row=0x7f030018;
+        public static final int screen_switcher=0x7f030019;
+        public static final int setting=0x7f03001a;
+        public static final int speechbubbleview=0x7f03001b;
+        public static final int user_folder=0x7f03001c;
+        public static final int wallpaper_chooser=0x7f03001d;
+        public static final int wallpaper_item=0x7f03001e;
+        public static final int widget_search=0x7f03001f;
+        public static final int workspace_mscreen=0x7f030020;
+        public static final int workspace_screen=0x7f030021;
     }
     public static final class string {
         /**  Displayed when user selects a shortcut for an app that was uninstalled 
