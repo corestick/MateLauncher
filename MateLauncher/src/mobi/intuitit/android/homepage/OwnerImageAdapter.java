@@ -17,14 +17,10 @@ public class OwnerImageAdapter extends BaseAdapter {
 	private String sdcard = Environment.getExternalStorageDirectory()
 			.getAbsolutePath(); // sdcard °æ·Î
 
-	// private int[] mImageID = {
 	private String[] mImagePath = {
-			sdcard + "/Test/screen0.jpg",
-			sdcard + "/Test/screen1.jpg", 
-			sdcard + "/Test/screen2.jpg"
-	// R.drawable.sample_0,
-	// R.drawable.sample_1,
-	// R.drawable.sample_2
+			sdcard + "Android/data/mobi.intuitit.android/owner/screen0.jpg",
+			sdcard + "Android/data/mobi.intuitit.android/owner/screen1.jpg", 
+			sdcard + "Android/data/mobi.intuitit.android/owner/screen2.jpg"
 	};
 
 	public OwnerImageAdapter(Context c) {
