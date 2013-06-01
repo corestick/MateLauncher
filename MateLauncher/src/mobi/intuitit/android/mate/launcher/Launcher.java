@@ -222,7 +222,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		Log.e("Launcher-Start", "Start");
 		if (DOWNLOAR_VIEW) {
 			Log.e("Launcher-Start-change", "Start-change");
-			start_reLoad();
+			start_reLoad(); //다운받기 누르면 처음부터 다시 읽어서 화면에 뿌림.
 			DOWNLOAR_VIEW = false;
 		}
 		super.onStart();
@@ -3019,6 +3019,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
 				Toast.LENGTH_SHORT).show();
+	}
+	
+	public int Child_Count(){
+		return mWorkspace.getChildCount();
 	}
 
 }

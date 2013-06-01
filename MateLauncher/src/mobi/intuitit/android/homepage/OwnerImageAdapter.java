@@ -60,7 +60,7 @@ public class OwnerImageAdapter extends BaseAdapter {
 		// imageView.setImageResource(mImageID[position]);
 		// Log.e("na"+position, mImageID[position]+"");
 
-		imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+		imageView.setScaleType(ImageView.ScaleType.CENTER);
 		imageView.setLayoutParams(new Gallery.LayoutParams(150, 400));		
 
 		return imageView;

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -155,11 +156,11 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			File cfile = new File(sdcard+ "/Test");
 			cfile.mkdirs();
 			
-			LayoutType screenView;	
+			MLayout screenView;	
 			
 			
 			for (int i = 0; i < count; i++) {
-				screenView = (LayoutType) mLauncher.getWorkspace().getChildAt(i);
+				screenView = (MLayout) mLauncher.getWorkspace().getChildAt(i);
 				screenView.saveThumb();
 				captureView[i] = screenView.getThumb();
 				
@@ -174,6 +175,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 				}
 			}
 			Intent intent = new Intent(mLauncher,HomeMain.class);
+			intent.putExtra("ChildCount", mLauncher.Child_Count());			
 			mLauncher.startActivity(intent); 
 			return; 
 		}

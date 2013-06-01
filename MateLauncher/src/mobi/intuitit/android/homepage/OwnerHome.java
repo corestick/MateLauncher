@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mobi.intuitit.android.mate.launcher.Launcher;
 import mobi.intuitit.android.mate.launcher.LauncherProvider;
 import mobi.intuitit.android.mate.launcher.R;
+import mobi.intuitit.android.mate.launcher.SharedPreference;
+import mobi.intuitit.android.mate.launcher.Workspace;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -414,40 +417,52 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				+ "=false");
 		final ContentValues values = new ContentValues();
 		final ContentResolver cr = getContentResolver();
-		
-		remove_DB(); //DB 지우고, 화면 View 삭제
-	
+
+		remove_DB(); // DB 지우고, 화면 View 삭제
+
 		String str = JSONfunctions.getJSONfromURL(serverUrl);
-		String[] jsonArr = getJSONString(str);		
+		String[] jsonArr = getJSONString(str);
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {
 				if (jsonArr[i] == null) {
 					break;
 				}
 				JSONObject json = new JSONObject(jsonArr[i]);
-				values.put("container", json.getString("container"));
-		        values.put("screen", json.getString("screen"));
-		        values.put("cellX", json.getString("cellX"));
-		        values.put("cellY", json.getString("cellY"));     
-		        values.put("mobjectType",json.getString("MobjectType"));
-		        values.put("mobjectIcon", json.getString("MobjectIcon"));
-		        values.put("itemType", json.getString("itemType"));
-				if(json.getString("intent")!=null) values.put("intent", json.getString("intent"));
-				else{ 
-					String intent = null;
-					values.put("intent", intent);
+				if (json.getString("wall") == null) {
+					values.put("container", json.getString("container"));
+					values.put("screen", json.getString("screen"));
+					values.put("cellX", json.getString("cellX"));
+					values.put("cellY", json.getString("cellY"));
+					values.put("mobjectType", json.getString("MobjectType"));
+					values.put("mobjectIcon", json.getString("MobjectIcon"));
+					values.put("itemType", json.getString("itemType"));
+					if (json.getString("intent") != null)
+						values.put("intent", json.getString("intent"));
+					else {
+						String intent = null;
+						values.put("intent", intent);
+					}
+					if (json.getString("contacts") != null)
+						values.put("contacts", json.getString("contacts"));
+					else {
+						String contacts = null;
+						values.put("contacts", contacts);
+					}
+					cr.insert(CONTENT_URI_NO_NOTIFICATION, values);
 				}
-				if(json.getString("contacts")!=null) values.put("contacts", json.getString("contacts"));				
 				else{
-					String contacts = null;
-					values.put("contacts", contacts);
+					String wall = json.getString("wall");
+					String floor = json.getString("floor");
+					String [] wall_arry = wall.split("-");
+					String [] floor_arry = floor.split("-");
+					SharedPreference.putSharedPreference(this, Integer.parseInt(wall_arry[0]) + "|w", Integer.parseInt(wall_arry[1]));
+					SharedPreference.putSharedPreference(this, Integer.parseInt(floor_arry[0]) + "|f", Integer.parseInt(floor_arry[0]));
 				}
-				cr.insert(CONTENT_URI_NO_NOTIFICATION, values);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}				
+		}
 	}
 
 	public void get_DB() {
@@ -492,12 +507,22 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			map.put("cellY", cellY);
 			map.put("MobjectType", MobjectType);
 			map.put("MobjectIcon", MobjectIcon);
-			map.put("contacts", contacts);
-			Log.e("String", intentDescription);
+			map.put("contacts", contacts);			
 
-			JSONfunctions.postSONfromURL(serverUrl, map);
+//			JSONfunctions.postSONfromURL(serverUrl, map);
 		}
 		c.close();
+
+		for (int i = 0; i < HomeMain.ChildCount; i++) {
+			int wIdx = SharedPreference.getIntSharedPreference(this, i + "|w");
+			int fIdx = SharedPreference.getIntSharedPreference(this, i + "|f");
+			Log.e("Sh-Wall",String.valueOf(wIdx));
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("user", "123");
+			map.put("wall", i + "-" + wIdx);
+			map.put("floor", i + "-" + fIdx);
+			JSONfunctions.postSONfromURL(serverUrl, map);
+		}
 	}
 
 	@Override
@@ -505,7 +530,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		if (v.equals(upload)) {
 			Log.e("upload", "upload");
 			insert_DB();
-			// get_DB();
+//			 get_DB();
 		}
 	}
 

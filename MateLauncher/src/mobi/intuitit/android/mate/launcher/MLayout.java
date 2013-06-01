@@ -216,13 +216,13 @@ public class MLayout extends LayoutType {
 
 	boolean layoutDrawed = false;
 
-	private void initThumb(int width, int height) {
+	private void initThumb(int width, int height) {		
 		if (mThumb == null || mThumb.isRecycled())
 			mThumb = Bitmap
-					.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+					.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
 		Matrix matrix = new Matrix();
-		matrix.setScale(0.25f, 0.25f);
+		matrix.setScale(0.4f, 0.3f);
 		mThumbCanvas = new Canvas(mThumb);
 		mThumbCanvas.concat(matrix);
 
@@ -236,7 +236,9 @@ public class MLayout extends LayoutType {
 		// return;
 
 		if (mThumbCanvas == null)
-			initThumb(getWidth() >> 2, getHeight() >> 2);
+			Log.e("Width",String.valueOf(getWidth()));
+			Log.e("Height",String.valueOf(getHeight()));
+			initThumb(getWidth()>>2, getHeight()>>2);
 
 		setDrawingCacheEnabled(true);
 
@@ -428,9 +430,7 @@ public class MLayout extends LayoutType {
 	}
 
 	public void drawMBackground() {
-		if (this.getWidth() > 0 && this.getHeight() > 0) {
-//			Log.e("RRRR", "drawMBackground");
-			
+		if (this.getWidth() > 0 && this.getHeight() > 0) {			
 			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|w", mWallpaperResIdx);
 			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|f", mFlooringResIdx);
 			
