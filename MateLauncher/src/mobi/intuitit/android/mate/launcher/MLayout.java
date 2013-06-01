@@ -222,7 +222,7 @@ public class MLayout extends LayoutType {
 					.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
 		Matrix matrix = new Matrix();
-		matrix.setScale(0.0f, 0.75f);
+		matrix.setScale(0.25f, 0.25f);
 		mThumbCanvas = new Canvas(mThumb);
 		mThumbCanvas.concat(matrix);
 
