@@ -203,6 +203,7 @@ containing a value of this type.
         public static final int cell_width=0x7f090003;
         public static final int gesture_thumbnail_inset=0x7f090001;
         public static final int gesture_thumbnail_size=0x7f090002;
+        public static final int padding_btn=0x7f090005;
         public static final int search_widget_inset=0x7f090000;
     }
     public static final class drawable {
@@ -319,32 +320,32 @@ containing a value of this type.
         public static final int write=0x7f02006e;
     }
     public static final class id {
-        public static final int all_apps=0x7f07002e;
-        public static final int applist_image=0x7f07003b;
-        public static final int applist_name=0x7f07003c;
-        public static final int cell1=0x7f07002a;
-        public static final int cell2=0x7f07002b;
-        public static final int cell3=0x7f07002c;
-        public static final int checkbox=0x7f07003a;
-        public static final int content=0x7f07002f;
-        public static final int delete_zone=0x7f070030;
+        public static final int all_apps=0x7f070029;
+        public static final int applist_image=0x7f070036;
+        public static final int applist_name=0x7f070037;
+        public static final int cell1=0x7f070025;
+        public static final int cell2=0x7f070026;
+        public static final int cell3=0x7f070027;
+        public static final int checkbox=0x7f070035;
+        public static final int content=0x7f07002a;
+        public static final int delete_zone=0x7f07002b;
         public static final int description=0x7f07001a;
         public static final int dialog_imageview=0x7f070020;
-        public static final int dockbar=0x7f070034;
-        public static final int drag_layer=0x7f070028;
-        public static final int drawer=0x7f07002d;
-        public static final int folder_close=0x7f07003d;
-        public static final int folder_content=0x7f07003e;
-        public static final int folder_name=0x7f070041;
+        public static final int dockbar=0x7f07002f;
+        public static final int drag_layer=0x7f070023;
+        public static final int drawer=0x7f070028;
+        public static final int folder_close=0x7f070038;
+        public static final int folder_content=0x7f070039;
+        public static final int folder_name=0x7f07003c;
         public static final int friend_listview=0x7f070022;
         public static final int friend_name=0x7f07001d;
         public static final int friend_profile=0x7f07001b;
         public static final int friend_statemessage=0x7f07001c;
-        public static final int gallery=0x7f070048;
+        public static final int gallery=0x7f070043;
         public static final int gallery1=0x7f070011;
         public static final int gallery_guest=0x7f070005;
-        public static final int guestMsg=0x7f070043;
-        public static final int guestPoto=0x7f070042;
+        public static final int guestMsg=0x7f07003e;
+        public static final int guestPoto=0x7f07003d;
         public static final int guest_comment=0x7f07000d;
         public static final int guest_down=0x7f070008;
         public static final int guest_download=0x7f07000e;
@@ -358,14 +359,14 @@ containing a value of this type.
         public static final int imageView1=0x7f070007;
         public static final int imageView2=0x7f070009;
         public static final int imageView3=0x7f07000b;
-        public static final int label=0x7f070040;
+        public static final int label=0x7f07003b;
         public static final int layout1=0x7f070002;
-        public static final int line1=0x7f070044;
-        public static final int line2=0x7f070045;
-        public static final int line3=0x7f070046;
-        public static final int mdockbar=0x7f070035;
+        public static final int line1=0x7f07003f;
+        public static final int line2=0x7f070040;
+        public static final int line3=0x7f070041;
+        public static final int mdockbar=0x7f070030;
         public static final int name=0x7f070018;
-        public static final int objectview=0x7f070036;
+        public static final int objectview=0x7f070031;
         public static final int owner_comment=0x7f070016;
         public static final int owner_down=0x7f070013;
         public static final int owner_download=0x7f070017;
@@ -374,29 +375,24 @@ containing a value of this type.
         public static final int owner_recommend=0x7f070012;
         public static final int owner_state=0x7f070010;
         public static final int owner_visit=0x7f070014;
-        public static final int rank_listview=0x7f07003f;
+        public static final int rank_listview=0x7f07003a;
         public static final int rank_profile=0x7f07001e;
         public static final int rank_statemessage=0x7f07001f;
-        public static final int screen_indicator=0x7f070031;
-        public static final int screen_switcher=0x7f070033;
-        public static final int search_plate=0x7f07004b;
-        public static final int search_src_text=0x7f07004c;
-        public static final int search_voice_btn=0x7f07004d;
-        public static final int set=0x7f070049;
-        public static final int speechbubbleview=0x7f070037;
-        public static final int stub_screen_switcher=0x7f070032;
-        public static final int summary=0x7f070039;
-        public static final int tab1=0x7f070024;
-        public static final int tab2=0x7f070025;
-        public static final int tab3=0x7f070026;
-        public static final int tab4=0x7f070027;
-        public static final int tabhost=0x7f070023;
+        public static final int screen_indicator=0x7f07002c;
+        public static final int screen_switcher=0x7f07002e;
+        public static final int search_plate=0x7f070046;
+        public static final int search_src_text=0x7f070047;
+        public static final int search_voice_btn=0x7f070048;
+        public static final int set=0x7f070044;
+        public static final int speechbubbleview=0x7f070032;
+        public static final int stub_screen_switcher=0x7f07002d;
+        public static final int summary=0x7f070034;
         public static final int textLabel=0x7f070021;
-        public static final int title=0x7f070038;
+        public static final int title=0x7f070033;
         public static final int vertical=0x7f070000;
-        public static final int wallpaper=0x7f070047;
-        public static final int widget_search=0x7f07004a;
-        public static final int workspace=0x7f070029;
+        public static final int wallpaper=0x7f070042;
+        public static final int widget_search=0x7f070045;
+        public static final int workspace=0x7f070024;
     }
     public static final class layout {
         public static final int activity_guest_home=0x7f030000;
@@ -440,139 +436,142 @@ containing a value of this type.
         public static final int activity_not_found=0x7f0a0006;
         /**  Options in "Add to Home" dialog box; Name of the Clock widget
          */
-        public static final int add_clock=0x7f0a0015;
+        public static final int add_clock=0x7f0a0016;
         /**  Options in "Add to Home" dialog box; Name of the Folder widget
          */
-        public static final int add_folder=0x7f0a0014;
+        public static final int add_folder=0x7f0a0015;
         /**  Options in "Add to Home" dialog box; Name of the Picture frame widget
          */
-        public static final int add_photo_frame=0x7f0a0016;
+        public static final int add_photo_frame=0x7f0a0017;
         /**  Options in "Add to Home" dialog box; Name of the global search widget
          */
-        public static final int add_search=0x7f0a0017;
+        public static final int add_search=0x7f0a0018;
         /**  Application name 
          */
         public static final int application_name=0x7f0a0000;
         /**  Buttons in Rename folder dialog box 
          */
-        public static final int cancel_action=0x7f0a000b;
-        public static final int cat_workspace=0x7f0a0038;
+        public static final int cancel_action=0x7f0a000c;
+        public static final int cat_workspace=0x7f0a0039;
         /**  Title of dialog that appears after user selects Wallpaper from menu 
          */
         public static final int chooser_wallpaper=0x7f0a0003;
         /**  List item for configuring the current wallpaper 
          */
         public static final int configure_wallpaper=0x7f0a0007;
-        public static final int default_screen_summary=0x7f0a0034;
-        public static final int default_screen_title=0x7f0a0033;
-        public static final int donate_address=0x7f0a003b;
-        public static final int donate_summary=0x7f0a003a;
-        public static final int donate_title=0x7f0a0039;
+        public static final int default_screen_summary=0x7f0a0035;
+        public static final int default_screen_title=0x7f0a0034;
+        public static final int donate_address=0x7f0a003c;
+        public static final int donate_summary=0x7f0a003b;
+        public static final int donate_title=0x7f0a003a;
         /**  Default folder name 
          */
         public static final int folder_name=0x7f0a0002;
         /**  Text to show user in place of a gadget when we can't display it properly 
          */
-        public static final int gadget_error_text=0x7f0a002d;
+        public static final int gadget_error_text=0x7f0a002e;
         /**  Options in "Add to Home" dialog box; Title of the group containing the list of all apps 
          */
-        public static final int group_applications=0x7f0a000d;
+        public static final int group_applications=0x7f0a000e;
         /**  Options in "Add to Home" dialog box; Title of the folder gadget 
          */
-        public static final int group_folder=0x7f0a0010;
+        public static final int group_folder=0x7f0a0011;
         /**  Options in "Add to Home" dialog box; Title of the group containing the list of all live folders 
          */
-        public static final int group_live_folders=0x7f0a0011;
-        public static final int group_screens=0x7f0a002e;
+        public static final int group_live_folders=0x7f0a0012;
+        public static final int group_screens=0x7f0a002f;
         /**  Options in "Add to Home" dialog box; Title of the search gadget 
          */
-        public static final int group_search=0x7f0a000f;
+        public static final int group_search=0x7f0a0010;
         /**  Options in "Add to Home" dialog box; Title of the group containing the list of all shortcuts 
          */
-        public static final int group_shortcuts=0x7f0a000e;
+        public static final int group_shortcuts=0x7f0a000f;
         /**  Options in "Add to Home" dialog box; Title of the group containing the list of apps that can set the wallpaper
          */
-        public static final int group_wallpapers=0x7f0a0013;
+        public static final int group_wallpapers=0x7f0a0014;
         /**  Options in "Add to Home" dialog box; Title of the group containing the list of all widgets/gadgets 
          */
-        public static final int group_widgets=0x7f0a0012;
-        public static final int hpp_ad_summary=0x7f0a003d;
-        public static final int hpp_ad_title=0x7f0a003c;
-        public static final int indicator_on_summary=0x7f0a0031;
-        public static final int indicator_on_title=0x7f0a0030;
-        public static final int key_default_screen=0x7f0a0032;
-        public static final int key_indicator_on=0x7f0a002f;
-        public static final int key_screen_number=0x7f0a0035;
+        public static final int group_widgets=0x7f0a0013;
+        public static final int hpp_ad_summary=0x7f0a003e;
+        public static final int hpp_ad_title=0x7f0a003d;
+        public static final int indicator_on_summary=0x7f0a0032;
+        public static final int indicator_on_title=0x7f0a0031;
+        public static final int key_default_screen=0x7f0a0033;
+        public static final int key_indicator_on=0x7f0a0030;
+        public static final int key_screen_number=0x7f0a0036;
         /**  Verb, menu item used to add an item on the desktop 
          */
-        public static final int menu_add=0x7f0a001e;
+        public static final int menu_add=0x7f0a001f;
         /**  Noun, menu item used to show the gestures settings 
          */
-        public static final int menu_gestures=0x7f0a0022;
+        public static final int menu_gestures=0x7f0a0023;
         /**  Title of dialog box 
          */
-        public static final int menu_item_add_item=0x7f0a000c;
+        public static final int menu_item_add_item=0x7f0a000d;
         /**  Noun, menu item used to bring down the notifications shade 
          */
-        public static final int menu_notifications=0x7f0a0021;
+        public static final int menu_notifications=0x7f0a0022;
         /**  Verb, menu item used to initiate global search 
          */
-        public static final int menu_search=0x7f0a0020;
+        public static final int menu_search=0x7f0a0021;
         /**  Noun, menu item used to show the system settings 
          */
-        public static final int menu_settings=0x7f0a0023;
+        public static final int menu_settings=0x7f0a0024;
         /**  Noun, menu item used to set the desktop's wallpaper 
          */
-        public static final int menu_wallpaper=0x7f0a001f;
+        public static final int menu_wallpaper=0x7f0a0020;
         /**  Error message when user has filled a home screen, possibly not used 
          */
-        public static final int out_of_space=0x7f0a0018;
-        public static final int permdesc_install_shortcut=0x7f0a0025;
-        public static final int permdesc_read_settings=0x7f0a0029;
-        public static final int permdesc_uninstall_shortcut=0x7f0a0027;
-        public static final int permdesc_write_settings=0x7f0a002b;
+        public static final int out_of_space=0x7f0a0019;
+        /**  Padding to LauncherHomepage Button 
+         */
+        public static final int padding_btn=0x7f0a0008;
+        public static final int permdesc_install_shortcut=0x7f0a0026;
+        public static final int permdesc_read_settings=0x7f0a002a;
+        public static final int permdesc_uninstall_shortcut=0x7f0a0028;
+        public static final int permdesc_write_settings=0x7f0a002c;
         /**  Permissions: 
          */
-        public static final int permlab_install_shortcut=0x7f0a0024;
-        public static final int permlab_read_settings=0x7f0a0028;
-        public static final int permlab_uninstall_shortcut=0x7f0a0026;
-        public static final int permlab_write_settings=0x7f0a002a;
+        public static final int permlab_install_shortcut=0x7f0a0025;
+        public static final int permlab_read_settings=0x7f0a0029;
+        public static final int permlab_uninstall_shortcut=0x7f0a0027;
+        public static final int permlab_write_settings=0x7f0a002b;
         /**  Option in "Select wallpaper from" dialog box 
          */
         public static final int pick_wallpaper=0x7f0a0005;
         /**  Buttons in Rename folder dialog box 
          */
-        public static final int rename_action=0x7f0a000a;
+        public static final int rename_action=0x7f0a000b;
         /**  Label of Folder name field in Rename folder dialog box 
          */
-        public static final int rename_folder_label=0x7f0a0008;
+        public static final int rename_folder_label=0x7f0a0009;
         /**  Title of dialog box 
          */
-        public static final int rename_folder_title=0x7f0a0009;
-        public static final int screen_number_summary=0x7f0a0037;
-        public static final int screen_number_title=0x7f0a0036;
+        public static final int rename_folder_title=0x7f0a000a;
+        public static final int screen_number_summary=0x7f0a0038;
+        public static final int screen_number_title=0x7f0a0037;
         /**  TODO: Determine if this can be removed.
          This is the hint text shown in the search widget, before text is entered.
          This translation SHOULD MATCH the string "search_hint" which is found in 
          GoogleSearch/res/values/strings.xml 
          */
-        public static final int search_hint=0x7f0a002c;
+        public static final int search_hint=0x7f0a002d;
         /**  Message displayed when an external application attemps to create a shortcut that already exists 
          */
-        public static final int shortcut_duplicate=0x7f0a001b;
+        public static final int shortcut_duplicate=0x7f0a001c;
         /**  Message displayed when a shortcut is created by an external application 
          */
-        public static final int shortcut_installed=0x7f0a0019;
+        public static final int shortcut_installed=0x7f0a001a;
         /**  Message displayed when a shortcut is uninstalled by an external application 
          */
-        public static final int shortcut_uninstalled=0x7f0a001a;
-        public static final int starting_screen_switcher=0x7f0a003e;
+        public static final int shortcut_uninstalled=0x7f0a001b;
+        public static final int starting_screen_switcher=0x7f0a003f;
         /**  Title of dialog when user is selecting live folder to add to homescreen 
          */
-        public static final int title_select_live_folder=0x7f0a001d;
+        public static final int title_select_live_folder=0x7f0a001e;
         /**  Title of dialog when user is selecting shortcut to add to homescreen 
          */
-        public static final int title_select_shortcut=0x7f0a001c;
+        public static final int title_select_shortcut=0x7f0a001d;
         /**  Name for all applications running as this uid. 
          */
         public static final int uid_name=0x7f0a0001;

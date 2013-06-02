@@ -142,62 +142,6 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			}
 		});
 
-		// addItems(10);
-		//
-		// // Guest 홈화면으로 가기 위한 임시
-		// btnDown.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		//
-		// get_DB();
-		// remove_DB();
-		// insert_DB();
-		// }
-		// });
-
-//		profileMsg.setOnClickListener(new View.OnClickListener() {
-//			@SuppressWarnings("deprecation")
-//			public void onClick(View v) {
-//				Context mContext = OwnerHome.this;
-//				AlertDialog.Builder builder;
-//				AlertDialog dialog;
-//				LayoutInflater inflater = (LayoutInflater) mContext
-//						.getSystemService(LAYOUT_INFLATER_SERVICE);
-//				View layout = inflater.inflate(R.layout.profilemsg,
-//						(ViewGroup) findViewById(R.id.setTextDialog));
-//
-//				editText = (EditText) layout.findViewById(R.id.editProfile);
-//
-//				builder = new AlertDialog.Builder(mContext);
-//				builder.setView(layout);
-//				dialog = builder.create();
-//				dialog.setTitle("프로필 변경");
-//
-//				dialog.setButton("확인", new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(final DialogInterface dialog,
-//							final int which) {
-//						// TODO Auto-generated method stub
-//						data = editText.getText().toString();
-//						profileMsg.setText(data);
-//						dialog.dismiss();
-//					}
-//				});
-//				dialog.setButton2("취소", new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(final DialogInterface dialog,
-//							final int which) {
-//						dialog.dismiss();
-//					}
-//				});
-//				dialog.show();
-//			}
-//		});
-
 		btnProfile.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
@@ -233,17 +177,17 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 	// 추천, 다운, 방문 수 셋
 	private TextView setRecommend(int n) {
-		tv_Recommend.setText("추천 : " + n);
+		tv_Recommend.setText("" + n);
 		return tv_Recommend;
 	}
 
 	private TextView setDownload(int n) {
-		tv_Download.setText("다운 : " + n);
+		tv_Download.setText("" + n);
 		return tv_Download;
 	}
 
 	private TextView setVisit(int n) {
-		tv_Visit.setText("방문 : " + n);
+		tv_Visit.setText("" + n);
 		return tv_Visit;
 	}
 

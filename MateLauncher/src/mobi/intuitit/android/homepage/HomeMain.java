@@ -4,6 +4,7 @@ package mobi.intuitit.android.homepage;
 import mobi.intuitit.android.mate.launcher.R;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,26 +19,34 @@ public class HomeMain extends TabActivity {
 		
 		Intent intent = new Intent(this.getIntent());
 		ChildCount = intent.getIntExtra("ChildCount", 0);
-		Log.e("Home", String.valueOf(ChildCount));
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.homepagemain);
 		TabHost tabHost = getTabHost();
-		for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-			tabHost.getTabWidget().getChildAt(i).getLayoutParams().height = 50;
-		}
+		
+//		for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+//			tabHost.getTabWidget().getChildAt(i).getLayoutParams().height = 50;
+//		}
 				
-		LayoutInflater.from(this).inflate(R.layout.homepagemain,
-				tabHost.getTabContentView(), true);
-
-		tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("홈")
+//		LayoutInflater.from(this).inflate(R.layout.homepagemain,
+//				tabHost.getTabContentView(), true);
+		
+		
+		tabHost.addTab(tabHost.newTabSpec("tab1")
+				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, OwnerHome.class)));
-		tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("친구")
+		tabHost.addTab(tabHost.newTabSpec("tab2")
+				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, FriendsList.class)));
-		tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("랭킹")
+		tabHost.addTab(tabHost.newTabSpec("tab3")
+				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, RankList.class)));
-		tabHost.addTab(tabHost.newTabSpec("tab4").setIndicator("설정")
-				.setContent(new Intent(this, Setting.class)				
-				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
+		tabHost.addTab(tabHost.newTabSpec("tab4")
+				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
+				.setContent(new Intent(this, Setting.class)));				
+//				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
+		
+		tabHost.setCurrentTab(0);
 	}
 	
 }
