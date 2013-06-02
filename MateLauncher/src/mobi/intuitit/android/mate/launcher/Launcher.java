@@ -2186,6 +2186,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	void startActivitySafely(Intent intent) {
+		if(intent == null){
+			Toast.makeText(this, "no Application", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		try {
 			startActivity(intent);

@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import mobi.intuitit.android.mate.launcher.Launcher;
 import mobi.intuitit.android.mate.launcher.LauncherProvider;
 import mobi.intuitit.android.mate.launcher.R;
 import mobi.intuitit.android.mate.launcher.SharedPreference;
-import mobi.intuitit.android.mate.launcher.Workspace;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,11 +27,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -84,7 +82,10 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	public int count_Download = 0;
 	public int count_Visit = 0;
 
-	public Button upload;
+	public Button uploadButton;
+	public Button likeButton;
+
+	public String phoneNum;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,10 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_owner_home);
-		upload = (Button) findViewById(R.id.owner_download);
-		upload.setOnClickListener(this);
+		likeButton = (Button) findViewById(R.id.owner_like_it);
+		uploadButton = (Button) findViewById(R.id.owner_download);
+		likeButton.setOnClickListener(this);
+		uploadButton.setOnClickListener(this);
 
 		// mRowList = new ArrayList<String>();
 		// mLockListView = true;
@@ -157,46 +160,46 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		// }
 		// });
 
-//		profileMsg.setOnClickListener(new View.OnClickListener() {
-//			@SuppressWarnings("deprecation")
-//			public void onClick(View v) {
-//				Context mContext = OwnerHome.this;
-//				AlertDialog.Builder builder;
-//				AlertDialog dialog;
-//				LayoutInflater inflater = (LayoutInflater) mContext
-//						.getSystemService(LAYOUT_INFLATER_SERVICE);
-//				View layout = inflater.inflate(R.layout.profilemsg,
-//						(ViewGroup) findViewById(R.id.setTextDialog));
-//
-//				editText = (EditText) layout.findViewById(R.id.editProfile);
-//
-//				builder = new AlertDialog.Builder(mContext);
-//				builder.setView(layout);
-//				dialog = builder.create();
-//				dialog.setTitle("프로필 변경");
-//
-//				dialog.setButton("확인", new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(final DialogInterface dialog,
-//							final int which) {
-//						// TODO Auto-generated method stub
-//						data = editText.getText().toString();
-//						profileMsg.setText(data);
-//						dialog.dismiss();
-//					}
-//				});
-//				dialog.setButton2("취소", new DialogInterface.OnClickListener() {
-//
-//					@Override
-//					public void onClick(final DialogInterface dialog,
-//							final int which) {
-//						dialog.dismiss();
-//					}
-//				});
-//				dialog.show();
-//			}
-//		});
+		// profileMsg.setOnClickListener(new View.OnClickListener() {
+		// @SuppressWarnings("deprecation")
+		// public void onClick(View v) {
+		// Context mContext = OwnerHome.this;
+		// AlertDialog.Builder builder;
+		// AlertDialog dialog;
+		// LayoutInflater inflater = (LayoutInflater) mContext
+		// .getSystemService(LAYOUT_INFLATER_SERVICE);
+		// View layout = inflater.inflate(R.layout.profilemsg,
+		// (ViewGroup) findViewById(R.id.setTextDialog));
+		//
+		// editText = (EditText) layout.findViewById(R.id.editProfile);
+		//
+		// builder = new AlertDialog.Builder(mContext);
+		// builder.setView(layout);
+		// dialog = builder.create();
+		// dialog.setTitle("프로필 변경");
+		//
+		// dialog.setButton("확인", new DialogInterface.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(final DialogInterface dialog,
+		// final int which) {
+		// // TODO Auto-generated method stub
+		// data = editText.getText().toString();
+		// profileMsg.setText(data);
+		// dialog.dismiss();
+		// }
+		// });
+		// dialog.setButton2("취소", new DialogInterface.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(final DialogInterface dialog,
+		// final int which) {
+		// dialog.dismiss();
+		// }
+		// });
+		// dialog.show();
+		// }
+		// });
 
 		btnProfile.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -367,8 +370,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			setContentView(R.layout.dialog_screen);
 
 			iv = (ImageView) findViewById(R.id.dialog_imageview);
-			Uri uri = Uri.fromFile(new File(sdcard + "/MateLauncher/Owner/screen" + position
-					+ ".jpg"));
+			Uri uri = Uri.fromFile(new File(sdcard
+					+ "/MateLauncher/Owner/screen" + position + ".jpg"));
 			iv.setImageURI(uri);
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.setOnClickListener(this);
@@ -420,7 +423,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 		remove_DB(); // DB 지우고, 화면 View 삭제
 
-		String str = JSONfunctions.getJSONfromURL(serverUrl);
+		String str = JSONfunctions.getJSONfromURL(serverUrl,"+821027480952");
 		String[] jsonArr = getJSONString(str);
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {
@@ -428,7 +431,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 					break;
 				}
 				JSONObject json = new JSONObject(jsonArr[i]);
-				if (json.getString("wall") == null) {
+				if (json.getString("wall").equals("null")) {
 					values.put("container", json.getString("container"));
 					values.put("screen", json.getString("screen"));
 					values.put("cellX", json.getString("cellX"));
@@ -436,27 +439,30 @@ public class OwnerHome extends Activity implements OnScrollListener,
 					values.put("mobjectType", json.getString("MobjectType"));
 					values.put("mobjectIcon", json.getString("MobjectIcon"));
 					values.put("itemType", json.getString("itemType"));
-					if (json.getString("intent") != null)
+					if (json.getString("intent").equals("null")==false)
 						values.put("intent", json.getString("intent"));
 					else {
 						String intent = null;
 						values.put("intent", intent);
 					}
-					if (json.getString("contacts") != null)
+					if (json.getString("contacts").equals("null")==false)
 						values.put("contacts", json.getString("contacts"));
 					else {
 						String contacts = null;
 						values.put("contacts", contacts);
 					}
 					cr.insert(CONTENT_URI_NO_NOTIFICATION, values);
-				}
-				else{
+				} else {
 					String wall = json.getString("wall");
 					String floor = json.getString("floor");
-					String [] wall_arry = wall.split("-");
-					String [] floor_arry = floor.split("-");
-					SharedPreference.putSharedPreference(this, Integer.parseInt(wall_arry[0]) + "|w", Integer.parseInt(wall_arry[1]));
-					SharedPreference.putSharedPreference(this, Integer.parseInt(floor_arry[0]) + "|f", Integer.parseInt(floor_arry[0]));
+					String[] wall_arry = wall.split("-");
+					String[] floor_arry = floor.split("-");
+					SharedPreference.putSharedPreference(this,
+							Integer.parseInt(wall_arry[0]) + "|w",
+							Integer.parseInt(wall_arry[1]));
+					SharedPreference.putSharedPreference(this,
+							Integer.parseInt(floor_arry[0]) + "|f",
+							Integer.parseInt(floor_arry[0]));
 				}
 			}
 		} catch (JSONException e) {
@@ -466,6 +472,12 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	public void get_DB() {
+		//핸드폰 번호 읽어오기
+		TelephonyManager telManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
+		phoneNum = telManager.getLine1Number();
+		
+		Log.e("PhoneNum", phoneNum);
+		
 		ContentResolver contentResolver = getContentResolver();
 		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
 		String TABLE_FAVORITES = "favorites";
@@ -498,8 +510,15 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			String contacts = c.getString(contactsIndex);
 
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("user", "123");
-			map.put("intent", intentDescription);
+			map.put("user", phoneNum);
+			if (intentDescription == null)
+				map.put("intent", "null");
+			else
+				map.put("intent", intentDescription);
+			if (contacts == null)
+				map.put("contacts", "null");
+			else
+				map.put("contacts", contacts);
 			map.put("container", container);
 			map.put("itemType", itemType);
 			map.put("screen", screen);
@@ -507,18 +526,19 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			map.put("cellY", cellY);
 			map.put("MobjectType", MobjectType);
 			map.put("MobjectIcon", MobjectIcon);
-			map.put("contacts", contacts);			
 
-//			JSONfunctions.postSONfromURL(serverUrl, map);
+			map.put("wall", "null");
+
+			JSONfunctions.postSONfromURL(serverUrl, map);
 		}
 		c.close();
 
 		for (int i = 0; i < HomeMain.ChildCount; i++) {
 			int wIdx = SharedPreference.getIntSharedPreference(this, i + "|w");
 			int fIdx = SharedPreference.getIntSharedPreference(this, i + "|f");
-			Log.e("Sh-Wall",String.valueOf(wIdx));
+			Log.e("Sh-Wall", String.valueOf(wIdx));
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("user", "123");
+			map.put("user", phoneNum);
 			map.put("wall", i + "-" + wIdx);
 			map.put("floor", i + "-" + fIdx);
 			JSONfunctions.postSONfromURL(serverUrl, map);
@@ -527,10 +547,12 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 	@Override
 	public void onClick(View v) {
-		if (v.equals(upload)) {
+		if (v.equals(uploadButton)) {
 			Log.e("upload", "upload");
+			get_DB();
+		} else if (v.equals(likeButton)) {
+			Log.e("download", "download");
 			insert_DB();
-//			 get_DB();
 		}
 	}
 
