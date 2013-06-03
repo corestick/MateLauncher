@@ -918,8 +918,8 @@ public class LauncherModel {
 									}
 								}
 								else appinfo.intent = null;
-								if(c.getString(contacts)!=null) appinfo.Contacts = c.getString(contacts);
-								else appinfo.Contacts =null;
+								if(c.getString(contacts)!=null) appinfo.contacts = c.getString(contacts);
+								else appinfo.contacts =null;
 								appinfo.mobjectIcon = c.getInt(mobjectIcon);
 								appinfo.title = c.getString(titleIndex);								
 								appinfo.id = c.getLong(idIndex);
