@@ -453,7 +453,7 @@ public class SpeechBubbleView extends LinearLayout implements
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.contact_list_layout,
+				convertView = inflater.inflate(R.layout.contact_list,
 						parent, false);
 			}
 			Name = (TextView) convertView.findViewById(R.id.contact_list_name);
