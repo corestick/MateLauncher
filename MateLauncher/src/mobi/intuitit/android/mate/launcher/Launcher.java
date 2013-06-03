@@ -2222,8 +2222,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					params.width = LayoutParams.FILL_PARENT;
 					params.height = LayoutParams.FILL_PARENT;
 					dialog.getWindow().setAttributes(params);
-					dialog.show();									
+					dialog.show();		
 					v.setTag(contactsTag);			
+
 
 				}
 			}
