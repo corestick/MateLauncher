@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	ImageView imgKakaoTalk;
 	ImageView imgTwitter;
 	ImageView imgFacebook;
-	
+
 	private Launcher mLauncher;
 	String mContacts;
 
@@ -41,10 +42,10 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 
 	public void initMAvatarMenu(Launcher launcher, String contacts) {
 		setVisible(mVisibleState);
-		
+
 		this.mLauncher = launcher;
 		this.mContacts = contacts;
-		
+
 		imgCall = (ImageView) findViewById(R.id.imgCall);
 		imgSMS = (ImageView) findViewById(R.id.imgSMS);
 		imgKakaoTalk = (ImageView) findViewById(R.id.imgKakaoTalk);
@@ -71,46 +72,53 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		Log.e("RRR", "menu OnClick=" + v.toString());
-		
-		if(v.equals(imgCall)) {
+
+		if (v.equals(imgCall)) {
 			Intent intent = new Intent(Intent.ACTION_CALL);
 			intent.setData(Uri.parse("tel:" + mContacts));
 			mLauncher.startActivity(intent);
 		} else if (v.equals(imgSMS)) {
-			
-			Log.e("RRR", "imgSMS");
-//			edtMsg = (EditText) findViewById(R.id.edtMsg);
-			
-			AlertDialog.Builder builder;
-			AlertDialog dig;
-			
-			View layout = mLauncher.mInflater.inflate(R.layout.mavatar_input, (ViewGroup) findViewById(R.id.workspace), false);
-			
-			builder = new AlertDialog.Builder(mLauncher);
-			builder.setView(layout);
-			
-			dig = builder.create();
-			dig.setTitle("메시지 입력");
-			
-			edtMsg = (EditText) findViewById(R.id.edtAvatarMsg);
-			
-			dig.setButton("확인", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					String msg = edtMsg.getText().toString();
-					mLauncher.sendtoSMS(mContacts, msg);
-				}
-			});
-			dig.show();
+			input_Message("SMS");
 		} else if (v.equals(imgKakaoTalk)) {
-			
+			input_Message("Kakao");
 		} else if (v.equals(imgTwitter)) {
-			
+
 		} else if (v.equals(imgFacebook)) {
-			
+
 		}
 	}
 
+	public void input_Message(final String Type) {
+		AlertDialog.Builder builder;
+		AlertDialog dig;
+
+		View layout = mLauncher.mInflater.inflate(R.layout.mavatar_input,
+				(ViewGroup) findViewById(R.id.drag_layer));
+		builder = new AlertDialog.Builder(mLauncher);
+		builder.setView(layout);
+
+		dig = builder.create();
+		dig.setTitle("메시지 입력");
+		edtMsg = (EditText) layout.findViewById(R.id.edtAvatarMsg);
+		dig.setButton("확인", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				String msg = edtMsg.getText().toString();
+				if (Type.equals("SMS")) {
+					mLauncher.sendtoSMS(mContacts, msg);
+				}
+				else if(Type.equals("Kakao")){
+					KakaoLink kakao = new KakaoLink(mLauncher);
+					kakao.openKakaoLink(mLauncher, msg,
+							mLauncher.getPackageName(), "0.9.2", "UTF-8");
+				}
+				InputMethodManager imm = (InputMethodManager) mLauncher
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(edtMsg.getWindowToken(), 0);
+			}
+		});
+		dig.show();
+	}
 }

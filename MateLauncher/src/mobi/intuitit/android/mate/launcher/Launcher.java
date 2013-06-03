@@ -2182,8 +2182,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if (((Mobject) tag).mobjectType == 0) {
 					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
-				} else {
-					
+				} else {					
 					MLayout mLayout = (MLayout) v.getParent();
 					mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
 

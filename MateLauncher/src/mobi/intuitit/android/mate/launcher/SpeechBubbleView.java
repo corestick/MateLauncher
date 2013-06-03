@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -210,8 +209,7 @@ public class SpeechBubbleView extends LinearLayout implements
 				ItemInfo itemInfo = new ItemInfo();
 
 				Intent intent = mLauncher.getPackageManager()
-						.getLaunchIntentForPackage(
-								appInfoArry.get(position).packagename);
+						.getLaunchIntentForPackage(appInfoArry.get(position).packagename);
 				ComponentName component = new ComponentName(appInfoArry
 						.get(position).packagename, intent.getComponent()
 						.getClassName());
