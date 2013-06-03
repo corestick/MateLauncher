@@ -954,10 +954,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// click.
 		// Note that Search takes focus when clicked rather than entering touch
 		// mode
+		
 		if (!child.isInTouchMode() && !(child instanceof Search)) {
 			return;
 		}
-
+		
 		mDragInfo = cellInfo;
 		mDragInfo.screen = mCurrentScreen;
 

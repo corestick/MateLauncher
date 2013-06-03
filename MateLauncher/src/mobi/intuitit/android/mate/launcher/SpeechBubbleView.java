@@ -143,11 +143,11 @@ public class SpeechBubbleView extends LinearLayout implements
 		faceButton.setLayoutParams(param3);
 		twiterButton.setLayoutParams(param4);
 
-		callButton.setImageResource(R.drawable.call);
+		callButton.setImageResource(R.drawable.ico_call);
 		kakaoButton.setImageResource(R.drawable.btn_small_01_android);
 		smsButton.setImageResource(R.drawable.ico_sms);
 		faceButton.setImageResource(R.drawable.ico_facebook);
-		twiterButton.setImageResource(R.drawable.ico_tweet);
+		twiterButton.setImageResource(R.drawable.ico_twitter);
 
 	}
 
