@@ -21,15 +21,15 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class JSONfunctions {
-	public static String getJSONfromURL(String url) {
+	public static String getJSONfromURL(String url,String PhoneNum) {
 		InputStream is = null;
 		String result = "";
 		JSONObject jArray = null;
 
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(url);
-			
+			HttpGet httpGet = new HttpGet(url);			
+			httpGet.setHeader("phone", PhoneNum);
 			HttpResponse response = httpclient.execute(httpGet);
 			
 			HttpEntity entity = response.getEntity();
