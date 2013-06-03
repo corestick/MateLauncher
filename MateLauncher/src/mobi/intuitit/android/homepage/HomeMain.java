@@ -24,14 +24,6 @@ public class HomeMain extends TabActivity {
 		setContentView(R.layout.homepagemain);
 		TabHost tabHost = getTabHost();
 		
-//		for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
-//			tabHost.getTabWidget().getChildAt(i).getLayoutParams().height = 50;
-//		}
-				
-//		LayoutInflater.from(this).inflate(R.layout.homepagemain,
-//				tabHost.getTabContentView(), true);
-		
-		
 		tabHost.addTab(tabHost.newTabSpec("tab1")
 				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, OwnerHome.class)));

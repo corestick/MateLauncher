@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -106,7 +107,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		//
 		// mInflater = (LayoutInflater)
 		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		// mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
+//		 mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
 		//
 		// mListView.setOnScrollListener((OnScrollListener) this);
 		// mListView.setAdapter(mAdapter);
@@ -232,7 +233,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			}
 		});
 
-	}
+	}	
 
 	// 추천, 다운, 방문 수 셋
 	private TextView setRecommend(int n) {
@@ -367,6 +368,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 		public CustomDialog(Context context, int position) {
 			super(context);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.dialog_screen);
 
 			iv = (ImageView) findViewById(R.id.dialog_imageview);

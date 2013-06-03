@@ -26,8 +26,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
@@ -44,6 +48,7 @@ import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,9 +60,11 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -69,6 +76,7 @@ import android.os.Message;
 import android.os.MessageQueue;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.provider.LiveFolders;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -87,15 +95,17 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
 import android.widget.SlidingDrawer;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -170,7 +180,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	// Type: long
 	private static final String RUNTIME_STATE_PENDING_FOLDER_RENAME_ID = "launcher.rename_folder_id";
 
-	private static final LauncherModel sModel = new LauncherModel();
+	public static final LauncherModel sModel = new LauncherModel();
 
 	private static final Object sLock = new Object();
 	private static int sScreen = DEFAULT_SCREN;
@@ -220,6 +230,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	static boolean modifyMode = false; // 수정모드 플래그
 	static boolean DOWNLOAR_VIEW = false;
+	
+	public Launcher mLauncher = this;
+	Mobject Apptag  = new Mobject(); //매칭어플리케이션 정보 저장
+	Mobject contactsTag = new Mobject(); //매칭 연락처 정보 저장
+	
+	private static final int SEND_THREAD_PLAY = 0;
+	private static final int SEND_THREAD_STOP = 1;
+	
+	private ModifyHandler mModifyHandler = null;
+	private ModifyThread mModifyThread = null;
 
 	@Override
 	protected void onStart() {
@@ -1728,6 +1748,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
 		registerReceiver(mSmsReceiver, new IntentFilter(
 				"android.provider.Telephony.SMS_RECEIVED"));
+		mModifyHandler = new ModifyHandler(); //수정모드에 쓰는 핸들러
 	}
 
 	/**
@@ -2180,22 +2201,30 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
-					mSpeechBubbleview.removeAllViews();
-					mSpeechBubbleview.setVisibility(View.VISIBLE);
-					Mobject info = new Mobject();
-					info = mSpeechBubbleview.selectApp(tag);
-
-					mSpeechBubbleview.setLocation(0, 0, 0, 0);
-
-					v.setTag(info);
+					//앱리스트 얻어오기 커스텀 다이얼로그
+					Apptag = null;
+					AppList_dialog dialog= new AppList_dialog(this,tag);					
+					dialog.setCancelable(true);
+					android.view.WindowManager.LayoutParams params = dialog
+							.getWindow().getAttributes();
+					params.width = LayoutParams.FILL_PARENT;
+					params.height = LayoutParams.FILL_PARENT;
+					dialog.getWindow().setAttributes(params);
+					dialog.show();									
+					v.setTag(Apptag);
 				} else {
-					mSpeechBubbleview.removeAllViews();
-					mSpeechBubbleview.setVisibility(View.VISIBLE);
-					
-					Mobject info = new Mobject();
-					info = mSpeechBubbleview.InputPhonenumView(tag);
-					mSpeechBubbleview.setLocation(0, 0, 0, 0);
-					v.setTag(info);
+					//전화번호 얻어오기 커스텀 다이얼로그
+					contactsTag = null;
+					ContactList_dialog dialog= new ContactList_dialog(this,tag);					
+					dialog.setCancelable(true);
+					android.view.WindowManager.LayoutParams params = dialog
+							.getWindow().getAttributes();
+					params.width = LayoutParams.FILL_PARENT;
+					params.height = LayoutParams.FILL_PARENT;
+					dialog.getWindow().setAttributes(params);
+					dialog.show();									
+					v.setTag(contactsTag);			
+
 				}
 			}
 		}
@@ -3073,6 +3102,413 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	
 	public int Child_Count(){
 		return mWorkspace.getChildCount();
+	}
+	
+	public class ContactList_dialog extends Dialog implements View.OnClickListener{
+
+		ListView listview;
+		ArrayList<Contacts> contactlist;
+		Contact_Adapter contact_Adapter;
+		
+		public ContactList_dialog(Context context, Object tag) {
+			super(context);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.applist_dialog);
+			listview= (ListView) findViewById(R.id.applist_listview);
+			 contactlist = new ArrayList<Contacts>();
+			contact_Adapter = new Contact_Adapter();
+			listview.setAdapter(contact_Adapter);
+//			listview.addFooterView(v)
+			final long App_id = ((Mobject) tag).id;			
+			contactsTag = (Mobject) tag;
+			readContacts3();
+			
+			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parentView, View view,
+						int position, long id) {
+					final ContentValues values = new ContentValues();
+					final ContentResolver cr = getContentResolver();
+					String name = contactlist.get(position).Name;
+					String Num = contactlist.get(position).PhoneNum;
+					contactsTag.Contacts = Num;
+					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
+					cr.update(
+							LauncherSettings.Favorites.getContentUri(App_id, false),
+							values, null, null);
+					Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT)
+							.show();
+					dismiss();
+					
+				}
+			});
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		class Contacts {
+			public String Name;
+			public String PhoneNum;
+		}
+		
+		// 연락처 읽어오기
+		public void readContacts3() {
+			Comparator<Contacts> myComparator = new Comparator<Contacts>() {
+				Collator app_Collator = Collator.getInstance();
+
+				@Override
+				public int compare(Contacts a, Contacts b) {
+					return app_Collator.compare(a.Name, b.Name);
+				}
+			};
+			ContentResolver cr = mLauncher.getContentResolver();
+			Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
+					null, null, null);
+
+			if (cur.getCount() > 0) {
+				while (cur.moveToNext()) {
+					Contacts contact = new Contacts();				
+					String id = cur.getString(cur
+							.getColumnIndex(ContactsContract.Contacts._ID));
+					String name = cur
+							.getString(cur
+									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+					if (Integer
+							.parseInt(cur.getString(cur
+									.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+						contact.Name = name;
+						// sb.append(name);
+						// get the phone number
+						Cursor pCur = cr.query(
+								ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+								null,
+								ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+										+ " = ?", new String[] { id }, null);
+						int typeIndex = pCur
+								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+						int numIndex = pCur
+								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+						while (pCur.moveToNext()) {
+							String num = pCur.getString(numIndex);
+							switch (pCur.getInt(typeIndex)) {
+							case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+								contact.PhoneNum = num;
+								// sb.append(", Mobile:" + num);
+								break;
+							// case
+							// ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+							// sb.append(", Home:" + num);
+							// break;
+							// case
+							// ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+							// sb.append(", Work:" + num);
+							// break;
+							}
+						}
+						pCur.close();
+					}
+					if (contact.PhoneNum != null)
+						contactlist.add(contact);
+				}
+			}
+			Collections.sort(contactlist, myComparator);
+			contact_Adapter.notifyDataSetChanged();
+		}
+		
+		// 연락처 adapter
+		public class Contact_Adapter extends BaseAdapter {
+
+			TextView Name;
+			TextView PhoneNum;
+			LayoutInflater inflater;
+
+			public Contact_Adapter() {
+				inflater = (LayoutInflater) mLauncher
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			}
+
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return contactlist.size();
+			}
+
+			@Override
+			public Object getItem(int position) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public long getItemId(int position) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				if (convertView == null) {
+					convertView = inflater.inflate(R.layout.contact_list_layout,
+							parent, false);
+				}
+				Name = (TextView) convertView.findViewById(R.id.contact_list_name);
+				PhoneNum = (TextView) convertView
+						.findViewById(R.id.contact_list_phonenum);
+
+				Name.setText(contactlist.get(position).Name);
+				PhoneNum.setText(contactlist.get(position).PhoneNum);
+				return convertView;
+			}
+
+		}
+		
+	}
+	
+	
+	public class AppList_dialog extends Dialog implements View.OnClickListener
+	{
+		ListView listview;
+		App_Adapter App_Adapter;		
+		ArrayList<appInfo> appInfoArry;
+		
+		public AppList_dialog(Context context, Object tag) {			
+			super(context);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.applist_dialog);			
+			listview= (ListView) findViewById(R.id.applist_listview);
+			appInfoArry = new ArrayList<appInfo>();
+			final long App_id = ((Mobject) tag).id;			
+			Apptag = (Mobject) tag;
+			App_Adapter = new App_Adapter();
+			listview.setAdapter(App_Adapter);
+			loadApp();
+			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parentView, View view,
+
+				int position, long id) {
+					final ContentValues values = new ContentValues();
+					final ContentResolver cr = getContentResolver();
+					ItemInfo itemInfo = new ItemInfo();
+
+					Intent intent = getPackageManager()
+							.getLaunchIntentForPackage(
+									appInfoArry.get(position).packagename);
+					ComponentName component = new ComponentName(appInfoArry
+							.get(position).packagename, intent.getComponent()
+							.getClassName());
+					PackageManager packageManager = getPackageManager();
+					ActivityInfo activityInfo = null;
+					try {
+						activityInfo = packageManager
+								.getActivityInfo(component, 0 /*
+															 * no flags
+															 */);
+					} catch (NameNotFoundException e) {
+						e("matching-app",
+								"Couldn't find ActivityInfo for selected application",
+								e);
+					}
+
+					if (activityInfo != null) {
+						itemInfo.title = activityInfo.loadLabel(packageManager);
+						if (itemInfo.title == null) {
+							itemInfo.title = activityInfo.name;
+						}
+
+						itemInfo.setActivity(component,
+								Intent.FLAG_ACTIVITY_NEW_TASK
+										| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+						itemInfo.container = ItemInfo.NO_ID;
+					}
+					Apptag.intent = itemInfo.intent;
+					Apptag.title = itemInfo.title;
+
+					String titleStr = itemInfo.title.toString();
+					values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
+
+					String uri = itemInfo.intent.toUri(0);
+					values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
+					cr.update(
+							LauncherSettings.Favorites.getContentUri(App_id, false),
+							values, null, null);
+					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT).show();
+					dismiss();
+					// this.getPackageManager().getLaunchIntentForPackage(packageName);
+					// startActivity(intent); 패키지 이름으로 실행시키는 로직
+					
+				}
+				
+			});
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void onClick(View v) {			
+			
+		}
+		
+		public void loadApp() {
+			Comparator<appInfo> myComparator = new Comparator<appInfo>() {
+				Collator app_Collator = Collator.getInstance();
+
+				@Override
+				public int compare(appInfo a, appInfo b) {
+					return app_Collator.compare(a.appName, b.appName);
+				}
+			};
+			PackageManager pm = getPackageManager();
+			final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+			mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			final List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
+			final int count = apps.size();
+			for (int i = 0; i < count; i++) {
+				ResolveInfo info = apps.get(i);
+				appInfo appinfo = new appInfo();
+				appinfo.packagename = info.activityInfo.packageName;
+				appinfo.appName = info.activityInfo.applicationInfo.loadLabel(pm)
+						.toString();
+				appinfo.appIcon = info.activityInfo.applicationInfo.loadIcon(pm);
+				if (i == 0) {
+					appInfoArry.add(appinfo);
+				} else {
+					for (int j = 0; j <= appInfoArry.size(); j++) {
+						if ((appInfoArry.get(j).appName).equals(appinfo.appName) == true)
+							break;
+						else {
+							if (j == appInfoArry.size() - 1) {
+								appInfoArry.add(appinfo);
+							}
+						}
+					}
+				}
+			}
+			Collections.sort(appInfoArry, myComparator);
+			App_Adapter.notifyDataSetChanged();
+		}
+		
+		// 앱 정보 저장할 클래스
+		class appInfo {
+			public String packagename;
+			public String appName;
+			public Drawable appIcon;
+		}
+		
+		public class App_Adapter extends BaseAdapter {
+
+			ImageView image;
+			TextView name;
+			LayoutInflater inflater;
+
+			public App_Adapter() {
+				inflater = (LayoutInflater) mLauncher.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			}
+
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return appInfoArry.size();
+			}
+
+			@Override
+			public Object getItem(int position) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public long getItemId(int position) {
+				// TODO Auto-generated method stub
+				return position;
+			}
+
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				if (convertView == null) {
+					convertView = inflater.inflate(R.layout.app_list_layout,
+							parent, false);
+				}
+				image = (ImageView) convertView.findViewById(R.id.applist_image);
+				name = (TextView) convertView.findViewById(R.id.applist_name);
+
+				Drawable icon = Utilities.createIconThumbnail(
+						appInfoArry.get(position).appIcon, getContext());
+				image.setImageDrawable(icon);
+				name.setText(appInfoArry.get(position).appName);
+				return convertView;
+
+			}
+		}
+		
+	}
+	
+	class ModifyHandler extends Handler {
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+
+			switch (msg.what) {
+			case SEND_THREAD_PLAY:
+//				anim = new TranslateAnimation(0,2, 0, 0);
+//				anim.setDuration(300);
+//				iv.startAnimation(anim);
+				break;
+
+			case SEND_THREAD_STOP:
+//				 mCountThread.stopThread();
+				break;
+
+			default:
+				break;
+			}
+		}
+
+	};
+	
+	class ModifyThread extends Thread implements Runnable {
+
+		private boolean isPlay = false;
+
+		public ModifyThread() {
+			isPlay = true;
+		}
+
+		public void isThreadState(boolean isPlay) {
+			this.isPlay = isPlay;
+		}
+
+		public void stopThread() {
+			isPlay = !isPlay;
+		}
+
+		@Override
+		public void run() {
+			super.run();
+			while (isPlay) {				
+				Message msg = mModifyHandler.obtainMessage();
+				msg.what = SEND_THREAD_PLAY;				
+				mModifyHandler.sendMessage(msg);
+
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+	}
+
+	public void modifyMode() {		
+		mModifyThread = new ModifyThread();
+		mModifyThread.start();
 	}
 
 }

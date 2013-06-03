@@ -65,7 +65,7 @@ public class LauncherModel {
 	private boolean mApplicationsLoaded;
 	private boolean mDesktopItemsLoaded;
 
-	private ArrayList<ItemInfo> mDesktopItems;
+	public ArrayList<ItemInfo> mDesktopItems;
 	private ArrayList<LauncherAppWidgetInfo> mDesktopAppWidgets;
 	private HashMap<Long, FolderInfo> mFolders;
 

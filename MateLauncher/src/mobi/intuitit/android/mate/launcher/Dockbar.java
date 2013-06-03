@@ -123,6 +123,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			hideDockbar();
 			Launcher.modifyMode = true;
 			mLauncher.mMDockbar.showMDockbar();
+			mLauncher.modifyMode();
 		}
 
 	}

@@ -5,7 +5,6 @@ import java.io.File;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,7 +14,7 @@ import android.widget.ImageView;
 public class OwnerImageAdapter extends BaseAdapter {
 	private Context mContext;
 	private String sdcard = Environment.getExternalStorageDirectory()
-			.getAbsolutePath(); // sdcard 경로
+			.getAbsolutePath(); // sdcard 경로	
 
 	// private int[] mImageID = {
 	private String[] mImagePath = {
@@ -50,17 +49,11 @@ public class OwnerImageAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ImageView imageView = new ImageView(mContext);
-
-		// Uri uri = Uri.parse(mImagePath[position]);
-		Uri uri = Uri.fromFile(new File(mImagePath[position]));
-		Log.e("na" + position, uri.toString());
+		ImageView imageView = new ImageView(mContext);		
+		Uri uri = Uri.fromFile(new File(mImagePath[position]));		
 		imageView.setImageURI(uri);
 
-		// imageView.setImageResource(mImageID[position]);
-		// Log.e("na"+position, mImageID[position]+"");
-
-		imageView.setScaleType(ImageView.ScaleType.CENTER);
+		imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 		imageView.setLayoutParams(new Gallery.LayoutParams(150, 400));		
 
 		return imageView;

@@ -58,17 +58,12 @@ public class SpeechBubbleView extends LinearLayout implements
 	private String Contacts; // 보낼전화번호
 
 	private ListView listview;
-	ArrayAdapter<String> itemAdapter;
-	MyAdapter myadapter;
-	ArrayList<appInfo> appInfoArry = new ArrayList<appInfo>();	
-
-	ArrayList<String> contactlist = new ArrayList<String>();
+	App_Adapter App_Adapter;
+	Contact_Adapter contact_Adapter;
+	ArrayList<appInfo> appInfoArry = new ArrayList<appInfo>();
+	ArrayList<Contacts> contactlist = new ArrayList<Contacts>();
 	Mobject Apptag = new Mobject();
 	Mobject contactsTag = new Mobject();
-	
-	
-	
-	
 
 	public SpeechBubbleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -200,8 +195,8 @@ public class SpeechBubbleView extends LinearLayout implements
 		param.height = LayoutParams.FILL_PARENT;
 		listview.setLayoutParams(param);
 		listview.setBackgroundColor(Color.DKGRAY);
-		myadapter = new MyAdapter();
-		listview.setAdapter(myadapter);
+		App_Adapter = new App_Adapter();
+		listview.setAdapter(App_Adapter);
 		loadApp();
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -217,7 +212,9 @@ public class SpeechBubbleView extends LinearLayout implements
 				Intent intent = mLauncher.getPackageManager()
 						.getLaunchIntentForPackage(
 								appInfoArry.get(position).packagename);
-				ComponentName component = new ComponentName(appInfoArry.get(position).packagename, intent.getComponent().getClassName());
+				ComponentName component = new ComponentName(appInfoArry
+						.get(position).packagename, intent.getComponent()
+						.getClassName());
 				PackageManager packageManager = mLauncher.getPackageManager();
 				ActivityInfo activityInfo = null;
 				try {
@@ -282,10 +279,9 @@ public class SpeechBubbleView extends LinearLayout implements
 		listview.setLayoutParams(param);
 		listview.setBackgroundColor(Color.DKGRAY);
 		contactlist.clear();
-		readContacts3();
-		itemAdapter = new ArrayAdapter<String>(mLauncher,
-				android.R.layout.simple_list_item_1, contactlist);
-		listview.setAdapter(itemAdapter);
+		contact_Adapter = new Contact_Adapter();
+		listview.setAdapter(contact_Adapter);
+		readContacts3();		
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
@@ -293,9 +289,8 @@ public class SpeechBubbleView extends LinearLayout implements
 					int position, long id) {
 				final ContentValues values = new ContentValues();
 				final ContentResolver cr = mLauncher.getContentResolver();
-				String name = contactlist.get(position);
-				int num = name.indexOf(':');
-				String Num = name.substring(num + 1, name.length());
+				String name = contactlist.get(position).Name;
+				String Num = contactlist.get(position).PhoneNum;
 				contactsTag.Contacts = Num;
 				values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
 				cr.update(
@@ -310,13 +305,14 @@ public class SpeechBubbleView extends LinearLayout implements
 	}
 
 	// 설치 앱 얻어오기
-	public void loadApp() {		
-		Comparator<appInfo> myComparator= new Comparator<appInfo>(){
+	public void loadApp() {
+		Comparator<appInfo> myComparator = new Comparator<appInfo>() {
 			Collator app_Collator = Collator.getInstance();
+
 			@Override
 			public int compare(appInfo a, appInfo b) {
-				return app_Collator.compare(a.appName, b.appName);			
-			}		
+				return app_Collator.compare(a.appName, b.appName);
+			}
 		};
 		PackageManager pm = mLauncher.getPackageManager();
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -338,45 +334,45 @@ public class SpeechBubbleView extends LinearLayout implements
 						break;
 					else {
 						if (j == appInfoArry.size() - 1) {
-							appInfoArry.add(appinfo);						
+							appInfoArry.add(appinfo);
 						}
 					}
 				}
 			}
-		}		
+		}
 		Collections.sort(appInfoArry, myComparator);
-		myadapter.notifyDataSetChanged();
-
-		/*
-		 * List<PackageInfo> appinfo = mLauncher.getPackageManager()
-		 * .getInstalledPackages(
-		 * PackageManager.COMPONENT_ENABLED_STATE_DEFAULT); for (int i = 0; i <
-		 * appinfo.size(); i++) { PackageInfo pi = (PackageInfo) appinfo.get(i);
-		 * String pacname = pi.packageName; String appname =
-		 * pi.applicationInfo.loadLabel(pm).toString(); Drawable drawble =
-		 * pi.applicationInfo.loadIcon(pm); setupAppIcon.add(drawble);
-		 * setupAppName.add(appname); setupAppPacName.add(pacname);
-		 * 
-		 * }
-		 */
+		App_Adapter.notifyDataSetChanged();
 	}
-	
-	//앱 정보 저장할 클래스
-	class appInfo{
+
+	// 앱 정보 저장할 클래스
+	class appInfo {
 		public String packagename;
 		public String appName;
 		public Drawable appIcon;
 	}
 
+	class Contacts {
+		public String Name;
+		public String PhoneNum;
+	}
+
 	// 연락처 읽어오기
-	void readContacts3() {
+	public void readContacts3() {
+		Comparator<Contacts> myComparator = new Comparator<Contacts>() {
+			Collator app_Collator = Collator.getInstance();
+
+			@Override
+			public int compare(Contacts a, Contacts b) {
+				return app_Collator.compare(a.Name, b.Name);
+			}
+		};
 		ContentResolver cr = mLauncher.getContentResolver();
 		Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
 				null, null, null);
 
 		if (cur.getCount() > 0) {
 			while (cur.moveToNext()) {
-				StringBuilder sb = new StringBuilder();
+				Contacts contact = new Contacts();				
 				String id = cur.getString(cur
 						.getColumnIndex(ContactsContract.Contacts._ID));
 				String name = cur
@@ -385,7 +381,8 @@ public class SpeechBubbleView extends LinearLayout implements
 				if (Integer
 						.parseInt(cur.getString(cur
 								.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-					sb.append(name);
+					contact.Name = name;
+					// sb.append(name);
 					// get the phone number
 					Cursor pCur = cr.query(
 							ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -397,11 +394,11 @@ public class SpeechBubbleView extends LinearLayout implements
 					int numIndex = pCur
 							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
 					while (pCur.moveToNext()) {
-						String phone = null;
 						String num = pCur.getString(numIndex);
 						switch (pCur.getInt(typeIndex)) {
 						case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-							sb.append(", Mobile:" + num);
+							contact.PhoneNum = num;
+							// sb.append(", Mobile:" + num);
 							break;
 						// case
 						// ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
@@ -415,19 +412,69 @@ public class SpeechBubbleView extends LinearLayout implements
 					}
 					pCur.close();
 				}
-				contactlist.add(sb.toString());
+				if (contact.PhoneNum != null)
+					contactlist.add(contact);
 			}
 		}
+		Collections.sort(contactlist, myComparator);
+		contact_Adapter.notifyDataSetChanged();
+	}
+
+	// 연락처 adapter
+	public class Contact_Adapter extends BaseAdapter {
+
+		TextView Name;
+		TextView PhoneNum;
+		LayoutInflater inflater;
+
+		public Contact_Adapter() {
+			inflater = (LayoutInflater) mLauncher
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return contactlist.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = inflater.inflate(R.layout.contact_list_layout,
+						parent, false);
+			}
+			Name = (TextView) convertView.findViewById(R.id.contact_list_name);
+			PhoneNum = (TextView) convertView
+					.findViewById(R.id.contact_list_phonenum);
+
+			Name.setText(contactlist.get(position).Name);
+			PhoneNum.setText(contactlist.get(position).PhoneNum);
+			return convertView;
+		}
+
 	}
 
 	// 설치앱에서 커스텀 어뎁터
-	public class MyAdapter extends BaseAdapter {
+	public class App_Adapter extends BaseAdapter {
 
 		ImageView image;
 		TextView name;
 		LayoutInflater inflater;
 
-		public MyAdapter() {
+		public App_Adapter() {
 			inflater = (LayoutInflater) mLauncher
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
@@ -453,12 +500,12 @@ public class SpeechBubbleView extends LinearLayout implements
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.list_layout, parent,
-						false);
+				convertView = inflater.inflate(R.layout.app_list_layout,
+						parent, false);
 			}
 			image = (ImageView) convertView.findViewById(R.id.applist_image);
 			name = (TextView) convertView.findViewById(R.id.applist_name);
-			
+
 			Drawable icon = Utilities.createIconThumbnail(
 					appInfoArry.get(position).appIcon, getContext());
 			image.setImageDrawable(icon);
