@@ -109,7 +109,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	final Rect mDrawerBounds = new Rect();
 	final Rect mClipBounds = new Rect();
 	int mDrawerContentHeight;
-	int mDrawerContentWidth;	
+	int mDrawerContentWidth;
 
 	/**
 	 * Used to inflate the Workspace from XML.
@@ -176,7 +176,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
-		
+
 		super.addView(child, index, params);
 	}
 
@@ -186,7 +186,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
-		
+
 		super.addView(child);
 	}
 
@@ -196,7 +196,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalArgumentException(
 					"A Workspace can only have CellLayout children.");
 		}
-		
+
 		super.addView(child, index);
 	}
 
@@ -959,6 +959,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			return;
 		}
 		
+		//--
+		if(child instanceof SpeechBubble) {
+			return;	
+		}
+		
 		mDragInfo = cellInfo;
 		mDragInfo.screen = mCurrentScreen;
 
@@ -1558,11 +1563,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	public void unbindWidgetScrollableViews() {
 		unbindWidgetScrollable();
 	}
-	
+
 	public void initMScreens() {
 		Log.e("RRR", "initMScreens>>");
-		
-		for(int i = 0; i < this.getChildCount(); i++) {
+
+		for (int i = 0; i < this.getChildCount(); i++) {
 			LayoutType layout = (LayoutType) this.getChildAt(i);
 			if (layout instanceof MLayout) {
 				MLayout mLayout = (MLayout) layout;

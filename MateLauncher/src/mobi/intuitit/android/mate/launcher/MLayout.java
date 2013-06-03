@@ -1,16 +1,15 @@
 package mobi.intuitit.android.mate.launcher;
 
+import java.util.HashMap;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -29,10 +28,23 @@ public class MLayout extends LayoutType {
 
 	private int mFlooringResIdx;
 	private int mWallpaperResIdx;
-	
+
 	private Launcher mLauncher;
 	private int mScreenIdx;
 
+	private final int SPEECHBUBBLE_WIDTH = 160;
+	private final int SPEECHBUBBLE_HEIGHT = 140;
+	private final int SPEECHBUBBLE_BOTTOM_PADDING = 20;
+	
+	private final int MAVATARMENU_WIDTH = 250;
+	private final int MAVATARMENU_HEIGHT = 50;
+
+//	private HashMap<MobjectImageView, SpeechBubble> mSpeechBubbleMap = new HashMap<MobjectImageView, SpeechBubble>();
+//	private HashMap<MobjectImageView, MAvatarMenu> mAvatarMenuMap = new HashMap<MobjectImageView, MAvatarMenu>();
+	
+	private HashMap<MobjectImageView, SpeechBubble> mSpeechBubbleMap;
+	private HashMap<MobjectImageView, MAvatarMenu> mAvatarMenuMap;
+	
 	public MLayout(Context context) {
 		this(context, null);
 	}
@@ -47,8 +59,120 @@ public class MLayout extends LayoutType {
 				R.styleable.CellLayout, defStyle, 0);
 
 		a.recycle();
+		
+		mSpeechBubbleMap = new HashMap<MobjectImageView, SpeechBubble>();
+		mAvatarMenuMap = new HashMap<MobjectImageView, MAvatarMenu>();
 
 		setAlwaysDrawnWithCacheEnabled(false);
+	}
+
+	public void addAvatarView(MobjectImageView view) {
+		ItemInfo info = (ItemInfo) view.getTag();
+
+		if (info.mobjectType == 1) {
+
+			if (info.contacts != null) {
+
+				if(!mSpeechBubbleMap.containsKey(view))
+				{
+					SpeechBubble mSpeechBubble = (SpeechBubble) mLauncher.mInflater
+							.inflate(R.layout.speechbubble, (ViewGroup) this, false);
+	
+					mSpeechBubble.setPadding(0, 0, 0, SPEECHBUBBLE_BOTTOM_PADDING);
+					mSpeechBubble.initSpeechBubble(info, view);
+					super.addView(mSpeechBubble);
+					mSpeechBubbleMap.put(view, mSpeechBubble);
+					setSpeechBubbleLayout(view);
+				}
+				
+				if(!mAvatarMenuMap.containsKey(view)) {
+					MAvatarMenu mAvatarMenu = (MAvatarMenu) mLauncher.mInflater
+							.inflate(R.layout.mavatarmenu, (ViewGroup) this, false);
+					mAvatarMenu.initMAvatarMenu(mLauncher, info.contacts);
+					super.addView(mAvatarMenu);
+					mAvatarMenuMap.put(view, mAvatarMenu);
+					setAvatarMenuLayout(view);
+				}
+			}
+		}
+	}
+	
+	public void setSpeechBubbleLayout(MobjectImageView view) {
+		SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
+		
+		LayoutParams vLP = (LayoutParams) view.getLayoutParams();
+		LayoutParams sbLP = (LayoutParams) sb.getLayoutParams();
+
+		sbLP.width = SPEECHBUBBLE_WIDTH;
+		sbLP.height = SPEECHBUBBLE_HEIGHT;
+		sbLP.cellX = vLP.cellX;
+		sbLP.cellY = vLP.cellY - SPEECHBUBBLE_HEIGHT;
+		
+		sb.setLayoutParams(sbLP);
+	}
+	
+	public void setAvatarMenuLayout(MobjectImageView view) {
+		MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
+		
+		LayoutParams vLP = (LayoutParams) view.getLayoutParams();
+		LayoutParams amLP = (LayoutParams) am.getLayoutParams();
+
+		amLP.width = MAVATARMENU_WIDTH;
+		amLP.height = MAVATARMENU_HEIGHT;
+		amLP.cellX = vLP.cellX;
+		amLP.cellY = vLP.cellY - MAVATARMENU_HEIGHT;
+		
+		am.setLayoutParams(amLP);
+	}
+
+	public void hideSpeechBubble(MobjectImageView view) {
+		SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
+		sb.setVisible(INVISIBLE);
+	}
+
+	public void showSpeechBubble(MobjectImageView view) {
+		SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
+		sb.setVisible(VISIBLE);
+	}
+	
+	public void setVisibleStateSpeechBubble(MobjectImageView view) {
+		if(mSpeechBubbleMap.containsKey(view)) {
+			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
+			if(sb.getVisibility() == INVISIBLE) {
+				sb.setVisible(VISIBLE);
+				hideMAvatarMenu(view);
+			}
+			else
+				sb.setVisible(INVISIBLE);
+		}
+	}
+	
+	public void setSpeechBubbleText(MobjectImageView view, String msg) {
+		SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
+		sb.setBubbleText(msg);
+	}
+	
+	public void hideMAvatarMenu(MobjectImageView view) {
+		MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
+		am.setVisible(INVISIBLE);
+	}
+
+	public void showMAvatarMenu(MobjectImageView view) {
+		MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
+		am.setVisible(VISIBLE);
+	}
+	
+	public void setVisibleStateMavatarMenu(MobjectImageView view) {
+		Log.e("RRR", "setVisibleStateMavatarMenu");
+		if(mAvatarMenuMap.containsKey(view)) {
+			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
+			if(am.getVisibility() == INVISIBLE) {
+				am.setVisible(VISIBLE);
+				hideSpeechBubble(view);
+			}
+			else
+				am.setVisible(INVISIBLE);
+		}
 	}
 
 	@Override
@@ -68,6 +192,10 @@ public class MLayout extends LayoutType {
 		// Generate an id for each view, this assumes we have at most 256x256
 		// cells
 		// per workspace screen
+
+		if (child instanceof MobjectImageView) {
+			addAvatarView((MobjectImageView) child);
+		}
 
 		super.addView(child, index, params);
 	}
@@ -207,7 +335,7 @@ public class MLayout extends LayoutType {
 				child.layout(childLeft, childTop, childRight, childBottom);
 			}
 		}
-		
+
 		loadMBackground();
 	}
 
@@ -217,7 +345,7 @@ public class MLayout extends LayoutType {
 
 	boolean layoutDrawed = false;
 
-	private void initThumb(int width, int height) {		
+	private void initThumb(int width, int height) {
 		if (mThumb == null || mThumb.isRecycled())
 			mThumb = Bitmap
 					.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -237,9 +365,9 @@ public class MLayout extends LayoutType {
 		// return;
 
 		if (mThumbCanvas == null)
-			Log.e("Width",String.valueOf(getWidth()));
-			Log.e("Height",String.valueOf(getHeight()));
-			initThumb(getWidth()>>2, getHeight()>>2);
+			Log.e("Width", String.valueOf(getWidth()));
+		Log.e("Height", String.valueOf(getHeight()));
+		initThumb(getWidth() >> 2, getHeight() >> 2);
 
 		setDrawingCacheEnabled(true);
 
@@ -278,7 +406,8 @@ public class MLayout extends LayoutType {
 	@Override
 	void onDropChild(View child, int[] targetXY) {
 		// TODO Auto-generated method stub
-
+		
+		Log.e("RRR", "onDropChild22");
 	}
 
 	/**
@@ -291,17 +420,37 @@ public class MLayout extends LayoutType {
 	 */
 	void onDropChild(View child, int x, int y) {
 
+		Log.e("RRR", "onDropChild");
+		
 		if (child != null) {
 			LayoutParams lp = (LayoutParams) child.getLayoutParams();
 			lp.cellX = x;
 			lp.cellY = y;
 			lp.isDragging = false;
 			child.requestLayout();
+			
+			//--
+			if(child instanceof MobjectImageView)
+			{
+				if(mSpeechBubbleMap.containsKey(child)) {
+					SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(child);
+					if(sb.getVisible() == VISIBLE)
+						sb.setVisibility(VISIBLE);
+					setSpeechBubbleLayout((MobjectImageView) child);
+					
+					MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(child);
+					if(am.getVisible() == VISIBLE)
+						am.setVisibility(VISIBLE);
+					setAvatarMenuLayout((MobjectImageView) child);
+				}
+			}
+			
 			invalidate();
 		}
 	}
 
 	void onDropAborted(View child) {
+		Log.e("RRR", "onDropAborted");
 		if (child != null) {
 			((LayoutParams) child.getLayoutParams()).isDragging = false;
 			invalidate();
@@ -315,8 +464,19 @@ public class MLayout extends LayoutType {
 	 *            The child that is being dragged
 	 */
 	void onDragChild(View child) {
+		Log.e("RRR", "onDragChild");
+		
 		LayoutParams lp = (LayoutParams) child.getLayoutParams();
 		lp.isDragging = true;
+
+		//
+		if(mSpeechBubbleMap.containsKey(child)) {
+			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(child);
+			sb.setVisibility(INVISIBLE);
+			
+			MAvatarMenu ma = (MAvatarMenu) mAvatarMenuMap.get(child);
+			ma.setVisibility(INVISIBLE);
+		}
 	}
 
 	public int[] rectToCell(int width, int height) {
@@ -401,9 +561,8 @@ public class MLayout extends LayoutType {
 	protected void dispatchDraw(Canvas canvas) {
 		super.dispatchDraw(canvas);
 	}
-	
-	public void initMLayout(Launcher launcher, int screenIdx)
-	{
+
+	public void initMLayout(Launcher launcher, int screenIdx) {
 		this.mLauncher = launcher;
 		this.mScreenIdx = screenIdx;
 	}
@@ -417,27 +576,31 @@ public class MLayout extends LayoutType {
 		this.mFlooringResIdx = idx;
 		drawMBackground();
 	}
-	
+
 	public void loadMBackground() {
-		int wIdx = SharedPreference.getIntSharedPreference(mLauncher, mScreenIdx + "|w");
+		int wIdx = SharedPreference.getIntSharedPreference(mLauncher,
+				mScreenIdx + "|w");
 		wIdx = wIdx > 0 ? wIdx : 0;
 		this.mWallpaperResIdx = wIdx;
-		
-		int fIdx = SharedPreference.getIntSharedPreference(mLauncher, mScreenIdx + "|f");
+
+		int fIdx = SharedPreference.getIntSharedPreference(mLauncher,
+				mScreenIdx + "|f");
 		fIdx = fIdx > 0 ? fIdx : 0;
 		this.mFlooringResIdx = fIdx;
-		
+
 		drawMBackground();
 	}
 
 	public void drawMBackground() {
-		if (this.getWidth() > 0 && this.getHeight() > 0) {			
-			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|w", mWallpaperResIdx);
-			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|f", mFlooringResIdx);
-			
+		if (this.getWidth() > 0 && this.getHeight() > 0) {
+			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|w",
+					mWallpaperResIdx);
+			SharedPreference.putSharedPreference(mLauncher, mScreenIdx + "|f",
+					mFlooringResIdx);
+
 			Bitmap bitmap = Bitmap.createBitmap(this.getWidth(),
 					this.getHeight(), Bitmap.Config.ARGB_8888);
-						
+
 			Canvas canvas = new Canvas(bitmap);
 
 			MBackground mBack = new MBackground(canvas.getWidth(),

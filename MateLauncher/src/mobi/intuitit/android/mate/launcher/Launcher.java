@@ -669,7 +669,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public MobjectView mObjectView;
 	public Dockbar mDockbar;
 	public MDockbar mMDockbar;
-	public SpeechBubbleView mSpeechBubbleview;
+	public SpeechBubbleView mSpeechBubbleView;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -734,10 +734,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
-		mSpeechBubbleview = (SpeechBubbleView) dragLayer
+		mSpeechBubbleView = (SpeechBubbleView) dragLayer
 				.findViewById(R.id.speechbubbleview);
-		mSpeechBubbleview.setLauncher(this);
-		mSpeechBubbleview.setVisibility(View.GONE);
+		mSpeechBubbleView.setLauncher(this);
 
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
@@ -802,10 +801,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			MobjectImageView favorite = (MobjectImageView) mInflater.inflate(
 					layoutResId, parent, false);
 			favorite.initMobjectView(appInfo);
-
+			
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
-
+			
 			return favorite;
 		}
 	}
@@ -1790,8 +1789,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
 
-					if (mSpeechBubbleview.getVisibility() == View.VISIBLE) {
-						mSpeechBubbleview.setVisibility(View.GONE);
+					if (mSpeechBubbleView.getVisibility() == View.VISIBLE) {
+						mSpeechBubbleView.setVisibility(View.GONE);
 					}
 				}
 				return true;
@@ -2184,6 +2183,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
 				} else {
+					
+					MLayout mLayout = (MLayout) v.getParent();
+					mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
 
 //					Log.e("Contacts", ((Mobject) tag).Contacts);
 //					String contacts = ((Mobject) tag).Contacts;
@@ -2193,8 +2195,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 //					mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40,
 //							((Mobject) tag).cellY - 50, 0, 0);
 					
-					MobjectImageView mObjectImageView = (MobjectImageView) v;
-					mObjectImageView.setAvatarMenu();
 				}
 			}
 		} else {
@@ -2224,8 +2224,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					dialog.getWindow().setAttributes(params);
 					dialog.show();		
 					v.setTag(contactsTag);			
-
-
 				}
 			}
 		}
@@ -2352,12 +2350,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (!(v instanceof LayoutType)) {
 				// v = (View) v.getParent();
 
-//				Log.e("RRR", v.toString());
 				MobjectImageView mObjectImageView = (MobjectImageView) v;
-				if (mObjectImageView.isAvatar()) {
-
-					mObjectImageView.setSpeechBubble();
-				}
+				MLayout mLayout = (MLayout)mObjectImageView.getParent();
+				mLayout.setVisibleStateSpeechBubble((MobjectImageView) mObjectImageView);
 			}
 		}
 
@@ -3074,14 +3069,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 									.getChildAt(j);
 
 							ItemInfo info = (ItemInfo) mView.getTag();
-							Log.e("RRR", "mobjectType=" + info.mobjectType);
-							Log.e("RRR", "receiver=" + receiver);
-							Log.e("RRR", "Contacts=" + info.Contacts);
+//							Log.e("RRR", "mobjectType=" + info.mobjectType);
+//							Log.e("RRR", "receiver=" + receiver);
+//							Log.e("RRR", "Contacts=" + info.contacts);
 							if (info.mobjectType == 1) {
-								if (info.Contacts.equals(receiver)
+								if (info.contacts.equals(receiver)
 										|| receiver.equals("15555215556")) {
-									mView.setSpeechMsg(msg);
-									break;
+									
+									mLayout.setSpeechBubbleText(mView, msg);
+									
+									
+//									break;
 								}
 							}
 						}
@@ -3132,7 +3130,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final ContentResolver cr = getContentResolver();
 					String name = contactlist.get(position).Name;
 					String Num = contactlist.get(position).PhoneNum;
-					contactsTag.Contacts = Num;
+					contactsTag.contacts = Num;
 					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
 					cr.update(
 							LauncherSettings.Favorites.getContentUri(App_id, false),
