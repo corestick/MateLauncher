@@ -232,9 +232,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	static boolean DOWNLOAR_VIEW = false;
 
 	public Launcher mLauncher = this;
+
 	Mobject Apptag = new Mobject(); // 매칭어플리케이션 정보 저장
 	Mobject contactsTag = new Mobject(); // 매칭 연락처 정보 저장
-
+	View SeletView;// 현재 선택된 뷰
 	private static final int SEND_THREAD_PLAY = 0;
 	private static final int SEND_THREAD_STOP = 1;
 
@@ -2182,7 +2183,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
 					// 앱리스트 얻어오기 커스텀 다이얼로그
-					Apptag = null;
+					SeletView = v;
 					AppList_dialog dialog = new AppList_dialog(this, tag);
 					dialog.setCancelable(true);
 					android.view.WindowManager.LayoutParams params = dialog
@@ -2191,12 +2192,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					params.height = LayoutParams.FILL_PARENT;
 					dialog.getWindow().setAttributes(params);
 					dialog.show();
-					v.setTag(Apptag);
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
-					contactsTag = null;
+					SeletView = v;
 					ContactList_dialog dialog = new ContactList_dialog(this,
 							tag);
+
 					dialog.setCancelable(true);
 					android.view.WindowManager.LayoutParams params = dialog
 							.getWindow().getAttributes();
@@ -2204,7 +2205,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					params.height = LayoutParams.FILL_PARENT;
 					dialog.getWindow().setAttributes(params);
 					dialog.show();
-					v.setTag(contactsTag);
+
 				}
 			}
 		}
@@ -3093,9 +3094,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			contactlist = new ArrayList<Contacts>();
 			contact_Adapter = new Contact_Adapter();
 			listview.setAdapter(contact_Adapter);
-			// listview.addFooterView(v)
-			final long App_id = ((Mobject) tag).id;
-			contactsTag = (Mobject) tag;
+
+//			listview.addFooterView(v)
+			final long App_id = ((Mobject) tag).id;			
+			contactsTag = (Mobject) tag;		
+
 			readContacts3();
 
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -3103,19 +3106,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				public void onItemClick(AdapterView<?> parentView, View view,
 						int position, long id) {
 					final ContentValues values = new ContentValues();
-					final ContentResolver cr = getContentResolver();
+					final ContentResolver cr = getContentResolver();					
 					String name = contactlist.get(position).Name;
 					String Num = contactlist.get(position).PhoneNum;
 					contactsTag.contacts = Num;
-					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS,
-							Num);
-					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
-							false), values, null, null);
-
-					Log.i("MATE", "연락처 매칭");
-					// Toast.makeText(mLauncher, "연락처매칭성공!!",
-					// Toast.LENGTH_SHORT)
-					// .show();
+					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
+					cr.update(
+							LauncherSettings.Favorites.getContentUri(App_id, false),
+							values, null, null);
+					Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT)
+							.show();
+					viewSetTag(contactsTag);
 					dismiss();
 
 				}
@@ -3271,9 +3272,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 				int position, long id) {
 					final ContentValues values = new ContentValues();
-					final ContentResolver cr = getContentResolver();
+					final ContentResolver cr = getContentResolver();					
 					ItemInfo itemInfo = new ItemInfo();
-
 					Intent intent = getPackageManager()
 							.getLaunchIntentForPackage(
 									appInfoArry.get(position).packagename);
@@ -3314,10 +3314,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					String uri = itemInfo.intent.toUri(0);
 					values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
-					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
-							false), values, null, null);
-					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT)
-							.show();
+					cr.update(
+							LauncherSettings.Favorites.getContentUri(App_id, false),
+							values, null, null);
+					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT).show();
+					viewSetTag(Apptag);
 					dismiss();
 					// this.getPackageManager().getLaunchIntentForPackage(packageName);
 					// startActivity(intent); 패키지 이름으로 실행시키는 로직
@@ -3499,6 +3500,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public void modifyModeOff() {
 		mModifyHandler.sendEmptyMessage(SEND_THREAD_STOP);
 
+	}
+
+	public void viewSetTag(Mobject tag) {
+		SeletView.setTag(tag);
 	}
 
 }
