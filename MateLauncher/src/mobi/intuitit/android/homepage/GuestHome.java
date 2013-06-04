@@ -1,4 +1,5 @@
 package mobi.intuitit.android.homepage;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -10,8 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,179 +23,225 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class GuestHome extends Activity implements OnScrollListener ,OnClickListener {
+public class GuestHome extends Activity implements OnScrollListener,
+		OnClickListener {
 
-	
 	final String serverUrl = "http://kimsunghyuntest2.appspot.com/simpleservletapp";
 
 	private static final int TEXT_DIALOG = 0;
-	
+
 	private String sdcard = Environment.getExternalStorageDirectory()
 			.getAbsolutePath();
-	
+
 	private ScrollAdapter mAdapter;
 	private ListView mListView;
 	private LayoutInflater mInflater;
 	private ArrayList<String> mRowList;
 	private boolean mLockListView;
 	public int msgCnt = 20;
-	
-	//임시 사진, 남길말, 이름
-	public String tempState = "어깨위에보리";	
+
+	// 임시 사진, 남길말, 이름
+	public String tempState = "어깨위에보리";
 
 	// 사진, 남길말, 이름
 	public TextView m_State;
 	public TextView m_Name;
 	public ImageView m_Profile;
 
-//	private ImageView btnRecommend;
-//	private ImageView btnDown;
-//	private ImageView btnWrite;
-	
+	// private ImageView btnRecommend;
+	// private ImageView btnDown;
+	// private ImageView btnWrite;
+
 	private TextView tv_Recommend;
 	private TextView tv_Download;
 	private TextView tv_Visit;
-	
+
 	public int count_Recommend = 0;
 	public int count_Download = 0;
 	public int count_Visit = 0;
-	
+
 	public Button downButton;
 	public Button likeButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_guest_home);
-		
+
 		downButton = (Button) findViewById(R.id.guest_download);
-		likeButton  = (Button) findViewById(R.id.guest_like_it);
+		likeButton = (Button) findViewById(R.id.guest_like_it);
 		downButton.setOnClickListener(this);
 		likeButton.setOnClickListener(this);
 
-//		mRowList = new ArrayList<String>();
-//		mLockListView = true;
-//
-//		mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
-//		mListView = (ListView) findViewById(R.id.guest_listView);
+		// mRowList = new ArrayList<String>();
+		// mLockListView = true;
+		//
+		// mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
+		// mListView = (ListView) findViewById(R.id.guest_listView);
 
-//		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
-//
-//		mListView.setOnScrollListener((OnScrollListener) this);
-//		mListView.setAdapter(mAdapter);
+		// mInflater = (LayoutInflater)
+		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		// mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
+		//
+		// mListView.setOnScrollListener((OnScrollListener) this);
+		// mListView.setAdapter(mAdapter);
 
-//		btnRecommend = (ImageView) findViewById(R.id.btnRecommend);
-//		btnDown = (ImageView) findViewById(R.id.btnDown);
-//		btnWrite = (ImageView) findViewById(R.id.btnWirte);
+		// btnRecommend = (ImageView) findViewById(R.id.btnRecommend);
+		// btnDown = (ImageView) findViewById(R.id.btnDown);
+		// btnWrite = (ImageView) findViewById(R.id.btnWirte);
 		// 추천, 다운, 방문 텍스트뷰
 		tv_Recommend = (TextView) findViewById(R.id.guest_recommend);
 		tv_Download = (TextView) findViewById(R.id.guest_down);
 		tv_Visit = (TextView) findViewById(R.id.guest_visit);
 		// 남길말, 사진
-		m_State = (TextView)findViewById(R.id.guest_state);
-		m_Profile = (ImageView)findViewById(R.id.guest_profile);
+		m_State = (TextView) findViewById(R.id.guest_state);
+		m_Profile = (ImageView) findViewById(R.id.guest_profile);
 		m_Profile.setImageResource(R.drawable.hyun);
 		// 추천, 다운, 방문 셋
 		tv_Recommend = setRecommend(count_Recommend);
 		tv_Download = setDownload(count_Download);
 		tv_Visit = setVisit(count_Visit);
-		// 남길말, 사진 
+		// 남길말, 사진
 		m_State = setState(tempState);
-//		m_Profile = setProfile();
-		
+		// m_Profile = setProfile();
 
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
 		gallery.setAdapter(new GuestImageAdapter(this));
 
-//		addItems(10);		
+		gallery.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				Guest_Dialog dialog = new Guest_Dialog(GuestHome.this, position);
+				dialog.setCancelable(true);
+				android.view.WindowManager.LayoutParams params = dialog
+						.getWindow().getAttributes();
+				params.width = LayoutParams.MATCH_PARENT;
+				params.height = LayoutParams.MATCH_PARENT;
+				dialog.getWindow().setAttributes(params);
+				dialog.show();
+			}
+		});
+
+		// addItems(10);
 
 		// 방명록 작성 버튼
-//		btnWrite.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//
-//				final Dialog dia = new Dialog(GuestHome.this);
-//				dia.setContentView(R.layout.visitorbook);
-//				dia.show();
-//
-//				Button visit_ok = (Button) dia.findViewById(R.id.ok);
-//				Button visit_cancle = (Button) dia.findViewById(R.id.cancle);
-//				EditText visitbook = (EditText) dia
-//						.findViewById(R.id.editText1);
-//
-//				visit_ok.setOnClickListener(new OnClickListener() {
-//					@Override
-//					public void onClick(View v) {
-//						Toast.makeText(GuestHome.this, "방명록",
-//								Toast.LENGTH_SHORT).show();
-//						dia.dismiss();
-//					}
-//				});
-//				visit_cancle.setOnClickListener(new OnClickListener() {
-//					@Override
-//					public void onClick(View v) {
-//						dia.dismiss();
-//					}
-//				});
-//			}
-//		});
-//
-//		// 추천
-//		btnRecommend.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Toast.makeText(GuestHome.this, "추천", Toast.LENGTH_SHORT).show();
-//			}
-//		});
-//
-//		// 다운로드
-//		btnDown.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Toast.makeText(GuestHome.this, "다운로드", Toast.LENGTH_SHORT)
-//						.show();
-//			}
-//		});
+		// btnWrite.setOnClickListener(new View.OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		//
+		// final Dialog dia = new Dialog(GuestHome.this);
+		// dia.setContentView(R.layout.visitorbook);
+		// dia.show();
+		//
+		// Button visit_ok = (Button) dia.findViewById(R.id.ok);
+		// Button visit_cancle = (Button) dia.findViewById(R.id.cancle);
+		// EditText visitbook = (EditText) dia
+		// .findViewById(R.id.editText1);
+		//
+		// visit_ok.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(GuestHome.this, "방명록",
+		// Toast.LENGTH_SHORT).show();
+		// dia.dismiss();
+		// }
+		// });
+		// visit_cancle.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// dia.dismiss();
+		// }
+		// });
+		// }
+		// });
+		//
+		// // 추천
+		// btnRecommend.setOnClickListener(new View.OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(GuestHome.this, "추천", Toast.LENGTH_SHORT).show();
+		// }
+		// });
+		//
+		// // 다운로드
+		// btnDown.setOnClickListener(new View.OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Toast.makeText(GuestHome.this, "다운로드", Toast.LENGTH_SHORT)
+		// .show();
+		// }
+		// });
 	}
 
-	public TextView setRecommend(int n){
-		tv_Recommend.setText("추천 : " + n);	
-		return tv_Recommend;	
+	class Guest_Dialog extends Dialog implements
+			android.view.View.OnClickListener {
+		ImageView iv;
+
+		public Guest_Dialog(Context context, int position) {
+			super(context);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.dialog_screen);
+
+			iv = (ImageView) findViewById(R.id.dialog_imageview);
+			Uri uri = Uri.fromFile(new File(sdcard
+					+ "/MateLauncher/Owner/screen" + position + ".jpg"));
+			iv.setImageURI(uri);
+			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			iv.setOnClickListener(this);
+		}
+
+		public void onClick(View view) {
+			if (view == iv) {
+				dismiss();
+			}
+		}
 	}
-	public TextView setDownload(int n){
-		tv_Download.setText("다운 : " + n);	
-		return tv_Download;	
+
+	public TextView setRecommend(int n) {
+		tv_Recommend.setText("추천 : " + n);
+		return tv_Recommend;
 	}
-	public TextView setVisit(int n){
-		tv_Visit.setText("방문 : " + n);	
-		return tv_Visit;	
-	}	
+
+	public TextView setDownload(int n) {
+		tv_Download.setText("다운 : " + n);
+		return tv_Download;
+	}
+
+	public TextView setVisit(int n) {
+		tv_Visit.setText("방문 : " + n);
+		return tv_Visit;
+	}
+
 	// 남길말, 이름, 사진 설정
-	public TextView setState(String state){
+	public TextView setState(String state) {
 		m_State.setText(state);
 		return m_State;
 	}
-	public ImageView setProfile(){		
-		Uri uri = Uri.fromFile(new File(sdcard+"/Test/tayeon.jpg")); 
+
+	public ImageView setProfile() {
+		Uri uri = Uri.fromFile(new File(sdcard + "/Test/tayeon.jpg"));
 		Log.e("na", uri.toString());
-		m_Profile.setImageURI(uri);			
-//		m_Profile.setScaleType(ImageView.ScaleType.FIT_XY);
-//		m_Profile.setLayoutParams(new Gallery.LayoutParams(300, 400));	
+		m_Profile.setImageURI(uri);
+		// m_Profile.setScaleType(ImageView.ScaleType.FIT_XY);
+		// m_Profile.setLayoutParams(new Gallery.LayoutParams(300, 400));
 		return m_Profile;
 	}
-
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
@@ -204,7 +253,7 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 		if (msgCnt != 0) {
 			if (firstVisibleItem >= count && totalItemCount != 0
 					&& mLockListView == false) {
-//				addItems(5);
+				// addItems(5);
 			}
 		}
 	}
@@ -241,7 +290,6 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 		Handler handler = new Handler();
 		handler.postDelayed(run, 5000);
 	}
-	
 
 	public String[] getJSONString(String str) {
 		int bracketCnt = 0;
@@ -263,13 +311,13 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 		}
 		return strArr;
 	}
-	
+
 	// DB 삭제와 화면지우기
-		public void remove_DB() {
-			LauncherProvider lp = new LauncherProvider();
-			lp.delete_table();
-		}
-	
+	public void remove_DB() {
+		LauncherProvider lp = new LauncherProvider();
+		lp.delete_table();
+	}
+
 	public void insert_DB() {
 		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
 		String TABLE_FAVORITES = "favorites";
@@ -282,7 +330,7 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 
 		remove_DB(); // DB 지우고, 화면 View 삭제
 
-		String str = JSONfunctions.getJSONfromURL(serverUrl,"123");
+		String str = JSONfunctions.getJSONfromURL(serverUrl, "123");
 		String[] jsonArr = getJSONString(str);
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {
@@ -298,13 +346,13 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 					values.put("mobjectType", json.getString("MobjectType"));
 					values.put("mobjectIcon", json.getString("MobjectIcon"));
 					values.put("itemType", json.getString("itemType"));
-					if (json.getString("intent").equals("null")==false)
+					if (json.getString("intent").equals("null") == false)
 						values.put("intent", json.getString("intent"));
 					else {
 						String intent = null;
 						values.put("intent", intent);
 					}
-					if (json.getString("contacts").equals("null")==false)
+					if (json.getString("contacts").equals("null") == false)
 						values.put("contacts", json.getString("contacts"));
 					else {
 						String contacts = null;
@@ -332,12 +380,11 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 
 	@Override
 	public void onClick(View v) {
-		if(v.equals(downButton)){
+		if (v.equals(downButton)) {
 			insert_DB();
-		}
-		else if(v.equals(likeButton)){
+		} else if (v.equals(likeButton)) {
 			count_Recommend++;
 		}
-		
+
 	}
 }

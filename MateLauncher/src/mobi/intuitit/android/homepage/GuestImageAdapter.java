@@ -52,12 +52,11 @@ public class GuestImageAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView imageView = new ImageView(mContext);
 		
-		Uri uri = Uri.fromFile(new File(mImagePath[position])); 
-		Log.e("na"+position, uri.toString());
+		Uri uri = Uri.fromFile(new File(mImagePath[position])); 		
 		imageView.setImageURI(uri);		
 		
-		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-		imageView.setLayoutParams(new Gallery.LayoutParams(300, 400));
+		imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+		imageView.setLayoutParams(new Gallery.LayoutParams(200, 400));
 			
 		return imageView;
 	}	

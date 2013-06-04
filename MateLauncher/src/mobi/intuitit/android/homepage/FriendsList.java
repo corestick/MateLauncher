@@ -46,7 +46,7 @@ public class FriendsList extends Activity implements OnItemClickListener{
 		// 리스트뷰에 항목 추가                           
 
 		add("어깨위의 보리", "김성현", R.drawable.hyun);
-//		add("그 겨울 바람이 분다", "김권섭", R.drawable.kwon);
+		add("그 겨울 바람이 분다", "김권섭", R.drawable.kwon);
 	}
 	
 	public void add(String state, String name, int profile){		

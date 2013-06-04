@@ -72,8 +72,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		if (v.equals(imgCall)) {
-			ItemInfo info = (ItemInfo) mOjbectImageView.getTag();
-			
+			ItemInfo info = (ItemInfo) mOjbectImageView.getTag();			
 			Intent intent = new Intent(Intent.ACTION_CALL);
 			intent.setData(Uri.parse("tel:" + info.contacts));
 			mLauncher.startActivity(intent);

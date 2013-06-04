@@ -9,7 +9,7 @@
         android:id="@+id/friend_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff000000" >
+        android:background="#ff494747" >
     </ListView>
 
 </LinearLayout>

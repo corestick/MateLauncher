@@ -374,9 +374,7 @@ public class MLayout extends LayoutType {
 		// if (layoutDrawed) 벽지, 바닥 바뀌면 적용을 위해
 		// return;
 
-		if (mThumbCanvas == null)
-			Log.e("Width", String.valueOf(getWidth()));
-		Log.e("Height", String.valueOf(getHeight()));
+		if (mThumbCanvas == null)	
 		initThumb(getWidth() >> 2, getHeight() >> 2);
 
 		setDrawingCacheEnabled(true);

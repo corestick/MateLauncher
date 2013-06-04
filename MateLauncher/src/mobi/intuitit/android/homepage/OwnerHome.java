@@ -84,7 +84,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_owner_home);
@@ -124,7 +124,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		// 런처 홈스크린 보여주는 부분
 		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
 		gallery.setAdapter(new OwnerImageAdapter(this));
-
+		gallery.setSelection(1);
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

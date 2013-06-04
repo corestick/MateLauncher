@@ -3447,8 +3447,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			switch (msg.what) {
 			case SEND_THREAD_PLAY:
 				Animation anim = new TranslateAnimation(0, 3, 0, 0);
-				anim.setDuration(300);
-				mLauncher.getWorkspace().startAnimation(anim);
+				anim.setDuration(500);
+				mLauncher.getWorkspace().getChildAt(mLauncher.getWorkspace().getCurrentScreen()).startAnimation(anim);
 				// anim = new TranslateAnimation(0,2, 0, 0);
 				// anim.setDuration(300);
 				// iv.startAnimation(anim);
@@ -3490,7 +3490,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				mModifyHandler.sendMessage(msg);
 
 				try {
-					Thread.sleep(300);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
