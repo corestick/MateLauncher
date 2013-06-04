@@ -78,6 +78,17 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_05);
 		furnitureList.add(R.drawable.m_furniture_06);
 		furnitureList.add(R.drawable.m_furniture_07);
+		furnitureList.add(R.drawable.m_furniture_08);
+		furnitureList.add(R.drawable.m_furniture_09);
+		furnitureList.add(R.drawable.m_furniture_10);
+		furnitureList.add(R.drawable.m_furniture_11);
+		furnitureList.add(R.drawable.m_furniture_12);
+		furnitureList.add(R.drawable.m_furniture_13);
+		furnitureList.add(R.drawable.m_furniture_14);
+		furnitureList.add(R.drawable.m_furniture_15);
+		furnitureList.add(R.drawable.m_furniture_16);
+		furnitureList.add(R.drawable.m_furniture_17);
+		furnitureList.add(R.drawable.m_furniture_18);
 		
 	}
 	

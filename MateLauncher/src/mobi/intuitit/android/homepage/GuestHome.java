@@ -47,6 +47,7 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 	
 	//임시 사진, 남길말, 이름
 	public String tempState = "어깨위에보리";	
+
 	// 사진, 남길말, 이름
 	public TextView m_State;
 	public TextView m_Name;

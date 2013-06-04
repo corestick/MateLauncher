@@ -63,25 +63,25 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			mDockButton[i].setTextSize(12);
 			mDockButton[i].setTextColor(color.bright_text_dark_focused);
 		}
-		Drawable drawable = getResources().getDrawable(R.drawable.phone);
+		Drawable drawable = getResources().getDrawable(R.drawable.icon_phone);
 		drawable = Utilities.createIconThumbnail(drawable, mLauncher);
 		mDockButton[0].setCompoundDrawablesWithIntrinsicBounds(null, drawable,
 				null, null);
 		mDockButton[0].setText("전화");
 
-		Drawable drawable1 = getResources().getDrawable(R.drawable.contacts);
+		Drawable drawable1 = getResources().getDrawable(R.drawable.icon_contacts);
 		drawable1 = Utilities.createIconThumbnail(drawable1, mLauncher);
 		mDockButton[1].setCompoundDrawablesWithIntrinsicBounds(null, drawable1,
 				null, null);
 		mDockButton[1].setText("연락처");
 
-		Drawable drawable2 = getResources().getDrawable(R.drawable.message);
+		Drawable drawable2 = getResources().getDrawable(R.drawable.icon_message);
 		drawable2 = Utilities.createIconThumbnail(drawable2, mLauncher);
 		mDockButton[2].setCompoundDrawablesWithIntrinsicBounds(null, drawable2,
 				null, null);
 		mDockButton[2].setText("문자");
 
-		Drawable drawable3 = getResources().getDrawable(R.drawable.allapps);
+		Drawable drawable3 = getResources().getDrawable(R.drawable.icon_apps);
 		drawable3 = Utilities.createIconThumbnail(drawable3, mLauncher);
 		mDockButton[3].setCompoundDrawablesWithIntrinsicBounds(null, drawable3,
 				null, null);
