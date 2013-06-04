@@ -282,7 +282,7 @@ public class GuestHome extends Activity implements OnScrollListener ,OnClickList
 
 		remove_DB(); // DB 지우고, 화면 View 삭제
 
-		String str = JSONfunctions.getJSONfromURL(serverUrl,"+821027480952");
+		String str = JSONfunctions.getJSONfromURL(serverUrl,"123");
 		String[] jsonArr = getJSONString(str);
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {
