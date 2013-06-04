@@ -96,8 +96,6 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -232,14 +230,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	static boolean modifyMode = false; // 수정모드 플래그
 	static boolean DOWNLOAR_VIEW = false;
-	
+
 	public Launcher mLauncher = this;
-	Mobject Apptag  = new Mobject(); //매칭어플리케이션 정보 저장
-	Mobject contactsTag = new Mobject(); //매칭 연락처 정보 저장
-	
+	Mobject Apptag = new Mobject(); // 매칭어플리케이션 정보 저장
+	Mobject contactsTag = new Mobject(); // 매칭 연락처 정보 저장
+
 	private static final int SEND_THREAD_PLAY = 0;
 	private static final int SEND_THREAD_STOP = 1;
-	
+
 	private ModifyHandler mModifyHandler = null;
 	private ModifyThread mModifyThread = null;
 
@@ -248,7 +246,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		Log.e("Launcher-Start", "Start");
 		if (DOWNLOAR_VIEW) {
 			Log.e("Launcher-Start-change", "Start-change");
-			start_reLoad(); //다운받기 누르면 처음부터 다시 읽어서 화면에 뿌림.
+			start_reLoad(); // 다운받기 누르면 처음부터 다시 읽어서 화면에 뿌림.
 			DOWNLOAR_VIEW = false;
 		}
 		super.onStart();
@@ -398,10 +396,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mRestoring = false;
 	}
-	
-	public void start_reLoad(){
-		sModel.loadUserItems(false, this, mLocaleChanged,
-				false);
+
+	public void start_reLoad() {
+		sModel.loadUserItems(false, this, mLocaleChanged, false);
 		mRestoring = false;
 	}
 
@@ -671,7 +668,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public MobjectView mObjectView;
 	public Dockbar mDockbar;
 	public MDockbar mMDockbar;
-	public SpeechBubbleView mSpeechBubbleView;
 
 	/**
 	 * Finds all the views we need and configure them properly.
@@ -736,10 +732,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mObjectView.setLauncher(this);
 		mObjectView.setDragger(dragLayer);
 
-		mSpeechBubbleView = (SpeechBubbleView) dragLayer
-				.findViewById(R.id.speechbubbleview);
-		mSpeechBubbleView.setLauncher(this);
-
 		dragLayer.setIgnoredDropTarget(grid);
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
@@ -803,10 +795,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			MobjectImageView favorite = (MobjectImageView) mInflater.inflate(
 					layoutResId, parent, false);
 			favorite.initMobjectView(appInfo);
-			
+
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
-			
+
 			return favorite;
 		}
 	}
@@ -1749,7 +1741,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
 		registerReceiver(mSmsReceiver, new IntentFilter(
 				"android.provider.Telephony.SMS_RECEIVED"));
-		mModifyHandler = new ModifyHandler(); //수정모드에 쓰는 핸들러		
+		mModifyHandler = new ModifyHandler(); // 수정모드에 쓰는 핸들러
 	}
 
 	/**
@@ -1790,10 +1782,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					if (mObjectView.getVisibility() == View.VISIBLE)
 						mObjectView.hideMobjectView();
-
-					if (mSpeechBubbleView.getVisibility() == View.VISIBLE) {
-						mSpeechBubbleView.setVisibility(View.GONE);
-					}
 				}
 				return true;
 			case KeyEvent.KEYCODE_HOME:
@@ -2184,54 +2172,46 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if (((Mobject) tag).mobjectType == 0) {
 					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
-				} else {					
+				} else {
 					MLayout mLayout = (MLayout) v.getParent();
 					mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
-
-//					Log.e("Contacts", ((Mobject) tag).Contacts);
-//					String contacts = ((Mobject) tag).Contacts;
-//					mSpeechBubbleview.removeAllViews();
-//					mSpeechBubbleview.setVisibility(View.VISIBLE);
-//					mSpeechBubbleview.CreateSelectView(contacts);
-//					mSpeechBubbleview.setLocation(((Mobject) tag).cellX - 40,
-//							((Mobject) tag).cellY - 50, 0, 0);
-					
 				}
 			}
 		} else {
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
-					//앱리스트 얻어오기 커스텀 다이얼로그
+					// 앱리스트 얻어오기 커스텀 다이얼로그
 					Apptag = null;
-					AppList_dialog dialog= new AppList_dialog(this,tag);					
+					AppList_dialog dialog = new AppList_dialog(this, tag);
 					dialog.setCancelable(true);
 					android.view.WindowManager.LayoutParams params = dialog
 							.getWindow().getAttributes();
 					params.width = LayoutParams.FILL_PARENT;
 					params.height = LayoutParams.FILL_PARENT;
 					dialog.getWindow().setAttributes(params);
-					dialog.show();									
+					dialog.show();
 					v.setTag(Apptag);
 				} else {
-					//전화번호 얻어오기 커스텀 다이얼로그
+					// 전화번호 얻어오기 커스텀 다이얼로그
 					contactsTag = null;
-					ContactList_dialog dialog= new ContactList_dialog(this,tag);					
+					ContactList_dialog dialog = new ContactList_dialog(this,
+							tag);
 					dialog.setCancelable(true);
 					android.view.WindowManager.LayoutParams params = dialog
 							.getWindow().getAttributes();
 					params.width = LayoutParams.FILL_PARENT;
 					params.height = LayoutParams.FILL_PARENT;
 					dialog.getWindow().setAttributes(params);
-					dialog.show();		
-					v.setTag(contactsTag);			
+					dialog.show();
+					v.setTag(contactsTag);
 				}
 			}
 		}
 	}
 
 	void startActivitySafely(Intent intent) {
-		if(intent == null){
+		if (intent == null) {
 			Toast.makeText(this, "no Application", Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -2352,7 +2332,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				// v = (View) v.getParent();
 
 				MobjectImageView mObjectImageView = (MobjectImageView) v;
-				MLayout mLayout = (MLayout)mObjectImageView.getParent();
+				MLayout mLayout = (MLayout) mObjectImageView.getParent();
 				mLayout.setVisibleStateSpeechBubble((MobjectImageView) mObjectImageView);
 			}
 		}
@@ -3058,9 +3038,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					receiver = msgs[i].getOriginatingAddress();
 					msg = msgs[i].getMessageBody().toString();
 				}
-				// Toast.makeText(getApplicationContext(), msg,
-				// Toast.LENGTH_LONG)
-				// .show();
 
 				for (int i = 0; i < mWorkspace.getChildCount(); i++) {
 					MLayout mLayout = (MLayout) mWorkspace.getChildAt(i);
@@ -3070,17 +3047,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 									.getChildAt(j);
 
 							ItemInfo info = (ItemInfo) mView.getTag();
-//							Log.e("RRR", "mobjectType=" + info.mobjectType);
-//							Log.e("RRR", "receiver=" + receiver);
-//							Log.e("RRR", "Contacts=" + info.contacts);
+							// Log.e("RRR", "mobjectType=" + info.mobjectType);
+							// Log.e("RRR", "receiver=" + receiver);
+							// Log.e("RRR", "Contacts=" + info.contacts);
 							if (info.mobjectType == 1) {
-								if (info.contacts.equals(receiver)
-										|| receiver.equals("15555215556")) {
-									
+								if (info.contacts.equals(receiver)) {
 									mLayout.setSpeechBubbleText(mView, msg);
-									
-									
-//									break;
+									// break;
 								}
 							}
 						}
@@ -3096,33 +3069,35 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
-		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
-				Toast.LENGTH_SHORT).show();
+		Log.i("MATE", "문자 전송");
+		// Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
+		// Toast.LENGTH_SHORT).show();
 	}
-	
-	public int Child_Count(){
+
+	public int Child_Count() {
 		return mWorkspace.getChildCount();
 	}
-	
-	public class ContactList_dialog extends Dialog implements View.OnClickListener{
+
+	public class ContactList_dialog extends Dialog implements
+			View.OnClickListener {
 
 		ListView listview;
 		ArrayList<Contacts> contactlist;
 		Contact_Adapter contact_Adapter;
-		
+
 		public ContactList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.applist_dialog);
-			listview= (ListView) findViewById(R.id.applist_listview);
-			 contactlist = new ArrayList<Contacts>();
+			listview = (ListView) findViewById(R.id.applist_listview);
+			contactlist = new ArrayList<Contacts>();
 			contact_Adapter = new Contact_Adapter();
 			listview.setAdapter(contact_Adapter);
-//			listview.addFooterView(v)
-			final long App_id = ((Mobject) tag).id;			
+			// listview.addFooterView(v)
+			final long App_id = ((Mobject) tag).id;
 			contactsTag = (Mobject) tag;
 			readContacts3();
-			
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
@@ -3132,14 +3107,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					String name = contactlist.get(position).Name;
 					String Num = contactlist.get(position).PhoneNum;
 					contactsTag.contacts = Num;
-					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
-					cr.update(
-							LauncherSettings.Favorites.getContentUri(App_id, false),
-							values, null, null);
-					Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT)
-							.show();
+					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS,
+							Num);
+					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
+							false), values, null, null);
+
+					Log.i("MATE", "연락처 매칭");
+					// Toast.makeText(mLauncher, "연락처매칭성공!!",
+					// Toast.LENGTH_SHORT)
+					// .show();
 					dismiss();
-					
+
 				}
 			});
 			// TODO Auto-generated constructor stub
@@ -3148,14 +3126,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 		class Contacts {
 			public String Name;
 			public String PhoneNum;
 		}
-		
+
 		// 연락처 읽어오기
 		public void readContacts3() {
 			Comparator<Contacts> myComparator = new Comparator<Contacts>() {
@@ -3172,7 +3150,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			if (cur.getCount() > 0) {
 				while (cur.moveToNext()) {
-					Contacts contact = new Contacts();				
+					Contacts contact = new Contacts();
 					String id = cur.getString(cur
 							.getColumnIndex(ContactsContract.Contacts._ID));
 					String name = cur
@@ -3184,11 +3162,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						contact.Name = name;
 						// sb.append(name);
 						// get the phone number
-						Cursor pCur = cr.query(
-								ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-								null,
-								ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-										+ " = ?", new String[] { id }, null);
+						Cursor pCur = cr
+								.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+										null,
+										ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+												+ " = ?", new String[] { id },
+										null);
 						int typeIndex = pCur
 								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
 						int numIndex = pCur
@@ -3219,7 +3198,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Collections.sort(contactlist, myComparator);
 			contact_Adapter.notifyDataSetChanged();
 		}
-		
+
 		// 연락처 adapter
 		public class Contact_Adapter extends BaseAdapter {
 
@@ -3256,7 +3235,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					convertView = inflater.inflate(R.layout.contact_list,
 							parent, false);
 				}
-				Name = (TextView) convertView.findViewById(R.id.contact_list_name);
+				Name = (TextView) convertView
+						.findViewById(R.id.contact_list_name);
 				PhoneNum = (TextView) convertView
 						.findViewById(R.id.contact_list_phonenum);
 
@@ -3266,23 +3246,21 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 
 		}
-		
+
 	}
-	
-	
-	public class AppList_dialog extends Dialog implements View.OnClickListener
-	{
+
+	public class AppList_dialog extends Dialog implements View.OnClickListener {
 		ListView listview;
-		App_Adapter App_Adapter;		
+		App_Adapter App_Adapter;
 		ArrayList<appInfo> appInfoArry;
-		
-		public AppList_dialog(Context context, Object tag) {			
+
+		public AppList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.applist_dialog);			
-			listview= (ListView) findViewById(R.id.applist_listview);
+			setContentView(R.layout.applist_dialog);
+			listview = (ListView) findViewById(R.id.applist_listview);
 			appInfoArry = new ArrayList<appInfo>();
-			final long App_id = ((Mobject) tag).id;			
+			final long App_id = ((Mobject) tag).id;
 			Apptag = (Mobject) tag;
 			App_Adapter = new App_Adapter();
 			listview.setAdapter(App_Adapter);
@@ -3305,10 +3283,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					PackageManager packageManager = getPackageManager();
 					ActivityInfo activityInfo = null;
 					try {
-						activityInfo = packageManager
-								.getActivityInfo(component, 0 /*
-															 * no flags
-															 */);
+						activityInfo = packageManager.getActivityInfo(
+								component, 0 /*
+											 * no flags
+											 */);
 					} catch (NameNotFoundException e) {
 						e("matching-app",
 								"Couldn't find ActivityInfo for selected application",
@@ -3321,7 +3299,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							itemInfo.title = activityInfo.name;
 						}
 
-						itemInfo.setActivity(component,
+						itemInfo.setActivity(
+								component,
 								Intent.FLAG_ACTIVITY_NEW_TASK
 										| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 						itemInfo.container = ItemInfo.NO_ID;
@@ -3330,29 +3309,30 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					Apptag.title = itemInfo.title;
 
 					String titleStr = itemInfo.title.toString();
-					values.put(LauncherSettings.BaseLauncherColumns.TITLE, titleStr);
+					values.put(LauncherSettings.BaseLauncherColumns.TITLE,
+							titleStr);
 
 					String uri = itemInfo.intent.toUri(0);
 					values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
-					cr.update(
-							LauncherSettings.Favorites.getContentUri(App_id, false),
-							values, null, null);
-					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT).show();
+					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
+							false), values, null, null);
+					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT)
+							.show();
 					dismiss();
 					// this.getPackageManager().getLaunchIntentForPackage(packageName);
 					// startActivity(intent); 패키지 이름으로 실행시키는 로직
-					
+
 				}
-				
+
 			});
 			// TODO Auto-generated constructor stub
 		}
 
 		@Override
-		public void onClick(View v) {			
-			
+		public void onClick(View v) {
+
 		}
-		
+
 		public void loadApp() {
 			Comparator<appInfo> myComparator = new Comparator<appInfo>() {
 				Collator app_Collator = Collator.getInstance();
@@ -3365,20 +3345,23 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			PackageManager pm = getPackageManager();
 			final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 			mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-			final List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
+			final List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent,
+					0);
 			final int count = apps.size();
 			for (int i = 0; i < count; i++) {
 				ResolveInfo info = apps.get(i);
 				appInfo appinfo = new appInfo();
 				appinfo.packagename = info.activityInfo.packageName;
-				appinfo.appName = info.activityInfo.applicationInfo.loadLabel(pm)
-						.toString();
-				appinfo.appIcon = info.activityInfo.applicationInfo.loadIcon(pm);
+				appinfo.appName = info.activityInfo.applicationInfo.loadLabel(
+						pm).toString();
+				appinfo.appIcon = info.activityInfo.applicationInfo
+						.loadIcon(pm);
 				if (i == 0) {
 					appInfoArry.add(appinfo);
 				} else {
 					for (int j = 0; j <= appInfoArry.size(); j++) {
-						if ((appInfoArry.get(j).appName).equals(appinfo.appName) == true)
+						if ((appInfoArry.get(j).appName)
+								.equals(appinfo.appName) == true)
 							break;
 						else {
 							if (j == appInfoArry.size() - 1) {
@@ -3391,14 +3374,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Collections.sort(appInfoArry, myComparator);
 			App_Adapter.notifyDataSetChanged();
 		}
-		
+
 		// 앱 정보 저장할 클래스
 		class appInfo {
 			public String packagename;
 			public String appName;
 			public Drawable appIcon;
 		}
-		
+
 		public class App_Adapter extends BaseAdapter {
 
 			ImageView image;
@@ -3406,7 +3389,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			LayoutInflater inflater;
 
 			public App_Adapter() {
-				inflater = (LayoutInflater) mLauncher.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				inflater = (LayoutInflater) mLauncher
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			}
 
 			@Override
@@ -3433,7 +3417,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					convertView = inflater.inflate(R.layout.app_list_layout,
 							parent, false);
 				}
-				image = (ImageView) convertView.findViewById(R.id.applist_image);
+				image = (ImageView) convertView
+						.findViewById(R.id.applist_image);
 				name = (TextView) convertView.findViewById(R.id.applist_name);
 
 				Drawable icon = Utilities.createIconThumbnail(
@@ -3444,34 +3429,24 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			}
 		}
-		
+
 	}
-	
+
 	class ModifyHandler extends Handler {
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 
 			switch (msg.what) {
 			case SEND_THREAD_PLAY:
-				Animation anim = new TranslateAnimation(0,3, 0, 0);
-				anim.setDuration(300);
-//				for (int i = 0; i < mWorkspace.getChildCount(); i++) {
-//					MLayout mLayout = (MLayout) mWorkspace.getChildAt(i);
-//					for (int j = 0; j < mLayout.getChildCount(); j++) {
-//						if (mLayout.getChildAt(j) instanceof MobjectImageView) {
-//							MobjectImageView mView = (MobjectImageView) mLayout
-//									.getChildAt(j);
-//							mView.startAnimation(anim);
-//						}
-//					}
-//				}		
-				mLauncher.getWorkspace().startAnimation(anim);
+				// anim = new TranslateAnimation(0,2, 0, 0);
+				// anim.setDuration(300);
+				// iv.startAnimation(anim);
 				break;
 
 			case SEND_THREAD_STOP:
-				mModifyThread.stopThread();
+				// mCountThread.stopThread();
 				break;
 
 			default:
@@ -3480,7 +3455,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 	};
-	
+
 	class ModifyThread extends Thread implements Runnable {
 
 		private boolean isPlay = false;
@@ -3500,16 +3475,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		@Override
 		public void run() {
 			super.run();
-			while (isPlay) {				
+			while (isPlay) {
 				Message msg = mModifyHandler.obtainMessage();
-				msg.what = SEND_THREAD_PLAY;				
+				msg.what = SEND_THREAD_PLAY;
 				mModifyHandler.sendMessage(msg);
+
 				try {
 					Thread.sleep(300);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+
 			}
+
 		}
 	}
 
@@ -3520,7 +3498,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public void modifyModeOff() {
 		mModifyHandler.sendEmptyMessage(SEND_THREAD_STOP);
-		
+
 	}
 
 }
