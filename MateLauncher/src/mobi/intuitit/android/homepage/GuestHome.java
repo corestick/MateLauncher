@@ -55,9 +55,8 @@ public class GuestHome extends Activity implements OnScrollListener,
 	private boolean mLockListView;
 	public int msgCnt = 20;
 
-	// 남길말, 이름, 사진 전달받는 변수
+	// 남길말, 사진 전달받는 변수
 	public String m_state;
-	public String m_name;
 	public int m_profile;
 	
 	// 사진, 남길말, 이름
@@ -88,7 +87,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 		
 		mIntent = getIntent();
 		m_state = mIntent.getStringExtra("state");
-		m_name = mIntent.getStringExtra("name");
 		m_profile = mIntent.getIntExtra("profile", 0);
 
 		downButton = (Button) findViewById(R.id.guest_download);
@@ -113,12 +111,13 @@ public class GuestHome extends Activity implements OnScrollListener,
 		// btnDown = (ImageView) findViewById(R.id.btnDown);
 		// btnWrite = (ImageView) findViewById(R.id.btnWirte);
 		// 추천, 다운, 방문 텍스트뷰
+		tv_State = (TextView) findViewById(R.id.guest_state);
+		tv_Profile = (ImageView) findViewById(R.id.guest_profile);
 		tv_Recommend = (TextView) findViewById(R.id.guest_recommend);
 		tv_Download = (TextView) findViewById(R.id.guest_down);
 		tv_Visit = (TextView) findViewById(R.id.guest_visit);
 		// 남길말, 사진
 		tv_State = setState(m_state);
-		tv_Name = setName(m_name);
 		tv_Profile = setProfile(m_profile);
 		// 추천, 다운, 방문 셋
 		tv_Recommend = setRecommend(count_Recommend);
@@ -240,10 +239,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 	public TextView setState(String state) {
 		tv_State.setText(state);
 		return tv_State;
-	}
-	public TextView setName(String name) {
-		tv_Name.setText(name);
-		return tv_Name;
 	}
 	public ImageView setProfile(int profile) {
 		tv_Profile.setImageResource(profile);
