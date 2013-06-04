@@ -15,6 +15,7 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,6 +39,8 @@ import android.widget.TextView;
 public class GuestHome extends Activity implements OnScrollListener,
 		OnClickListener {
 
+	public Intent mIntent = new Intent();
+	
 	final String serverUrl = "http://kimsunghyuntest2.appspot.com/simpleservletapp";
 
 	private static final int TEXT_DIALOG = 0;
@@ -52,14 +55,15 @@ public class GuestHome extends Activity implements OnScrollListener,
 	private boolean mLockListView;
 	public int msgCnt = 20;
 
-	// 임시 사진, 남길말, 이름
-	public String tempState = "어깨위에보리";
-
+	// 남길말, 이름, 사진 전달받는 변수
+	public String m_state;
+	public String m_name;
+	public int m_profile;
+	
 	// 사진, 남길말, 이름
-	public TextView m_State;
-	public TextView m_Name;
-	public ImageView m_Profile;
-
+	public TextView tv_State;
+	public TextView tv_Name;
+	public ImageView tv_Profile;
 	// private ImageView btnRecommend;
 	// private ImageView btnDown;
 	// private ImageView btnWrite;
@@ -74,12 +78,18 @@ public class GuestHome extends Activity implements OnScrollListener,
 
 	public Button downButton;
 	public Button likeButton;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guest_home);
+		
+		mIntent = getIntent();
+		m_state = mIntent.getStringExtra("state");
+		m_name = mIntent.getStringExtra("name");
+		m_profile = mIntent.getIntExtra("profile", 0);
 
 		downButton = (Button) findViewById(R.id.guest_download);
 		likeButton = (Button) findViewById(R.id.guest_like_it);
@@ -107,20 +117,18 @@ public class GuestHome extends Activity implements OnScrollListener,
 		tv_Download = (TextView) findViewById(R.id.guest_down);
 		tv_Visit = (TextView) findViewById(R.id.guest_visit);
 		// 남길말, 사진
-		m_State = (TextView) findViewById(R.id.guest_state);
-		m_Profile = (ImageView) findViewById(R.id.guest_profile);
-		m_Profile.setImageResource(R.drawable.hyun);
+		tv_State = setState(m_state);
+		tv_Name = setName(m_name);
+		tv_Profile = setProfile(m_profile);
 		// 추천, 다운, 방문 셋
 		tv_Recommend = setRecommend(count_Recommend);
 		tv_Download = setDownload(count_Download);
 		tv_Visit = setVisit(count_Visit);
-		// 남길말, 사진
-		m_State = setState(tempState);
-		// m_Profile = setProfile();
+		
 
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
 		gallery.setAdapter(new GuestImageAdapter(this));
-
+		gallery.setSelection(1);
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -214,33 +222,41 @@ public class GuestHome extends Activity implements OnScrollListener,
 	}
 
 	public TextView setRecommend(int n) {
-		tv_Recommend.setText("추천 : " + n);
+		tv_Recommend.setText("" + n);
 		return tv_Recommend;
 	}
 
 	public TextView setDownload(int n) {
-		tv_Download.setText("다운 : " + n);
+		tv_Download.setText("" + n);
 		return tv_Download;
 	}
 
 	public TextView setVisit(int n) {
-		tv_Visit.setText("방문 : " + n);
+		tv_Visit.setText("" + n);
 		return tv_Visit;
 	}
 
 	// 남길말, 이름, 사진 설정
 	public TextView setState(String state) {
-		m_State.setText(state);
-		return m_State;
+		tv_State.setText(state);
+		return tv_State;
+	}
+	public TextView setName(String name) {
+		tv_Name.setText(name);
+		return tv_Name;
+	}
+	public ImageView setProfile(int profile) {
+		tv_Profile.setImageResource(profile);
+		return tv_Profile;
 	}
 
 	public ImageView setProfile() {
 		Uri uri = Uri.fromFile(new File(sdcard + "/Test/tayeon.jpg"));
 		Log.e("na", uri.toString());
-		m_Profile.setImageURI(uri);
+		tv_Profile.setImageURI(uri);
 		// m_Profile.setScaleType(ImageView.ScaleType.FIT_XY);
 		// m_Profile.setLayoutParams(new Gallery.LayoutParams(300, 400));
-		return m_Profile;
+		return tv_Profile;
 	}
 
 	@Override

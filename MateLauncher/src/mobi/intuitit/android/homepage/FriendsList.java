@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +44,11 @@ public class FriendsList extends Activity implements OnItemClickListener{
 		// 리스트뷰 클릭 리스너
 		listview.setOnItemClickListener(this);
 		
-		// 리스트뷰에 항목 추가                           
-
+		// 리스트뷰에 항목 추가 
 		add("어깨위의 보리", "김성현", R.drawable.hyun);
 		add("그 겨울 바람이 분다", "김권섭", R.drawable.kwon);
+		add("반갑습니다", "나동규", R.drawable.na);
+		add("늑대아이", "류종원", R.drawable.ryu);
 	}
 	
 	public void add(String state, String name, int profile){		
@@ -126,6 +128,31 @@ public class FriendsList extends Activity implements OnItemClickListener{
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		if(position==0){
 			Intent intent = new Intent(FriendsList.this, GuestHome.class);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("name", alist.get(position).getName());
+			intent.putExtra("profile", alist.get(position).getProfile());
+			Log.e("na", alist.get(position).getStateMessage());
+			startActivity(intent);			
+		}
+		else if(position==1){
+			Intent intent = new Intent(FriendsList.this, GuestHome.class);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("name", alist.get(position).getName());
+			intent.putExtra("profile", alist.get(position).getProfile());
+			startActivity(intent);			
+		}
+		else if(position==2){
+			Intent intent = new Intent(FriendsList.this, GuestHome.class);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("name", alist.get(position).getName());
+			intent.putExtra("profile", alist.get(position).getProfile());
+			startActivity(intent);			
+		}
+		else if(position==3){
+			Intent intent = new Intent(FriendsList.this, GuestHome.class);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("name", alist.get(position).getName());
+			intent.putExtra("profile", alist.get(position).getProfile());
 			startActivity(intent);			
 		}
 	}

@@ -10,15 +10,15 @@
         android:layout_height="56dp"
         android:layout_weight="0.30"
         android:gravity="center"
-        android:text="1등"
          android:textColor="#ffffffff"
         android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/rank_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-                android:src="@drawable/hyun" />
+        android:layout_width="@dimen/profile_width"
+        android:layout_height="@dimen/profile_height"
+        android:layout_gravity="center_vertical"
+        android:background="#ff000000"/>
 
     <LinearLayout
         android:layout_width="0dp"

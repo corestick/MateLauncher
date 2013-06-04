@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import mobi.intuitit.android.mate.launcher.R;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class RankList extends Activity  implements View.OnClickListener , OnItemClickListener{
+public class RankList extends Activity implements OnItemClickListener{
 
 	private ListView listview;
 	// 데이터를 연결할 Adapter
@@ -48,37 +49,14 @@ public class RankList extends Activity  implements View.OnClickListener , OnItem
 		// 리스트뷰에 항목 추가
 
 		add("어깨위의 보리", "김성현", R.drawable.hyun);
+		add("그 겨울 바람이 분다", "김권섭", R.drawable.kwon);
+		add("반갑습니다", "나동규", R.drawable.na);
+		add("늑대아이", "류종원", R.drawable.ryu);
 	}
-	
-	public void add(String state, String name, int profile){		
+
+	public void add(String state, String name, int profile) {
 		adapter.add(new CData(getApplicationContext(), state, name, profile));
 	}
-	
-	// CData안에 받은 값을 직접 할당
-		class CData {
-
-			private String m_state;
-			private String m_name;
-			private int m_profile;
-
-			public CData(Context context, String p_state, String p_name,
-					int p_profile) {
-
-				m_state = p_state;
-				m_name = p_name;
-				m_profile = p_profile;
-			}
-
-			public String getStateMessage() {
-				return m_state;
-			}
-			public String getName() {
-				return m_name;
-			}
-			public int getProfile() {
-				return m_profile;
-			}
-		}
 
 	private class DataAdapter extends ArrayAdapter<CData> {
 		// 레이아웃 XML을 읽어들이기 위한 객체
@@ -101,22 +79,20 @@ public class RankList extends Activity  implements View.OnClickListener , OnItem
 			} else {
 				view = v;
 			}
-			
+
 			TextView rank = (TextView) view.findViewById(R.id.rank_num);
 			int ranknum = position;
 			ranknum++;
-			rank.setText(ranknum+"등");
-			
+			rank.setText(ranknum + "등");
+
 			// 자료를 받는다.
 			final CData data = this.getItem(position);
 
-			if (data != null) {			// 화면 출력
-				
-				
+			if (data != null) { // 화면 출력
+
 				TextView m_stateMessage = (TextView) view
 						.findViewById(R.id.rank_state);
-				TextView m_name = (TextView) view
-						.findViewById(R.id.rank_name);
+				TextView m_name = (TextView) view.findViewById(R.id.rank_name);
 				// 텍스트뷰1에 getStateMessage()을 출력 즉 첫번째 인수값
 				m_stateMessage.setText(data.getStateMessage());
 				// 텍스트뷰2에 getName()을 출력 즉 두번째 인수값
@@ -129,18 +105,43 @@ public class RankList extends Activity  implements View.OnClickListener , OnItem
 			}
 			return view;
 		}
-
 	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
+	// CData안에 받은 값을 직접 할당
+	class CData {
+
+		private String m_state;
+		private String m_name;
+		private int m_profile;
+
+		public CData(Context context, String p_state, String p_name,
+				int p_profile) {
+
+			m_state = p_state;
+			m_name = p_name;
+			m_profile = p_profile;
+		}
+
+		public String getStateMessage() {
+			return m_state;
+		}
+
+		public String getName() {
+			return m_name;
+		}
+
+		public int getProfile() {
+			return m_profile;
+		}
 		
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
+	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		if(position==0){
+			Intent intent = new Intent(RankList.this, GuestHome.class);
+			startActivity(intent);
+		}
 	}
+
 }
