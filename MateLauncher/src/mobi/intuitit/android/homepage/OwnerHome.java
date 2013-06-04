@@ -5,18 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import mobi.intuitit.android.mate.launcher.LauncherProvider;
 import mobi.intuitit.android.mate.launcher.R;
 import mobi.intuitit.android.mate.launcher.SharedPreference;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;

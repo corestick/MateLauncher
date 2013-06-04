@@ -165,6 +165,13 @@
             android:background="@drawable/like_it" />
 
         <Button
+            android:id="@+id/owner_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_btn"
+            android:background="@drawable/upload" />
+
+        <Button
             android:id="@+id/owner_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -172,13 +179,6 @@
             android:layout_marginRight="@dimen/padding_btn"
             android:layout_marginLeft="@dimen/padding_btn"
             android:background="@drawable/comment" />
-
-        <Button
-            android:id="@+id/owner_download"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_btn"
-            android:background="@drawable/download" />
 
     </LinearLayout>
 

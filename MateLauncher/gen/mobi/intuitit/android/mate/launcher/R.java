@@ -327,7 +327,8 @@ containing a value of this type.
         public static final int tray_handle_normal=0x7f020075;
         public static final int tray_handle_pressed=0x7f020076;
         public static final int tray_handle_selected=0x7f020077;
-        public static final int write=0x7f020078;
+        public static final int upload=0x7f020078;
+        public static final int write=0x7f020079;
     }
     public static final class id {
         public static final int all_apps=0x7f07002e;
@@ -386,9 +387,9 @@ containing a value of this type.
         public static final int mdockbar=0x7f070035;
         public static final int name=0x7f07001a;
         public static final int objectview=0x7f070036;
-        public static final int owner_comment=0x7f070016;
+        public static final int owner_comment=0x7f070017;
         public static final int owner_down=0x7f070013;
-        public static final int owner_download=0x7f070017;
+        public static final int owner_download=0x7f070016;
         public static final int owner_like_it=0x7f070015;
         public static final int owner_profile=0x7f07000f;
         public static final int owner_recommend=0x7f070012;
