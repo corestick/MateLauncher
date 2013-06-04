@@ -26,7 +26,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	ImageView imgFacebook;
 
 	private Launcher mLauncher;
-	String mContacts;
+	MobjectImageView mOjbectImageView;
 
 	EditText edtMsg;
 
@@ -40,11 +40,11 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void initMAvatarMenu(Launcher launcher, String contacts) {
+	public void initMAvatarMenu(Launcher launcher, MobjectImageView mojbectImageView) {
 		setVisible(mVisibleState);
 
 		this.mLauncher = launcher;
-		this.mContacts = contacts;
+		this.mOjbectImageView = mojbectImageView;
 
 		imgCall = (ImageView) findViewById(R.id.imgCall);
 		imgSMS = (ImageView) findViewById(R.id.imgSMS);
@@ -71,16 +71,16 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		Log.e("RRR", "menu OnClick=" + v.toString());
-
 		if (v.equals(imgCall)) {
+			ItemInfo info = (ItemInfo) mOjbectImageView.getTag();
+			
 			Intent intent = new Intent(Intent.ACTION_CALL);
-			intent.setData(Uri.parse("tel:" + mContacts));
+			intent.setData(Uri.parse("tel:" + info.contacts));
 			mLauncher.startActivity(intent);
 		} else if (v.equals(imgSMS)) {
-			input_Message("SMS");
+			showMsgDialog("SMS");
 		} else if (v.equals(imgKakaoTalk)) {
-			input_Message("Kakao");
+			showMsgDialog("Kakao");
 		} else if (v.equals(imgTwitter)) {
 
 		} else if (v.equals(imgFacebook)) {
@@ -88,7 +88,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 		}
 	}
 
-	public void input_Message(final String Type) {
+	public void showMsgDialog(final String type) {
 		AlertDialog.Builder builder;
 		AlertDialog dig;
 
@@ -96,7 +96,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 				(ViewGroup) findViewById(R.id.drag_layer));
 		builder = new AlertDialog.Builder(mLauncher);
 		builder.setView(layout);
-
+		
 		dig = builder.create();
 		dig.setTitle("메시지 입력");
 		edtMsg = (EditText) layout.findViewById(R.id.edtAvatarMsg);
@@ -106,17 +106,20 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
 				String msg = edtMsg.getText().toString();
-				if (Type.equals("SMS")) {
-					mLauncher.sendtoSMS(mContacts, msg);
+				ItemInfo info = (ItemInfo) mOjbectImageView.getTag();
+				
+				if(msg.length() > 0) {
+					if (type.equals("SMS")) {
+						mLauncher.sendtoSMS(info.contacts, msg);
+					} else if (type.equals("Kakao")) {
+						KakaoLink kakao = new KakaoLink(mLauncher);
+						kakao.openKakaoLink(mLauncher, msg,
+								mLauncher.getPackageName(), "0.9.2", "UTF-8");
+					}
+					InputMethodManager imm = (InputMethodManager) mLauncher
+							.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(edtMsg.getWindowToken(), 0);
 				}
-				else if(Type.equals("Kakao")){
-					KakaoLink kakao = new KakaoLink(mLauncher);
-					kakao.openKakaoLink(mLauncher, msg,
-							mLauncher.getPackageName(), "0.9.2", "UTF-8");
-				}
-				InputMethodManager imm = (InputMethodManager) mLauncher
-						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(edtMsg.getWindowToken(), 0);
 			}
 		});
 		dig.show();
