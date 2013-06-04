@@ -80,7 +80,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	public Button uploadButton;
 	public Button likeButton;
 
-	public String phoneNum;
+	public String phoneNum ="123";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -383,8 +383,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 	public void get_DB() {
 		//핸드폰 번호 읽어오기
-		TelephonyManager telManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
-		phoneNum = telManager.getLine1Number();	
+//		TelephonyManager telManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
+//		phoneNum = telManager.getLine1Number();	
 		
 		ContentResolver contentResolver = getContentResolver();
 		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
