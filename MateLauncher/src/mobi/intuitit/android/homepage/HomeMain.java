@@ -25,16 +25,16 @@ public class HomeMain extends TabActivity {
 		TabHost tabHost = getTabHost();
 		
 		tabHost.addTab(tabHost.newTabSpec("tab1")
-				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
+				.setIndicator("权",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, OwnerHome.class)));
 		tabHost.addTab(tabHost.newTabSpec("tab2")
-				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
+				.setIndicator("模备",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, FriendsList.class)));
 		tabHost.addTab(tabHost.newTabSpec("tab3")
-				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
+				.setIndicator("珐农",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, RankList.class)));
 		tabHost.addTab(tabHost.newTabSpec("tab4")
-				.setIndicator("",getResources().getDrawable(R.drawable.balloon))
+				.setIndicator("汲沥",getResources().getDrawable(R.drawable.balloon))
 				.setContent(new Intent(this, Setting.class)));				
 //				.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
 		

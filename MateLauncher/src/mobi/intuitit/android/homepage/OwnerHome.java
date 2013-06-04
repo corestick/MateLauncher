@@ -113,6 +113,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		// mListView.setAdapter(mAdapter);
 
 		btnProfile = (ImageView) findViewById(R.id.owner_profile);
+		btnProfile.setImageResource(R.drawable.kwon);
 		// btnProfile.setImageURI(Uri.fromFile(new File(sdcard+"screen1.jpg")));
 		profileMsg = (TextView) findViewById(R.id.owner_state);
 
@@ -384,101 +385,12 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				dismiss();
 			}
 		}
-	}
-
-	// DB 삭제와 화면지우기
-	public void remove_DB() {
-		LauncherProvider lp = new LauncherProvider();
-		lp.delete_table();
-	}
-
-	public String[] getJSONString(String str) {
-		int bracketCnt = 0;
-		int arrCnt = 0;
-		int tmpCnt = 0;
-		String[] strArr = new String[20];
-		for (int i = 0; i < str.length(); i++) {
-			if (str.charAt(i) == '{') {
-				bracketCnt++;
-			}
-			if (str.charAt(i) == '}') {
-				bracketCnt--;
-				if (bracketCnt == 0) {
-					strArr[arrCnt] = str.substring(tmpCnt, i + 1);
-					arrCnt++;
-					tmpCnt = i + 1;
-				}
-			}
-		}
-		return strArr;
-	}
-
-	public void insert_DB() {
-		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
-		String TABLE_FAVORITES = "favorites";
-		String PARAMETER_NOTIFY = "notify";
-		final Uri CONTENT_URI_NO_NOTIFICATION = Uri.parse("content://"
-				+ AUTHORITY + "/" + TABLE_FAVORITES + "?" + PARAMETER_NOTIFY
-				+ "=false");
-		final ContentValues values = new ContentValues();
-		final ContentResolver cr = getContentResolver();
-
-		remove_DB(); // DB 지우고, 화면 View 삭제
-
-		String str = JSONfunctions.getJSONfromURL(serverUrl,"+821027480952");
-		String[] jsonArr = getJSONString(str);
-		try {
-			for (int i = 0; i < jsonArr.length; i++) {
-				if (jsonArr[i] == null) {
-					break;
-				}
-				JSONObject json = new JSONObject(jsonArr[i]);
-				if (json.getString("wall").equals("null")) {
-					values.put("container", json.getString("container"));
-					values.put("screen", json.getString("screen"));
-					values.put("cellX", json.getString("cellX"));
-					values.put("cellY", json.getString("cellY"));
-					values.put("mobjectType", json.getString("MobjectType"));
-					values.put("mobjectIcon", json.getString("MobjectIcon"));
-					values.put("itemType", json.getString("itemType"));
-					if (json.getString("intent").equals("null")==false)
-						values.put("intent", json.getString("intent"));
-					else {
-						String intent = null;
-						values.put("intent", intent);
-					}
-					if (json.getString("contacts").equals("null")==false)
-						values.put("contacts", json.getString("contacts"));
-					else {
-						String contacts = null;
-						values.put("contacts", contacts);
-					}
-					cr.insert(CONTENT_URI_NO_NOTIFICATION, values);
-				} else {
-					String wall = json.getString("wall");
-					String floor = json.getString("floor");
-					String[] wall_arry = wall.split("-");
-					String[] floor_arry = floor.split("-");
-					SharedPreference.putSharedPreference(this,
-							Integer.parseInt(wall_arry[0]) + "|w",
-							Integer.parseInt(wall_arry[1]));
-					SharedPreference.putSharedPreference(this,
-							Integer.parseInt(floor_arry[0]) + "|f",
-							Integer.parseInt(floor_arry[0]));
-				}
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	}	
 
 	public void get_DB() {
 		//핸드폰 번호 읽어오기
 		TelephonyManager telManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
-		phoneNum = telManager.getLine1Number();
-		
-		Log.e("PhoneNum", phoneNum);
+		phoneNum = telManager.getLine1Number();	
 		
 		ContentResolver contentResolver = getContentResolver();
 		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
@@ -552,9 +464,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		if (v.equals(uploadButton)) {
 			Log.e("upload", "upload");
 			get_DB();
-		} else if (v.equals(likeButton)) {
-			Log.e("download", "download");
-			insert_DB();
+		} else if (v.equals(likeButton)) {	
+		
 		}
 	}
 

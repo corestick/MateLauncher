@@ -96,6 +96,8 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -3444,13 +3446,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			switch (msg.what) {
 			case SEND_THREAD_PLAY:
+				Animation anim = new TranslateAnimation(0, 3, 0, 0);
+				anim.setDuration(300);
+				mLauncher.getWorkspace().startAnimation(anim);
 				// anim = new TranslateAnimation(0,2, 0, 0);
 				// anim.setDuration(300);
 				// iv.startAnimation(anim);
 				break;
 
 			case SEND_THREAD_STOP:
-				// mCountThread.stopThread();
+				 mModifyThread.stopThread();
 				break;
 
 			default:

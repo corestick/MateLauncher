@@ -40,8 +40,8 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/layout1"
                 android:layout_marginLeft="15dp"
-                android:text="오늘의 한마디"
-                android:textSize="30sp" />
+                android:text="그겨울바람이분다"
+                android:textSize="25sp" />
 
             <ImageView                
                 android:layout_width="50dp"
