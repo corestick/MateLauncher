@@ -96,6 +96,8 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -1747,7 +1749,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
 		registerReceiver(mSmsReceiver, new IntentFilter(
 				"android.provider.Telephony.SMS_RECEIVED"));
-		mModifyHandler = new ModifyHandler(); //수정모드에 쓰는 핸들러
+		mModifyHandler = new ModifyHandler(); //수정모드에 쓰는 핸들러		
 	}
 
 	/**
@@ -3446,20 +3448,30 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 	
 	class ModifyHandler extends Handler {
-
+		
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 
 			switch (msg.what) {
 			case SEND_THREAD_PLAY:
-//				anim = new TranslateAnimation(0,2, 0, 0);
-//				anim.setDuration(300);
-//				iv.startAnimation(anim);
+				Animation anim = new TranslateAnimation(0,3, 0, 0);
+				anim.setDuration(300);
+//				for (int i = 0; i < mWorkspace.getChildCount(); i++) {
+//					MLayout mLayout = (MLayout) mWorkspace.getChildAt(i);
+//					for (int j = 0; j < mLayout.getChildCount(); j++) {
+//						if (mLayout.getChildAt(j) instanceof MobjectImageView) {
+//							MobjectImageView mView = (MobjectImageView) mLayout
+//									.getChildAt(j);
+//							mView.startAnimation(anim);
+//						}
+//					}
+//				}		
+				mLauncher.getWorkspace().startAnimation(anim);
 				break;
 
 			case SEND_THREAD_STOP:
-//				 mCountThread.stopThread();
+				mModifyThread.stopThread();
 				break;
 
 			default:
@@ -3492,21 +3504,23 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				Message msg = mModifyHandler.obtainMessage();
 				msg.what = SEND_THREAD_PLAY;				
 				mModifyHandler.sendMessage(msg);
-
 				try {
 					Thread.sleep(300);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
 			}
-
 		}
 	}
 
-	public void modifyMode() {		
+	public void modifyMode() {
 		mModifyThread = new ModifyThread();
 		mModifyThread.start();
+	}
+
+	public void modifyModeOff() {
+		mModifyHandler.sendEmptyMessage(SEND_THREAD_STOP);
+		
 	}
 
 }
