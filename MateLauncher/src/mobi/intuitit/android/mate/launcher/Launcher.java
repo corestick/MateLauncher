@@ -1672,8 +1672,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						: null;
 				cellInfo = mWorkspace.findAllVacantCells(occupied);
 				if (!cellInfo.findCellForSpan(xy, spanX, spanY)) {
-					Toast.makeText(this, getString(R.string.out_of_space),
-							Toast.LENGTH_SHORT).show();
+//					Toast.makeText(this, getString(R.string.out_of_space),
+//							Toast.LENGTH_SHORT).show();
 					return false;
 				}
 			}
@@ -3253,14 +3253,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public class AppList_dialog extends Dialog implements View.OnClickListener {
 		ListView listview;
 		App_Adapter App_Adapter;
-		ArrayList<appInfo> appInfoArry;
+		ArrayList<AppInfo> appInfoArry;
 
 		public AppList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.applist_dialog);
 			listview = (ListView) findViewById(R.id.applist_listview);
-			appInfoArry = new ArrayList<appInfo>();
+			appInfoArry = new ArrayList<AppInfo>();
 			final long App_id = ((Mobject) tag).id;
 			Apptag = (Mobject) tag;
 			App_Adapter = new App_Adapter();
@@ -3314,11 +3314,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					String uri = itemInfo.intent.toUri(0);
 					values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
+
 					cr.update(
 							LauncherSettings.Favorites.getContentUri(App_id, false),
 							values, null, null);
-					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT).show();
+//					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT).show();
 					viewSetTag(Apptag);
+
 					dismiss();
 					// this.getPackageManager().getLaunchIntentForPackage(packageName);
 					// startActivity(intent); 패키지 이름으로 실행시키는 로직
@@ -3335,11 +3337,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		public void loadApp() {
-			Comparator<appInfo> myComparator = new Comparator<appInfo>() {
+			Comparator<AppInfo> myComparator = new Comparator<AppInfo>() {
 				Collator app_Collator = Collator.getInstance();
 
 				@Override
-				public int compare(appInfo a, appInfo b) {
+				public int compare(AppInfo a, AppInfo b) {
 					return app_Collator.compare(a.appName, b.appName);
 				}
 			};
@@ -3351,7 +3353,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			final int count = apps.size();
 			for (int i = 0; i < count; i++) {
 				ResolveInfo info = apps.get(i);
-				appInfo appinfo = new appInfo();
+				AppInfo appinfo = new AppInfo();
 				appinfo.packagename = info.activityInfo.packageName;
 				appinfo.appName = info.activityInfo.applicationInfo.loadLabel(
 						pm).toString();
@@ -3372,12 +3374,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					}
 				}
 			}
+			
 			Collections.sort(appInfoArry, myComparator);
 			App_Adapter.notifyDataSetChanged();
 		}
 
 		// 앱 정보 저장할 클래스
-		class appInfo {
+		class AppInfo {
 			public String packagename;
 			public String appName;
 			public Drawable appIcon;
@@ -3486,9 +3489,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-
 			}
-
 		}
 	}
 

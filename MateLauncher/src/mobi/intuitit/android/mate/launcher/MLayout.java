@@ -36,8 +36,8 @@ public class MLayout extends LayoutType {
 	private final int SPEECHBUBBLE_HEIGHT = 140;
 	private final int SPEECHBUBBLE_BOTTOM_PADDING = 20;
 
-	private final int MAVATARMENU_WIDTH = 250;
-	private final int MAVATARMENU_HEIGHT = 50;
+	private final int MAVATARMENU_WIDTH = 300;
+	private final int MAVATARMENU_HEIGHT = 60;
 
 	// private HashMap<MobjectImageView, SpeechBubble> mSpeechBubbleMap = new
 	// HashMap<MobjectImageView, SpeechBubble>();
@@ -88,7 +88,7 @@ public class MLayout extends LayoutType {
 			if (!mAvatarMenuMap.containsKey(view)) {
 				MAvatarMenu mAvatarMenu = (MAvatarMenu) mLauncher.mInflater
 						.inflate(R.layout.mavatarmenu, (ViewGroup) this, false);
-				mAvatarMenu.initMAvatarMenu(mLauncher, info.contacts);
+				mAvatarMenu.initMAvatarMenu(mLauncher, view);
 				super.addView(mAvatarMenu);
 				mAvatarMenuMap.put(view, mAvatarMenu);
 				setAvatarMenuLayout(view);
