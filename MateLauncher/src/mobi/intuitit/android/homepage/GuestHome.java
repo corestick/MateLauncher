@@ -40,7 +40,7 @@ public class GuestHome extends Activity implements OnScrollListener {
 	
 	//임시 사진, 남길말, 이름
 	public String tempState = "하이요";
-	public int tempProfile = R.drawable.sms;
+	public int tempProfile = R.drawable.icon_message;
 	// 사진, 남길말, 이름
 	public TextView m_State;
 	public TextView m_Name;

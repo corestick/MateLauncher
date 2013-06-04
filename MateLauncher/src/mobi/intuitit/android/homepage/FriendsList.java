@@ -44,8 +44,8 @@ public class FriendsList extends Activity implements OnItemClickListener{
 		listview.setOnItemClickListener(this);
 		
 		// 리스트뷰에 항목 추가                           
-		add("힘내도록 합니다", "나동규", R.drawable.allapps);
-		add("그 겨울 바람이 분다", "김건섭", R.drawable.sms);
+		add("힘내도록 합니다", "나동규", R.drawable.icon_apps);
+		add("그 겨울 바람이 분다", "김권섭", R.drawable.icon_lp);
 	}
 	
 	public void add(String state, String name, int profile){		
