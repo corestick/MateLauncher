@@ -140,7 +140,27 @@ public class RankList extends Activity implements OnItemClickListener{
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		if(position==0){
 			Intent intent = new Intent(RankList.this, GuestHome.class);
-			startActivity(intent);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("profile", alist.get(position).getProfile());
+			startActivity(intent);			
+		}
+		else if(position==1){
+			Intent intent = new Intent(RankList.this, GuestHome.class);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("profile", alist.get(position).getProfile());
+			startActivity(intent);			
+		}
+		else if(position==2){
+			Intent intent = new Intent(RankList.this, GuestHome.class);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("profile", alist.get(position).getProfile());
+			startActivity(intent);			
+		}
+		else if(position==3){
+			Intent intent = new Intent(RankList.this, GuestHome.class);
+			intent.putExtra("state", alist.get(position).getStateMessage());
+			intent.putExtra("profile", alist.get(position).getProfile());
+			startActivity(intent);			
 		}
 	}
 

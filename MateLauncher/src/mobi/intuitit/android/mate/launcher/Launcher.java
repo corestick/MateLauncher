@@ -2215,7 +2215,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	void startActivitySafely(Intent intent) {
 		if (intent == null) {
-			Toast.makeText(this, "no Application", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "매칭된 어플리케이션이 없습니다.", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -3116,7 +3116,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							Num);
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
-					Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT)
+					Toast.makeText(mLauncher, "아바타가"+name+"과 매칭되었습니다.", Toast.LENGTH_SHORT)
 							.show();
 					viewSetTag(contactsTag);
 					dismiss();
@@ -3319,7 +3319,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
-					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT)
+					Toast.makeText(mLauncher, 
+							appInfoArry.get(position).appName+"어플리케이션과 매칭되었습니다.",
+							Toast.LENGTH_SHORT)
 							.show();
 					viewSetTag(Apptag);
 

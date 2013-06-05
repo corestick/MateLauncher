@@ -1,7 +1,6 @@
 package mobi.intuitit.android.homepage;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,13 +17,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,11 +75,11 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 	private TextView tv_Recommend;
 	private TextView tv_Download;
-	private TextView tv_Visit;
+	private TextView tv_Comment;
 
 	public int count_Recommend = 0;
 	public int count_Download = 0;
-	public int count_Visit = 0;
+	public int count_Comment = 4;
 
 	public Button uploadButton;
 	public Button likeButton;
@@ -98,7 +96,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		likeButton = (Button) findViewById(R.id.owner_like_it);
 		uploadButton = (Button) findViewById(R.id.owner_download);
 		commentButton = (Button) findViewById(R.id.owner_comment);
-		
+
 		likeButton.setOnClickListener(this);
 		uploadButton.setOnClickListener(this);
 		commentButton.setOnClickListener(this);
@@ -111,12 +109,12 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		// 추천, 다운, 방문 텍스트뷰
 		tv_Recommend = (TextView) findViewById(R.id.owner_recommend);
 		tv_Download = (TextView) findViewById(R.id.owner_down);
-		tv_Visit = (TextView) findViewById(R.id.owner_visit);
+		tv_Comment = (TextView) findViewById(R.id.owner_visit);
 
 		// 추천, 다운, 방문 셋
 		tv_Recommend = setRecommend(count_Recommend);
 		tv_Download = setDownload(count_Download);
-		tv_Visit = setVisit(count_Visit);
+		tv_Comment = setVisit(count_Comment);
 
 		// 런처 홈스크린 보여주는 부분
 		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
@@ -137,7 +135,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				dialog.show();
 			}
 		});
-		
+
 		btnProfile.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
@@ -183,8 +181,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	private TextView setVisit(int n) {
-		tv_Visit.setText("" + n);
-		return tv_Visit;
+		tv_Comment.setText("" + n);
+		return tv_Comment;
 	}
 
 	private void doTakePhotoAction() {
@@ -321,104 +319,6 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			}
 		}
 	}
-	
-	// 코멘트 다이어로그
-
-	public class CommentDialog extends Dialog implements
-			android.view.View.OnClickListener {
-		ImageButton write;
-		ListView listview;
-		DataAdapter adapter;
-		ArrayList<CData> alist;
-
-		public CommentDialog(Context context) {
-			super(context);
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.comment_dialog);
-
-			write = (ImageButton) findViewById(R.id.btnwrite);
-			write.setOnClickListener(this);
-			listview = (ListView) findViewById(R.id.comment_listview);
-			alist = new ArrayList<CData>();
-			adapter = new DataAdapter(this.getContext(), alist);
-			listview.setAdapter(adapter);
-			add("와 이쁘네요~", "김성현", R.drawable.hyun);
-			add("이쁘다~", "김권섭", R.drawable.kwon);
-			add("추천박고가요~", "나동규", R.drawable.na);
-			add("퍼가요~", "류종원", R.drawable.ryu);
-		}
-		public void onClick(View view) {
-			if (view == write) {
-				dismiss();
-			}
-		}
-		public void add(String message, String name, int profile){		
-			adapter.add(new CData(getApplicationContext(), message, name, profile));
-		}
-	}
-	
-
-	private class DataAdapter extends ArrayAdapter<CData> {
-		// 레이아웃 XML을 읽어들이기 위한 객체
-		private LayoutInflater mInflater;
-
-		public DataAdapter(Context context, ArrayList<CData> object) {
-			super(context, 0, object);
-			mInflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		}
-		@Override
-		public View getView(int position, View v, ViewGroup parent) {
-			View view = null;
-			Date date = new Date();
-			if (v == null) {
-				view = mInflater.inflate(R.layout.comment_list, null);
-			} else {
-				view = v;
-			}
-			final CData data = this.getItem(position);
-			if (data != null) {
-				TextView m_name = (TextView) view.findViewById(R.id.comment_name);
-				TextView m_comment = (TextView) view.findViewById(R.id.comment_message);
-				ImageView m_profile = (ImageView) view.findViewById(R.id.comment_profile);
-				TextView day = (TextView) view.findViewById(R.id.comment_day);
-				
-				String today = date.getYear()+1900+"."+(date.getMonth()+1)+"."+
-							   date.getDate();
-				
-				
-				m_name.setText(data.getName());
-				m_comment.setText(data.getComment());
-				m_profile.setImageResource(data.getProfile());
-				day.setText(today);
-			}
-			return view;
-		}
-	}
-	class CData {
-
-		private String m_comment;
-		private String m_name;
-		private int m_profile;
-
-		public CData(Context context, String p_comment, String p_name,
-				int p_profile) {
-
-			m_comment = p_comment;
-			m_name = p_name;
-			m_profile = p_profile;
-		}
-
-		public String getComment() {
-			return m_comment;
-		}
-		public String getName() {
-			return m_name;
-		}
-		public int getProfile() {
-			return m_profile;
-		}
-	}
 
 	public void get_DB() {
 		// 핸드폰 번호 읽어오기
@@ -493,14 +393,17 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		}
 	}
 
+	// 추천, 다운로드, 코멘트 클릭 리스너
 	@Override
 	public void onClick(View v) {
 		if (v.equals(uploadButton)) {
 			Log.e("upload", "upload");
 			get_DB();
 		} else if (v.equals(likeButton)) {
+			count_Recommend++;
+			tv_Recommend = setRecommend(count_Recommend);
 
-		} else if (v.equals(commentButton)){
+		} else if (v.equals(commentButton)) {
 			CommentDialog commentdialog = new CommentDialog(OwnerHome.this);
 			commentdialog.setCancelable(true);
 			android.view.WindowManager.LayoutParams params = commentdialog
@@ -508,9 +411,125 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			params.width = LayoutParams.WRAP_CONTENT;
 			params.height = LayoutParams.WRAP_CONTENT;
 			commentdialog.getWindow().setAttributes(params);
-			commentdialog.show();			
+			commentdialog.show();
+			
 		}
 	}
-	
+
+	// 코멘트 다이어로그
+
+	public class CommentDialog extends Dialog implements
+			android.view.View.OnClickListener {
+		ImageButton write;
+		ListView listview;
+		DataAdapter adapter;
+		ArrayList<CData> alist;
+		EditText et;
+
+		public CommentDialog(Context context) {
+			super(context);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.comment_dialog);
+
+			et = (EditText) findViewById(R.id.edit_comment);
+			write = (ImageButton) findViewById(R.id.btnwrite);
+			write.setOnClickListener(this);
+			listview = (ListView) findViewById(R.id.comment_listview);
+			alist = new ArrayList<CData>();
+			adapter = new DataAdapter(this.getContext(), alist);
+			listview.setAdapter(adapter);
+			add("와 이쁘네요~", "김성현", R.drawable.hyun);
+			add("이쁘다~", "김권섭", R.drawable.kwon);
+			add("추천박고가요~", "나동규", R.drawable.na);
+			add("퍼가요~", "류종원", R.drawable.ryu);
+		}
+
+		public void onClick(View view) {
+			if (view == write) {
+				add(et.getText(), "김권섭", R.drawable.kwon);
+				et.setText("");
+				count_Comment++;
+				tv_Comment = setVisit(count_Comment);
+			}
+		}
+
+		public void add(Editable text, String name, int profile) {
+			adapter.add(new CData(getApplicationContext(), "" + text, name,
+					profile));
+		}
+
+		public void add(String message, String name, int profile) {
+			adapter.add(new CData(getApplicationContext(), message, name,
+					profile));
+		}
+	}
+
+	private class DataAdapter extends ArrayAdapter<CData> {
+		// 레이아웃 XML을 읽어들이기 위한 객체
+		private LayoutInflater mInflater;
+
+		public DataAdapter(Context context, ArrayList<CData> object) {
+			super(context, 0, object);
+			mInflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		@Override
+		public View getView(int position, View v, ViewGroup parent) {
+			View view = null;
+			Date date = new Date();
+			if (v == null) {
+				view = mInflater.inflate(R.layout.comment_list, null);
+			} else {
+				view = v;
+			}
+			final CData data = this.getItem(position);
+			if (data != null) {
+				TextView m_name = (TextView) view
+						.findViewById(R.id.comment_name);
+				TextView m_comment = (TextView) view
+						.findViewById(R.id.comment_message);
+				ImageView m_profile = (ImageView) view
+						.findViewById(R.id.comment_profile);
+				TextView day = (TextView) view.findViewById(R.id.comment_day);
+
+				String today = date.getYear() + 1900 + "."
+						+ (date.getMonth() + 1) + "." + date.getDate();
+
+				m_name.setText(data.getName());
+				m_comment.setText(data.getComment());
+				m_profile.setImageResource(data.getProfile());
+				day.setText(today);
+			}
+			return view;
+		}
+	}
+
+	class CData {
+
+		private String m_comment;
+		private String m_name;
+		private int m_profile;
+
+		public CData(Context context, String p_comment, String p_name,
+				int p_profile) {
+
+			m_comment = p_comment;
+			m_name = p_name;
+			m_profile = p_profile;
+		}
+
+		public String getComment() {
+			return m_comment;
+		}
+
+		public String getName() {
+			return m_name;
+		}
+
+		public int getProfile() {
+			return m_profile;
+		}
+	}
 
 }

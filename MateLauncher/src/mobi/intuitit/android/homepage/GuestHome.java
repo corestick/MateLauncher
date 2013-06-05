@@ -2,6 +2,7 @@ package mobi.intuitit.android.homepage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 import mobi.intuitit.android.mate.launcher.LauncherProvider;
 import mobi.intuitit.android.mate.launcher.R;
@@ -20,17 +21,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Gallery;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -40,7 +46,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		OnClickListener {
 
 	public Intent mIntent = new Intent();
-	
+
 	final String serverUrl = "http://kimsunghyuntest2.appspot.com/simpleservletapp";
 
 	private static final int TEXT_DIALOG = 0;
@@ -58,7 +64,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 	// 남길말, 사진 전달받는 변수
 	public String m_state;
 	public int m_profile;
-	
+
 	// 사진, 남길말, 이름
 	public TextView tv_State;
 	public TextView tv_Name;
@@ -69,30 +75,32 @@ public class GuestHome extends Activity implements OnScrollListener,
 
 	private TextView tv_Recommend;
 	private TextView tv_Download;
-	private TextView tv_Visit;
+	private TextView tv_Comment;
 
 	public int count_Recommend = 0;
 	public int count_Download = 0;
-	public int count_Visit = 0;
+	public int count_Comment = 4;
 
 	public Button downButton;
 	public Button likeButton;
-	
+	public Button commentButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guest_home);
-		
+
 		mIntent = getIntent();
 		m_state = mIntent.getStringExtra("state");
 		m_profile = mIntent.getIntExtra("profile", 0);
 
 		downButton = (Button) findViewById(R.id.guest_download);
 		likeButton = (Button) findViewById(R.id.guest_like_it);
+		commentButton = (Button) findViewById(R.id.guest_comment);
 		downButton.setOnClickListener(this);
 		likeButton.setOnClickListener(this);
+		commentButton.setOnClickListener(this);
 
 		// mRowList = new ArrayList<String>();
 		// mLockListView = true;
@@ -115,15 +123,14 @@ public class GuestHome extends Activity implements OnScrollListener,
 		tv_Profile = (ImageView) findViewById(R.id.guest_profile);
 		tv_Recommend = (TextView) findViewById(R.id.guest_recommend);
 		tv_Download = (TextView) findViewById(R.id.guest_down);
-		tv_Visit = (TextView) findViewById(R.id.guest_visit);
+		tv_Comment = (TextView) findViewById(R.id.guest_visit);
 		// 남길말, 사진
 		tv_State = setState(m_state);
 		tv_Profile = setProfile(m_profile);
 		// 추천, 다운, 방문 셋
 		tv_Recommend = setRecommend(count_Recommend);
 		tv_Download = setDownload(count_Download);
-		tv_Visit = setVisit(count_Visit);
-		
+		tv_Comment = setVisit(count_Comment);
 
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
 		gallery.setAdapter(new GuestImageAdapter(this));
@@ -143,57 +150,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 				dialog.show();
 			}
 		});
-
-		// addItems(10);
-
-		// 방명록 작성 버튼
-		// btnWrite.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		//
-		// final Dialog dia = new Dialog(GuestHome.this);
-		// dia.setContentView(R.layout.visitorbook);
-		// dia.show();
-		//
-		// Button visit_ok = (Button) dia.findViewById(R.id.ok);
-		// Button visit_cancle = (Button) dia.findViewById(R.id.cancle);
-		// EditText visitbook = (EditText) dia
-		// .findViewById(R.id.editText1);
-		//
-		// visit_ok.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// Toast.makeText(GuestHome.this, "방명록",
-		// Toast.LENGTH_SHORT).show();
-		// dia.dismiss();
-		// }
-		// });
-		// visit_cancle.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// dia.dismiss();
-		// }
-		// });
-		// }
-		// });
-		//
-		// // 추천
-		// btnRecommend.setOnClickListener(new View.OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// Toast.makeText(GuestHome.this, "추천", Toast.LENGTH_SHORT).show();
-		// }
-		// });
-		//
-		// // 다운로드
-		// btnDown.setOnClickListener(new View.OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// Toast.makeText(GuestHome.this, "다운로드", Toast.LENGTH_SHORT)
-		// .show();
-		// }
-		// });
 	}
 
 	class Guest_Dialog extends Dialog implements
@@ -231,8 +187,8 @@ public class GuestHome extends Activity implements OnScrollListener,
 	}
 
 	public TextView setVisit(int n) {
-		tv_Visit.setText("" + n);
-		return tv_Visit;
+		tv_Comment.setText("" + n);
+		return tv_Comment;
 	}
 
 	// 남길말, 이름, 사진 설정
@@ -240,6 +196,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		tv_State.setText(state);
 		return tv_State;
 	}
+
 	public ImageView setProfile(int profile) {
 		tv_Profile.setImageResource(profile);
 		return tv_Profile;
@@ -389,13 +346,145 @@ public class GuestHome extends Activity implements OnScrollListener,
 		}
 	}
 
+	// 추천, 다운로드, 코멘트 클릭 리스너
 	@Override
 	public void onClick(View v) {
-		if (v.equals(downButton)) {
+		if (v.equals(downButton)) {			
 			insert_DB();
+			count_Download++;
+			tv_Download = setDownload(count_Download);
 		} else if (v.equals(likeButton)) {
 			count_Recommend++;
+			tv_Recommend = setRecommend(count_Recommend);
+			
+		} else if (v.equals(commentButton)) {
+			CommentDialog commentdialog = new CommentDialog(GuestHome.this);
+			commentdialog.setCancelable(true);
+			android.view.WindowManager.LayoutParams params = commentdialog
+					.getWindow().getAttributes();
+			params.width = LayoutParams.WRAP_CONTENT;
+			params.height = LayoutParams.WRAP_CONTENT;
+			commentdialog.getWindow().setAttributes(params);
+			commentdialog.show();
+			
+		}
+	}
+	
+	// 코멘트 다이어로그
+
+		public class CommentDialog extends Dialog implements
+				android.view.View.OnClickListener {
+			ImageButton write;
+			ListView listview;
+			DataAdapter adapter;
+			ArrayList<CData> alist;
+			EditText et;
+
+			public CommentDialog(Context context) {
+				super(context);
+				requestWindowFeature(Window.FEATURE_NO_TITLE);
+				setContentView(R.layout.comment_dialog);
+
+				et = (EditText) findViewById(R.id.edit_comment);
+				write = (ImageButton) findViewById(R.id.btnwrite);
+				write.setOnClickListener(this);
+				listview = (ListView) findViewById(R.id.comment_listview);
+				alist = new ArrayList<CData>();
+				adapter = new DataAdapter(this.getContext(), alist);
+				listview.setAdapter(adapter);
+				add("와 이쁘네요~", "김성현", R.drawable.hyun);
+				add("이쁘다~", "김권섭", R.drawable.kwon);
+				add("추천박고가요~", "나동규", R.drawable.na);
+				add("퍼가요~", "류종원", R.drawable.ryu);
+			}
+
+			public void onClick(View view) {
+				if (view == write) {
+					add(et.getText(), "김권섭", R.drawable.kwon);
+					et.setText("");
+
+					count_Comment++;
+					tv_Comment = setVisit(count_Comment);
+				}
+			}
+
+			public void add(Editable text, String name, int profile) {
+				adapter.add(new CData(getApplicationContext(), "" + text, name,
+						profile));
+			}
+
+			public void add(String message, String name, int profile) {
+				adapter.add(new CData(getApplicationContext(), message, name,
+						profile));
+			}
 		}
 
-	}
+		private class DataAdapter extends ArrayAdapter<CData> {
+			// 레이아웃 XML을 읽어들이기 위한 객체
+			private LayoutInflater mInflater;
+
+			public DataAdapter(Context context, ArrayList<CData> object) {
+				super(context, 0, object);
+				mInflater = (LayoutInflater) context
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			}
+
+			@Override
+			public View getView(int position, View v, ViewGroup parent) {
+				View view = null;
+				Date date = new Date();
+				if (v == null) {
+					view = mInflater.inflate(R.layout.comment_list, null);
+				} else {
+					view = v;
+				}
+				final CData data = this.getItem(position);
+				if (data != null) {
+					TextView m_name = (TextView) view
+							.findViewById(R.id.comment_name);
+					TextView m_comment = (TextView) view
+							.findViewById(R.id.comment_message);
+					ImageView m_profile = (ImageView) view
+							.findViewById(R.id.comment_profile);
+					TextView day = (TextView) view.findViewById(R.id.comment_day);
+
+					String today = date.getYear() + 1900 + "."
+							+ (date.getMonth() + 1) + "." + date.getDate();
+
+					m_name.setText(data.getName());
+					m_comment.setText(data.getComment());
+					m_profile.setImageResource(data.getProfile());
+					day.setText(today);
+				}
+				return view;
+			}
+		}
+
+		class CData {
+
+			private String m_comment;
+			private String m_name;
+			private int m_profile;
+
+			public CData(Context context, String p_comment, String p_name,
+					int p_profile) {
+
+				m_comment = p_comment;
+				m_name = p_name;
+				m_profile = p_profile;
+			}
+
+			public String getComment() {
+				return m_comment;
+			}
+
+			public String getName() {
+				return m_name;
+			}
+
+			public int getProfile() {
+				return m_profile;
+			}
+		}
+
 }
