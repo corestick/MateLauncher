@@ -2172,7 +2172,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
 			} else if (tag instanceof Mobject) {
-				if (((Mobject) tag).mobjectType == 0) {
+				if (((Mobject)tag).mobjectType == 0) {
 					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
 				} else {
