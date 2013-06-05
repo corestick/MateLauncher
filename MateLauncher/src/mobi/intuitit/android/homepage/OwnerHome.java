@@ -1,7 +1,9 @@
 package mobi.intuitit.android.homepage;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,15 +28,18 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -79,8 +85,9 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 	public Button uploadButton;
 	public Button likeButton;
+	public Button commentButton;
 
-	public String phoneNum ="123";
+	public String phoneNum = "123";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,21 +97,11 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		setContentView(R.layout.activity_owner_home);
 		likeButton = (Button) findViewById(R.id.owner_like_it);
 		uploadButton = (Button) findViewById(R.id.owner_download);
+		commentButton = (Button) findViewById(R.id.owner_comment);
+		
 		likeButton.setOnClickListener(this);
 		uploadButton.setOnClickListener(this);
-
-		// mRowList = new ArrayList<String>();
-		// mLockListView = true;
-
-		// mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
-		// mListView = (ListView) findViewById(R.id.owner_listView);
-		//
-		// mInflater = (LayoutInflater)
-		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		 mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
-		//
-		// mListView.setOnScrollListener((OnScrollListener) this);
-		// mListView.setAdapter(mAdapter);
+		commentButton.setOnClickListener(this);
 
 		btnProfile = (ImageView) findViewById(R.id.owner_profile);
 		btnProfile.setImageResource(R.drawable.kwon);
@@ -140,63 +137,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				dialog.show();
 			}
 		});
-
-		// addItems(10);
-		//
-		// // Guest 홈화면으로 가기 위한 임시
-		// btnDown.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		//
-		// get_DB();
-		// remove_DB();
-		// insert_DB();
-		// }
-		// });
-
-		// profileMsg.setOnClickListener(new View.OnClickListener() {
-		// @SuppressWarnings("deprecation")
-		// public void onClick(View v) {
-		// Context mContext = OwnerHome.this;
-		// AlertDialog.Builder builder;
-		// AlertDialog dialog;
-		// LayoutInflater inflater = (LayoutInflater) mContext
-		// .getSystemService(LAYOUT_INFLATER_SERVICE);
-		// View layout = inflater.inflate(R.layout.profilemsg,
-		// (ViewGroup) findViewById(R.id.setTextDialog));
-		//
-		// editText = (EditText) layout.findViewById(R.id.editProfile);
-		//
-		// builder = new AlertDialog.Builder(mContext);
-		// builder.setView(layout);
-		// dialog = builder.create();
-		// dialog.setTitle("프로필 변경");
-		//
-		// dialog.setButton("확인", new DialogInterface.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(final DialogInterface dialog,
-		// final int which) {
-		// // TODO Auto-generated method stub
-		// data = editText.getText().toString();
-		// profileMsg.setText(data);
-		// dialog.dismiss();
-		// }
-		// });
-		// dialog.setButton2("취소", new DialogInterface.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(final DialogInterface dialog,
-		// final int which) {
-		// dialog.dismiss();
-		// }
-		// });
-		// dialog.show();
-		// }
-		// });
-
+		
 		btnProfile.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
@@ -228,7 +169,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			}
 		});
 
-	}	
+	}
 
 	// 추천, 다운, 방문 수 셋
 	private TextView setRecommend(int n) {
@@ -379,13 +320,112 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				dismiss();
 			}
 		}
-	}	
+	}
+	
+	// 코멘트 다이어로그
+
+	public class CommentDialog extends Dialog implements
+			android.view.View.OnClickListener {
+		ImageButton write;
+		ListView listview;
+		DataAdapter adapter;
+		ArrayList<CData> alist;
+
+		public CommentDialog(Context context) {
+			super(context);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.comment_dialog);
+
+			write = (ImageButton) findViewById(R.id.btnwrite);
+			write.setOnClickListener(this);
+			listview = (ListView) findViewById(R.id.comment_listview);
+			alist = new ArrayList<CData>();
+			adapter = new DataAdapter(this.getContext(), alist);
+			listview.setAdapter(adapter);
+			add("와 이쁘네요~", "김성현", R.drawable.hyun);
+			add("이쁘다~", "김권섭", R.drawable.kwon);
+			add("추천박고가요~", "나동규", R.drawable.na);
+			add("퍼가요~", "류종원", R.drawable.ryu);
+		}
+		public void onClick(View view) {
+			if (view == write) {
+				dismiss();
+			}
+		}
+		public void add(String message, String name, int profile){		
+			adapter.add(new CData(getApplicationContext(), message, name, profile));
+		}
+	}
+	
+
+	private class DataAdapter extends ArrayAdapter<CData> {
+		// 레이아웃 XML을 읽어들이기 위한 객체
+		private LayoutInflater mInflater;
+
+		public DataAdapter(Context context, ArrayList<CData> object) {
+			super(context, 0, object);
+			mInflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+		@Override
+		public View getView(int position, View v, ViewGroup parent) {
+			View view = null;
+			Date date = new Date();
+			if (v == null) {
+				view = mInflater.inflate(R.layout.comment_list, null);
+			} else {
+				view = v;
+			}
+			final CData data = this.getItem(position);
+			if (data != null) {
+				TextView m_name = (TextView) view.findViewById(R.id.comment_name);
+				TextView m_comment = (TextView) view.findViewById(R.id.comment_message);
+				ImageView m_profile = (ImageView) view.findViewById(R.id.comment_profile);
+				TextView day = (TextView) view.findViewById(R.id.comment_day);
+				
+				String today = date.getYear()+1900+"."+(date.getMonth()+1)+"."+
+							   date.getDate();
+				
+				
+				m_name.setText(data.getName());
+				m_comment.setText(data.getComment());
+				m_profile.setImageResource(data.getProfile());
+				day.setText(today);
+			}
+			return view;
+		}
+	}
+	class CData {
+
+		private String m_comment;
+		private String m_name;
+		private int m_profile;
+
+		public CData(Context context, String p_comment, String p_name,
+				int p_profile) {
+
+			m_comment = p_comment;
+			m_name = p_name;
+			m_profile = p_profile;
+		}
+
+		public String getComment() {
+			return m_comment;
+		}
+		public String getName() {
+			return m_name;
+		}
+		public int getProfile() {
+			return m_profile;
+		}
+	}
 
 	public void get_DB() {
-		//핸드폰 번호 읽어오기
-//		TelephonyManager telManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
-//		phoneNum = telManager.getLine1Number();	
-		
+		// 핸드폰 번호 읽어오기
+		// TelephonyManager telManager =
+		// (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		// phoneNum = telManager.getLine1Number();
+
 		ContentResolver contentResolver = getContentResolver();
 		String AUTHORITY = "mobi.intuitit.android.mate.launcher.settings";
 		String TABLE_FAVORITES = "favorites";
@@ -458,9 +498,19 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		if (v.equals(uploadButton)) {
 			Log.e("upload", "upload");
 			get_DB();
-		} else if (v.equals(likeButton)) {	
-		
+		} else if (v.equals(likeButton)) {
+
+		} else if (v.equals(commentButton)){
+			CommentDialog commentdialog = new CommentDialog(OwnerHome.this);
+			commentdialog.setCancelable(true);
+			android.view.WindowManager.LayoutParams params = commentdialog
+					.getWindow().getAttributes();
+			params.width = LayoutParams.WRAP_CONTENT;
+			params.height = LayoutParams.WRAP_CONTENT;
+			commentdialog.getWindow().setAttributes(params);
+			commentdialog.show();			
 		}
 	}
+	
 
 }

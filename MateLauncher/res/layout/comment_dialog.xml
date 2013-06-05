@@ -19,7 +19,7 @@
             android:textSize="30dp" />
 
         <ImageButton
-            android:id="@+id/button1"
+            android:id="@+id/btnwrite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -37,18 +37,10 @@
             <requestFocus />
         </EditText>
 
-        <ImageView
-            android:id="@+id/scrollup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/listview_comment"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/icon_scrollup" />
-
         <ListView
-            android:id="@+id/listview_comment"
+            android:id="@+id/comment_listview"
             android:layout_width="fill_parent"
-            android:layout_height="120dp"
+            android:layout_height="190dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/edit_comment" >
         </ListView>
@@ -57,8 +49,16 @@
             android:id="@+id/scrolldown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/scrollup"
-            android:layout_below="@+id/listview_comment"
+            android:layout_below="@+id/comment_listview"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/icon_scrolldown" />
+
+        <ImageView
+            android:id="@+id/scrollup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/comment_listview"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/icon_scrollup" />
 
 </RelativeLayout>
