@@ -39,11 +39,6 @@ public class MLayout extends LayoutType {
 	private final int MAVATARMENU_WIDTH = 300;
 	private final int MAVATARMENU_HEIGHT = 60;
 
-	// private HashMap<MobjectImageView, SpeechBubble> mSpeechBubbleMap = new
-	// HashMap<MobjectImageView, SpeechBubble>();
-	// private HashMap<MobjectImageView, MAvatarMenu> mAvatarMenuMap = new
-	// HashMap<MobjectImageView, MAvatarMenu>();
-
 	private HashMap<MobjectImageView, SpeechBubble> mSpeechBubbleMap;
 	private HashMap<MobjectImageView, MAvatarMenu> mAvatarMenuMap;
 
@@ -82,6 +77,7 @@ public class MLayout extends LayoutType {
 				mSpeechBubble.initSpeechBubble(info, view);
 				super.addView(mSpeechBubble);
 				mSpeechBubbleMap.put(view, mSpeechBubble);
+
 				setSpeechBubbleLayout(view);
 			}
 
@@ -91,13 +87,14 @@ public class MLayout extends LayoutType {
 				mAvatarMenu.initMAvatarMenu(mLauncher, view);
 				super.addView(mAvatarMenu);
 				mAvatarMenuMap.put(view, mAvatarMenu);
+
 				setAvatarMenuLayout(view);
 			}
-
 		}
 	}
 
 	public void setSpeechBubbleLayout(MobjectImageView view) {
+
 		SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 
 		LayoutParams vLP = (LayoutParams) view.getLayoutParams();
@@ -105,8 +102,19 @@ public class MLayout extends LayoutType {
 
 		sbLP.width = SPEECHBUBBLE_WIDTH;
 		sbLP.height = SPEECHBUBBLE_HEIGHT;
-		sbLP.cellX = vLP.cellX;
-		sbLP.cellY = vLP.cellY - SPEECHBUBBLE_HEIGHT;
+
+		if (vLP.cellX < (Integer) this.getWidth() / 2) {
+			sbLP.cellX = vLP.cellX;
+			sb.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.speechbubble_l));
+		} else {
+
+			sbLP.cellX = vLP.cellX + view.getWidth() - SPEECHBUBBLE_WIDTH;
+			sb.setBackgroundDrawable(getResources().getDrawable(
+					R.drawable.speechbubble_r));
+		}
+
+		sbLP.cellY = vLP.cellY - SPEECHBUBBLE_HEIGHT - 5;
 
 		sb.setLayoutParams(sbLP);
 	}
@@ -119,15 +127,31 @@ public class MLayout extends LayoutType {
 
 		amLP.width = MAVATARMENU_WIDTH;
 		amLP.height = MAVATARMENU_HEIGHT;
-		amLP.cellX = vLP.cellX;
+
+		if (vLP.cellX < (Integer) this.getWidth() / 2) {
+			amLP.cellX = vLP.cellX;
+		} else {
+			amLP.cellX = vLP.cellX + view.getWidth() - MAVATARMENU_WIDTH;
+		}
+
 		amLP.cellY = vLP.cellY - MAVATARMENU_HEIGHT;
 
 		am.setLayoutParams(amLP);
 	}
 
+	public void hideAllAvatarView() {
+		for (int i = 0; i < this.getChildCount(); i++) {
+			View view = this.getChildAt(i);
+			if (view instanceof MobjectImageView) {
+				hideSpeechBubble((MobjectImageView) view);
+				hideMAvatarMenu((MobjectImageView) view);
+			}
+		}
+	}
+
 	public void hideSpeechBubble(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
-		if(info.contacts != null) {
+		if (info.contacts != null) {
 			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 			sb.setVisible(INVISIBLE);
 		}
@@ -135,7 +159,7 @@ public class MLayout extends LayoutType {
 
 	public void showSpeechBubble(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
-		if(info.contacts != null) {
+		if (info.contacts != null) {
 			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 			sb.setVisible(VISIBLE);
 		}
@@ -159,7 +183,7 @@ public class MLayout extends LayoutType {
 
 	public void hideMAvatarMenu(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
-		if(info.contacts != null) {
+		if (info.contacts != null) {
 			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
 			am.setVisible(INVISIBLE);
 		}
@@ -167,7 +191,7 @@ public class MLayout extends LayoutType {
 
 	public void showMAvatarMenu(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
-		if(info.contacts != null) {
+		if (info.contacts != null) {
 			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
 			am.setVisible(VISIBLE);
 		}
@@ -202,12 +226,11 @@ public class MLayout extends LayoutType {
 		// Generate an id for each view, this assumes we have at most 256x256
 		// cells
 		// per workspace screen
+		super.addView(child, index, params);
 
 		if (child instanceof MobjectImageView) {
 			addAvatarView((MobjectImageView) child);
 		}
-
-		super.addView(child, index, params);
 	}
 
 	@Override
@@ -323,6 +346,7 @@ public class MLayout extends LayoutType {
 
 		for (int i = 0; i < count; i++) {
 			View child = getChildAt(i);
+
 			if (child.getVisibility() != GONE) {
 
 				LayoutParams lp = (LayoutParams) child.getLayoutParams();
@@ -343,6 +367,11 @@ public class MLayout extends LayoutType {
 					childBottom = childTop + lp.height;
 
 				child.layout(childLeft, childTop, childRight, childBottom);
+
+				if (mSpeechBubbleMap.containsKey(child)) {
+					setSpeechBubbleLayout((MobjectImageView) child);
+					setAvatarMenuLayout((MobjectImageView) child);
+				}
 			}
 		}
 
@@ -415,7 +444,6 @@ public class MLayout extends LayoutType {
 	void onDropChild(View child, int[] targetXY) {
 		// TODO Auto-generated method stub
 
-		Log.e("RRR", "onDropChild22");
 	}
 
 	/**
@@ -428,8 +456,6 @@ public class MLayout extends LayoutType {
 	 */
 	void onDropChild(View child, int x, int y) {
 
-		Log.e("RRR", "onDropChild");
-
 		if (child != null) {
 			LayoutParams lp = (LayoutParams) child.getLayoutParams();
 			lp.cellX = x;
@@ -437,19 +463,24 @@ public class MLayout extends LayoutType {
 			lp.isDragging = false;
 			child.requestLayout();
 
+			child.bringToFront();
+
 			// --
 			if (child instanceof MobjectImageView) {
 				if (mSpeechBubbleMap.containsKey(child)) {
+					setSpeechBubbleLayout((MobjectImageView) child);
+					setAvatarMenuLayout((MobjectImageView) child);
+
 					SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap
 							.get(child);
 					if (sb.getVisible() == VISIBLE)
 						sb.setVisibility(VISIBLE);
-					setSpeechBubbleLayout((MobjectImageView) child);
+					sb.bringToFront();
 
 					MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(child);
 					if (am.getVisible() == VISIBLE)
 						am.setVisibility(VISIBLE);
-					setAvatarMenuLayout((MobjectImageView) child);
+					am.bringToFront();
 				}
 			}
 
@@ -458,7 +489,7 @@ public class MLayout extends LayoutType {
 	}
 
 	void onDropAborted(View child) {
-		Log.e("RRR", "onDropAborted");
+
 		if (child != null) {
 			((LayoutParams) child.getLayoutParams()).isDragging = false;
 			invalidate();
@@ -472,7 +503,6 @@ public class MLayout extends LayoutType {
 	 *            The child that is being dragged
 	 */
 	void onDragChild(View child) {
-		Log.e("RRR", "onDragChild");
 
 		LayoutParams lp = (LayoutParams) child.getLayoutParams();
 		lp.isDragging = true;
