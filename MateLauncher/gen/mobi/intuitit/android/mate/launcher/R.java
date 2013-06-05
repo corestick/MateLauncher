@@ -434,7 +434,7 @@ containing a value of this type.
         public static final int application_list=0x7f030006;
         public static final int applist_dialog=0x7f030007;
         public static final int appwidget_error=0x7f030008;
-        public static final int contact_list=0x7f030009;
+        public static final int contact=0x7f030009;
         public static final int custom_friendlist=0x7f03000a;
         public static final int dialog_screen=0x7f03000b;
         public static final int folder_icon=0x7f03000c;

@@ -3235,7 +3235,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				if (convertView == null) {
-					convertView = inflater.inflate(R.layout.contact_list,
+					convertView = inflater.inflate(R.layout.contact,
 							parent, false);
 				}
 				Name = (TextView) convertView
