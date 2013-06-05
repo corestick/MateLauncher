@@ -138,6 +138,16 @@ public class MLayout extends LayoutType {
 
 		am.setLayoutParams(amLP);
 	}
+	
+	public void removeAvatarView(MobjectImageView view) {
+		SpeechBubble sp = mSpeechBubbleMap.get(view);
+		MAvatarMenu am = mAvatarMenuMap.get(view);
+		mSpeechBubbleMap.remove(view);
+		mAvatarMenuMap.remove(view);
+		
+		this.removeView(sp);
+		this.removeView(am);
+	}
 
 	public void hideAllAvatarView() {
 		for (int i = 0; i < this.getChildCount(); i++) {

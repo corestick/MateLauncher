@@ -954,16 +954,16 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		// click.
 		// Note that Search takes focus when clicked rather than entering touch
 		// mode
-		
+
 		if (!child.isInTouchMode() && !(child instanceof Search)) {
 			return;
 		}
-		
-		//--
-		if(child instanceof SpeechBubble) {
-			return;	
+
+		// --
+		if (child instanceof SpeechBubble) {
+			return;
 		}
-		
+
 		mDragInfo = cellInfo;
 		mDragInfo.screen = mCurrentScreen;
 
@@ -1016,6 +1016,13 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				if (index != mDragInfo.screen) {
 					final LayoutType originalLayoutType = (LayoutType) getChildAt(mDragInfo.screen);
 					originalLayoutType.removeView(cell);
+
+					// --
+					if (cell instanceof MobjectImageView) {
+						MLayout mLayout = (MLayout) originalLayoutType;
+						mLayout.removeAvatarView((MobjectImageView) cell);
+					}
+
 					layoutType.addView(cell);
 				}
 
