@@ -83,8 +83,10 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			mLauncher.startActivity(intent);
 			return;
 		} else if (v.equals(mDockButton[2])) {
-			Intent intent = mLauncher.getPackageManager()
-					.getLaunchIntentForPackage("com.android.mms");
+//			Intent intent = mLauncher.getPackageManager()
+//					.getLaunchIntentForPackage("com.android.mms");
+			final Intent intent = new Intent(
+					android.provider.Settings.ACTION_SETTINGS);
 			mLauncher.startActivity(intent);		
 			return;
 		} else if (v.equals(mDockButton[3])) {
