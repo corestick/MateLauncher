@@ -1,22 +1,19 @@
 package mobi.intuitit.android.mate.launcher;
 
-import mobi.intuitit.android.mate.launcher.R.color;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class Dockbar extends LinearLayout implements View.OnClickListener {
 
 	private Launcher mLauncher;
-	private TextView[] mDockButton;
+	private ImageView[] mDockButton;
 	private Workspace mWorkspace;
 	private View mAllAppsGrid;
 	private ImageView left;
@@ -49,43 +46,21 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 		Drawable drawable4 = getResources().getDrawable(R.drawable.icon_left);
 		left.setImageDrawable(drawable4);
 
-		mDockButton = new TextView[4];
+		mDockButton = new ImageView[4];
 		for (int i = 0; i < 4; i++) {
-			mDockButton[i] = new TextView(mLauncher);
+			mDockButton[i] = new ImageView(mLauncher);
 			addView(mDockButton[i]);
 			mDockButton[i].setOnClickListener(this);
 			LayoutParams param1 = (LayoutParams) mDockButton[i]
 					.getLayoutParams();
 			param1.weight = 50;
 			mDockButton[i].setLayoutParams(param1);
-			mDockButton[i].setPadding(2, 2, 5, 2);
-			mDockButton[i].setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-			mDockButton[i].setTextSize(12);
-			mDockButton[i].setTextColor(color.bright_text_dark_focused);
 		}
-		Drawable drawable = getResources().getDrawable(R.drawable.icon_phone);
-		drawable = Utilities.createIconThumbnail(drawable, mLauncher);
-		mDockButton[0].setCompoundDrawablesWithIntrinsicBounds(null, drawable,
-				null, null);
-		mDockButton[0].setText("전화");
-
-		Drawable drawable1 = getResources().getDrawable(R.drawable.icon_contacts);
-		drawable1 = Utilities.createIconThumbnail(drawable1, mLauncher);
-		mDockButton[1].setCompoundDrawablesWithIntrinsicBounds(null, drawable1,
-				null, null);
-		mDockButton[1].setText("연락처");
-
-		Drawable drawable2 = getResources().getDrawable(R.drawable.icon_message);
-		drawable2 = Utilities.createIconThumbnail(drawable2, mLauncher);
-		mDockButton[2].setCompoundDrawablesWithIntrinsicBounds(null, drawable2,
-				null, null);
-		mDockButton[2].setText("문자");
-
-		Drawable drawable3 = getResources().getDrawable(R.drawable.icon_apps);
-		drawable3 = Utilities.createIconThumbnail(drawable3, mLauncher);
-		mDockButton[3].setCompoundDrawablesWithIntrinsicBounds(null, drawable3,
-				null, null);
-		mDockButton[3].setText("어플리케이션");
+		
+		mDockButton[0].setImageDrawable(getResources().getDrawable(R.drawable.icon_phone));
+		mDockButton[1].setImageDrawable(getResources().getDrawable(R.drawable.icon_contacts));
+		mDockButton[2].setImageDrawable(getResources().getDrawable(R.drawable.icon_message));
+		mDockButton[3].setImageDrawable(getResources().getDrawable(R.drawable.icon_apps));
 	}
 
 	public void showDockbar() {
@@ -124,6 +99,9 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			Launcher.modifyMode = true;
 			mLauncher.mMDockbar.showMDockbar();
 			mLauncher.modifyMode();
+			
+			MLayout mLayout = (MLayout) mWorkspace.getChildAt(mWorkspace.getCurrentScreen());
+			mLayout.hideAllAvatarView();
 		}
 
 	}

@@ -1674,8 +1674,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						: null;
 				cellInfo = mWorkspace.findAllVacantCells(occupied);
 				if (!cellInfo.findCellForSpan(xy, spanX, spanY)) {
-//					Toast.makeText(this, getString(R.string.out_of_space),
-//							Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, getString(R.string.out_of_space),
+							Toast.LENGTH_SHORT).show();
 					return false;
 				}
 			}
@@ -3050,11 +3050,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 									.getChildAt(j);
 
 							ItemInfo info = (ItemInfo) mView.getTag();
-							// Log.e("RRR", "mobjectType=" + info.mobjectType);
-							// Log.e("RRR", "receiver=" + receiver);
-							// Log.e("RRR", "Contacts=" + info.contacts);
+
 							if (info.mobjectType == 1) {
 								if (info.contacts.equals(receiver)) {
+									mLayout.hideMAvatarMenu(mView);
+									mLayout.showSpeechBubble(mView);
 									mLayout.setSpeechBubbleText(mView, msg);
 									// break;
 								}
@@ -3073,8 +3073,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 		Log.i("MATE", "문자 전송");
-		// Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
-		// Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), "문자메시지를 전송하였습니다.",
+				Toast.LENGTH_SHORT).show();
 	}
 
 	public int Child_Count() {
@@ -3097,9 +3097,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			contact_Adapter = new Contact_Adapter();
 			listview.setAdapter(contact_Adapter);
 
-//			listview.addFooterView(v)
-			final long App_id = ((Mobject) tag).id;			
-			contactsTag = (Mobject) tag;		
+			// listview.addFooterView(v)
+			final long App_id = ((Mobject) tag).id;
+			contactsTag = (Mobject) tag;
 
 			readContacts3();
 
@@ -3108,14 +3108,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				public void onItemClick(AdapterView<?> parentView, View view,
 						int position, long id) {
 					final ContentValues values = new ContentValues();
-					final ContentResolver cr = getContentResolver();					
+					final ContentResolver cr = getContentResolver();
 					String name = contactlist.get(position).Name;
 					String Num = contactlist.get(position).PhoneNum;
 					contactsTag.contacts = Num;
-					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS, Num);
-					cr.update(
-							LauncherSettings.Favorites.getContentUri(App_id, false),
-							values, null, null);
+					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS,
+							Num);
+					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
+							false), values, null, null);
 					Toast.makeText(mLauncher, "연락처매칭성공!!", Toast.LENGTH_SHORT)
 							.show();
 					viewSetTag(contactsTag);
@@ -3274,7 +3274,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 				int position, long id) {
 					final ContentValues values = new ContentValues();
-					final ContentResolver cr = getContentResolver();					
+					final ContentResolver cr = getContentResolver();
 					ItemInfo itemInfo = new ItemInfo();
 					Intent intent = getPackageManager()
 							.getLaunchIntentForPackage(
@@ -3317,10 +3317,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					String uri = itemInfo.intent.toUri(0);
 					values.put(LauncherSettings.BaseLauncherColumns.INTENT, uri);
 
-					cr.update(
-							LauncherSettings.Favorites.getContentUri(App_id, false),
-							values, null, null);
-//					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT).show();
+					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
+							false), values, null, null);
+					Toast.makeText(mLauncher, "앱매칭성공!!", Toast.LENGTH_SHORT)
+							.show();
 					viewSetTag(Apptag);
 
 					dismiss();
@@ -3376,7 +3376,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					}
 				}
 			}
-			
+
 			Collections.sort(appInfoArry, myComparator);
 			App_Adapter.notifyDataSetChanged();
 		}
@@ -3455,7 +3455,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				break;
 
 			case SEND_THREAD_STOP:
-				 mModifyThread.stopThread();
+				mModifyThread.stopThread();
 				break;
 
 			default:

@@ -64,9 +64,9 @@ public class MImageList {
 		avatarList.add(R.drawable.m_avatar_02);
 		avatarList.add(R.drawable.m_avatar_03);
 		avatarList.add(R.drawable.m_avatar_04);
-		avatarList.add(R.drawable.m_avatar_05);
-		avatarList.add(R.drawable.m_avatar_06);
-		avatarList.add(R.drawable.m_avatar_07);
+//		avatarList.add(R.drawable.m_avatar_05);
+//		avatarList.add(R.drawable.m_avatar_06);
+//		avatarList.add(R.drawable.m_avatar_07);
 
 	}
 

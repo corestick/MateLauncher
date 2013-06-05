@@ -14,7 +14,7 @@
             android:id="@+id/txtSpeechBubble"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:textColor="#ff6699bb"
+            android:textColor="#ff6666ff"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
