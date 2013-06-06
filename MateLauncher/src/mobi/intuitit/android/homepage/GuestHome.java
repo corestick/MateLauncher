@@ -85,7 +85,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 	public Button likeButton;
 	public Button commentButton;
 	
-	int positon;
+	int position;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		mIntent = getIntent();
 		m_state = mIntent.getStringExtra("state");
 		m_profile = mIntent.getIntExtra("profile", 0);
-		positon = mIntent.getIntExtra("position", 0);
+		position = mIntent.getIntExtra("position", 0);
 
 		downButton = (Button) findViewById(R.id.guest_download);
 		likeButton = (Button) findViewById(R.id.guest_like_it);
@@ -120,7 +120,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		tv_Comment = setVisit(count_Comment);
 
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
-		gallery.setAdapter(new GuestImageAdapter(this,0));
+		gallery.setAdapter(new GuestImageAdapter(this, position));
 		gallery.setSelection(1);
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 
@@ -241,7 +241,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		int bracketCnt = 0;
 		int arrCnt = 0;
 		int tmpCnt = 0;
-		String[] strArr = new String[20];
+		String[] strArr = new String[100];
 		for (int i = 0; i < str.length(); i++) {
 			if (str.charAt(i) == '{') {
 				bracketCnt++;
@@ -276,7 +276,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 
 		remove_DB(); // DB 지우고, 화면 View 삭제
 
-		String str = JSONfunctions.getJSONfromURL(serverUrl, String.valueOf(positon));
+		String str = JSONfunctions.getJSONfromURL(serverUrl, String.valueOf(position));
 		String[] jsonArr = getJSONString(str);
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {

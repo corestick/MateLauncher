@@ -13,7 +13,10 @@
        android:layout_height="wrap_content"
        android:maxLines="1"
        android:ellipsize="end"       
+<<<<<<< HEAD
        android:text=""
+=======
+>>>>>>> 748863aa90e0ae1eec0fee0f978a7fbf2f7d820f
        android:textSize="25dp" />
    
    <TextView
@@ -21,7 +24,10 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginLeft="5dp"
+<<<<<<< HEAD
        android:text="01027480952"
+=======
+>>>>>>> 748863aa90e0ae1eec0fee0f978a7fbf2f7d820f
        android:textSize="20dp" />
 
 </LinearLayout>
