@@ -3235,13 +3235,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				if (convertView == null) {
-					convertView = inflater.inflate(R.layout.contact_list,
+					convertView = inflater.inflate(R.layout.contact,
 							parent, false);
 				}
 				Name = (TextView) convertView
-						.findViewById(R.id.contact_list_name);
+						.findViewById(R.id.contact_name);
 				PhoneNum = (TextView) convertView
-						.findViewById(R.id.contact_list_phonenum);
+						.findViewById(R.id.contact_phonenum);
 
 				Name.setText(contactlist.get(position).Name);
 				PhoneNum.setText(contactlist.get(position).PhoneNum);
