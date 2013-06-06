@@ -2,6 +2,8 @@ package mobi.intuitit.android.mate.launcher;
 
 import java.util.Vector;
 
+import android.R.integer;
+
 public class MImageList {
 
 	public Vector<Integer> flooringList;
@@ -64,14 +66,15 @@ public class MImageList {
 		avatarList.add(R.drawable.m_avatar_02);
 		avatarList.add(R.drawable.m_avatar_03);
 		avatarList.add(R.drawable.m_avatar_04);
-//		avatarList.add(R.drawable.m_avatar_05);
-//		avatarList.add(R.drawable.m_avatar_06);
-//		avatarList.add(R.drawable.m_avatar_07);
+		avatarList.add(R.drawable.m_avatar_05);
+		avatarList.add(R.drawable.m_avatar_06);
+		avatarList.add(R.drawable.m_avatar_07);
+		avatarList.add(R.drawable.m_avatar_08);
 
 	}
 
 	private void initFurniture() {
-
+						
 		furnitureList.add(R.drawable.m_furniture_01);
 		furnitureList.add(R.drawable.m_furniture_02);
 		furnitureList.add(R.drawable.m_furniture_03);
@@ -90,6 +93,28 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_16);
 		furnitureList.add(R.drawable.m_furniture_17);
 		furnitureList.add(R.drawable.m_furniture_18);
+		furnitureList.add(R.drawable.m_furniture_19);
+		furnitureList.add(R.drawable.m_furniture_20);
+		furnitureList.add(R.drawable.m_furniture_21);
+		furnitureList.add(R.drawable.m_furniture_22);
+		furnitureList.add(R.drawable.m_furniture_23);
+		furnitureList.add(R.drawable.m_furniture_24);
+		furnitureList.add(R.drawable.m_furniture_25);
+		furnitureList.add(R.drawable.m_furniture_26);
+		furnitureList.add(R.drawable.m_furniture_27);
+		furnitureList.add(R.drawable.m_furniture_28);
+		furnitureList.add(R.drawable.m_furniture_29);
+		furnitureList.add(R.drawable.m_furniture_30);
+		furnitureList.add(R.drawable.m_furniture_31);
+		furnitureList.add(R.drawable.m_furniture_32);
+		furnitureList.add(R.drawable.m_furniture_33);
+		furnitureList.add(R.drawable.m_furniture_34);
+		furnitureList.add(R.drawable.m_furniture_35);
+		furnitureList.add(R.drawable.m_furniture_36);
+		furnitureList.add(R.drawable.m_furniture_37);
+		furnitureList.add(R.drawable.m_furniture_38);
+		furnitureList.add(R.drawable.m_furniture_39);
+		furnitureList.add(R.drawable.m_furniture_40);
 		
 	}
 	
