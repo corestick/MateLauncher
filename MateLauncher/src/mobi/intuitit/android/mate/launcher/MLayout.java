@@ -172,6 +172,7 @@ public class MLayout extends LayoutType {
 		if (info.contacts != null) {
 			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 			sb.setVisible(VISIBLE);
+			sb.bringToFront();
 		}
 	}
 
@@ -204,6 +205,7 @@ public class MLayout extends LayoutType {
 		if (info.contacts != null) {
 			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
 			am.setVisible(VISIBLE);
+			am.bringToFront();
 		}
 	}
 

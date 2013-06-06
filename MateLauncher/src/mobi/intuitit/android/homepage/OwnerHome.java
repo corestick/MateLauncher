@@ -423,10 +423,10 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				map.put("intent", "null");
 			else
 				map.put("intent", intentDescription);
-			if (contacts == null)
-				map.put("contacts", "null");
-			else
-				map.put("contacts", contacts);
+//			if (contacts == null)
+//				map.put("contacts", "null");
+//			else
+//				map.put("contacts", contacts);
 			map.put("container", container);
 			map.put("itemType", itemType);
 			map.put("screen", screen);

@@ -30,6 +30,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
@@ -151,7 +153,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	static final int NUMBER_CELLS_Y = 4;
 
 	private static final int DIALOG_CREATE_SHORTCUT = 1;
-	static final int DIALOG_RENAME_FOLDER = 2;
+	private static final int DIALOG_RENAME_FOLDER = 2;
 
 	private static final String PREFERENCES = "launcher.preferences";
 
@@ -2197,20 +2199,45 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
 					SeletView = v;
-					ContactList_dialog dialog = new ContactList_dialog(this,
-							tag);
 
-					dialog.setCancelable(true);
-					android.view.WindowManager.LayoutParams params = dialog
-							.getWindow().getAttributes();
-					params.width = LayoutParams.FILL_PARENT;
-					params.height = LayoutParams.FILL_PARENT;
-					dialog.getWindow().setAttributes(params);
-					dialog.show();
-
+					clickedInfo = tag;
+					createThreadAndDialog();
 				}
 			}
 		}
+	}
+
+	Object clickedInfo;
+	private Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			loagindDialog.dismiss(); // 다이얼로그 삭제
+
+			ContactList_dialog dialog = new ContactList_dialog(mLauncher,
+					clickedInfo);
+			dialog.setCancelable(true);
+			android.view.WindowManager.LayoutParams params = dialog.getWindow()
+					.getAttributes();
+			params.width = LayoutParams.FILL_PARENT;
+			params.height = LayoutParams.FILL_PARENT;
+			dialog.getWindow().setAttributes(params);
+			dialog.show();
+		}
+	};
+
+	private ProgressDialog loagindDialog; // Loading Dialog
+
+	void createThreadAndDialog() {
+		/* ProgressDialog */
+		loagindDialog = ProgressDialog.show(this, null,
+				"연락처를 불러오는 중입니다.", true, false);
+
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				readContacts();
+				handler.sendEmptyMessage(0);
+			}
+		});
+		thread.start();
 	}
 
 	void startActivitySafely(Intent intent) {
@@ -2383,7 +2410,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		case DIALOG_RENAME_FOLDER:
 			return new RenameFolder().createDialog();
 		}
-
 		return super.onCreateDialog(id);
 	}
 
@@ -2891,7 +2917,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @return
 	 */
 	private boolean syncScreenNumber() {
-		Log.e("RRR", "syncScreenNumber");
 
 		if (mWorkspace == null)
 			return false;
@@ -3081,11 +3106,86 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return mWorkspace.getChildCount();
 	}
 
+	ArrayList<Contacts> contactlist;
+
+	class Contacts {
+		public String Name;
+		public String PhoneNum;
+	}
+
+	// 연락처 읽어오기
+	public void readContacts() {
+		contactlist = new ArrayList<Contacts>();
+
+		Comparator<Contacts> myComparator = new Comparator<Contacts>() {
+			Collator app_Collator = Collator.getInstance();
+
+			@Override
+			public int compare(Contacts a, Contacts b) {
+				return app_Collator.compare(a.Name, b.Name);
+			}
+		};
+
+		ContentResolver cr = mLauncher.getContentResolver();
+		Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
+				null, null, null);
+
+		if (cur.getCount() > 0) {
+			while (cur.moveToNext()) {
+				Contacts contact = new Contacts();
+				String id = cur.getString(cur
+						.getColumnIndex(ContactsContract.Contacts._ID));
+				String name = cur
+						.getString(cur
+								.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+				if (Integer
+						.parseInt(cur.getString(cur
+								.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+					contact.Name = name;
+					// sb.append(name);
+					// get the phone number
+					Cursor pCur = cr.query(
+							ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+							null,
+							ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+									+ " = ?", new String[] { id }, null);
+					int typeIndex = pCur
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+					int numIndex = pCur
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+					while (pCur.moveToNext()) {
+						String num = pCur.getString(numIndex);
+						switch (pCur.getInt(typeIndex)) {
+						case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+							contact.PhoneNum = num;
+							// sb.append(", Mobile:" + num);
+							break;
+						// case
+						// ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+						// sb.append(", Home:" + num);
+						// break;
+						// case
+						// ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+						// sb.append(", Work:" + num);
+						// break;
+						}
+					}
+					pCur.close();
+				}
+
+				if (contact.PhoneNum != null) {
+					contactlist.add(contact);
+				}
+			}
+		}
+
+		Collections.sort(contactlist, myComparator);
+	}
+
 	public class ContactList_dialog extends Dialog implements
 			View.OnClickListener {
 
 		ListView listview;
-		ArrayList<Contacts> contactlist;
 		Contact_Adapter contact_Adapter;
 
 		public ContactList_dialog(Context context, Object tag) {
@@ -3093,15 +3193,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.applist_dialog);
 			listview = (ListView) findViewById(R.id.applist_listview);
-			contactlist = new ArrayList<Contacts>();
 			contact_Adapter = new Contact_Adapter();
+
 			listview.setAdapter(contact_Adapter);
 
 			// listview.addFooterView(v)
 			final long App_id = ((Mobject) tag).id;
 			contactsTag = (Mobject) tag;
-
-			readContacts3();
 
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
@@ -3123,83 +3221,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 				}
 			});
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 
-		}
-
-		class Contacts {
-			public String Name;
-			public String PhoneNum;
-		}
-
-		// 연락처 읽어오기
-		public void readContacts3() {
-			Comparator<Contacts> myComparator = new Comparator<Contacts>() {
-				Collator app_Collator = Collator.getInstance();
-
-				@Override
-				public int compare(Contacts a, Contacts b) {
-					return app_Collator.compare(a.Name, b.Name);
-				}
-			};
-			ContentResolver cr = mLauncher.getContentResolver();
-			Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
-					null, null, null);
-
-			if (cur.getCount() > 0) {
-				while (cur.moveToNext()) {
-					Contacts contact = new Contacts();
-					String id = cur.getString(cur
-							.getColumnIndex(ContactsContract.Contacts._ID));
-					String name = cur
-							.getString(cur
-									.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-					if (Integer
-							.parseInt(cur.getString(cur
-									.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-						contact.Name = name;
-						// sb.append(name);
-						// get the phone number
-						Cursor pCur = cr
-								.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-										null,
-										ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-												+ " = ?", new String[] { id },
-										null);
-						int typeIndex = pCur
-								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
-						int numIndex = pCur
-								.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-						while (pCur.moveToNext()) {
-							String num = pCur.getString(numIndex);
-							switch (pCur.getInt(typeIndex)) {
-							case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-								contact.PhoneNum = num;
-								// sb.append(", Mobile:" + num);
-								break;
-							// case
-							// ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-							// sb.append(", Home:" + num);
-							// break;
-							// case
-							// ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-							// sb.append(", Work:" + num);
-							// break;
-							}
-						}
-						pCur.close();
-					}
-					if (contact.PhoneNum != null)
-						contactlist.add(contact);
-				}
-			}
-			Collections.sort(contactlist, myComparator);
-			contact_Adapter.notifyDataSetChanged();
 		}
 
 		// 연락처 adapter
@@ -3247,9 +3274,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				PhoneNum.setText(contactlist.get(position).PhoneNum);
 				return convertView;
 			}
-
 		}
-
 	}
 
 	public class AppList_dialog extends Dialog implements View.OnClickListener {
@@ -3448,7 +3473,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case SEND_THREAD_PLAY:
 				Animation anim = new TranslateAnimation(0, 3, 0, 0);
 				anim.setDuration(500);
-				mLauncher.getWorkspace().getChildAt(mLauncher.getWorkspace().getCurrentScreen()).startAnimation(anim);
+				mLauncher
+						.getWorkspace()
+						.getChildAt(mLauncher.getWorkspace().getCurrentScreen())
+						.startAnimation(anim);
 				// anim = new TranslateAnimation(0,2, 0, 0);
 				// anim.setDuration(300);
 				// iv.startAnimation(anim);
