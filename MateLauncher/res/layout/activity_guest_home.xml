@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/layout1"
             android:gravity="center_vertical"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
           <ImageView                
                 android:layout_width="50dp"
                 android:layout_height="50dp"

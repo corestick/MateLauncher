@@ -39,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/layout1"
-                android:layout_marginLeft="15dp"
-                android:text="그겨울바람이분다"
+                android:layout_marginLeft="15dp"             
                 android:textSize="25sp" />
 
             <ImageView                

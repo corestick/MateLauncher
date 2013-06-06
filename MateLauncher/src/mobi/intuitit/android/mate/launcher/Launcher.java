@@ -3054,7 +3054,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 		Log.i("MATE", "문자 전송");
-		Toast.makeText(getApplicationContext(), "문자메시지를 전송이 완료되었습니다.",
+		Toast.makeText(getApplicationContext(), "문자메시지 전송이 완료되었습니다.",
 				Toast.LENGTH_SHORT).show();
 	}
 

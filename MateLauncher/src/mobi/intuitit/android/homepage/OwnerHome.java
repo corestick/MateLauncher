@@ -87,7 +87,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	public Button likeButton;
 	public Button commentButton;
 
-	public String phoneNum = "0";
+	public String phoneNum = "123";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +107,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		btnProfile.setImageResource(R.drawable.kwon);
 		// btnProfile.setImageURI(Uri.fromFile(new File(sdcard+"screen1.jpg")));
 		profileMsg = (TextView) findViewById(R.id.owner_state);
+		profileMsg.setText("Mate Launcher");
 
 		// 추천, 다운, 방문 텍스트뷰
 		tv_Recommend = (TextView) findViewById(R.id.owner_recommend);

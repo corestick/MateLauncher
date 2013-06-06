@@ -1,6 +1,5 @@
 package mobi.intuitit.android.homepage;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,7 +23,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,6 +44,15 @@ import android.widget.TextView;
 
 public class GuestHome extends Activity implements OnScrollListener,
 		OnClickListener {
+
+	private int[] mImagePath1 = { R.drawable.screen0, R.drawable.screen1,
+			R.drawable.screen2 };
+	private int[] mImagePath2 = { R.drawable.screen3, R.drawable.screen4,
+			R.drawable.screen5 };
+	private int[] mImagePath3 = { R.drawable.screen6, R.drawable.screen7,
+			R.drawable.screen8 };
+	private int[] mImagePath4 = { R.drawable.screen9, R.drawable.screen10,
+			R.drawable.screen11 };
 
 	public Intent mIntent = new Intent();
 
@@ -87,7 +94,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 	public Button likeButton;
 	public Button commentButton;
 
-	int position;
+	int friend_position;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +105,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		mIntent = getIntent();
 		m_state = mIntent.getStringExtra("state");
 		m_profile = mIntent.getIntExtra("profile", 0);
-		position = mIntent.getIntExtra("position", 0);
+		friend_position = mIntent.getIntExtra("position", 0);
 
 		downButton = (Button) findViewById(R.id.guest_download);
 		likeButton = (Button) findViewById(R.id.guest_like_it);
@@ -122,7 +129,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		tv_Comment = setVisit(count_Comment);
 
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
-		gallery.setAdapter(new GuestImageAdapter(this, position));
+		gallery.setAdapter(new GuestImageAdapter(this, friend_position));
 		gallery.setSelection(1);
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 
@@ -143,17 +150,25 @@ public class GuestHome extends Activity implements OnScrollListener,
 
 	class Guest_Dialog extends Dialog implements
 			android.view.View.OnClickListener {
+
 		ImageView iv;
 
 		public Guest_Dialog(Context context, int position) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.dialog_screen);
-
 			iv = (ImageView) findViewById(R.id.dialog_imageview);
-			Uri uri = Uri.fromFile(new File(sdcard
-					+ "/MateLauncher/Owner/screen" + position + ".jpg"));
-			iv.setImageURI(uri);
+			if (friend_position == 0) {
+				iv.setImageResource(mImagePath1[position]);
+			} else if (friend_position == 1) {
+				iv.setImageResource(mImagePath2[position]);
+			} else if (friend_position == 2) {
+				iv.setImageResource(mImagePath3[position]);
+			} else if (friend_position == 3) {
+				iv.setImageResource(mImagePath4[position]);
+			}
+			// imageView.setImageURI(uri);
+
 			iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			iv.setOnClickListener(this);
 		}
@@ -277,7 +292,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		final ContentResolver cr = getContentResolver();
 
 		String str = JSONfunctions.getJSONfromURL(serverUrl,
-				String.valueOf(position));
+				String.valueOf(friend_position));
 
 		String[] jsonArr = getJSONString(str);
 
