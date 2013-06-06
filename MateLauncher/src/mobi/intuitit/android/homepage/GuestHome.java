@@ -86,6 +86,8 @@ public class GuestHome extends Activity implements OnScrollListener,
 	public Button downButton;
 	public Button likeButton;
 	public Button commentButton;
+	
+	int position;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		mIntent = getIntent();
 		m_state = mIntent.getStringExtra("state");
 		m_profile = mIntent.getIntExtra("profile", 0);
+		position = mIntent.getIntExtra("position", 0);
 
 		downButton = (Button) findViewById(R.id.guest_download);
 		likeButton = (Button) findViewById(R.id.guest_like_it);
@@ -104,22 +107,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 		likeButton.setOnClickListener(this);
 		commentButton.setOnClickListener(this);
 
-		// mRowList = new ArrayList<String>();
-		// mLockListView = true;
-		//
-		// mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
-		// mListView = (ListView) findViewById(R.id.guest_listView);
-
-		// mInflater = (LayoutInflater)
-		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		// mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
-		//
-		// mListView.setOnScrollListener((OnScrollListener) this);
-		// mListView.setAdapter(mAdapter);
-
-		// btnRecommend = (ImageView) findViewById(R.id.btnRecommend);
-		// btnDown = (ImageView) findViewById(R.id.btnDown);
-		// btnWrite = (ImageView) findViewById(R.id.btnWirte);
 		// 추천, 다운, 방문 텍스트뷰
 		tv_State = (TextView) findViewById(R.id.guest_state);
 		tv_Profile = (ImageView) findViewById(R.id.guest_profile);
@@ -135,7 +122,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		tv_Comment = setVisit(count_Comment);
 
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
-		gallery.setAdapter(new GuestImageAdapter(this));
+		gallery.setAdapter(new GuestImageAdapter(this, position));
 		gallery.setSelection(1);
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 
@@ -204,15 +191,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 		return tv_Profile;
 	}
 
-	public ImageView setProfile() {
-		Uri uri = Uri.fromFile(new File(sdcard + "/Test/tayeon.jpg"));
-		Log.e("na", uri.toString());
-		tv_Profile.setImageURI(uri);
-		// m_Profile.setScaleType(ImageView.ScaleType.FIT_XY);
-		// m_Profile.setLayoutParams(new Gallery.LayoutParams(300, 400));
-		return tv_Profile;
-	}
-
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
@@ -265,7 +243,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		int bracketCnt = 0;
 		int arrCnt = 0;
 		int tmpCnt = 0;
-		String[] strArr = new String[20];
+		String[] strArr = new String[100];
 		for (int i = 0; i < str.length(); i++) {
 			if (str.charAt(i) == '{') {
 				bracketCnt++;
@@ -299,6 +277,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		final ContentResolver cr = getContentResolver();
 
 		String str = JSONfunctions.getJSONfromURL(serverUrl, "123");
+
 		String[] jsonArr = getJSONString(str);
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {
