@@ -92,13 +92,6 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			mLauncher.startActivity(intent);
 			return;
 		} else if (v.equals(mDockButton[2])) {
-//			Intent intent = mLauncher.getPackageManager()
-//					.getLaunchIntentForPackage("com.android.mms");
-			final Intent intent = new Intent(
-					android.provider.Settings.ACTION_SETTINGS);
-			mLauncher.startActivity(intent);		
-			return;
-		} else if (v.equals(mDockButton[3])) {
 			final Rect bounds = mWorkspace.mDrawerBounds;
 			mLauncher.offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 			mAllAppsGrid.setFocusable(true);
@@ -136,8 +129,13 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			intent.putExtra("ChildCount", mLauncher.Child_Count());			
 			mLauncher.startActivity(intent); 
 			return; 
-		} else if (v.equals(mDockButton[4])) {		
-			// ¼³Á¤
+		} else if (v.equals(mDockButton[4])) {
+//			Intent intent = mLauncher.getPackageManager()
+//			.getLaunchIntentForPackage("com.android.mms");
+			
+			final Intent intent = new Intent(
+					android.provider.Settings.ACTION_SETTINGS);
+			mLauncher.startActivity(intent);
 			return;
 		} else if (v.equals(left)) {
 			hideDockbar();

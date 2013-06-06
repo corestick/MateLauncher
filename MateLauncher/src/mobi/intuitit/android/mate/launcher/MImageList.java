@@ -10,6 +10,7 @@ public class MImageList {
 	public Vector<Integer> wallpaperList;
 	public Vector<Integer> avatarList;
 	public Vector<Integer> furnitureList;
+	public Vector<Integer> widgetList;
 
 	private static MImageList mImageList = new MImageList();
 
@@ -19,11 +20,13 @@ public class MImageList {
 		wallpaperList = new Vector<Integer>();
 		avatarList = new Vector<Integer>();
 		furnitureList = new Vector<Integer>();
+		widgetList = new Vector<Integer>();
 
 		initFlooring();
 		initWallpapaer();
 		initAvatar();
 		initFurniture();
+		initWidget();
 	}
 
 	public static MImageList getInstance() {
@@ -40,8 +43,7 @@ public class MImageList {
 		flooringList.add(R.drawable.m_flooring_06);
 		flooringList.add(R.drawable.m_flooring_07);
 		flooringList.add(R.drawable.m_flooring_08);
-//		flooringList.add(R.drawable.m_flooring_09);
-		
+		// flooringList.add(R.drawable.m_flooring_09);
 
 	}
 
@@ -55,8 +57,8 @@ public class MImageList {
 		wallpaperList.add(R.drawable.m_wall_06);
 		wallpaperList.add(R.drawable.m_wall_07);
 		wallpaperList.add(R.drawable.m_wall_08);
-//		wallpaperList.add(R.drawable.m_wall_09);
-//		wallpaperList.add(R.drawable.m_wall_010);
+		// wallpaperList.add(R.drawable.m_wall_09);
+		// wallpaperList.add(R.drawable.m_wall_010);
 
 	}
 
@@ -74,13 +76,13 @@ public class MImageList {
 	}
 
 	private void initFurniture() {
-						
+
 		furnitureList.add(R.drawable.m_furniture_01);
 		furnitureList.add(R.drawable.m_furniture_02);
 		furnitureList.add(R.drawable.m_furniture_03);
 		furnitureList.add(R.drawable.m_furniture_04);
-		furnitureList.add(R.drawable.m_furniture_05);
-		furnitureList.add(R.drawable.m_furniture_06);
+		// furnitureList.add(R.drawable.m_furniture_05);
+		// furnitureList.add(R.drawable.m_furniture_06);
 		furnitureList.add(R.drawable.m_furniture_07);
 		furnitureList.add(R.drawable.m_furniture_08);
 		furnitureList.add(R.drawable.m_furniture_09);
@@ -91,8 +93,8 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_14);
 		furnitureList.add(R.drawable.m_furniture_15);
 		furnitureList.add(R.drawable.m_furniture_16);
-		furnitureList.add(R.drawable.m_furniture_17);
-		furnitureList.add(R.drawable.m_furniture_18);
+		// furnitureList.add(R.drawable.m_furniture_17);
+		// furnitureList.add(R.drawable.m_furniture_18);
 		furnitureList.add(R.drawable.m_furniture_19);
 		furnitureList.add(R.drawable.m_furniture_20);
 		furnitureList.add(R.drawable.m_furniture_21);
@@ -115,14 +117,27 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_38);
 		furnitureList.add(R.drawable.m_furniture_39);
 		furnitureList.add(R.drawable.m_furniture_40);
-		
+
 	}
-	
+
+	private void initWidget() {
+		widgetList.add(R.drawable.m_widget_01);
+		widgetList.add(R.drawable.m_widget_02);
+		widgetList.add(R.drawable.m_widget_03);
+		widgetList.add(R.drawable.m_widget_04);
+	}
+
 	public int getIcon(int resType, int resIdx) {
-		if(resType == 0) { //가구
+
+		switch (resType) {
+		case 0: // 가구
 			return furnitureList.get(resIdx);
-		}
-		else
+		case 1: // 아바타
 			return avatarList.get(resIdx);
+		case 2: // 위젯
+			return widgetList.get(resIdx);
+		default:
+			return -1;
+		}
 	}
 }

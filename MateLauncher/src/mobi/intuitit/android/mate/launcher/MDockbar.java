@@ -21,6 +21,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	private final int WALLPAPER = 2;
 	private final int FLOORING = 3;
 	private final int AVATAR = 4;
+	private final int WIDGET = 5;
 	
 	private ImageButton mFurniture;
 	private ImageButton mWallpaper;
@@ -145,7 +146,13 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			}
 			return;
 		}
+				
 		if (v.equals(mWidget)) {
+			if(mLauncher.mObjectView.mObjectViewType == WIDGET) {
+				mLauncher.mObjectView.hideMobjectView();
+			} else {
+				mLauncher.mObjectView.showMojbectView(WIDGET);
+			}
 			return; 
 		}
 			

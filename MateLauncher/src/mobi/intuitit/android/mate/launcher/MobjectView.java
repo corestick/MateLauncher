@@ -23,6 +23,7 @@ public class MobjectView extends GridView implements
 	private final int WALLPAPER = 2;
 	private final int FLOORING = 3;
 	private final int AVATAR = 4;
+	private final int WIDGET = 5;
 
 	public int mObjectViewType = HIDE;
 
@@ -30,10 +31,13 @@ public class MobjectView extends GridView implements
 	MobjectAdapter mWallpaperAdapter;
 	MobjectAdapter mFlooringAdapter;
 	MobjectAdapter mAvatarAdapter;
-	static ArrayList<Mobject> mFurnitureList;
+	MobjectAdapter mWidgetAdapter;
+	
+	ArrayList<Mobject> mFurnitureList;
 	ArrayList<Mobject> mWallpaperList;
 	ArrayList<Mobject> mFlooringList;
 	ArrayList<Mobject> mAvatarList;
+	ArrayList<Mobject> mWidgetList;
 
 	private DragController mDragger;
 	private Launcher mLauncher;
@@ -74,6 +78,7 @@ public class MobjectView extends GridView implements
 		mWallpaperList = new ArrayList<Mobject>();
 		mFlooringList = new ArrayList<Mobject>();
 		mAvatarList = new ArrayList<Mobject>();
+		mWidgetList = new ArrayList<Mobject>();
 
 		for (int i = 0; i < MImageList.getInstance().furnitureList.size(); i++) {
 			Mobject mObject = new Mobject();
@@ -114,6 +119,18 @@ public class MobjectView extends GridView implements
 			mAvatarList.add(mObject);
 		}
 		mAvatarAdapter = new MobjectAdapter(mLauncher, mAvatarList);
+		
+		for (int i = 0; i < MImageList.getInstance().widgetList.size(); i++) {
+			Mobject mObject = new Mobject();
+			mObject.icon = getResources().getDrawable(MImageList.getInstance().widgetList.get(i));
+		
+			mObject.mobjectType = 2;
+			mObject.mobjectIcon = i;
+						
+			mWidgetList.add(mObject);
+		}
+		
+		mWidgetAdapter = new MobjectAdapter(mLauncher, mWidgetList);
 	}
 
 	@Override
@@ -229,6 +246,9 @@ public class MobjectView extends GridView implements
 		case AVATAR:
 			setAdapter(mAvatarAdapter);
 			break;
+		case WIDGET:
+			setAdapter(mWidgetAdapter);
+			break;
 		}
 		setVisibility(View.VISIBLE);
 		mObjectViewType = argType;
@@ -238,6 +258,7 @@ public class MobjectView extends GridView implements
 		switch (mObjectViewType) {
 		case FURNITURE:
 		case AVATAR:
+		case WIDGET:
 			return true;
 		case WALLPAPER:
 		case FLOORING:
