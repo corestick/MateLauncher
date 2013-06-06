@@ -388,8 +388,8 @@ containing a value of this type.
         public static final int comment_message=0x7f07002a;
         public static final int comment_name=0x7f070029;
         public static final int comment_profile=0x7f070028;
-        public static final int contact_list_name=0x7f07002c;
-        public static final int contact_list_phonenum=0x7f07002d;
+        public static final int contact_name=0x7f07002c;
+        public static final int contact_phonenum=0x7f07002d;
         public static final int content=0x7f07003b;
         public static final int delete_zone=0x7f07003c;
         public static final int description=0x7f07001d;
