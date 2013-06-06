@@ -11,6 +11,7 @@ import mobi.intuitit.android.mate.launcher.SharedPreference;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
@@ -398,7 +400,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	public void onClick(View v) {
 		if (v.equals(uploadButton)) {
 			Log.e("upload", "upload");
-			get_DB();
+			upThreadAndDialog();
 		} else if (v.equals(likeButton)) {
 			count_Recommend++;
 			tv_Recommend = setRecommend(count_Recommend);
@@ -504,6 +506,28 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		}
 	}
 
+    private ProgressDialog loagindDialog; // Loading Dialog
+    void upThreadAndDialog() {
+        /* ProgressDialog */
+        loagindDialog = ProgressDialog.show(this, "uploading",
+                "Please wait...", true, false);
+        
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+            	get_DB();
+                handler.sendEmptyMessage(0);
+            }
+        });
+        thread.start();
+    }
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            loagindDialog.dismiss(); // 다이얼로그 삭제
+            // View갱신
+        }
+    };
+	
 	class CData {
 
 		private String m_comment;

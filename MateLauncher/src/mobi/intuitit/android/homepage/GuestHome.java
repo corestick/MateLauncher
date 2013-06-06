@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -282,7 +284,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 
 	// DB 삭제와 화면지우기
 	public void remove_DB() {
-		LauncherProvider lp = new LauncherProvider();
+		LauncherProvider lp = new LauncherProvider();	
 		lp.delete_table();
 	}
 
@@ -295,8 +297,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 				+ "=false");
 		final ContentValues values = new ContentValues();
 		final ContentResolver cr = getContentResolver();
-
-		remove_DB(); // DB 지우고, 화면 View 삭제
 
 		String str = JSONfunctions.getJSONfromURL(serverUrl, "123");
 		String[] jsonArr = getJSONString(str);
@@ -349,10 +349,9 @@ public class GuestHome extends Activity implements OnScrollListener,
 	// 추천, 다운로드, 코멘트 클릭 리스너
 	@Override
 	public void onClick(View v) {
-		if (v.equals(downButton)) {			
-			insert_DB();
-			count_Download++;
-			tv_Download = setDownload(count_Download);
+		if (v.equals(downButton)) {	
+			remove_DB(); // DB 지우고, 화면 View 삭제
+			downThreadAndDialog();
 		} else if (v.equals(likeButton)) {
 			count_Recommend++;
 			tv_Recommend = setRecommend(count_Recommend);
@@ -459,6 +458,30 @@ public class GuestHome extends Activity implements OnScrollListener,
 				return view;
 			}
 		}
+		
+	    private ProgressDialog loagindDialog; // Loading Dialog
+	    void downThreadAndDialog() {
+	        /* ProgressDialog */
+	        loagindDialog = ProgressDialog.show(this, "downLoading",
+	                "Please wait...", true, false);
+	        
+	        Thread thread = new Thread(new Runnable() {
+	            public void run() {
+	            	insert_DB();
+	                handler.sendEmptyMessage(0);
+	            }
+	        });
+	        thread.start();
+	    }
+
+	    private Handler handler = new Handler() {
+	        public void handleMessage(Message msg) {
+	            loagindDialog.dismiss(); // 다이얼로그 삭제
+				count_Download++;
+				tv_Download = setDownload(count_Download);
+	        }
+	    };
+		
 
 		class CData {
 
