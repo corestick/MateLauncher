@@ -138,6 +138,16 @@ public class MLayout extends LayoutType {
 
 		am.setLayoutParams(amLP);
 	}
+	
+	public void removeAvatarView(MobjectImageView view) {
+		SpeechBubble sp = mSpeechBubbleMap.get(view);
+		MAvatarMenu am = mAvatarMenuMap.get(view);
+		mSpeechBubbleMap.remove(view);
+		mAvatarMenuMap.remove(view);
+		
+		this.removeView(sp);
+		this.removeView(am);
+	}
 
 	public void hideAllAvatarView() {
 		for (int i = 0; i < this.getChildCount(); i++) {
@@ -162,6 +172,7 @@ public class MLayout extends LayoutType {
 		if (info.contacts != null) {
 			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 			sb.setVisible(VISIBLE);
+			sb.bringToFront();
 		}
 	}
 
@@ -194,6 +205,7 @@ public class MLayout extends LayoutType {
 		if (info.contacts != null) {
 			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
 			am.setVisible(VISIBLE);
+			am.bringToFront();
 		}
 	}
 
