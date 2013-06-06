@@ -45,7 +45,7 @@
     <uses-permission android:name="mobi.intuitit.android.mate.launcher.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name="LauncherApplication"
@@ -71,17 +71,26 @@
                 <category android:name="android.intent.category.MONKEY" />
             </intent-filter>
         </activity>
-        
-        <activity android:name="mobi.intuitit.android.homepage.GuestHome"
-            android:label="tab1"></activity>
-        <activity android:name="mobi.intuitit.android.homepage.FriendsList"
-            android:label="tab2"></activity>
-        <activity android:name="mobi.intuitit.android.homepage.RankList"
-            android:label="tab3"></activity>
-        <activity android:name="mobi.intuitit.android.homepage.Setting"
-            android:label="tab4"></activity>
-        <activity android:name="mobi.intuitit.android.homepage.OwnerHome"></activity>
-         <activity android:name="mobi.intuitit.android.homepage.HomeMain"></activity>
+        <activity
+            android:name="mobi.intuitit.android.homepage.GuestHome"
+            android:label="tab1" >
+        </activity>
+        <activity
+            android:name="mobi.intuitit.android.homepage.FriendsList"
+            android:label="tab2" >
+        </activity>
+        <activity
+            android:name="mobi.intuitit.android.homepage.RankList"
+            android:label="tab3" >
+        </activity>
+        <activity
+            android:name="mobi.intuitit.android.homepage.Setting"
+            android:label="tab4" >
+        </activity>
+        <activity android:name="mobi.intuitit.android.homepage.OwnerHome" >
+        </activity>
+        <activity android:name="mobi.intuitit.android.homepage.HomeMain" >
+        </activity>
 
         <!-- Enable system-default search mode for any activity in Home -->
         <meta-data
@@ -105,8 +114,16 @@
                 <action android:name="com.android.launcher.action.UNINSTALL_SHORTCUT" />
             </intent-filter>
         </receiver>
-
-        <!-- The settings provider contains Home's data, like the workspace favorites -->
+        <receiver
+            android:name="mobi.intuitit.android.mate.launcher.SMSReceiver"
+           android:enabled="true"
+           android:exported="true" >            
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>   
+            
+            <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider
             android:name="LauncherProvider"
             android:authorities="mobi.intuitit.android.mate.launcher.settings"

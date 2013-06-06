@@ -71,6 +71,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue;
@@ -188,8 +189,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static int sScreen = DEFAULT_SCREN;
 
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
-	private final BroadcastReceiver mCloseSystemDialogsReceiver = new CloseSystemDialogsIntentReceiver();
-	private final BroadcastReceiver mSmsReceiver = new SmsReceiver();
+	private final BroadcastReceiver mCloseSystemDialogsReceiver = new CloseSystemDialogsIntentReceiver();	
 
 	private final ContentObserver mObserver = new FavoritesChangeObserver();
 	private final ContentObserver mWidgetObserver = new AppWidgetResetObserver();
@@ -1250,8 +1250,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		getContentResolver().unregisterContentObserver(mObserver);
 		getContentResolver().unregisterContentObserver(mWidgetObserver);
 		unregisterReceiver(mApplicationsReceiver);
-		unregisterReceiver(mCloseSystemDialogsReceiver);
-		unregisterReceiver(mSmsReceiver);
+		unregisterReceiver(mCloseSystemDialogsReceiver);		
 
 		mWorkspace.unregisterProvider();
 	}
@@ -1741,9 +1740,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		filter.addDataScheme("package");
 		registerReceiver(mApplicationsReceiver, filter);
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-		registerReceiver(mCloseSystemDialogsReceiver, filter);
-		registerReceiver(mSmsReceiver, new IntentFilter(
-				"android.provider.Telephony.SMS_RECEIVED"));
+		registerReceiver(mCloseSystemDialogsReceiver, filter);		
 		mModifyHandler = new ModifyHandler(); // 수정모드에 쓰는 핸들러
 	}
 
@@ -2172,7 +2169,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
 			} else if (tag instanceof Mobject) {
-				if (((Mobject)tag).mobjectType == 0) {
+				if (((Mobject) tag).mobjectType == 0) {
 					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
 				} else {
@@ -3023,48 +3020,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public View getAllgridView() {
 		return mAllAppsGrid;
-	}
-
-	public class SmsReceiver extends BroadcastReceiver {
-
-		public void onReceive(Context context, Intent intent) {
-			Bundle bundle = intent.getExtras();
-			SmsMessage[] msgs = null;
-			String msg = "";
-			String receiver = "";
-
-			if (bundle != null) {
-				Object[] pdus = (Object[]) bundle.get("pdus");
-				msgs = new SmsMessage[pdus.length];
-				for (int i = 0; i < msgs.length; i++) {
-					msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-					receiver = msgs[i].getOriginatingAddress();
-					msg = msgs[i].getMessageBody().toString();
-				}
-
-				for (int i = 0; i < mWorkspace.getChildCount(); i++) {
-					MLayout mLayout = (MLayout) mWorkspace.getChildAt(i);
-					for (int j = 0; j < mLayout.getChildCount(); j++) {
-						if (mLayout.getChildAt(j) instanceof MobjectImageView) {
-							MobjectImageView mView = (MobjectImageView) mLayout
-									.getChildAt(j);
-
-							ItemInfo info = (ItemInfo) mView.getTag();
-
-							if (info.mobjectType == 1) {
-								if (info.contacts.equals(receiver)) {
-									mLayout.hideMAvatarMenu(mView);
-									mLayout.showSpeechBubble(mView);
-									mLayout.setSpeechBubbleText(mView, msg);
-									// break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	}	
 
 	public void sendtoSMS(String phoneNumber, String message) {
 		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -3116,8 +3072,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							Num);
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
-					Toast.makeText(mLauncher, name+"님과 아바타가 매칭되었습니다.", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(mLauncher, name + "님과 아바타가 매칭되었습니다.",
+							Toast.LENGTH_SHORT).show();
 					viewSetTag(contactsTag);
 					dismiss();
 
@@ -3200,6 +3156,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			}
 			Collections.sort(contactlist, myComparator);
 			contact_Adapter.notifyDataSetChanged();
+			cur.close();
 		}
 
 		// 연락처 adapter
@@ -3235,8 +3192,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				if (convertView == null) {
-					convertView = inflater.inflate(R.layout.contact,
-							parent, false);
+					convertView = inflater.inflate(R.layout.contact, parent,
+							false);
 				}
 				Name = (TextView) convertView
 						.findViewById(R.id.contact_list_name);
@@ -3319,9 +3276,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
-					Toast.makeText(mLauncher, 
-							appInfoArry.get(position).appName+" 어플리케이션이 매칭되었습니다.",
-							Toast.LENGTH_SHORT)
+					Toast.makeText(
+							mLauncher,
+							appInfoArry.get(position).appName
+									+ " 어플리케이션이 매칭되었습니다.", Toast.LENGTH_SHORT)
 							.show();
 					viewSetTag(Apptag);
 
@@ -3450,7 +3408,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case SEND_THREAD_PLAY:
 				Animation anim = new TranslateAnimation(0, 3, 0, 0);
 				anim.setDuration(500);
-				mLauncher.getWorkspace().getChildAt(mLauncher.getWorkspace().getCurrentScreen()).startAnimation(anim);
+				mLauncher
+						.getWorkspace()
+						.getChildAt(mLauncher.getWorkspace().getCurrentScreen())
+						.startAnimation(anim);
 				// anim = new TranslateAnimation(0,2, 0, 0);
 				// anim.setDuration(300);
 				// iv.startAnimation(anim);
