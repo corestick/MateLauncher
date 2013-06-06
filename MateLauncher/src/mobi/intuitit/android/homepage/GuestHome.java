@@ -84,6 +84,8 @@ public class GuestHome extends Activity implements OnScrollListener,
 	public Button downButton;
 	public Button likeButton;
 	public Button commentButton;
+	
+	int positon;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		mIntent = getIntent();
 		m_state = mIntent.getStringExtra("state");
 		m_profile = mIntent.getIntExtra("profile", 0);
+		positon = mIntent.getIntExtra("position", 0);
 
 		downButton = (Button) findViewById(R.id.guest_download);
 		likeButton = (Button) findViewById(R.id.guest_like_it);
@@ -102,22 +105,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 		likeButton.setOnClickListener(this);
 		commentButton.setOnClickListener(this);
 
-		// mRowList = new ArrayList<String>();
-		// mLockListView = true;
-		//
-		// mAdapter = new ScrollAdapter(this, R.layout.row, mRowList);
-		// mListView = (ListView) findViewById(R.id.guest_listView);
-
-		// mInflater = (LayoutInflater)
-		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		// mListView.addFooterView(mInflater.inflate(R.layout.footer, null));
-		//
-		// mListView.setOnScrollListener((OnScrollListener) this);
-		// mListView.setAdapter(mAdapter);
-
-		// btnRecommend = (ImageView) findViewById(R.id.btnRecommend);
-		// btnDown = (ImageView) findViewById(R.id.btnDown);
-		// btnWrite = (ImageView) findViewById(R.id.btnWirte);
 		// 추천, 다운, 방문 텍스트뷰
 		tv_State = (TextView) findViewById(R.id.guest_state);
 		tv_Profile = (ImageView) findViewById(R.id.guest_profile);
@@ -133,7 +120,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 		tv_Comment = setVisit(count_Comment);
 
 		Gallery gallery = (Gallery) findViewById(R.id.gallery_guest);
-		gallery.setAdapter(new GuestImageAdapter(this));
+		gallery.setAdapter(new GuestImageAdapter(this,0));
 		gallery.setSelection(1);
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 
@@ -199,15 +186,6 @@ public class GuestHome extends Activity implements OnScrollListener,
 
 	public ImageView setProfile(int profile) {
 		tv_Profile.setImageResource(profile);
-		return tv_Profile;
-	}
-
-	public ImageView setProfile() {
-		Uri uri = Uri.fromFile(new File(sdcard + "/Test/tayeon.jpg"));
-		Log.e("na", uri.toString());
-		tv_Profile.setImageURI(uri);
-		// m_Profile.setScaleType(ImageView.ScaleType.FIT_XY);
-		// m_Profile.setLayoutParams(new Gallery.LayoutParams(300, 400));
 		return tv_Profile;
 	}
 
@@ -298,7 +276,7 @@ public class GuestHome extends Activity implements OnScrollListener,
 
 		remove_DB(); // DB 지우고, 화면 View 삭제
 
-		String str = JSONfunctions.getJSONfromURL(serverUrl, "123");
+		String str = JSONfunctions.getJSONfromURL(serverUrl, String.valueOf(positon));
 		String[] jsonArr = getJSONString(str);
 		try {
 			for (int i = 0; i < jsonArr.length; i++) {

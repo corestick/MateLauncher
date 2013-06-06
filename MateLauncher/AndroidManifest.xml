@@ -105,6 +105,9 @@
                 <action android:name="com.android.launcher.action.UNINSTALL_SHORTCUT" />
             </intent-filter>
         </receiver>
+        
+        <receiver
+            android:name="mobi.intuitit.android.mate.launcher.SmsReceiver"></receiver>
 
         <!-- The settings provider contains Home's data, like the workspace favorites -->
         <provider

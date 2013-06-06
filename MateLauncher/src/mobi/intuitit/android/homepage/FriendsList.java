@@ -129,24 +129,28 @@ public class FriendsList extends Activity implements OnItemClickListener{
 			Intent intent = new Intent(FriendsList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
+			intent.putExtra("position", position);
 			startActivity(intent);			
 		}
 		else if(position==1){
 			Intent intent = new Intent(FriendsList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
+			intent.putExtra("position", position);
 			startActivity(intent);			
 		}
 		else if(position==2){
 			Intent intent = new Intent(FriendsList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
+			intent.putExtra("position", position);
 			startActivity(intent);			
 		}
 		else if(position==3){
 			Intent intent = new Intent(FriendsList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
+			intent.putExtra("position", position);
 			startActivity(intent);			
 		}
 	}
