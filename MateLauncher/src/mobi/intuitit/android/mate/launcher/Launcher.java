@@ -3133,8 +3133,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					contactlist.add(contact);
 				}
 			}
+			
 		}
-
+		cur.close();
 		Collections.sort(contactlist, myComparator);
 	}
 

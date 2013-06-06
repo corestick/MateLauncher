@@ -87,7 +87,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	public Button likeButton;
 	public Button commentButton;
 
-	public String phoneNum = "2";
+	public String phoneNum = "0";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
