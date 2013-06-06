@@ -3239,9 +3239,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							parent, false);
 				}
 				Name = (TextView) convertView
-						.findViewById(R.id.contact_list_name);
+						.findViewById(R.id.contact_name);
 				PhoneNum = (TextView) convertView
-						.findViewById(R.id.contact_list_phonenum);
+						.findViewById(R.id.contact_phonenum);
 
 				Name.setText(contactlist.get(position).Name);
 				PhoneNum.setText(contactlist.get(position).PhoneNum);
