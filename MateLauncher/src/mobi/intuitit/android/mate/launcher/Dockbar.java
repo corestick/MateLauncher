@@ -1,10 +1,16 @@
 package mobi.intuitit.android.mate.launcher;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
+import mobi.intuitit.android.homepage.HomeMain;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +23,8 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 	private Workspace mWorkspace;
 	private View mAllAppsGrid;
 	private ImageView left;
+	
+	Bitmap captureView[]; 
 
 	public Dockbar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -46,8 +54,8 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 		Drawable drawable4 = getResources().getDrawable(R.drawable.icon_left);
 		left.setImageDrawable(drawable4);
 
-		mDockButton = new ImageView[4];
-		for (int i = 0; i < 4; i++) {
+		mDockButton = new ImageView[5];
+		for (int i = 0; i < 5; i++) {
 			mDockButton[i] = new ImageView(mLauncher);
 			addView(mDockButton[i]);
 			mDockButton[i].setOnClickListener(this);
@@ -59,8 +67,9 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 		
 		mDockButton[0].setImageDrawable(getResources().getDrawable(R.drawable.icon_phone));
 		mDockButton[1].setImageDrawable(getResources().getDrawable(R.drawable.icon_contacts));
-		mDockButton[2].setImageDrawable(getResources().getDrawable(R.drawable.icon_message));
-		mDockButton[3].setImageDrawable(getResources().getDrawable(R.drawable.icon_apps));
+		mDockButton[2].setImageDrawable(getResources().getDrawable(R.drawable.icon_apps));
+		mDockButton[3].setImageDrawable(getResources().getDrawable(R.drawable.home));
+		mDockButton[4].setImageDrawable(getResources().getDrawable(R.drawable.icon_setting));
 	}
 
 	public void showDockbar() {
@@ -83,16 +92,45 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			mLauncher.startActivity(intent);
 			return;
 		} else if (v.equals(mDockButton[2])) {
-			Intent intent = mLauncher.getPackageManager()
-					.getLaunchIntentForPackage("com.android.mms");
-			mLauncher.startActivity(intent);		
-			return;
-		} else if (v.equals(mDockButton[3])) {
 			final Rect bounds = mWorkspace.mDrawerBounds;
 			mLauncher.offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 			mAllAppsGrid.setFocusable(true);
 			mAllAppsGrid.setVisibility(View.VISIBLE);
 			// mSpeechBubbleview.setVisibility(View.INVISIBLE);
+			return;
+		} else if (v.equals(mDockButton[3])) {
+			//captureView 생성
+			int count = mLauncher.getWorkspace().getChildCount();
+			
+			if (captureView == null || captureView.length != count)
+				captureView = new Bitmap[count];
+			
+			String sdcard = Environment.getExternalStorageDirectory()
+					.getAbsolutePath();
+			
+			File cfile = new File(sdcard+ "/MateLauncher/Owner");
+			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
+			for (int i = 0; i < count; i++) {
+				View tempCapture = mLauncher.getWorkspace().getChildAt(i);
+				tempCapture.buildDrawingCache();
+				captureView[i] = tempCapture.getDrawingCache();
+				
+				String path = sdcard + "/MateLauncher/Owner/screen"+i+".jpg";		
+				try {
+					FileOutputStream fos = new FileOutputStream(path);
+					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
+					fos.flush();
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			Intent intent = new Intent(mLauncher,HomeMain.class);
+			intent.putExtra("ChildCount", mLauncher.Child_Count());			
+			mLauncher.startActivity(intent); 
+			return; 
+		} else if (v.equals(mDockButton[4])) {		
+			// 설정
 			return;
 		} else if (v.equals(left)) {
 			hideDockbar();

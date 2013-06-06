@@ -26,7 +26,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	private ImageButton mWallpaper;
 	private ImageButton mFlooring;
 	private ImageButton mAvatar;
-	private ImageButton mHomepage;
+	private ImageButton mWidget;
 	private ImageButton mRight;
 
 	Launcher mLauncher;
@@ -50,14 +50,14 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		mFlooring = new ImageButton(context);
 		mWallpaper = new ImageButton(context);
 		mAvatar = new ImageButton(context);
-		mHomepage = new ImageButton(context);
+		mWidget = new ImageButton(context);
 		mRight = new ImageButton(context);
 
 		mFurniture.setBackgroundResource(R.drawable.icon_furniture);
 		mFlooring.setBackgroundResource(R.drawable.icon_flooring);
 		mWallpaper.setBackgroundResource(R.drawable.icon_wallpaper);
 		mAvatar.setBackgroundResource(R.drawable.icon_avatar);
-		mHomepage.setBackgroundResource(R.drawable.icon_homepage);
+		mWidget.setBackgroundResource(R.drawable.icon_widget);
 		mRight.setBackgroundResource(R.drawable.icon_right);
 
 		addView(mFurniture);
@@ -80,10 +80,10 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		params.weight = 50;
 		mAvatar.setLayoutParams(params);
 
-		addView(mHomepage);
-		params = (LayoutParams) mHomepage.getLayoutParams();
+		addView(mWidget);
+		params = (LayoutParams) mWidget.getLayoutParams();
 		params.weight = 50;
-		mHomepage.setLayoutParams(params);
+		mWidget.setLayoutParams(params);
 
 		addView(mRight);
 		params = (LayoutParams) mRight.getLayoutParams();
@@ -94,7 +94,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		mWallpaper.setOnClickListener(this);
 		mFlooring.setOnClickListener(this);
 		mAvatar.setOnClickListener(this);
-		mHomepage.setOnClickListener(this);
+		mWidget.setOnClickListener(this);
 		mRight.setOnClickListener(this);
 	}	
 
@@ -145,36 +145,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			}
 			return;
 		}
-		if (v.equals(mHomepage)) {		
-			//captureView 생성
-			int count = mLauncher.getWorkspace().getChildCount();
-			
-			if (captureView == null || captureView.length != count)
-				captureView = new Bitmap[count];
-			
-			String sdcard = Environment.getExternalStorageDirectory()
-					.getAbsolutePath();
-			
-			File cfile = new File(sdcard+ "/MateLauncher/Owner");
-			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
-			for (int i = 0; i < count; i++) {
-				View tempCapture = mLauncher.getWorkspace().getChildAt(i);
-				tempCapture.buildDrawingCache();
-				captureView[i] = tempCapture.getDrawingCache();
-				
-				String path = sdcard + "/MateLauncher/Owner/screen"+i+".jpg";		
-				try {
-					FileOutputStream fos = new FileOutputStream(path);
-					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
-					fos.flush();
-					fos.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			Intent intent = new Intent(mLauncher,HomeMain.class);
-			intent.putExtra("ChildCount", mLauncher.Child_Count());			
-			mLauncher.startActivity(intent); 
+		if (v.equals(mWidget)) {
 			return; 
 		}
 			

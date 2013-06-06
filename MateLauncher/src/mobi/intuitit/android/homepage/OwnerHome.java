@@ -495,7 +495,6 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 				String today = date.getYear() + 1900 + "."
 						+ (date.getMonth() + 1) + "." + date.getDate();
-
 				m_name.setText(data.getName());
 				m_comment.setText(data.getComment());
 				m_profile.setImageResource(data.getProfile());
