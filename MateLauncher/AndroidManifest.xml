@@ -114,7 +114,7 @@
                 <action android:name="com.android.launcher.action.UNINSTALL_SHORTCUT" />
             </intent-filter>
         </receiver>
-<<<<<<< HEAD
+        
         <receiver
             android:name="mobi.intuitit.android.mate.launcher.SMSReceiver"
            android:enabled="true"
@@ -125,13 +125,6 @@
         </receiver>   
             
             <!-- The settings provider contains Home's data, like the workspace favorites -->
-=======
-        
-        <receiver
-            android:name="mobi.intuitit.android.mate.launcher.SmsReceiver"></receiver>
-
-        <!-- The settings provider contains Home's data, like the workspace favorites -->
->>>>>>> origin/na-last
         <provider
             android:name="LauncherProvider"
             android:authorities="mobi.intuitit.android.mate.launcher.settings"
