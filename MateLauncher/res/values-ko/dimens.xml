@@ -18,6 +18,9 @@
     <dimen name="search_widget_inset">19dip</dimen>
     <dimen name="gesture_thumbnail_inset">8dip</dimen>
     <dimen name="gesture_thumbnail_size">64dip</dimen>
-    <dimen name="cell_width">106dip</dimen>
-    <dimen name="cell_height">74dip</dimen>
+    <dimen name="cell_width">80dip</dimen>
+    <dimen name="cell_height">100dip</dimen>
+    <dimen name="padding_btn">15dp</dimen>
+    <dimen name="profile_width">60dp</dimen>
+    <dimen name="profile_height">60dp</dimen>
 </resources>
