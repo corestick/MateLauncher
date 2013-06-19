@@ -91,24 +91,21 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 		} else if (v.equals(imgTwitter)) {
 			Intent intent = mLauncher.getPackageManager()
 					.getLaunchIntentForPackage("com.twitter.android");
-			mLauncher.startActivity(intent);
-
 			if (intent == null) {
-				Toast toast = Toast.makeText(getContext(), "트위터가 없습니다.",
-						Toast.LENGTH_SHORT);
-				toast.show();
+				Toast.makeText(getContext(), "트위터가 없습니다.", Toast.LENGTH_SHORT)
+						.show();
+			} else {
+				mLauncher.startActivity(intent);
 			}
 		} else if (v.equals(imgFacebook)) {
 			Intent intent = mLauncher.getPackageManager()
 					.getLaunchIntentForPackage("com.facebook.katana");
-			mLauncher.startActivity(intent);
-
 			if (intent == null) {
-				Toast toast = Toast.makeText(getContext(), "페이스북이 없습니다.",
-						Toast.LENGTH_SHORT);
-				toast.show();
+				Toast.makeText(getContext(), "페이스북이 없습니다.", Toast.LENGTH_SHORT)
+						.show();
+			} else {
+				mLauncher.startActivity(intent);
 			}
-
 		}
 	}
 
