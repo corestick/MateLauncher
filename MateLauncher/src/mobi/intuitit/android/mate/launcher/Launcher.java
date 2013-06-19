@@ -3165,10 +3165,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final ContentValues values = new ContentValues();
 					final ContentResolver cr = getContentResolver();
 					String name = contactlist.get(position).Name;
-					String Num = contactlist.get(position).PhoneNum;
-					contactsTag.contacts = Num;
+					String num = contactlist.get(position).PhoneNum;
+					
+					num = num.replace("-", "");
+
+					contactsTag.contacts = num;
 					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS,
-							Num);
+							num);
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
 					Toast.makeText(mLauncher, name + "님과 아바타가 매칭되었습니다.",
