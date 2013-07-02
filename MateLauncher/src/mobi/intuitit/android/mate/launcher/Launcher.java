@@ -67,6 +67,7 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -2182,15 +2183,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if (((Mobject) tag).mobjectType == 0) {
 					SeletView = v;
 					Function_dialog function_dialog = new Function_dialog(this,
-							tag);
+							v);
 					function_dialog.setCancelable(true);
-					function_dialog.show();
+					function_dialog.show();					
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
 					SeletView = v;
 					clickedInfo = tag;
 					createThreadAndDialog();
 				}
+				
 			}
 		}
 	}
@@ -3227,13 +3229,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
-	public class Function_dialog extends Dialog implements View.OnClickListener {
+	public class Function_dialog extends Dialog {
 
 		ListView listview;
 		ArrayAdapter<String> adapter;
 		String[] str = { "앱매칭", "폴더매칭", "아이콘대칭" };
 
-		public Function_dialog(final Context context, final Object tag) {
+		public Function_dialog(final Context context, final View v) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.icon_function_dialog);
@@ -3246,6 +3248,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				public void onItemClick(AdapterView<?> parentView, View view,
 						int position, long id) {
 					if (position == 0) {
+						Object tag = v.getTag();
 						AppList_dialog dialog = new AppList_dialog(context, tag);
 						dialog.setCancelable(true);
 						android.view.WindowManager.LayoutParams params = dialog
@@ -3257,18 +3260,25 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					} else if (position == 1) {
 
 					} else if (position == 2) {
-
+						Object tag = v.getTag();
+						if(((Mobject)tag).mobjectIcon % 2 !=0)
+						{							
+							((Mobject)tag).mobjectIcon -=1;
+						}
+						else{
+							((Mobject)tag).mobjectIcon +=1;
+						}
+						((MobjectImageView)v).initMobjectView((Mobject)tag);
+						final ContentValues values = new ContentValues();
+						final ContentResolver cr = context.getContentResolver();
+						values.put(LauncherSettings.Favorites.MOBJECT_ICON,((Mobject)tag).mobjectIcon);
+						cr.update(LauncherSettings.Favorites.getContentUri(((Mobject)tag).id, false),
+						values, null, null);
 					}
 					dismiss();
 				}
 			});
 		}
-
-		@Override
-		public void onClick(View v) {
-
-		}
-
 	}
 
 	public class AppList_dialog extends Dialog implements View.OnClickListener {
