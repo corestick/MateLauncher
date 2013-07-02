@@ -3454,11 +3454,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			case SEND_THREAD_STOP:
 				mModifyThread.interrupt();
+				
 ////			수정모드에서 타이틀 표시
-				for (int i = 0; i < vg.getChildCount(); i++) {
-					if(vg.getChildAt(i) instanceof MobjectTextView)
-						((MobjectTextView)vg.getChildAt(i)).setText("");
-				}
+//				for (int i = 0; i < vg.getChildCount(); i++) {
+//					if(vg.getChildAt(i) instanceof MobjectTextView)
+//						((MobjectTextView)vg.getChildAt(i)).setTitle(false);
+//				}
 				break;
 
 			default:

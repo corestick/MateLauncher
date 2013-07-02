@@ -38,10 +38,7 @@ public class MobjectTextView extends TextView {
 //				info.mobjectType, info.mobjectIcon));
 		
 		this.setCompoundDrawablesWithIntrinsicBounds(0, MImageList.getInstance().getIcon(
-				info.mobjectType, info.mobjectIcon), 0, 0);
-		
-//		this.setSingleLine();
-		this.setEllipsize(TextUtils.TruncateAt.END);
+				info.mobjectType, info.mobjectIcon), 0, 0);	
 	}
 
 	public void setTitle(boolean isModifyMode) {
@@ -65,12 +62,7 @@ public class MobjectTextView extends TextView {
 		this.startAnimation(anim);
 		
 ////	수정모드에서 타이틀 표시
-		setTitle(true);
-//		ItemInfo info = (ItemInfo) this.getTag();
-//		if (info.contact_num != null)
-//			this.setText(info.contact_name);
-//		else
-//			this.setText(info.title);
+//		setTitle(true);
 	}
 
 	@Override
