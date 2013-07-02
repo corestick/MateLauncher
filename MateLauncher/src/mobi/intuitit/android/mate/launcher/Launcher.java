@@ -263,7 +263,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
 		mAppWidgetHost.startListening();
-		
+
 		mModifyHandler = new ModifyHandler();
 
 		if (PROFILE_STARTUP) {
@@ -3482,27 +3482,25 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 
+			ViewGroup vg = (ViewGroup) mWorkspace.getChildAt(mWorkspace
+					.getCurrentScreen());
+
 			switch (msg.what) {
 			case SEND_THREAD_PLAY:
-				ViewGroup vg = (ViewGroup) mWorkspace.getChildAt(mWorkspace
-						.getCurrentScreen());
-
 				for (int i = 0; i < vg.getChildCount(); i++) {
-					if(vg.getChildAt(i) instanceof MobjectTextView)
-						((MobjectTextView)vg.getChildAt(i)).startAnimation();
+					if (vg.getChildAt(i) instanceof MobjectTextView)
+						((MobjectTextView) vg.getChildAt(i)).startAnimation();
 				}
 				break;
 
 			case SEND_THREAD_STOP:
 				mModifyThread.interrupt();
-////			수정모드에서 타이틀 표시
-//				ViewGroup v = (ViewGroup) mWorkspace.getChildAt(mWorkspace
-//						.getCurrentScreen());
-//				
-//				for (int i = 0; i < v.getChildCount(); i++) {
-//					if(v.getChildAt(i) instanceof MobjectTextView)
-//						((MobjectTextView)v.getChildAt(i)).setText("");
-//				}
+
+				// // 수정모드에서 타이틀 표시
+				// for (int i = 0; i < vg.getChildCount(); i++) {
+				// if(vg.getChildAt(i) instanceof MobjectTextView)
+				// ((MobjectTextView)vg.getChildAt(i)).setTitle(false);
+				// }
 				break;
 
 			default:
@@ -3525,7 +3523,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-//					e.printStackTrace();
+					// e.printStackTrace();
 					return;
 				}
 			}
@@ -3533,6 +3531,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	public void modifyAnimationStart() {
+		if (mModifyThread != null) {
+			if (mModifyThread.isAlive())
+				mModifyThread.interrupt();
+		}
+		
 		mModifyThread = new ModifyThread();
 		mModifyThread.start();
 	}

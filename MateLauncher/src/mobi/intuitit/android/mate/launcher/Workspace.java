@@ -1005,6 +1005,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			int yOffset, Object dragInfo) {
 
 		final LayoutType layoutType = getCurrentDropLayout();
+		
+		//수정모드 애니메이션 시작
+		mLauncher.modifyAnimationStart();
 	
 		if (source != this) {
 			onDropExternal(x - xOffset, y - yOffset, dragInfo, layoutType);
@@ -1034,8 +1037,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				// -- MLayout 관련
 				if (layoutType instanceof MLayout) {
 					layoutType.onDropChild(cell, x - xOffset, y - yOffset);
-					
-					mLauncher.modifyAnimationStart();
 
 				} else {
 					mTargetCell = estimateDropCell(x - xOffset, y - yOffset,

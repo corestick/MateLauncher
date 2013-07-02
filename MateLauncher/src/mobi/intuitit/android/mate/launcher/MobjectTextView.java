@@ -3,6 +3,8 @@ package mobi.intuitit.android.mate.launcher;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -31,11 +33,12 @@ public class MobjectTextView extends TextView {
 		setBackgroundDrawable(null);
 		mBackground.setCallback(this);
 
-		ItemInfo info = (ItemInfo)getTag();
+		ItemInfo info = (ItemInfo) getTag();
 //		this.setBackgroundResource(MImageList.getInstance().getIcon(
 //				info.mobjectType, info.mobjectIcon));
-		this.setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
-				info.mobjectType, info.mobjectIcon), 0, 0);
+		
+		this.setCompoundDrawablesWithIntrinsicBounds(0, MImageList.getInstance().getIcon(
+				info.mobjectType, info.mobjectIcon), 0, 0);	
 	}
 
 	public void setTitle(boolean isModifyMode) {
@@ -57,13 +60,8 @@ public class MobjectTextView extends TextView {
 		anim.setDuration(300);
 
 		this.startAnimation(anim);
-
-		// // 수정모드에서 타이틀 표시
-		// ItemInfo info = (ItemInfo) this.getTag();
-		// if (info.contact_num != null)
-		// this.setText(info.contact_name);
-		// else
-		// this.setText(info.title);
+////	수정모드에서 타이틀 표시
+//		setTitle(true);
 	}
 
 	@Override
