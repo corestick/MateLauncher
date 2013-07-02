@@ -31,9 +31,11 @@ public class MobjectTextView extends TextView {
 		setBackgroundDrawable(null);
 		mBackground.setCallback(this);
 
-		ItemInfo info = (ItemInfo) getTag();
-		this.setBackgroundResource(MImageList.getInstance().getIcon(
-				info.mobjectType, info.mobjectIcon));
+		ItemInfo info = (ItemInfo)getTag();
+//		this.setBackgroundResource(MImageList.getInstance().getIcon(
+//				info.mobjectType, info.mobjectIcon));
+		this.setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
+				info.mobjectType, info.mobjectIcon), 0, 0);
 	}
 
 	public void setTitle(boolean isModifyMode) {
@@ -55,13 +57,13 @@ public class MobjectTextView extends TextView {
 		anim.setDuration(300);
 
 		this.startAnimation(anim);
-		
-////	수정모드에서 타이틀 표시
-//		ItemInfo info = (ItemInfo) this.getTag();
-//		if (info.contact_num != null)
-//			this.setText(info.contact_name);
-//		else
-//			this.setText(info.title);
+
+		// // 수정모드에서 타이틀 표시
+		// ItemInfo info = (ItemInfo) this.getTag();
+		// if (info.contact_num != null)
+		// this.setText(info.contact_name);
+		// else
+		// this.setText(info.title);
 	}
 
 	@Override

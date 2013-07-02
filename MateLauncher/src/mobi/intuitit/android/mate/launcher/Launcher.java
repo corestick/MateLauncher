@@ -3278,7 +3278,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						else{
 							((Mobject)tag).mobjectIcon +=1;
 						}
-						((MobjectTextView)v).initMobjectView();
+						v.setTag(tag);
+						((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
+								((Mobject)tag).mobjectType, ((Mobject)tag).mobjectIcon), 0, 0);											
 						final ContentValues values = new ContentValues();
 						final ContentResolver cr = context.getContentResolver();
 						values.put(LauncherSettings.Favorites.MOBJECT_ICON,((Mobject)tag).mobjectIcon);
@@ -3291,7 +3293,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
-	public class AppList_dialog extends Dialog implements View.OnClickListener {
+	public class AppList_dialog extends Dialog {
 		ListView listview;
 		App_Adapter App_Adapter;
 		ArrayList<AppInfo> appInfoArry;
@@ -3373,11 +3375,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			});
 			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void onClick(View v) {
-
 		}
 
 		public void loadApp() {
@@ -3546,6 +3543,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public void viewSetTag(Mobject tag) {
 		SelectView.setTag(tag);
-	}
+	}	
 
 }
