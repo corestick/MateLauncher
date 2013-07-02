@@ -239,7 +239,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	Mobject Apptag = new Mobject(); // 매칭어플리케이션 정보 저장
 	Mobject contactsTag = new Mobject(); // 매칭 연락처 정보 저장
-	View SeletView;// 현재 선택된 뷰
+	View SelectView;// 현재 선택된 뷰
+	
 	private static final int SEND_THREAD_PLAY = 0;
 	private static final int SEND_THREAD_STOP = 1;
 
@@ -795,14 +796,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			return favorite;
 		} else {
-			ItemInfo appInfo = (Mobject) info;
-
-			MobjectImageView favorite = (MobjectImageView) mInflater.inflate(
+			MobjectTextView favorite = (MobjectTextView) mInflater.inflate(
 					layoutResId, parent, false);
-			favorite.initMobjectView(appInfo);
-
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
+			
+			favorite.initMobjectView();
+			favorite.setTitle(modifyMode);
 
 			return favorite;
 		}
@@ -2176,7 +2176,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					startActivitySafely(intent);
 				} else {
 					MLayout mLayout = (MLayout) v.getParent();
-					mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
+					mLayout.setVisibleStateMavatarMenu((MobjectTextView) v);
 				}
 			}
 		} else {
@@ -2184,7 +2184,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
 					// 앱리스트 얻어오기 커스텀 다이얼로그
-					SeletView = v;
+					SelectView = v;
 					AppList_dialog dialog = new AppList_dialog(this, tag);
 					dialog.setCancelable(true);
 					android.view.WindowManager.LayoutParams params = dialog
@@ -2195,7 +2195,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					dialog.show();
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
-					SeletView = v;
+					SelectView = v;
 
 					clickedInfo = tag;
 					createThreadAndDialog();
@@ -2358,9 +2358,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (!(v instanceof LayoutType)) {
 				// v = (View) v.getParent();
 
-				MobjectImageView mObjectImageView = (MobjectImageView) v;
+				MobjectTextView mObjectImageView = (MobjectTextView) v;
 				MLayout mLayout = (MLayout) mObjectImageView.getParent();
-				mLayout.setVisibleStateSpeechBubble((MobjectImageView) mObjectImageView);
+				mLayout.setVisibleStateSpeechBubble((MobjectTextView) mObjectImageView);
 			}
 		}
 
@@ -3133,8 +3133,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					contactlist.add(contact);
 				}
 			}
-			
+		
 		}
+		
 		cur.close();
 		Collections.sort(contactlist, myComparator);
 	}
@@ -3169,9 +3170,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					
 					num = num.replace("-", "");
 
-					contactsTag.contacts = num;
-					values.put(LauncherSettings.BaseLauncherColumns.CONTACTS,
+					contactsTag.contact_num = num;
+					contactsTag.contact_name = name;
+					
+					values.put(LauncherSettings.BaseLauncherColumns.CONTACT_NUM,
 							num);
+					values.put(LauncherSettings.BaseLauncherColumns.CONTACT_NAME,
+							name);
+					
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
 					Toast.makeText(mLauncher, name + "님과 아바타가 매칭되었습니다.",
@@ -3496,11 +3502,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public void modifyModeOff() {
 		mModifyHandler.sendEmptyMessage(SEND_THREAD_STOP);
-
 	}
 
 	public void viewSetTag(Mobject tag) {
-		SeletView.setTag(tag);
+		SelectView.setTag(tag);
 	}
 
 }
