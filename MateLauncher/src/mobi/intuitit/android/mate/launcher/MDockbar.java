@@ -1,16 +1,7 @@
 package mobi.intuitit.android.mate.launcher;
-import java.io.File;
-import java.io.FileOutputStream;
-
-import mobi.intuitit.android.homepage.HomeMain;
-import mobi.intuitit.android.homepage.OwnerHome;
-
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Environment;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;

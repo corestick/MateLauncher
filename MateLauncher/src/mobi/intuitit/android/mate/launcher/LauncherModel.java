@@ -1520,7 +1520,7 @@ public class LauncherModel {
 		values.put(LauncherSettings.Favorites.CONTAINER, item.container);
 		values.put(LauncherSettings.Favorites.CELLX, item.cellX);
 		values.put(LauncherSettings.Favorites.CELLY, item.cellY);
-		values.put(LauncherSettings.Favorites.SCREEN, item.screen);
+		values.put(LauncherSettings.Favorites.SCREEN, item.screen);	
 
 		cr.update(LauncherSettings.Favorites.getContentUri(item.id, false),
 				values, null, null);

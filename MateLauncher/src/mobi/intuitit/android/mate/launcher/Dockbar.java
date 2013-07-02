@@ -23,7 +23,6 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 	private ImageButton[] mDockButton;
 	private Workspace mWorkspace;
 	private View mAllAppsGrid;
-	private ImageButton left;
 
 	Bitmap captureView[];
 
@@ -44,15 +43,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 		mAllAppsGrid = allgridview;
 	}
 
-	public void CreateDockbar() {
-
-		left = new ImageButton(mLauncher);
-		addView(left);
-		left.setOnClickListener(this);
-		LayoutParams param = (LayoutParams) left.getLayoutParams();
-		param.weight = 10;
-		left.setLayoutParams(param);
-		left.setBackgroundResource(R.drawable.icon_left);
+	public void CreateDockbar() {	
 
 		mDockButton = new ImageButton[5];
 		for (int i = 0; i < 5; i++) {
@@ -135,11 +126,10 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			// Intent intent = mLauncher.getPackageManager()
 			// .getLaunchIntentForPackage("com.android.mms");
 
-			final Intent intent = new Intent(
-					android.provider.Settings.ACTION_SETTINGS);
-			mLauncher.startActivity(intent);
-			return;
-		} else if (v.equals(left)) {
+//			final Intent intent = new Intent(
+//					android.provider.Settings.ACTION_SETTINGS);
+//			mLauncher.startActivity(intent);
+//			return;			
 			hideDockbar();
 			Launcher.modifyMode = true;
 			mLauncher.mMDockbar.showMDockbar();
@@ -149,6 +139,5 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 					.getCurrentScreen());
 			mLayout.hideAllAvatarView();
 		}
-
 	}
 }
