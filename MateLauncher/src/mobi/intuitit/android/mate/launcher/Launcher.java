@@ -191,7 +191,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static int sScreen = DEFAULT_SCREN;
 
 	private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
-	private final BroadcastReceiver mCloseSystemDialogsReceiver = new CloseSystemDialogsIntentReceiver();	
+	private final BroadcastReceiver mCloseSystemDialogsReceiver = new CloseSystemDialogsIntentReceiver();
 
 	private final ContentObserver mObserver = new FavoritesChangeObserver();
 	private final ContentObserver mWidgetObserver = new AppWidgetResetObserver();
@@ -240,11 +240,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	Mobject Apptag = new Mobject(); // 매칭어플리케이션 정보 저장
 	Mobject contactsTag = new Mobject(); // 매칭 연락처 정보 저장
 	View SelectView;// 현재 선택된 뷰
-	
+
 	private static final int SEND_THREAD_PLAY = 0;
 	private static final int SEND_THREAD_STOP = 1;
 
-	private ModifyHandler mModifyHandler = null;
+	private ModifyHandler mModifyHandler = null; // 수정모드에 쓰는 핸들러;
 	private ModifyThread mModifyThread = null;
 
 	@Override
@@ -267,6 +267,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
 		mAppWidgetHost.startListening();
+		
+		mModifyHandler = new ModifyHandler();
 
 		if (PROFILE_STARTUP) {
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
@@ -742,6 +744,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
 
+		// mModifyHandler = new ModifyHandler(); // 수정모드에 쓰는 핸들러
 	}
 
 	/**
@@ -800,7 +803,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					layoutResId, parent, false);
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
-			
+
 			favorite.initMobjectView();
 			favorite.setTitle(modifyMode);
 
@@ -1252,7 +1255,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		getContentResolver().unregisterContentObserver(mObserver);
 		getContentResolver().unregisterContentObserver(mWidgetObserver);
 		unregisterReceiver(mApplicationsReceiver);
-		unregisterReceiver(mCloseSystemDialogsReceiver);		
+		unregisterReceiver(mCloseSystemDialogsReceiver);
 
 		mWorkspace.unregisterProvider();
 	}
@@ -1742,8 +1745,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		filter.addDataScheme("package");
 		registerReceiver(mApplicationsReceiver, filter);
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-		registerReceiver(mCloseSystemDialogsReceiver, filter);		
-		mModifyHandler = new ModifyHandler(); // 수정모드에 쓰는 핸들러
+		registerReceiver(mCloseSystemDialogsReceiver, filter);
 	}
 
 	/**
@@ -2225,8 +2227,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	void createThreadAndDialog() {
 		/* ProgressDialog */
-		loagindDialog = ProgressDialog.show(this, null,
-				"연락처를 불러오는 중입니다.", true, false);
+		loagindDialog = ProgressDialog.show(this, null, "연락처를 불러오는 중입니다.",
+				true, false);
 
 		Thread thread = new Thread(new Runnable() {
 			public void run() {
@@ -2350,6 +2352,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				} else {
 					if (!(cellInfo.cell instanceof Folder)) {
 						// User long pressed on an item
+						modifyAnimationStop();
 						mWorkspace.startDrag(cellInfo);
 					}
 				}
@@ -3045,7 +3048,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public View getAllgridView() {
 		return mAllAppsGrid;
-	}	
+	}
 
 	public void sendtoSMS(String phoneNumber, String message) {
 		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -3133,9 +3136,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					contactlist.add(contact);
 				}
 			}
-		
+
 		}
-		
+
 		cur.close();
 		Collections.sort(contactlist, myComparator);
 	}
@@ -3167,17 +3170,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					final ContentResolver cr = getContentResolver();
 					String name = contactlist.get(position).Name;
 					String num = contactlist.get(position).PhoneNum;
-					
+
 					num = num.replace("-", "");
 
 					contactsTag.contact_num = num;
 					contactsTag.contact_name = name;
-					
-					values.put(LauncherSettings.BaseLauncherColumns.CONTACT_NUM,
+
+					values.put(
+							LauncherSettings.BaseLauncherColumns.CONTACT_NUM,
 							num);
-					values.put(LauncherSettings.BaseLauncherColumns.CONTACT_NAME,
+					values.put(
+							LauncherSettings.BaseLauncherColumns.CONTACT_NAME,
 							name);
-					
+
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
 					Toast.makeText(mLauncher, name + "님과 아바타가 매칭되었습니다.",
@@ -3231,8 +3236,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					convertView = inflater.inflate(R.layout.contact, parent,
 							false);
 				}
-				Name = (TextView) convertView
-						.findViewById(R.id.contact_name);
+				Name = (TextView) convertView.findViewById(R.id.contact_name);
 				PhoneNum = (TextView) convertView
 						.findViewById(R.id.contact_phonenum);
 
@@ -3429,7 +3433,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			}
 		}
-
 	}
 
 	class ModifyHandler extends Handler {
@@ -3440,19 +3443,25 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			switch (msg.what) {
 			case SEND_THREAD_PLAY:
-				Animation anim = new TranslateAnimation(0, 3, 0, 0);
-				anim.setDuration(500);
-				mLauncher
-						.getWorkspace()
-						.getChildAt(mLauncher.getWorkspace().getCurrentScreen())
-						.startAnimation(anim);
-				// anim = new TranslateAnimation(0,2, 0, 0);
-				// anim.setDuration(300);
-				// iv.startAnimation(anim);
+				ViewGroup vg = (ViewGroup) mWorkspace.getChildAt(mWorkspace
+						.getCurrentScreen());
+
+				for (int i = 0; i < vg.getChildCount(); i++) {
+					if(vg.getChildAt(i) instanceof MobjectTextView)
+						((MobjectTextView)vg.getChildAt(i)).startAnimation();
+				}
 				break;
 
 			case SEND_THREAD_STOP:
-				mModifyThread.stopThread();
+				mModifyThread.interrupt();
+////			수정모드에서 타이틀 표시
+//				ViewGroup v = (ViewGroup) mWorkspace.getChildAt(mWorkspace
+//						.getCurrentScreen());
+//				
+//				for (int i = 0; i < v.getChildCount(); i++) {
+//					if(v.getChildAt(i) instanceof MobjectTextView)
+//						((MobjectTextView)v.getChildAt(i)).setText("");
+//				}
 				break;
 
 			default:
@@ -3464,24 +3473,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	class ModifyThread extends Thread implements Runnable {
 
-		private boolean isPlay = false;
-
-		public ModifyThread() {
-			isPlay = true;
-		}
-
-		public void isThreadState(boolean isPlay) {
-			this.isPlay = isPlay;
-		}
-
-		public void stopThread() {
-			isPlay = !isPlay;
-		}
-
 		@Override
 		public void run() {
 			super.run();
-			while (isPlay) {
+			while (true) {
 				Message msg = mModifyHandler.obtainMessage();
 				msg.what = SEND_THREAD_PLAY;
 				mModifyHandler.sendMessage(msg);
@@ -3489,18 +3484,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					return;
 				}
 			}
 		}
 	}
 
-	public void modifyMode() {
+	public void modifyAnimationStart() {
 		mModifyThread = new ModifyThread();
 		mModifyThread.start();
 	}
 
-	public void modifyModeOff() {
+	public void modifyAnimationStop() {
 		mModifyHandler.sendEmptyMessage(SEND_THREAD_STOP);
 	}
 

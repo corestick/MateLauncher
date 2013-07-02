@@ -161,7 +161,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			hideMDockbar();
 			Launcher.modifyMode = false;
 			mLauncher.mDockbar.showDockbar();
-			mLauncher.modifyModeOff();
+			mLauncher.modifyAnimationStop();
 			return;
 		}
 	}

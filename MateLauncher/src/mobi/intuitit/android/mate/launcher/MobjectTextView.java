@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 public class MobjectTextView extends TextView {
@@ -33,12 +35,11 @@ public class MobjectTextView extends TextView {
 		this.setBackgroundResource(MImageList.getInstance().getIcon(
 				info.mobjectType, info.mobjectIcon));
 	}
-	
+
 	public void setTitle(boolean isModifyMode) {
-		if(isModifyMode)
-		{
+		if (isModifyMode) {
 			ItemInfo info = (ItemInfo) this.getTag();
-	
+
 			if (info.contact_num != null)
 				this.setText(info.contact_name);
 			else
@@ -46,6 +47,21 @@ public class MobjectTextView extends TextView {
 		} else {
 			this.setText("");
 		}
+	}
+
+	public void startAnimation() {
+		Animation anim = new RotateAnimation(-1, 1, Animation.RELATIVE_TO_SELF,
+				0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		anim.setDuration(300);
+
+		this.startAnimation(anim);
+		
+////	수정모드에서 타이틀 표시
+//		ItemInfo info = (ItemInfo) this.getTag();
+//		if (info.contact_num != null)
+//			this.setText(info.contact_name);
+//		else
+//			this.setText(info.title);
 	}
 
 	@Override

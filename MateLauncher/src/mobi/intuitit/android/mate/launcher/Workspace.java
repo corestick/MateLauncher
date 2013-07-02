@@ -972,6 +972,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		current.onDragChild(child);
 		mDragger.startDrag(child, this, child.getTag(),
 				DragController.DRAG_ACTION_MOVE);
+		
 		invalidate();
 	}
 
@@ -1004,7 +1005,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			int yOffset, Object dragInfo) {
 
 		final LayoutType layoutType = getCurrentDropLayout();
-
+	
 		if (source != this) {
 			onDropExternal(x - xOffset, y - yOffset, dragInfo, layoutType);
 		} else {
@@ -1033,6 +1034,8 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				// -- MLayout ฐüทร
 				if (layoutType instanceof MLayout) {
 					layoutType.onDropChild(cell, x - xOffset, y - yOffset);
+					
+					mLauncher.modifyAnimationStart();
 
 				} else {
 					mTargetCell = estimateDropCell(x - xOffset, y - yOffset,
@@ -1572,8 +1575,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	}
 
 	public void initMScreens() {
-		Log.e("RRR", "initMScreens>>");
-
 		for (int i = 0; i < this.getChildCount(); i++) {
 			LayoutType layout = (LayoutType) this.getChildAt(i);
 			if (layout instanceof MLayout) {
