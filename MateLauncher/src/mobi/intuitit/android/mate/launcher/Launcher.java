@@ -30,7 +30,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -73,7 +72,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue;
@@ -82,7 +80,6 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.LiveFolders;
 import android.telephony.SmsManager;
-import android.telephony.SmsMessage;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -99,10 +96,9 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -1243,7 +1239,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					"problem while stopping AppWidgetHost during Launcher destruction",
 					ex);
 		}
-
 		TextKeyListener.getInstance().release();
 
 		mAllAppsGrid.clearTextFilter();
@@ -1746,6 +1741,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerReceiver(mApplicationsReceiver, filter);
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
+
+		mModifyHandler = new ModifyHandler(); // 수정모드에 쓰는 핸들러
 	}
 
 	/**
@@ -2185,23 +2182,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == 0) {
-					// 앱리스트 얻어오기 커스텀 다이얼로그
 					SelectView = v;
-					AppList_dialog dialog = new AppList_dialog(this, tag);
-					dialog.setCancelable(true);
-					android.view.WindowManager.LayoutParams params = dialog
-							.getWindow().getAttributes();
-					params.width = LayoutParams.FILL_PARENT;
-					params.height = LayoutParams.FILL_PARENT;
-					dialog.getWindow().setAttributes(params);
-					dialog.show();
+					Function_dialog function_dialog = new Function_dialog(this,
+							v);
+					function_dialog.setCancelable(true);
+					function_dialog.show();					
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
 					SelectView = v;
-
 					clickedInfo = tag;
 					createThreadAndDialog();
 				}
+				
 			}
 		}
 	}
@@ -3244,6 +3236,58 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				PhoneNum.setText(contactlist.get(position).PhoneNum);
 				return convertView;
 			}
+		}
+	}
+
+	public class Function_dialog extends Dialog {
+
+		ListView listview;
+		ArrayAdapter<String> adapter;
+		String[] str = { "앱매칭", "폴더매칭", "아이콘대칭" };
+
+		public Function_dialog(final Context context, final View v) {
+			super(context);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.icon_function_dialog);
+			listview = (ListView) findViewById(R.id.icon_function_listview);
+			adapter = new ArrayAdapter<String>(context,
+					android.R.layout.simple_list_item_1, str);
+			listview.setAdapter(adapter);
+			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parentView, View view,
+						int position, long id) {
+					if (position == 0) {
+						Object tag = v.getTag();
+						AppList_dialog dialog = new AppList_dialog(context, tag);
+						dialog.setCancelable(true);
+						android.view.WindowManager.LayoutParams params = dialog
+								.getWindow().getAttributes();
+						params.width = LayoutParams.FILL_PARENT;
+						params.height = LayoutParams.FILL_PARENT;
+						dialog.getWindow().setAttributes(params);
+						dialog.show();
+					} else if (position == 1) {
+
+					} else if (position == 2) {
+						Object tag = v.getTag();
+						if(((Mobject)tag).mobjectIcon % 2 !=0)
+						{							
+							((Mobject)tag).mobjectIcon -=1;
+						}
+						else{
+							((Mobject)tag).mobjectIcon +=1;
+						}
+						((MobjectTextView)v).initMobjectView();
+						final ContentValues values = new ContentValues();
+						final ContentResolver cr = context.getContentResolver();
+						values.put(LauncherSettings.Favorites.MOBJECT_ICON,((Mobject)tag).mobjectIcon);
+						cr.update(LauncherSettings.Favorites.getContentUri(((Mobject)tag).id, false),
+						values, null, null);
+					}
+					dismiss();
+				}
+			});
 		}
 	}
 

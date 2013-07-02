@@ -8,13 +8,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class Dockbar extends LinearLayout implements View.OnClickListener {
@@ -45,7 +43,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 	}
 
 	public void CreateDockbar() {
-
+		
 		left = new ImageButton(mLauncher);
 		addView(left);
 		left.setOnClickListener(this);
@@ -138,8 +136,9 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			final Intent intent = new Intent(
 					android.provider.Settings.ACTION_SETTINGS);
 			mLauncher.startActivity(intent);
-			return;
-		} else if (v.equals(left)) {
+			return;				
+		}
+		else if (v.equals(left)) {
 			hideDockbar();
 			Launcher.modifyMode = true;
 			mLauncher.mMDockbar.showMDockbar();
@@ -149,6 +148,5 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 					.getCurrentScreen());
 			mLayout.hideAllAvatarView();
 		}
-
 	}
 }
