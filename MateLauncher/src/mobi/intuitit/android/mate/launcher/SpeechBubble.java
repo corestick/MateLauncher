@@ -25,7 +25,7 @@ class SpeechBubble extends LinearLayout {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void initSpeechBubble(ItemInfo info, MobjectImageView view) {
+	public void initSpeechBubble(ItemInfo info, MobjectTextView view) {
 		setVisible(mVisibleState);
 		
 		txtSpeechBubble = (TextView) findViewById(R.id.txtSpeechBubble);

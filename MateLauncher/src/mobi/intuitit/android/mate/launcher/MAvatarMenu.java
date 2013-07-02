@@ -33,7 +33,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	ImageView imgFacebook;
 
 	private Launcher mLauncher;
-	MobjectImageView mOjbectImageView;
+	MobjectTextView mOjbectImageView;
 
 	EditText edtMsg;
 
@@ -48,7 +48,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	}
 
 	public void initMAvatarMenu(Launcher launcher,
-			MobjectImageView mojbectImageView) {
+			MobjectTextView mojbectImageView) {
 		setVisible(mVisibleState);
 
 		this.mLauncher = launcher;
@@ -82,7 +82,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 		if (v.equals(imgCall)) {
 			ItemInfo info = (ItemInfo) mOjbectImageView.getTag();
 			Intent intent = new Intent(Intent.ACTION_CALL);
-			intent.setData(Uri.parse("tel:" + info.contacts));
+			intent.setData(Uri.parse("tel:" + info.contact_num));
 			mLauncher.startActivity(intent);
 		} else if (v.equals(imgSMS)) {
 			showMsgDialog("SMS");
@@ -131,7 +131,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 
 				if (msg.length() > 0) {
 					if (type.equals("SMS")) {
-						mLauncher.sendtoSMS(info.contacts, msg);
+						mLauncher.sendtoSMS(info.contact_num, msg);
 					} else if (type.equals("Kakao")) {
 						KakaoLink kakao = new KakaoLink(mLauncher);
 						kakao.openKakaoLink(mLauncher, msg,

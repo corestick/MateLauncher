@@ -29,14 +29,14 @@ public class SMSReceiver extends BroadcastReceiver {
 				MLayout mLayout = (MLayout) Launcher.getWorkspace().getChildAt(
 						i);
 				for (int j = 0; j < mLayout.getChildCount(); j++) {
-					if (mLayout.getChildAt(j) instanceof MobjectImageView) {
-						MobjectImageView mView = (MobjectImageView) mLayout
+					if (mLayout.getChildAt(j) instanceof MobjectTextView) {
+						MobjectTextView mView = (MobjectTextView) mLayout
 								.getChildAt(j);
 
 						ItemInfo info = (ItemInfo) mView.getTag();
 						if (info.mobjectType == 1) {
-							if (info.contacts != null) {
-								if (info.contacts.equals(receiver)) {
+							if (info.contact_num != null) {
+								if (info.contact_num.equals(receiver)) {
 									mLayout.hideMAvatarMenu(mView);
 									mLayout.showSpeechBubble(mView);
 									mLayout.setSpeechBubbleText(mView, msg);
