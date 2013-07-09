@@ -795,13 +795,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			return favorite;
 		} else {
-			MobjectTextView favorite = (MobjectTextView) mInflater.inflate(
+			MobjectImageView favorite = (MobjectImageView) mInflater.inflate(
 					layoutResId, parent, false);
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
 
 			favorite.initMobjectView();
-			favorite.setTitle(modifyMode);
 
 			return favorite;
 		}
@@ -2175,7 +2174,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					startActivitySafely(intent);
 				} else {
 					MLayout mLayout = (MLayout) v.getParent();
-					mLayout.setVisibleStateMavatarMenu((MobjectTextView) v);
+					mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
 				}
 			}
 		} else {
@@ -2353,9 +2352,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (!(v instanceof LayoutType)) {
 				// v = (View) v.getParent();
 
-				MobjectTextView mObjectImageView = (MobjectTextView) v;
+				MobjectImageView mObjectImageView = (MobjectImageView) v;
 				MLayout mLayout = (MLayout) mObjectImageView.getParent();
-				mLayout.setVisibleStateSpeechBubble((MobjectTextView) mObjectImageView);
+				mLayout.setVisibleStateSpeechBubble((MobjectImageView) mObjectImageView);
+			} else {
+				MLayout mLayout = (MLayout) v;
+				mLayout.setMobjectResolution(240, 400);
 			}
 		}
 
@@ -3488,8 +3490,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			switch (msg.what) {
 			case SEND_THREAD_PLAY:
 				for (int i = 0; i < vg.getChildCount(); i++) {
-					if (vg.getChildAt(i) instanceof MobjectTextView)
-						((MobjectTextView) vg.getChildAt(i)).startAnimation();
+					if (vg.getChildAt(i) instanceof MobjectImageView)
+						((MobjectImageView) vg.getChildAt(i)).startAnimation();
 				}
 				break;
 

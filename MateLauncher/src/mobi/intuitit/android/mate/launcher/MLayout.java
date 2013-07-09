@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class MLayout extends LayoutType {
 	private boolean mPortrait;
@@ -39,8 +41,8 @@ public class MLayout extends LayoutType {
 	private final int MAVATARMENU_WIDTH = 300;
 	private final int MAVATARMENU_HEIGHT = 60;
 
-	private HashMap<MobjectTextView, SpeechBubble> mSpeechBubbleMap;
-	private HashMap<MobjectTextView, MAvatarMenu> mAvatarMenuMap;
+	private HashMap<MobjectImageView, SpeechBubble> mSpeechBubbleMap;
+	private HashMap<MobjectImageView, MAvatarMenu> mAvatarMenuMap;
 
 	public MLayout(Context context) {
 		this(context, null);
@@ -57,13 +59,13 @@ public class MLayout extends LayoutType {
 
 		a.recycle();
 
-		mSpeechBubbleMap = new HashMap<MobjectTextView, SpeechBubble>();
-		mAvatarMenuMap = new HashMap<MobjectTextView, MAvatarMenu>();
+		mSpeechBubbleMap = new HashMap<MobjectImageView, SpeechBubble>();
+		mAvatarMenuMap = new HashMap<MobjectImageView, MAvatarMenu>();
 
 		setAlwaysDrawnWithCacheEnabled(false);
 	}
 
-	public void addAvatarView(MobjectTextView view) {
+	public void addAvatarView(MobjectImageView view) {
 
 		ItemInfo info = (ItemInfo) view.getTag();
 
@@ -93,7 +95,7 @@ public class MLayout extends LayoutType {
 		}
 	}
 
-	public void setSpeechBubbleLayout(MobjectTextView view) {
+	public void setSpeechBubbleLayout(MobjectImageView view) {
 
 		SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 
@@ -119,7 +121,7 @@ public class MLayout extends LayoutType {
 		sb.setLayoutParams(sbLP);
 	}
 
-	public void setAvatarMenuLayout(MobjectTextView view) {
+	public void setAvatarMenuLayout(MobjectImageView view) {
 		MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
 
 		LayoutParams vLP = (LayoutParams) view.getLayoutParams();
@@ -138,13 +140,13 @@ public class MLayout extends LayoutType {
 
 		am.setLayoutParams(amLP);
 	}
-	
-	public void removeAvatarView(MobjectTextView view) {
+
+	public void removeAvatarView(MobjectImageView view) {
 		SpeechBubble sp = mSpeechBubbleMap.get(view);
 		MAvatarMenu am = mAvatarMenuMap.get(view);
 		mSpeechBubbleMap.remove(view);
 		mAvatarMenuMap.remove(view);
-		
+
 		this.removeView(sp);
 		this.removeView(am);
 	}
@@ -152,14 +154,14 @@ public class MLayout extends LayoutType {
 	public void hideAllAvatarView() {
 		for (int i = 0; i < this.getChildCount(); i++) {
 			View view = this.getChildAt(i);
-			if (view instanceof MobjectTextView) {
-				hideSpeechBubble((MobjectTextView) view);
-				hideMAvatarMenu((MobjectTextView) view);
+			if (view instanceof MobjectImageView) {
+				hideSpeechBubble((MobjectImageView) view);
+				hideMAvatarMenu((MobjectImageView) view);
 			}
 		}
 	}
 
-	public void hideSpeechBubble(MobjectTextView view) {
+	public void hideSpeechBubble(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
 		if (info.contact_num != null) {
 			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
@@ -167,7 +169,7 @@ public class MLayout extends LayoutType {
 		}
 	}
 
-	public void showSpeechBubble(MobjectTextView view) {
+	public void showSpeechBubble(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
 		if (info.contact_num != null) {
 			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
@@ -176,7 +178,7 @@ public class MLayout extends LayoutType {
 		}
 	}
 
-	public void setVisibleStateSpeechBubble(MobjectTextView view) {
+	public void setVisibleStateSpeechBubble(MobjectImageView view) {
 		if (mSpeechBubbleMap.containsKey(view)) {
 			SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 			if (sb.getVisibility() == INVISIBLE) {
@@ -187,12 +189,12 @@ public class MLayout extends LayoutType {
 		}
 	}
 
-	public void setSpeechBubbleText(MobjectTextView view, String msg) {
+	public void setSpeechBubbleText(MobjectImageView view, String msg) {
 		SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap.get(view);
 		sb.setBubbleText(msg);
 	}
 
-	public void hideMAvatarMenu(MobjectTextView view) {
+	public void hideMAvatarMenu(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
 		if (info.contact_num != null) {
 			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
@@ -200,7 +202,7 @@ public class MLayout extends LayoutType {
 		}
 	}
 
-	public void showMAvatarMenu(MobjectTextView view) {
+	public void showMAvatarMenu(MobjectImageView view) {
 		ItemInfo info = (ItemInfo) view.getTag();
 		if (info.contact_num != null) {
 			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
@@ -209,7 +211,7 @@ public class MLayout extends LayoutType {
 		}
 	}
 
-	public void setVisibleStateMavatarMenu(MobjectTextView view) {
+	public void setVisibleStateMavatarMenu(MobjectImageView view) {
 		if (mAvatarMenuMap.containsKey(view)) {
 			MAvatarMenu am = (MAvatarMenu) mAvatarMenuMap.get(view);
 
@@ -240,8 +242,8 @@ public class MLayout extends LayoutType {
 		// per workspace screen
 		super.addView(child, index, params);
 
-		if (child instanceof MobjectTextView) {
-			addAvatarView((MobjectTextView) child);
+		if (child instanceof MobjectImageView) {
+			addAvatarView((MobjectImageView) child);
 		}
 	}
 
@@ -381,8 +383,8 @@ public class MLayout extends LayoutType {
 				child.layout(childLeft, childTop, childRight, childBottom);
 
 				if (mSpeechBubbleMap.containsKey(child)) {
-					setSpeechBubbleLayout((MobjectTextView) child);
-					setAvatarMenuLayout((MobjectTextView) child);
+					setSpeechBubbleLayout((MobjectImageView) child);
+					setAvatarMenuLayout((MobjectImageView) child);
 				}
 			}
 		}
@@ -415,8 +417,8 @@ public class MLayout extends LayoutType {
 		// if (layoutDrawed) 벽지, 바닥 바뀌면 적용을 위해
 		// return;
 
-		if (mThumbCanvas == null)	
-		initThumb(getWidth() >> 2, getHeight() >> 2);
+		if (mThumbCanvas == null)
+			initThumb(getWidth() >> 2, getHeight() >> 2);
 
 		setDrawingCacheEnabled(true);
 
@@ -478,10 +480,10 @@ public class MLayout extends LayoutType {
 			child.bringToFront();
 
 			// --
-			if (child instanceof MobjectTextView) {
+			if (child instanceof MobjectImageView) {
 				if (mSpeechBubbleMap.containsKey(child)) {
-					setSpeechBubbleLayout((MobjectTextView) child);
-					setAvatarMenuLayout((MobjectTextView) child);
+					setSpeechBubbleLayout((MobjectImageView) child);
+					setAvatarMenuLayout((MobjectImageView) child);
 
 					SpeechBubble sb = (SpeechBubble) mSpeechBubbleMap
 							.get(child);
@@ -682,4 +684,48 @@ public class MLayout extends LayoutType {
 	public int getFlooringResIdx() {
 		return this.mFlooringResIdx;
 	}
+
+	public void setMobjectResolution(int argWidth, int argHeight) {
+		MobjectImageView mObjectTextView;
+		ItemInfo info;
+		int l, r, t, b;
+		float wRate, hRate;
+
+		Log.e("RRR", "argWidth=" + argWidth + ", getWidth()=" + getWidth());
+
+		wRate = (float) argWidth / (float) getWidth();
+		hRate = (float) argHeight / (float) getHeight();
+
+		Log.e("RRR", "wRate=" + wRate + ", hRate=" + hRate);
+
+		for (int i = 0; i < this.getChildCount(); i++) {
+			if (getChildAt(i) instanceof MobjectImageView) {
+				mObjectTextView = (MobjectImageView) this.getChildAt(i);
+				info = (ItemInfo) mObjectTextView.getTag();
+
+				Log.e("RRR",
+						"==>>>" + mObjectTextView.getLeft() + ", "
+								+ mObjectTextView.getTop() + ", "
+								+ mObjectTextView.getRight() + ", "
+								+ mObjectTextView.getBottom());
+
+				l = (int) (mObjectTextView.getLeft() * wRate);
+				r = (int) (mObjectTextView.getRight() * wRate);
+				t = (int) (mObjectTextView.getTop() * hRate);
+				b = (int) (mObjectTextView.getBottom() * hRate);
+
+				info.cellX = l;
+				info.cellY = t;
+
+				mObjectTextView.setTag(info);
+				mObjectTextView.layout(l, t, r, b);
+
+				Log.e("RRR", "==>" + l + ", " + t + ", " + r + ", " + b);
+//				mObjectTextView.invalidate();
+//				mObjectTextView.invalidate(l, t, r, b);
+				
+			}
+		}
+	}
+
 }

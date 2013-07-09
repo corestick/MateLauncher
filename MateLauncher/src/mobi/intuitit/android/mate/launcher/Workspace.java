@@ -1022,9 +1022,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 					originalLayoutType.removeView(cell);
 
 					// --
-					if (cell instanceof MobjectTextView) {
+					if (cell instanceof MobjectImageView) {
 						MLayout mLayout = (MLayout) originalLayoutType;
-						mLayout.removeAvatarView((MobjectTextView) cell);
+						mLayout.removeAvatarView((MobjectImageView) cell);
 					}
 
 					layoutType.addView(cell);

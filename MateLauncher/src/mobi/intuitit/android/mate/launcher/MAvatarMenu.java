@@ -33,7 +33,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	ImageView imgFacebook;
 
 	private Launcher mLauncher;
-	MobjectTextView mOjbectImageView;
+	MobjectImageView mOjbectImageView;
 
 	EditText edtMsg;
 
@@ -48,7 +48,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 	}
 
 	public void initMAvatarMenu(Launcher launcher,
-			MobjectTextView mojbectImageView) {
+			MobjectImageView mojbectImageView) {
 		setVisible(mVisibleState);
 
 		this.mLauncher = launcher;

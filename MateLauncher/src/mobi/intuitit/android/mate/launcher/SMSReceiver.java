@@ -29,8 +29,8 @@ public class SMSReceiver extends BroadcastReceiver {
 				MLayout mLayout = (MLayout) Launcher.getWorkspace().getChildAt(
 						i);
 				for (int j = 0; j < mLayout.getChildCount(); j++) {
-					if (mLayout.getChildAt(j) instanceof MobjectTextView) {
-						MobjectTextView mView = (MobjectTextView) mLayout
+					if (mLayout.getChildAt(j) instanceof MobjectImageView) {
+						MobjectImageView mView = (MobjectImageView) mLayout
 								.getChildAt(j);
 
 						ItemInfo info = (ItemInfo) mView.getTag();

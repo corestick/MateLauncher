@@ -8,51 +8,52 @@ import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MobjectTextView extends TextView {
+public class MobjectImageView extends ImageView {
 	private boolean mBackgroundSizeChanged;
 	private Drawable mBackground;
 
-	public MobjectTextView(Context context) {
+	public MobjectImageView(Context context) {
 		super(context);
 	}
 
-	public MobjectTextView(Context context, AttributeSet attrs) {
+	public MobjectImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public MobjectTextView(Context context, AttributeSet attrs, int defStyle) {
+	public MobjectImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
 	public void initMobjectView() {
 
-		setFocusable(true);
-		mBackground = getBackground();
-		setBackgroundDrawable(null);
-		mBackground.setCallback(this);
+//		setFocusable(true);
+//		mBackground = getBackground();
+//		setBackgroundDrawable(null);
+//		mBackground.setCallback(this);
 
 		ItemInfo info = (ItemInfo) getTag();
-//		this.setBackgroundResource(MImageList.getInstance().getIcon(
-//				info.mobjectType, info.mobjectIcon));
+		this.setBackgroundResource(MImageList.getInstance().getIcon(
+				info.mobjectType, info.mobjectIcon));
 		
-		this.setCompoundDrawablesWithIntrinsicBounds(0, MImageList.getInstance().getIcon(
-				info.mobjectType, info.mobjectIcon), 0, 0);	
+//		this.setCompoundDrawablesWithIntrinsicBounds(0, MImageList.getInstance().getIcon(
+//				info.mobjectType, info.mobjectIcon), 0, 0);
 	}
 
-	public void setTitle(boolean isModifyMode) {
-		if (isModifyMode) {
-			ItemInfo info = (ItemInfo) this.getTag();
-
-			if (info.contact_num != null)
-				this.setText(info.contact_name);
-			else
-				this.setText(info.title);
-		} else {
-			this.setText("");
-		}
-	}
+//	public void setTitle(boolean isModifyMode) {
+//		if (isModifyMode) {
+//			ItemInfo info = (ItemInfo) this.getTag();
+//
+//			if (info.contact_num != null)
+//				this.setText(info.contact_name);
+//			else
+//				this.setText(info.title);
+//		} else {
+//			this.setText("");
+//		}
+//	}
 
 	public void startAnimation() {
 		Animation anim = new RotateAnimation(-1, 1, Animation.RELATIVE_TO_SELF,
