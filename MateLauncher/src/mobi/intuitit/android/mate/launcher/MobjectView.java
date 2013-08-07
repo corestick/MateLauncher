@@ -2,6 +2,7 @@ package mobi.intuitit.android.mate.launcher;
 
 import java.util.ArrayList;
 
+import android.R.bool;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -31,13 +32,13 @@ public class MobjectView extends GridView implements
 	MobjectAdapter mWallpaperAdapter;
 	MobjectAdapter mFlooringAdapter;
 	MobjectAdapter mAvatarAdapter;
-	MobjectAdapter mWidgetAdapter;
+	MFolderAdapter mWidgetAdapter;
 	
 	ArrayList<Mobject> mFurnitureList;
 	ArrayList<Mobject> mWallpaperList;
 	ArrayList<Mobject> mFlooringList;
 	ArrayList<Mobject> mAvatarList;
-	ArrayList<Mobject> mWidgetList;
+	ArrayList<MFolder> mWidgetList;
 
 	private DragController mDragger;
 	private Launcher mLauncher;
@@ -45,6 +46,8 @@ public class MobjectView extends GridView implements
 	private Paint mPaint;
 	private int mTextureWidth;
 	private int mTextureHeight;
+	
+	public boolean isFolder = false;
 
 	public MobjectView(Context context) {
 		super(context);
@@ -78,7 +81,7 @@ public class MobjectView extends GridView implements
 		mWallpaperList = new ArrayList<Mobject>();
 		mFlooringList = new ArrayList<Mobject>();
 		mAvatarList = new ArrayList<Mobject>();
-		mWidgetList = new ArrayList<Mobject>();
+		mWidgetList = new ArrayList<MFolder>();
 
 		for (int i = 0; i < MImageList.getInstance().furnitureList.size(); i++) {
 			Mobject mObject = new Mobject();
@@ -121,16 +124,17 @@ public class MobjectView extends GridView implements
 		mAvatarAdapter = new MobjectAdapter(mLauncher, mAvatarList);
 		
 		for (int i = 0; i < MImageList.getInstance().widgetList.size(); i++) {
-			Mobject mObject = new Mobject();
-			mObject.icon = getResources().getDrawable(MImageList.getInstance().widgetList.get(i));
+			MFolder mFolder = new MFolder(mLauncher, null);
+			mFolder.mInfo = new FolderInfo();
+			mFolder.mInfo.icon = getResources().getDrawable(MImageList.getInstance().widgetList.get(i));
 		
-			mObject.mobjectType = 2;
-			mObject.mobjectIcon = i;
+			mFolder.mInfo.mobjectType = 2;
+			mFolder.mInfo.mobjectIcon = i;
 						
-			mWidgetList.add(mObject);
+			mWidgetList.add(mFolder);
 		}
 		
-		mWidgetAdapter = new MobjectAdapter(mLauncher, mWidgetList);
+		mWidgetAdapter = new MFolderAdapter(mLauncher, mWidgetList);
 	}
 
 	@Override
@@ -193,10 +197,18 @@ public class MobjectView extends GridView implements
 		if (!isDraggable())
 			return false;
 		
-		Mobject app = (Mobject) parent.getItemAtPosition(position);
-		app = new Mobject(app);
-
-		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
+		if(isFolder){		
+			MFolder appInfo = new MFolder(mLauncher, null);
+			appInfo.mInfo = ((MFolder) parent.getItemAtPosition(position)).mInfo;
+			appInfo.mInfo.itemType = LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER;
+			mDragger.startDrag(view, this, appInfo, DragController.DRAG_ACTION_COPY);	
+		}
+		else{
+			Mobject app = (Mobject) parent.getItemAtPosition(position);			
+			app = new Mobject(app);
+			mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
+		}		
+		
 		mLauncher.closeObjectView();
 		return true;
 	}
@@ -236,6 +248,7 @@ public class MobjectView extends GridView implements
 		switch (argType) {
 		case FURNITURE:
 			setAdapter(mFurnitureAdapter);
+			isFolder = false;
 			break;
 		case WALLPAPER:
 			setAdapter(mWallpaperAdapter);
@@ -248,6 +261,7 @@ public class MobjectView extends GridView implements
 			break;
 		case WIDGET:
 			setAdapter(mWidgetAdapter);
+			isFolder = true;
 			break;
 		}
 		setVisibility(View.VISIBLE);

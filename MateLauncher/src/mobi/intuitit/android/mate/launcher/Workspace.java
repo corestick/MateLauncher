@@ -972,7 +972,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		current.onDragChild(child);
 		mDragger.startDrag(child, this, child.getTag(),
 				DragController.DRAG_ACTION_MOVE);
-		
+
 		invalidate();
 	}
 
@@ -1005,10 +1005,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			int yOffset, Object dragInfo) {
 
 		final LayoutType layoutType = getCurrentDropLayout();
-		
-		//수정모드 애니메이션 시작
+
+		// 수정모드 애니메이션 시작
 		mLauncher.modifyAnimationStart();
-	
+
 		if (source != this) {
 			onDropExternal(x - xOffset, y - yOffset, dragInfo, layoutType);
 		} else {
@@ -1074,7 +1074,13 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	private void onDropExternal(int x, int y, Object dragInfo,
 			LayoutType layoutType, boolean insertAtFirst) {
 		// Drag from somewhere else
-		ItemInfo info = (ItemInfo) dragInfo;
+		ItemInfo info = null;
+		MFolder m  = new MFolder(mLauncher, null);
+		if (dragInfo.equals(m)) {
+			info = ((MFolder)dragInfo).mInfo;
+		} else {
+			info = (ItemInfo) dragInfo;
+		}
 
 		View view = null;
 
@@ -1099,7 +1105,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 
 			break;
 		case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
-			view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher,
+			view = FolderIcon.fromXml(R.layout.mobject, mLauncher,
 					(ViewGroup) getChildAt(mCurrentScreen),
 					((UserFolderInfo) info));
 			break;
@@ -1107,7 +1113,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalStateException("Unknown item type: "
 					+ info.itemType);
 		}
-
+		Log.e("View", view.toString());
 		layoutType.addView(view, insertAtFirst ? 0 : -1);
 		view.setOnLongClickListener(mLongClickListener);
 
