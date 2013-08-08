@@ -30,12 +30,12 @@ public class MFolderAdapter extends ArrayAdapter<MFolder> {
 					false);
 		}
 
-		info.mInfo.icon = Utilities.createIconThumbnail(info.mInfo.icon, getContext());
+		info.icon = Utilities.createIconThumbnail(info.icon, getContext());
 
 		final TextView textView = (TextView) convertView;
-		textView.setCompoundDrawablesWithIntrinsicBounds(null, info.mInfo.icon, null,
+		textView.setCompoundDrawablesWithIntrinsicBounds(null, info.icon, null,
 				null);
-		textView.setText(info.mInfo.title);
+		textView.setText(info.title);
 
 		return convertView;
 	}

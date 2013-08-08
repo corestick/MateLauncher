@@ -124,12 +124,12 @@ public class MobjectView extends GridView implements
 		mAvatarAdapter = new MobjectAdapter(mLauncher, mAvatarList);
 		
 		for (int i = 0; i < MImageList.getInstance().widgetList.size(); i++) {
-			MFolder mFolder = new MFolder(mLauncher, null);
-			mFolder.mInfo = new FolderInfo();
-			mFolder.mInfo.icon = getResources().getDrawable(MImageList.getInstance().widgetList.get(i));
+			MFolder mFolder = new MFolder();
+			
+			mFolder.icon = getResources().getDrawable(MImageList.getInstance().widgetList.get(i));
 		
-			mFolder.mInfo.mobjectType = 2;
-			mFolder.mInfo.mobjectIcon = i;
+			mFolder.mobjectType = 2;
+			mFolder.mobjectIcon = i;
 						
 			mWidgetList.add(mFolder);
 		}
@@ -198,9 +198,8 @@ public class MobjectView extends GridView implements
 			return false;
 		
 		if(isFolder){		
-			MFolder appInfo = new MFolder(mLauncher, null);
-			appInfo.mInfo = ((MFolder) parent.getItemAtPosition(position)).mInfo;
-			appInfo.mInfo.itemType = LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER;
+			MFolder appInfo = new MFolder();
+			appInfo = (MFolder) parent.getItemAtPosition(position);
 			mDragger.startDrag(view, this, appInfo, DragController.DRAG_ACTION_COPY);	
 		}
 		else{

@@ -1074,14 +1074,8 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 	private void onDropExternal(int x, int y, Object dragInfo,
 			LayoutType layoutType, boolean insertAtFirst) {
 		// Drag from somewhere else
-		ItemInfo info = null;
-		MFolder m  = new MFolder(mLauncher, null);
-		if (dragInfo.equals(m)) {
-			info = ((MFolder)dragInfo).mInfo;
-		} else {
-			info = (ItemInfo) dragInfo;
-		}
-
+		ItemInfo info = (ItemInfo) dragInfo;
+		
 		View view = null;
 
 		switch (info.itemType) {
@@ -1102,10 +1096,9 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
 						(Mobject) info);
 			}
-
 			break;
 		case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
-			view = FolderIcon.fromXml(R.layout.mobject, mLauncher,
+			view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher,
 					(ViewGroup) getChildAt(mCurrentScreen),
 					((UserFolderInfo) info));
 			break;
@@ -1113,7 +1106,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalStateException("Unknown item type: "
 					+ info.itemType);
 		}
-		Log.e("View", view.toString());
 		layoutType.addView(view, insertAtFirst ? 0 : -1);
 		view.setOnLongClickListener(mLongClickListener);
 
