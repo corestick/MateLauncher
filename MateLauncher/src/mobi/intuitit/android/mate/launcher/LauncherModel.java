@@ -1014,6 +1014,8 @@ public class LauncherModel {
 							folderInfo.screen = c.getInt(screenIndex);
 							folderInfo.cellX = c.getInt(cellXIndex);
 							folderInfo.cellY = c.getInt(cellYIndex);
+							folderInfo.mobjectIcon = c.getInt(mobjectIcon);
+							folderInfo.mobjectType = c.getInt(mobjectType);
 
 							switch (container) {
 							case LauncherSettings.Favorites.CONTAINER_DESKTOP:

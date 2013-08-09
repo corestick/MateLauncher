@@ -409,8 +409,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				.getLayoutParams();
 		if (lp == null) {
 			lp = new LayoutType.LayoutParams(x, y, spanX, spanY);
-		} else {
-
+		} else {			
 			lp.cellX = x;
 			lp.cellY = y;
 			// -- MLayout

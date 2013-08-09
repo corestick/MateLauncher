@@ -103,6 +103,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
@@ -2301,7 +2302,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		openFolder.bind(folderInfo);
 		folderInfo.opened = true;
-
 		mWorkspace.addInScreen(openFolder, folderInfo.screen, 0, 0, 4, 4);
 		openFolder.onOpen();
 	}
