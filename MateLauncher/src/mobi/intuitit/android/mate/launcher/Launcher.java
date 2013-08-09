@@ -20,11 +20,14 @@ import static android.util.Log.d;
 import static android.util.Log.e;
 import static android.util.Log.w;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.text.Collator;
@@ -34,12 +37,13 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
 import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -80,6 +84,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue;
+import android.os.ParcelFileDescriptor;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -250,11 +255,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ModifyThread mModifyThread = null;
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
-	
+
 	@Override
 	protected void onStart() {
-		
-//		log4j.debug("onStart");
 		
 		Log.e("Launcher-Start", "Start");
 		if (DOWNLOAR_VIEW) {
@@ -280,10 +283,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (PROFILE_STARTUP) {
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
 		}
-		
-		//Log4j 설정
-		configureLogger();
 
+		// Log4j 설정
+		configureLogger();
+		
 		checkForLocaleChange();
 		setWallpaperDimension();
 
@@ -2199,14 +2202,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					Function_dialog function_dialog = new Function_dialog(this,
 							v);
 					function_dialog.setCancelable(true);
-					function_dialog.show();					
+					function_dialog.show();
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
 					SelectView = v;
 					clickedInfo = tag;
 					createThreadAndDialog();
 				}
-				
+
 			}
 		}
 	}
@@ -3287,21 +3290,23 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					} else if (position == 2) {
 						Object tag = v.getTag();
-						if(((Mobject)tag).mobjectIcon % 2 !=0)
-						{							
-							((Mobject)tag).mobjectIcon -=1;
-						}
-						else{
-							((Mobject)tag).mobjectIcon +=1;
+						if (((Mobject) tag).mobjectIcon % 2 != 0) {
+							((Mobject) tag).mobjectIcon -= 1;
+						} else {
+							((Mobject) tag).mobjectIcon += 1;
 						}
 						v.setTag(tag);
-						((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
-								((Mobject)tag).mobjectType, ((Mobject)tag).mobjectIcon), 0, 0);											
+						((TextView) v).setCompoundDrawablesWithIntrinsicBounds(
+								0,
+								MImageList.getInstance().getIcon(
+										((Mobject) tag).mobjectType,
+										((Mobject) tag).mobjectIcon), 0, 0);
 						final ContentValues values = new ContentValues();
 						final ContentResolver cr = context.getContentResolver();
-						values.put(LauncherSettings.Favorites.MOBJECT_ICON,((Mobject)tag).mobjectIcon);
-						cr.update(LauncherSettings.Favorites.getContentUri(((Mobject)tag).id, false),
-						values, null, null);
+						values.put(LauncherSettings.Favorites.MOBJECT_ICON,
+								((Mobject) tag).mobjectIcon);
+						cr.update(LauncherSettings.Favorites.getContentUri(
+								((Mobject) tag).id, false), values, null, null);
 					}
 					dismiss();
 				}
@@ -3551,7 +3556,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (mModifyThread.isAlive())
 				mModifyThread.interrupt();
 		}
-		
+
 		mModifyThread = new ModifyThread();
 		mModifyThread.start();
 	}
@@ -3563,15 +3568,59 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public void viewSetTag(Mobject tag) {
 		SelectView.setTag(tag);
 	}
-	
-	
+
+	public void writeLogcat() {
+
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = null;
+		Process p = null;
+		
+		try {
+			p = Runtime.getRuntime().exec("logcat -d -v time *:V");
+			br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			String lineSeparator = System.getProperty("line.separator");
+			while((line = br.readLine()) != null) {
+				sb.append(line);
+				sb.append(lineSeparator);
+			}
+			
+			File file = new File(Environment.getExternalStorageDirectory()
+					+ File.separator + "MateLauncher" +  File.separator + "MateLog.log");
+			
+//			if(android.os.Build.VERSION.SDK_INT >= 16) {
+//				file.setReadable(true);
+//				file.setWritable(true);
+//				file.setExecutable(true);
+//			}
+			
+			if(file.exists()) {
+				file.delete();
+			}
+			
+			byte[] data = sb.toString().getBytes();
+			ParcelFileDescriptor parcel = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_WORLD_READABLE | ParcelFileDescriptor.MODE_WORLD_WRITEABLE | ParcelFileDescriptor.MODE_READ_WRITE | ParcelFileDescriptor.MODE_CREATE | ParcelFileDescriptor.MODE_APPEND);
+			
+			FileOutputStream fos = new FileOutputStream(parcel.getFileDescriptor());
+			fos.write(data, 0, data.length);
+			fos.flush();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(p != null) {
+			p.destroy();
+		}
+	}
 
 	public static void configureLogger() {
 		final LogConfigurator logConfigurator = new LogConfigurator();
-		logConfigurator.setFileName(Environment.getExternalStorageDirectory() + File.separator + "MateLog.log");
+		logConfigurator.setFileName(Environment.getExternalStorageDirectory()
+				+ File.separator + "MateLauncher" +  File.separator + "MateLog.log");
 		logConfigurator.setRootLevel(Level.DEBUG);
 		logConfigurator.setLevel("org.apache", Level.ERROR);
 		logConfigurator.configure();
 	}
-	
+
 }
