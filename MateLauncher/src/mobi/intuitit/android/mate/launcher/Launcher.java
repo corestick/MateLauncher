@@ -22,6 +22,7 @@ import static android.util.Log.w;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -32,6 +33,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
@@ -71,6 +75,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -108,6 +113,7 @@ import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.mindpipe.android.logging.log4j.LogConfigurator;
 
 /**
  * Default launcher application.
@@ -243,8 +249,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ModifyHandler mModifyHandler = null; // 수정모드에 쓰는 핸들러;
 	private ModifyThread mModifyThread = null;
 
+	private final Logger log4j = Logger.getLogger(Launcher.class);
+	
 	@Override
 	protected void onStart() {
+		
+//		log4j.debug("onStart");
+		
 		Log.e("Launcher-Start", "Start");
 		if (DOWNLOAR_VIEW) {
 			Log.e("Launcher-Start-change", "Start-change");
@@ -269,6 +280,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (PROFILE_STARTUP) {
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
 		}
+		
+		//Log4j 설정
+		configureLogger();
 
 		checkForLocaleChange();
 		setWallpaperDimension();
@@ -3548,6 +3562,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public void viewSetTag(Mobject tag) {
 		SelectView.setTag(tag);
-	}	
+	}
+	
+	
 
+	public static void configureLogger() {
+		final LogConfigurator logConfigurator = new LogConfigurator();
+		logConfigurator.setFileName(Environment.getExternalStorageDirectory() + File.separator + "MateLog.log");
+		logConfigurator.setRootLevel(Level.DEBUG);
+		logConfigurator.setLevel("org.apache", Level.ERROR);
+		logConfigurator.configure();
+	}
+	
 }
