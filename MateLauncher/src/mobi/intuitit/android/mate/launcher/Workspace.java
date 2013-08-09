@@ -412,6 +412,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		} else {			
 			lp.cellX = x;
 			lp.cellY = y;
+			
 			// -- MLayout
 			if (group instanceof CellLayout) {
 				lp.cellHSpan = spanX;
@@ -419,6 +420,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			}
 		}
 
+		if(child instanceof Folder) {
+			lp.width = 100;
+			lp.height = 100;
+		}
+		
 		group.addView(child, insert ? 0 : -1, lp);
 		if (!(child instanceof Folder)) { // / -
 			child.setOnLongClickListener(mLongClickListener);

@@ -2301,6 +2301,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		openFolder.setLauncher(this);
 
 		openFolder.bind(folderInfo);
+		
 		folderInfo.opened = true;
 		mWorkspace.addInScreen(openFolder, folderInfo.screen, 0, 0, 4, 4);
 		openFolder.onOpen();
