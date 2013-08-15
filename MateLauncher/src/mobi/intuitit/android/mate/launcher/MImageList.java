@@ -81,8 +81,8 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_02);
 		furnitureList.add(R.drawable.m_furniture_03);
 		furnitureList.add(R.drawable.m_furniture_04);
-		// furnitureList.add(R.drawable.m_furniture_05);
-		// furnitureList.add(R.drawable.m_furniture_06);
+		furnitureList.add(R.drawable.m_furniture_05);
+		furnitureList.add(R.drawable.m_furniture_06);
 		furnitureList.add(R.drawable.m_furniture_07);
 		furnitureList.add(R.drawable.m_furniture_08);
 		furnitureList.add(R.drawable.m_furniture_09);
@@ -93,31 +93,10 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_14);
 		furnitureList.add(R.drawable.m_furniture_15);
 		furnitureList.add(R.drawable.m_furniture_16);
-		// furnitureList.add(R.drawable.m_furniture_17);
-		// furnitureList.add(R.drawable.m_furniture_18);
+		furnitureList.add(R.drawable.m_furniture_17);
+		furnitureList.add(R.drawable.m_furniture_18);
 		furnitureList.add(R.drawable.m_furniture_19);
 		furnitureList.add(R.drawable.m_furniture_20);
-		furnitureList.add(R.drawable.m_furniture_21);
-		furnitureList.add(R.drawable.m_furniture_22);
-		furnitureList.add(R.drawable.m_furniture_23);
-		furnitureList.add(R.drawable.m_furniture_24);
-		furnitureList.add(R.drawable.m_furniture_25);
-		furnitureList.add(R.drawable.m_furniture_26);
-		furnitureList.add(R.drawable.m_furniture_27);
-		furnitureList.add(R.drawable.m_furniture_28);
-		furnitureList.add(R.drawable.m_furniture_29);
-		furnitureList.add(R.drawable.m_furniture_30);
-		furnitureList.add(R.drawable.m_furniture_31);
-		furnitureList.add(R.drawable.m_furniture_32);
-		furnitureList.add(R.drawable.m_furniture_33);
-		furnitureList.add(R.drawable.m_furniture_34);
-		furnitureList.add(R.drawable.m_furniture_35);
-		furnitureList.add(R.drawable.m_furniture_36);
-		furnitureList.add(R.drawable.m_furniture_37);
-		furnitureList.add(R.drawable.m_furniture_38);
-		furnitureList.add(R.drawable.m_furniture_39);
-		furnitureList.add(R.drawable.m_furniture_40);
-
 	}
 
 	private void initWidget() {

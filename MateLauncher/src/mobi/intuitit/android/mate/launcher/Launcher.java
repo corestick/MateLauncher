@@ -67,7 +67,9 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -103,7 +105,6 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
@@ -243,6 +244,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private ModifyHandler mModifyHandler = null; // 수정모드에 쓰는 핸들러;
 	private ModifyThread mModifyThread = null;
+
+	float[] mirroY = { -1, 0, 0, 0, 1, 0, 0, 0, 1 };
 
 	@Override
 	protected void onStart() {
@@ -2186,14 +2189,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					Function_dialog function_dialog = new Function_dialog(this,
 							v);
 					function_dialog.setCancelable(true);
-					function_dialog.show();					
+					function_dialog.show();	
+					//이미지 전환
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
 					SelectView = v;
 					clickedInfo = tag;
 					createThreadAndDialog();
 				}
-				
+
 			}
 		}
 	}
@@ -2301,7 +2305,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		openFolder.setLauncher(this);
 
 		openFolder.bind(folderInfo);
-		
+
 		folderInfo.opened = true;
 		mWorkspace.addInScreen(openFolder, folderInfo.screen, 0, 0, 4, 4);
 		openFolder.onOpen();
@@ -3247,7 +3251,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		ListView listview;
 		ArrayAdapter<String> adapter;
 		String[] str = { "앱매칭", "폴더매칭", "아이콘대칭" };
-
+		Bitmap bitmap ;
 		public Function_dialog(final Context context, final View v) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -3274,21 +3278,25 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					} else if (position == 2) {
 						Object tag = v.getTag();
-						if(((Mobject)tag).mobjectIcon % 2 !=0)
-						{							
-							((Mobject)tag).mobjectIcon -=1;
-						}
-						else{
-							((Mobject)tag).mobjectIcon +=1;
-						}
-						v.setTag(tag);
-						((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
-								((Mobject)tag).mobjectType, ((Mobject)tag).mobjectIcon), 0, 0);											
-						final ContentValues values = new ContentValues();
-						final ContentResolver cr = context.getContentResolver();
-						values.put(LauncherSettings.Favorites.MOBJECT_ICON,((Mobject)tag).mobjectIcon);
-						cr.update(LauncherSettings.Favorites.getContentUri(((Mobject)tag).id, false),
-						values, null, null);
+						BitmapDrawable drawable = (BitmapDrawable) getResources()
+								.getDrawable(
+										MImageList.getInstance().getIcon(
+												((Mobject) tag).mobjectType,
+												((Mobject) tag).mobjectIcon));
+						bitmap= drawable.getBitmap();
+						//drawable to bitmap			
+						((ImageView)v).setImageBitmap((Mirror(bitmap)));
+						
+						// v.setTag(tag);
+						// ((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
+						// ((Mobject)tag).mobjectType,
+						// ((Mobject)tag).mobjectIcon), 0, 0);
+//						final ContentValues values = new ContentValues();
+//						final ContentResolver cr = context.getContentResolver();
+//						values.put(LauncherSettings.Favorites.MOBJECT_ICON,
+//								((Mobject) tag).mobjectIcon);
+//						cr.update(LauncherSettings.Favorites.getContentUri(
+//								((Mobject) tag).id, false), values, null, null);					
 					}
 					dismiss();
 				}
@@ -3538,7 +3546,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			if (mModifyThread.isAlive())
 				mModifyThread.interrupt();
 		}
-		
+
 		mModifyThread = new ModifyThread();
 		mModifyThread.start();
 	}
@@ -3549,6 +3557,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public void viewSetTag(Mobject tag) {
 		SelectView.setTag(tag);
-	}	
+	}
+
+	public Bitmap Mirror(Bitmap bmp) {
+		Matrix mat = new Matrix();
+		mat.setValues(mirroY);
+		Bitmap newbit = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
+				bmp.getHeight(), mat, true);
+		return newbit;
+	}
 
 }
