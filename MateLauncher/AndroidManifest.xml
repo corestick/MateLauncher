@@ -132,13 +132,24 @@
             android:authorities="mobi.intuitit.android.mate.launcher.settings"
             android:readPermission="mobi.intuitit.android.mate.launcher.permission.READ_SETTINGS"
             android:writePermission="mobi.intuitit.android.mate.launcher.permission.WRITE_SETTINGS" />
-
+   
+        <receiver android:name="SmallWeatherWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/small_widgetinfo" />
+        </receiver>
+        
+        <service android:name="WeatherWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
+        
         <activity
             android:name="ScreenPrefActivity"
             android:screenOrientation="sensor" >
         </activity>
     </application>
 
-    <uses-sdk android:minSdkVersion="7" />
+    <uses-sdk android:minSdkVersion="9" />
 
 </manifest>

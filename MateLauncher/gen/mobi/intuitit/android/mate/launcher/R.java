@@ -667,6 +667,7 @@ containing a value of this type.
     public static final class xml {
         public static final int default_workspace=0x7f050000;
         public static final int screens_prefs=0x7f050001;
+        public static final int small_widgetinfo=0x7f050002;
     }
     public static final class styleable {
         /**  AllAppsGridView specific attributes. These attributes are used to customize
