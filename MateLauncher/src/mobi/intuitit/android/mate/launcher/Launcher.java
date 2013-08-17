@@ -3566,5 +3566,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				bmp.getHeight(), mat, true);
 		return newbit;
 	}
+	
 
 }
