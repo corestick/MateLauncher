@@ -284,7 +284,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
 		}
 
-		// Log4j 설정
+		// Log4j 설정 //
 		configureLogger();
 
 		checkForLocaleChange();
@@ -2186,7 +2186,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof FolderInfo) {
 				handleFolderClick((FolderInfo) tag);
 			} else if (tag instanceof Mobject) {
-				if (((Mobject) tag).mobjectType == 0) {
+				if (((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_FURNITURE) {
 					final Intent intent = ((Mobject) tag).intent;
 					startActivitySafely(intent);
 				} else {
@@ -2197,19 +2197,25 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		} else {
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {
-				if (((Mobject) tag).mobjectType == 0) {
-					SelectView = v;
-					Function_dialog function_dialog = new Function_dialog(this,
-							v);
-					function_dialog.setCancelable(true);
-					function_dialog.show();
-				} else {
-					// 전화번호 얻어오기 커스텀 다이얼로그
-					SelectView = v;
-					clickedInfo = tag;
-					createThreadAndDialog();
+				
+				switch(((Mobject)tag).mobjectType) {
+					case MGlobal.MOBJECTTYPE_FURNITURE:
+						SelectView = v;
+						Function_dialog function_dialog = new Function_dialog(this,
+								v);
+						function_dialog.setCancelable(true);
+						function_dialog.show();
+						break;
+					case MGlobal.MOBJECTTYPE_AVATAR:
+						// 전화번호 얻어오기 커스텀 다이얼로그
+						SelectView = v;
+						clickedInfo = tag;
+						createThreadAndDialog();
+						break;
+					case MGlobal.MOBJECTTYPE_WIDGET:
+						
+						break;
 				}
-
 			}
 		}
 	}
@@ -3569,6 +3575,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		SelectView.setTag(tag);
 	}
 
+	//로그캣
 	public void writeLogcat() {
 
 		StringBuilder sb = new StringBuilder();
@@ -3621,6 +3628,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
+	//로그
 	public static void configureLogger() {
 		final LogConfigurator logConfigurator = new LogConfigurator();
 		logConfigurator.setFileName(Environment.getExternalStorageDirectory()

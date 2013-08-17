@@ -69,7 +69,7 @@ public class MLayout extends LayoutType {
 
 		ItemInfo info = (ItemInfo) view.getTag();
 
-		if (info.mobjectType == 1) {
+		if (info.mobjectType == MGlobal.MOBJECTTYPE_AVATAR) {
 
 			if (!mSpeechBubbleMap.containsKey(view)) {
 				SpeechBubble mSpeechBubble = (SpeechBubble) mLauncher.mInflater

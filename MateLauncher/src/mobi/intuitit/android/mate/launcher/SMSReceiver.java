@@ -35,7 +35,7 @@ public class SMSReceiver extends BroadcastReceiver {
 									.getChildAt(j);
 
 							ItemInfo info = (ItemInfo) mView.getTag();
-							if (info.mobjectType == 1) {
+							if (info.mobjectType == MGlobal.MOBJECTTYPE_AVATAR) {
 								if (info.contact_num != null) {
 									if (info.contact_num.equals(receiver)) {
 										mLayout.hideMAvatarMenu(mView);

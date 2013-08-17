@@ -908,8 +908,8 @@ public class LauncherModel {
 						case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 						case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
 							// 처음 읽어오는부분
-							if (MobjectType == 0 || MobjectType == 1
-									|| MobjectType == 2) {
+							if (MobjectType == MGlobal.MOBJECTTYPE_FURNITURE || MobjectType == MGlobal.MOBJECTTYPE_AVATAR
+									|| MobjectType == MGlobal.MOBJECTTYPE_WIDGET) {
 								appinfo = new Mobject();
 								if (c.getString(intentIndex) != null) {
 									intentDescription = c

@@ -8,12 +8,6 @@ import android.widget.LinearLayout;
 
 public class MDockbar extends LinearLayout implements View.OnClickListener {
 	
-	private final int FURNITURE = 1;
-	private final int WALLPAPER = 2;
-	private final int FLOORING = 3;
-	private final int AVATAR = 4;
-	private final int WIDGET = 5;
-	
 	private ImageButton mFurniture;
 	private ImageButton mWallpaper;
 	private ImageButton mFlooring;
@@ -102,47 +96,47 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		// TODO Auto-generated method stubs
 
 		if (v.equals(mFurniture)) {
-			if (mLauncher.mObjectView.mObjectViewType == FURNITURE) {
+			if (mLauncher.mObjectView.mObjectViewType == MGlobal.MDOCKBAR_MENU_FURNITURE) {
 				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				mLauncher.mObjectView.showMojbectView(FURNITURE);
+				mLauncher.mObjectView.showMojbectView(MGlobal.MDOCKBAR_MENU_FURNITURE);
 			}
 			return;
 		}
 
 		if (v.equals(mWallpaper)) {
 
-			if (mLauncher.mObjectView.mObjectViewType == WALLPAPER) {
+			if (mLauncher.mObjectView.mObjectViewType == MGlobal.MDOCKBAR_MENU_WALLPAPER) {
 				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				mLauncher.mObjectView.showMojbectView(WALLPAPER);
+				mLauncher.mObjectView.showMojbectView(MGlobal.MDOCKBAR_MENU_WALLPAPER);
 			}
 			return;
 		}
 
 		if (v.equals(mFlooring)) {
-			if (mLauncher.mObjectView.mObjectViewType == FLOORING) {
+			if (mLauncher.mObjectView.mObjectViewType == MGlobal.MDOCKBAR_MENU_FLOORING) {
 				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				mLauncher.mObjectView.showMojbectView(FLOORING);
+				mLauncher.mObjectView.showMojbectView(MGlobal.MDOCKBAR_MENU_FLOORING);
 			}
 			return;
 		}
 
 		if (v.equals(mAvatar)) {
-			if (mLauncher.mObjectView.mObjectViewType == AVATAR) {
+			if (mLauncher.mObjectView.mObjectViewType == MGlobal.MDOCKBAR_MENU_AVATAR) {
 				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				mLauncher.mObjectView.showMojbectView(AVATAR);
+				mLauncher.mObjectView.showMojbectView(MGlobal.MDOCKBAR_MENU_AVATAR);
 			}
 			return;
 		}
 				
 		if (v.equals(mWidget)) {
-			if(mLauncher.mObjectView.mObjectViewType == WIDGET) {
+			if(mLauncher.mObjectView.mObjectViewType == MGlobal.MDOCKBAR_MENU_WIDGET) {
 				mLauncher.mObjectView.hideMobjectView();
 			} else {
-				mLauncher.mObjectView.showMojbectView(WIDGET);
+				mLauncher.mObjectView.showMojbectView(MGlobal.MDOCKBAR_MENU_WIDGET);
 			}
 			return; 
 		}
