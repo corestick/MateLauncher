@@ -1087,7 +1087,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
 		case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
 			if (info instanceof ApplicationInfo) {
-				Log.e("RRR", "onDropExternal, ApplicationInfo");
+//				Log.e("RRR", "onDropExternal, ApplicationInfo");
 				if (info.container == NO_ID) {
 					// Came from all apps -- make a copy
 					info = new ApplicationInfo((ApplicationInfo) info);
@@ -1095,7 +1095,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				view = mLauncher.createShortcut(R.layout.application,
 						layoutType, (ApplicationInfo) info);
 			} else if (info instanceof Mobject) {
-				Log.e("RRR", "onDropExternal, Mobject");
+//				Log.e("RRR", "onDropExternal, Mobject");
 				info = new Mobject((Mobject) info);
 
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
@@ -1119,7 +1119,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				.getLayoutParams();
 		if (layoutType instanceof MLayout) {
 			layoutType.onDropChild(view, x, y);
-
 		} else {
 
 			mTargetCell = estimateDropCell(x, y, 1, 1, view, layoutType,

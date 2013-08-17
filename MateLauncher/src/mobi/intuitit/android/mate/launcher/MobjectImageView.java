@@ -1,11 +1,17 @@
 package mobi.intuitit.android.mate.launcher;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -35,11 +41,33 @@ public class MobjectImageView extends ImageView {
 //		mBackground.setCallback(this);
 
 		ItemInfo info = (ItemInfo) getTag();
-		this.setBackgroundResource(MImageList.getInstance().getIcon(
+		
+		Drawable d = getResources().getDrawable(MImageList.getInstance().getIcon(
 				info.mobjectType, info.mobjectIcon));
+		this.setBackgroundDrawable(d);
+		
 		
 //		this.setCompoundDrawablesWithIntrinsicBounds(0, MImageList.getInstance().getIcon(
 //				info.mobjectType, info.mobjectIcon), 0, 0);
+	}
+	
+	Drawable flipDrawable(Drawable d)
+	{
+	    Matrix m = new Matrix();
+	    m.preScale(-1, 1);
+	    Bitmap src = ((BitmapDrawable) d).getBitmap();
+	    Bitmap dst = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, false);
+	    dst.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+	    return new BitmapDrawable(dst);
+	}
+
+	public void mirrorImage() {
+
+		ItemInfo info = (ItemInfo) getTag();
+		Drawable d = getResources().getDrawable(MImageList.getInstance().getIcon(
+				info.mobjectType, info.mobjectIcon));		
+		
+		this.setBackgroundDrawable(flipDrawable(d));
 	}
 
 //	public void setTitle(boolean isModifyMode) {

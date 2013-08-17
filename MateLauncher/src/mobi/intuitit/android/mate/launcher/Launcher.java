@@ -257,8 +257,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ModifyThread mModifyThread = null;
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
-	float[] mirroY = { -1, 0, 0, 0, 1, 0, 0, 0, 1 };
-
+	
 	@Override
 	protected void onStart() {
 		
@@ -821,7 +820,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			favorite.setOnClickListener(this);
 
 			favorite.initMobjectView();
-
+			
 			return favorite;
 		}
 	}
@@ -2205,9 +2204,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					Function_dialog function_dialog = new Function_dialog(this,
 							v);
 					function_dialog.setCancelable(true);
-					function_dialog.show();	
-					//이미지 전환
-
+					function_dialog.show();
 				} else {
 					// 전화번호 얻어오기 커스텀 다이얼로그
 					SelectView = v;
@@ -3294,25 +3291,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					} else if (position == 1) {
 
 					} else if (position == 2) {
-						Object tag = v.getTag();		
-						
-						((ImageView)v).setBackgroundDrawable(Mirror(getResources()
-								.getDrawable(
-										MImageList.getInstance().getIcon(
-												((Mobject) tag).mobjectType,
-												((Mobject) tag).mobjectIcon))));
 						
 						
-						// v.setTag(tag);
-						// ((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
-						// ((Mobject)tag).mobjectType,
-						// ((Mobject)tag).mobjectIcon), 0, 0);
-//						final ContentValues values = new ContentValues();
-//						final ContentResolver cr = context.getContentResolver();
-//						values.put(LauncherSettings.Favorites.MOBJECT_ICON,
-//								((Mobject) tag).mobjectIcon);
-//						cr.update(LauncherSettings.Favorites.getContentUri(
-//								((Mobject) tag).id, false), values, null, null);					
+						MobjectImageView imgView = (MobjectImageView) v;
+						imgView.mirrorImage();				
 					}
 					dismiss();
 				}
@@ -3627,20 +3609,5 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		logConfigurator.setRootLevel(Level.DEBUG);
 		logConfigurator.setLevel("org.apache", Level.ERROR);
 		logConfigurator.configure();
-	}
-
-	public Drawable Mirror(Drawable drw) {
-		
-		Bitmap orgBit = ((BitmapDrawable)drw).getBitmap();
-		
-		//drawable to bitmap
-		Matrix mat = new Matrix();
-		mat.setValues(mirroY);
-		Bitmap newBit = Bitmap.createBitmap(orgBit, 0, 0, orgBit.getWidth(),
-				orgBit.getHeight(), mat, true);
-		
-		Drawable d = new BitmapDrawable(newBit);
-			
-		return d;
 	}
 }
