@@ -3262,7 +3262,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		ListView listview;
 		ArrayAdapter<String> adapter;
-		String[] str = { "¾Û¸ÅÄª", "Æú´õ¸ÅÄª", "¾ÆÀÌÄÜ´ëÄª" };
+		String[] str = { "¾Û¸ÅÄª", "¾ÆÀÌÄÜ´ëÄª" };
 		Bitmap bitmap;
 
 		public Function_dialog(final Context context, final View v) {
@@ -3288,18 +3288,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						dialog.getWindow().setAttributes(params);
 						dialog.show();
 					} else if (position == 1) {
-
-					} else if (position == 2) {
 						Object tag = v.getTag();
 
 						if(((Mobject)tag).icon_mirror == 0){
 							MobjectImageView imgView = (MobjectImageView) v;
-							imgView.mirrorImage();	
+							imgView.reverseImg();	
 							((Mobject)tag).icon_mirror = 1;
 						}					
 						else {
 							MobjectImageView imgView = (MobjectImageView) v;
-							imgView.initMobjectView();	
+							imgView.orginImg();
 							((Mobject)tag).icon_mirror = 0;
 						}
 						v.setTag(tag);						

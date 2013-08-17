@@ -57,6 +57,12 @@ public class MobjectImageView extends ImageView {
 
 	}
 	
+	public void orginImg(){
+		ItemInfo info = (ItemInfo) getTag();
+		this.setBackgroundResource(MImageList.getInstance().getIcon(
+				info.mobjectType, info.mobjectIcon));
+	}
+	
 	Drawable flipDrawable(Drawable d)
 	{
 	    Matrix m = new Matrix();
@@ -67,7 +73,7 @@ public class MobjectImageView extends ImageView {
 	    return new BitmapDrawable(dst);
 	}
 
-	public void mirrorImage() {
+	public void reverseImg() {
 
 		ItemInfo info = (ItemInfo) getTag();
 		Drawable d = getResources().getDrawable(MImageList.getInstance().getIcon(
