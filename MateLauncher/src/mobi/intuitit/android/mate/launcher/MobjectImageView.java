@@ -35,20 +35,26 @@ public class MobjectImageView extends ImageView {
 
 	public void initMobjectView() {
 
-//		setFocusable(true);
-//		mBackground = getBackground();
-//		setBackgroundDrawable(null);
-//		mBackground.setCallback(this);
+		// setFocusable(true);
+		// mBackground = getBackground();
+		// setBackgroundDrawable(null);
+		// mBackground.setCallback(this);
 
 		ItemInfo info = (ItemInfo) getTag();
-		
-		Drawable d = getResources().getDrawable(MImageList.getInstance().getIcon(
-				info.mobjectType, info.mobjectIcon));
-		this.setBackgroundDrawable(d);
-		
-		
-//		this.setCompoundDrawablesWithIntrinsicBounds(0, MImageList.getInstance().getIcon(
-//				info.mobjectType, info.mobjectIcon), 0, 0);
+		Log.e("M-mirror", info.icon_mirror + "");
+		if (info.icon_mirror == 1) {
+			this.setBackgroundDrawable(flipDrawable(getResources()
+					.getDrawable(
+							MImageList.getInstance().getIcon(info.mobjectType,
+									info.mobjectIcon))));
+		} else {
+			this.setBackgroundResource(MImageList.getInstance().getIcon(
+					info.mobjectType, info.mobjectIcon));
+		}
+		// this.setCompoundDrawablesWithIntrinsicBounds(0,
+		// MImageList.getInstance().getIcon(
+		// info.mobjectType, info.mobjectIcon), 0, 0);
+
 	}
 	
 	Drawable flipDrawable(Drawable d)
@@ -70,18 +76,18 @@ public class MobjectImageView extends ImageView {
 		this.setBackgroundDrawable(flipDrawable(d));
 	}
 
-//	public void setTitle(boolean isModifyMode) {
-//		if (isModifyMode) {
-//			ItemInfo info = (ItemInfo) this.getTag();
-//
-//			if (info.contact_num != null)
-//				this.setText(info.contact_name);
-//			else
-//				this.setText(info.title);
-//		} else {
-//			this.setText("");
-//		}
-//	}
+	// public void setTitle(boolean isModifyMode) {
+	// if (isModifyMode) {
+	// ItemInfo info = (ItemInfo) this.getTag();
+	//
+	// if (info.contact_num != null)
+	// this.setText(info.contact_name);
+	// else
+	// this.setText(info.title);
+	// } else {
+	// this.setText("");
+	// }
+	// }
 
 	public void startAnimation() {
 		Animation anim = new RotateAnimation(-1, 1, Animation.RELATIVE_TO_SELF,
@@ -89,8 +95,8 @@ public class MobjectImageView extends ImageView {
 		anim.setDuration(300);
 
 		this.startAnimation(anim);
-////	수정모드에서 타이틀 표시
-//		setTitle(true);
+		// // 수정모드에서 타이틀 표시
+		// setTitle(true);
 	}
 
 	@Override

@@ -75,9 +75,7 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -260,7 +258,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	
 	@Override
 	protected void onStart() {
-		
+
 		Log.e("Launcher-Start", "Start");
 		if (DOWNLOAR_VIEW) {
 			Log.e("Launcher-Start-change", "Start-change");
@@ -288,7 +286,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		// Log4j ¼³Á¤
 		configureLogger();
-		
+
 		checkForLocaleChange();
 		setWallpaperDimension();
 
@@ -818,9 +816,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					layoutResId, parent, false);
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
-
 			favorite.initMobjectView();
 			
+
 			return favorite;
 		}
 	}
@@ -1968,12 +1966,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						item.cellY, 1, 1, !desktopLocked);
 				break;
 			case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
-				final FolderIcon newFolder = FolderIcon.fromXml(
-						R.layout.folder_icon, this, (ViewGroup) workspace
-								.getChildAt(workspace.getCurrentScreen()),
-						(UserFolderInfo) item);
-				workspace.addInScreen(newFolder, item.screen, item.cellX,
-						item.cellY, 1, 1, !desktopLocked);
+//				final FolderIcon newFolder = FolderIcon.fromXml(
+//						R.layout.folder_icon, this, (ViewGroup) workspace
+//								.getChildAt(workspace.getCurrentScreen()),
+//						(UserFolderInfo) item);
+//				workspace.addInScreen(newFolder, item.screen, item.cellX,
+//						item.cellY, 1, 1, !desktopLocked);
 				break;
 			case LauncherSettings.Favorites.ITEM_TYPE_LIVE_FOLDER:
 				final FolderIcon newLiveFolder = LiveFolderIcon.fromXml(
@@ -2938,7 +2936,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					.getDefaultSharedPreferences(this).getString(
 							getString(R.string.key_screen_number), "3"));
 			int count = mWorkspace.getChildCount();
-
+			
 			Log.i(LOG_TAG, "Screen number " + count + ", to be " + number);
 
 			// Don't need to change
@@ -3265,7 +3263,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		ListView listview;
 		ArrayAdapter<String> adapter;
 		String[] str = { "¾Û¸ÅÄª", "Æú´õ¸ÅÄª", "¾ÆÀÌÄÜ´ëÄª" };
-		Bitmap bitmap ;
+		Bitmap bitmap;
+
 		public Function_dialog(final Context context, final View v) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -3291,10 +3290,25 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					} else if (position == 1) {
 
 					} else if (position == 2) {
-						
-						
-						MobjectImageView imgView = (MobjectImageView) v;
-						imgView.mirrorImage();				
+						Object tag = v.getTag();
+
+						if(((Mobject)tag).icon_mirror == 0){
+							MobjectImageView imgView = (MobjectImageView) v;
+							imgView.mirrorImage();	
+							((Mobject)tag).icon_mirror = 1;
+						}					
+						else {
+							MobjectImageView imgView = (MobjectImageView) v;
+							imgView.initMobjectView();	
+							((Mobject)tag).icon_mirror = 0;
+						}
+						v.setTag(tag);						
+						final ContentValues values = new ContentValues();
+						final ContentResolver cr = context.getContentResolver();
+						values.put(LauncherSettings.Favorites.ICON_MIRROR,
+								((Mobject) tag).icon_mirror);
+						cr.update(LauncherSettings.Favorites.getContentUri(
+								((Mobject) tag).id, false), values, null, null);
 					}
 					dismiss();
 				}
@@ -3562,42 +3576,49 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br = null;
 		Process p = null;
-		
+
 		try {
 			p = Runtime.getRuntime().exec("logcat -d -v time *:V");
 			br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line;
 			String lineSeparator = System.getProperty("line.separator");
-			while((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null) {
 				sb.append(line);
 				sb.append(lineSeparator);
 			}
-			
+
 			File file = new File(Environment.getExternalStorageDirectory()
-					+ File.separator + "MateLauncher" +  File.separator + "MateLog.log");
-			
-//			if(android.os.Build.VERSION.SDK_INT >= 16) {
-//				file.setReadable(true);
-//				file.setWritable(true);
-//				file.setExecutable(true);
-//			}
-			
-			if(file.exists()) {
+					+ File.separator + "MateLauncher" + File.separator
+					+ "MateLog.log");
+
+			// if(android.os.Build.VERSION.SDK_INT >= 16) {
+			// file.setReadable(true);
+			// file.setWritable(true);
+			// file.setExecutable(true);
+			// }
+
+			if (file.exists()) {
 				file.delete();
 			}
-			
+
 			byte[] data = sb.toString().getBytes();
-			ParcelFileDescriptor parcel = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_WORLD_READABLE | ParcelFileDescriptor.MODE_WORLD_WRITEABLE | ParcelFileDescriptor.MODE_READ_WRITE | ParcelFileDescriptor.MODE_CREATE | ParcelFileDescriptor.MODE_APPEND);
-			
-			FileOutputStream fos = new FileOutputStream(parcel.getFileDescriptor());
+			ParcelFileDescriptor parcel = ParcelFileDescriptor.open(file,
+					ParcelFileDescriptor.MODE_WORLD_READABLE
+							| ParcelFileDescriptor.MODE_WORLD_WRITEABLE
+							| ParcelFileDescriptor.MODE_READ_WRITE
+							| ParcelFileDescriptor.MODE_CREATE
+							| ParcelFileDescriptor.MODE_APPEND);
+
+			FileOutputStream fos = new FileOutputStream(
+					parcel.getFileDescriptor());
 			fos.write(data, 0, data.length);
 			fos.flush();
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		if(p != null) {
+
+		if (p != null) {
 			p.destroy();
 		}
 	}
@@ -3605,7 +3626,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public static void configureLogger() {
 		final LogConfigurator logConfigurator = new LogConfigurator();
 		logConfigurator.setFileName(Environment.getExternalStorageDirectory()
-				+ File.separator + "MateLauncher" +  File.separator + "MateLog.log");
+				+ File.separator + "MateLauncher" + File.separator
+				+ "MateLog.log");
 		logConfigurator.setRootLevel(Level.DEBUG);
 		logConfigurator.setLevel("org.apache", Level.ERROR);
 		logConfigurator.configure();

@@ -937,8 +937,8 @@ public class LauncherModel {
 								appinfo.cellX = c.getInt(cellXIndex);
 								appinfo.cellY = c.getInt(cellYIndex);
 								appinfo.mobjectType = c.getInt(mobjectType);
-								appinfo.icon_mirror = c.getInt(icon_mirror);
-
+								appinfo.icon_mirror = c.getInt(icon_mirror);								
+								
 								switch (container) {
 								case LauncherSettings.Favorites.CONTAINER_DESKTOP:
 									desktopItems.add(appinfo);
@@ -988,7 +988,8 @@ public class LauncherModel {
 
 									info.mobjectType = c.getInt(mobjectType);
 									info.mobjectIcon = c.getInt(mobjectIcon);
-
+									info.icon_mirror = c.getInt(icon_mirror);
+									
 									switch (container) {
 									case LauncherSettings.Favorites.CONTAINER_DESKTOP:
 										desktopItems.add(info);
@@ -1017,8 +1018,8 @@ public class LauncherModel {
 							folderInfo.screen = c.getInt(screenIndex);
 							folderInfo.cellX = c.getInt(cellXIndex);
 							folderInfo.cellY = c.getInt(cellYIndex);
-							folderInfo.mobjectIcon = c.getInt(mobjectIcon);
-							folderInfo.mobjectType = c.getInt(mobjectType);
+//							folderInfo.mobjectIcon = c.getInt(mobjectIcon);
+//							folderInfo.mobjectType = c.getInt(mobjectType);
 
 							switch (container) {
 							case LauncherSettings.Favorites.CONTAINER_DESKTOP:

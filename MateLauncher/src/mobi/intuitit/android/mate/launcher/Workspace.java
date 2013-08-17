@@ -1102,11 +1102,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 						(Mobject) info);
 			}
 			break;
-		case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
-			view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher,
-					(ViewGroup) getChildAt(mCurrentScreen),
-					((UserFolderInfo) info));
-			break;
+//		case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
+//			view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher,
+//					(ViewGroup) getChildAt(mCurrentScreen),
+//					((UserFolderInfo) info));
+//			break;
 		default:
 			throw new IllegalStateException("Unknown item type: "
 					+ info.itemType);
