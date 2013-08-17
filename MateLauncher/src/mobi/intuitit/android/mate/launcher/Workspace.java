@@ -409,10 +409,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				.getLayoutParams();
 		if (lp == null) {
 			lp = new LayoutType.LayoutParams(x, y, spanX, spanY);
-		} else {
-
+		} else {			
 			lp.cellX = x;
 			lp.cellY = y;
+			
 			// -- MLayout
 			if (group instanceof CellLayout) {
 				lp.cellHSpan = spanX;
@@ -420,6 +420,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			}
 		}
 
+		if(child instanceof Folder) {
+			lp.width = 100;
+			lp.height = 100;
+		}
+		
 		group.addView(child, insert ? 0 : -1, lp);
 		if (!(child instanceof Folder)) { // / -
 			child.setOnLongClickListener(mLongClickListener);
@@ -972,7 +977,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		current.onDragChild(child);
 		mDragger.startDrag(child, this, child.getTag(),
 				DragController.DRAG_ACTION_MOVE);
-		
+
 		invalidate();
 	}
 
@@ -1005,10 +1010,10 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			int yOffset, Object dragInfo) {
 
 		final LayoutType layoutType = getCurrentDropLayout();
-		
-		//수정모드 애니메이션 시작
+
+		// 수정모드 애니메이션 시작
 		mLauncher.modifyAnimationStart();
-	
+
 		if (source != this) {
 			onDropExternal(x - xOffset, y - yOffset, dragInfo, layoutType);
 		} else {
@@ -1075,7 +1080,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			LayoutType layoutType, boolean insertAtFirst) {
 		// Drag from somewhere else
 		ItemInfo info = (ItemInfo) dragInfo;
-
+		
 		View view = null;
 
 		switch (info.itemType) {
@@ -1096,7 +1101,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				view = mLauncher.createShortcut(R.layout.mobject, layoutType,
 						(Mobject) info);
 			}
-
 			break;
 		case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
 			view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher,
@@ -1107,7 +1111,6 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			throw new IllegalStateException("Unknown item type: "
 					+ info.itemType);
 		}
-
 		layoutType.addView(view, insertAtFirst ? 0 : -1);
 		view.setOnLongClickListener(mLongClickListener);
 

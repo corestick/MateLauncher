@@ -25,23 +25,24 @@ public class SMSReceiver extends BroadcastReceiver {
 				receiver = msgs[i].getOriginatingAddress();
 				msg = msgs[i].getMessageBody().toString();
 			}
+			if (Launcher.getWorkspace() != null) {
+				for (int i = 0; i < Launcher.getWorkspace().getChildCount(); i++) {
+					MLayout mLayout = (MLayout) Launcher.getWorkspace()
+							.getChildAt(i);
+					for (int j = 0; j < mLayout.getChildCount(); j++) {
+						if (mLayout.getChildAt(j) instanceof MobjectImageView) {
+							MobjectImageView mView = (MobjectImageView) mLayout
+									.getChildAt(j);
 
-			for (int i = 0; i < Launcher.getWorkspace().getChildCount(); i++) {
-				MLayout mLayout = (MLayout) Launcher.getWorkspace().getChildAt(
-						i);
-				for (int j = 0; j < mLayout.getChildCount(); j++) {
-					if (mLayout.getChildAt(j) instanceof MobjectImageView) {
-						MobjectImageView mView = (MobjectImageView) mLayout
-								.getChildAt(j);
-
-						ItemInfo info = (ItemInfo) mView.getTag();
-						if (info.mobjectType == 1) {
-							if (info.contact_num != null) {
-								if (info.contact_num.equals(receiver)) {
-									mLayout.hideMAvatarMenu(mView);
-									mLayout.showSpeechBubble(mView);
-									mLayout.setSpeechBubbleText(mView, msg);
-									// break;
+							ItemInfo info = (ItemInfo) mView.getTag();
+							if (info.mobjectType == 1) {
+								if (info.contact_num != null) {
+									if (info.contact_num.equals(receiver)) {
+										mLayout.hideMAvatarMenu(mView);
+										mLayout.showSpeechBubble(mView);
+										mLayout.setSpeechBubbleText(mView, msg);
+										// break;
+									}
 								}
 							}
 						}
