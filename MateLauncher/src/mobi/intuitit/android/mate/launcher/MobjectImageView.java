@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -29,31 +30,39 @@ public class MobjectImageView extends ImageView {
 
 	public void initMobjectView() {
 
-//		setFocusable(true);
-//		mBackground = getBackground();
-//		setBackgroundDrawable(null);
-//		mBackground.setCallback(this);
+		// setFocusable(true);
+		// mBackground = getBackground();
+		// setBackgroundDrawable(null);
+		// mBackground.setCallback(this);
 
 		ItemInfo info = (ItemInfo) getTag();
-		this.setBackgroundResource(MImageList.getInstance().getIcon(
-				info.mobjectType, info.mobjectIcon));
-		
-//		this.setCompoundDrawablesWithIntrinsicBounds(0, MImageList.getInstance().getIcon(
-//				info.mobjectType, info.mobjectIcon), 0, 0);
+		Log.e("M-mirror", info.icon_mirror + "");
+		if (info.icon_mirror == 1) {
+			this.setBackgroundDrawable(Launcher.Mirror(getResources()
+					.getDrawable(
+							MImageList.getInstance().getIcon(info.mobjectType,
+									info.mobjectIcon))));
+		} else {
+			this.setBackgroundResource(MImageList.getInstance().getIcon(
+					info.mobjectType, info.mobjectIcon));
+		}
+		// this.setCompoundDrawablesWithIntrinsicBounds(0,
+		// MImageList.getInstance().getIcon(
+		// info.mobjectType, info.mobjectIcon), 0, 0);
 	}
 
-//	public void setTitle(boolean isModifyMode) {
-//		if (isModifyMode) {
-//			ItemInfo info = (ItemInfo) this.getTag();
-//
-//			if (info.contact_num != null)
-//				this.setText(info.contact_name);
-//			else
-//				this.setText(info.title);
-//		} else {
-//			this.setText("");
-//		}
-//	}
+	// public void setTitle(boolean isModifyMode) {
+	// if (isModifyMode) {
+	// ItemInfo info = (ItemInfo) this.getTag();
+	//
+	// if (info.contact_num != null)
+	// this.setText(info.contact_name);
+	// else
+	// this.setText(info.title);
+	// } else {
+	// this.setText("");
+	// }
+	// }
 
 	public void startAnimation() {
 		Animation anim = new RotateAnimation(-1, 1, Animation.RELATIVE_TO_SELF,
@@ -61,8 +70,8 @@ public class MobjectImageView extends ImageView {
 		anim.setDuration(300);
 
 		this.startAnimation(anim);
-////	수정모드에서 타이틀 표시
-//		setTitle(true);
+		// // 수정모드에서 타이틀 표시
+		// setTitle(true);
 	}
 
 	@Override

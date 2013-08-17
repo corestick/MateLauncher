@@ -197,16 +197,17 @@ public class MobjectView extends GridView implements
 		if (!isDraggable())
 			return false;
 		
-		if(isFolder){		
+		if (isFolder) {
 			MFolder appInfo = new MFolder();
 			appInfo = (MFolder) parent.getItemAtPosition(position);
-			mDragger.startDrag(view, this, appInfo, DragController.DRAG_ACTION_COPY);	
+			mDragger.startDrag(view, this, appInfo,
+					DragController.DRAG_ACTION_COPY);
 		}
 		else{
 			Mobject app = (Mobject) parent.getItemAtPosition(position);			
 			app = new Mobject(app);
 			mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
-		}		
+	}		
 		
 		mLauncher.closeObjectView();
 		return true;

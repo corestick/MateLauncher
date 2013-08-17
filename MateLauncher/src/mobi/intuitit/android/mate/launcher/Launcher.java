@@ -257,8 +257,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ModifyThread mModifyThread = null;
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
-	float[] mirroY = { -1, 0, 0, 0, 1, 0, 0, 0, 1 };
-
+	
 	@Override
 	protected void onStart() {
 
@@ -820,8 +819,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
 
-			favorite.initMobjectView();
-
+			favorite.initMobjectView();			
 			return favorite;
 		}
 	}
@@ -1969,12 +1967,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						item.cellY, 1, 1, !desktopLocked);
 				break;
 			case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
-				final FolderIcon newFolder = FolderIcon.fromXml(
-						R.layout.folder_icon, this, (ViewGroup) workspace
-								.getChildAt(workspace.getCurrentScreen()),
-						(UserFolderInfo) item);
-				workspace.addInScreen(newFolder, item.screen, item.cellX,
-						item.cellY, 1, 1, !desktopLocked);
+//				final FolderIcon newFolder = FolderIcon.fromXml(
+//						R.layout.folder_icon, this, (ViewGroup) workspace
+//								.getChildAt(workspace.getCurrentScreen()),
+//						(UserFolderInfo) item);
+//				workspace.addInScreen(newFolder, item.screen, item.cellX,
+//						item.cellY, 1, 1, !desktopLocked);
 				break;
 			case LauncherSettings.Favorites.ITEM_TYPE_LIVE_FOLDER:
 				final FolderIcon newLiveFolder = LiveFolderIcon.fromXml(
@@ -2941,7 +2939,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					.getDefaultSharedPreferences(this).getString(
 							getString(R.string.key_screen_number), "3"));
 			int count = mWorkspace.getChildCount();
-
+			
 			Log.i(LOG_TAG, "Screen number " + count + ", to be " + number);
 
 			// Don't need to change
@@ -3319,7 +3317,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 															((Mobject) tag).mobjectIcon)));
 							((Mobject)tag).icon_mirror = 0;
 						}
-						v.setTag(tag);
+						v.setTag(tag);						
 						final ContentValues values = new ContentValues();
 						final ContentResolver cr = context.getContentResolver();
 						values.put(LauncherSettings.Favorites.ICON_MIRROR,
@@ -3650,8 +3648,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		logConfigurator.configure();
 	}
 
-	public Drawable Mirror(Drawable drw) {
-
+	public static final Drawable Mirror(Drawable drw) {
+		float[] mirroY = { -1, 0, 0, 0, 1, 0, 0, 0, 1 };
 		Bitmap orgBit = ((BitmapDrawable) drw).getBitmap();
 
 		// drawable to bitmap
