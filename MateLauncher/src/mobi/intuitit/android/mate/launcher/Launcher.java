@@ -3278,13 +3278,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					} else if (position == 2) {
 						Object tag = v.getTag();
-						BitmapDrawable drawable = (BitmapDrawable) getResources()
-								.getDrawable(
-										MImageList.getInstance().getIcon(
-												((Mobject) tag).mobjectType,
-												((Mobject) tag).mobjectIcon));
-						bitmap= drawable.getBitmap();
-						//drawable to bitmap			
+								
 						((ImageView)v).setImageBitmap((Mirror(bitmap)));
 						
 						// v.setTag(tag);

@@ -61,7 +61,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="nosensor"
             android:stateNotNeeded="true"
-            
+            android:persistent="true"
             android:theme="@android:style/Theme.Wallpaper.NoTitleBar"
             android:windowSoftInputMode="stateUnspecified|adjustPan" >
             <intent-filter>
