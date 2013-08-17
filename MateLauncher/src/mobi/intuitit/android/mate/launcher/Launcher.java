@@ -3278,8 +3278,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					} else if (position == 2) {
 						Object tag = v.getTag();
-								
-						((ImageView)v).setImageBitmap((Mirror(bitmap)));
+//						BitmapDrawable drawable = (BitmapDrawable) getResources()
+//								.getDrawable(
+//										MImageList.getInstance().getIcon(
+//												((Mobject) tag).mobjectType,
+//												((Mobject) tag).mobjectIcon));
+//						bitmap= drawable.getBitmap();
+//						//drawable to bitmap			
+//						((ImageView)v).setImageBitmap((Mirror(bitmap)));
+						
+						
+						((ImageView)v).setBackgroundDrawable(Mirror(getResources()
+								.getDrawable(
+										MImageList.getInstance().getIcon(
+												((Mobject) tag).mobjectType,
+												((Mobject) tag).mobjectIcon))));
+						
 						
 						// v.setTag(tag);
 						// ((TextView)v).setCompoundDrawablesWithIntrinsicBounds(0,MImageList.getInstance().getIcon(
@@ -3553,12 +3567,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		SelectView.setTag(tag);
 	}
 
-	public Bitmap Mirror(Bitmap bmp) {
+	public Drawable Mirror(Drawable drw) {
+		
+		Bitmap orgBit = ((BitmapDrawable)drw).getBitmap();
+		
+		//drawable to bitmap
 		Matrix mat = new Matrix();
 		mat.setValues(mirroY);
-		Bitmap newbit = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
-				bmp.getHeight(), mat, true);
-		return newbit;
+		Bitmap newBit = Bitmap.createBitmap(orgBit, 0, 0, orgBit.getWidth(),
+				orgBit.getHeight(), mat, true);
+		
+		Drawable d = new BitmapDrawable(newBit);
+			
+		return d;
 	}
 	
 
