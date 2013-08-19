@@ -34,7 +34,8 @@ public class WeatherDataManager {
 			return true;
 	}
 	
-	public void setLocation(Location location) {
+	public void setLocation(Location location) {		
+		
 		Log.d(TAG, "setLocation() Latitude:" + location.getLatitude() + " Longitue:" + location.getLongitude());
 		
 		final AddressInfo ai = AddressMap.getInstance().queryCloseCity(location);		
@@ -84,5 +85,4 @@ public class WeatherDataManager {
 			}
 		}
 	}	
-	
 }

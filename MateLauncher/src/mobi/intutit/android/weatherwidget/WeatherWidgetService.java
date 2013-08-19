@@ -24,6 +24,7 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -65,10 +66,11 @@ public class WeatherWidgetService extends Service {
 		
 		sWorkerQueue.post(new Runnable() {
 			public void run() {
-				Location location = LocationFinder
-						.getLastKnownLocation(mContext);
+				Location location = new Location(LocationManager.NETWORK_PROVIDER);
+				location.setLatitude(37.566535);
+				location.setLongitude(126.977969);			
 				mWeatherDataManager.setLocation(location);
-				Message.obtain(mHandler, 0, 0).sendToTarget();
+//				Message.obtain(mHandler, 0, 0).sendToTarget();
 			}
 		});
 		return startId;		

@@ -113,54 +113,42 @@ public abstract class WeatherWidgetBase{
 		mgr.updateAppWidget(appWidgetId, rv);
 	}
     
-//    private void updateAll(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-//    	final Context ctx = context;
-//    	final AppWidgetManager appWidgetMgr = appWidgetManager;
-//    	final int[] appIds = appWidgetIds;
-//    	
-//    	if(LocationFinder.isGpsNetworkEnabled(context)){
-//    		LocationFinder locationFinder = new LocationFinder(context, sWorkerThread);
-//    		locationFinder.setHandler(new Handler() {
-//				public void handleMessage(Message msg) {
-//                	switch(msg.what) {
-//                	case LocationFinder.UPDATE_LOCATION:
-//                		Log.d(TAG, "handleMessage() : UPDATE_LOCATION");
-//	                	mLocation = (Location) msg.obj;
-//	                	break;
-//                	case LocationFinder.UPDATE_ADDRESS:
-//                		Log.d(TAG, "handleMessage() : UPDATE_ADDRESS");
-//                		mCityname = (String)msg.obj;
-//                		
-//                		for (int i = 0; i < appIds.length; ++i) {
-//	                		RemoteViews layout = buildLayout(ctx, appIds[i]);
-//	                		layout.setTextViewText(R.id.city_name, mCityname);
-//	                		appWidgetMgr.updateAppWidget(appIds[i], layout);
-//	                	}
-//
-//                		if(mCityname.equals("알수없음")) 
-//            				Toast.makeText(ctx, ctx.getString(R.string.geocoder_error), Toast.LENGTH_LONG).show();
-//                		
-//                		Toast.makeText(ctx, ctx.getString(R.string.refresh_complete), Toast.LENGTH_SHORT).show();
-//                		break;
-//                	}
-//                }
-//    	    });
-//    		locationFinder.find();
-//    	}
-//    	else { //GPS not enabled 
-//    		mLocation = new Location(LocationManager.NETWORK_PROVIDER);
-//    		mLocation.setLatitude(37.566535);
-//    		mLocation.setLongitude(126.977969);
-//			mCityname = ctx.getString(R.string.default_city);
-//			for (int i = 0; i < appIds.length; ++i) {
-//        		RemoteViews layout = buildLayout(ctx, appIds[i]);
-//        		if(mIsFirstUpdate) layout.setEmptyView(R.id.weather_content, R.id.empty_view);
-//        		appWidgetMgr.updateAppWidget(appIds[i], layout);        		
-//        	}
-//			Toast.makeText(context, context.getString(R.string.not_support_gps_network), Toast.LENGTH_SHORT).show();
-//    	}
-//    	mIsFirstUpdate = false;
-//    }
+    private void updateAll(Context context) {
+    	final Context ctx = context;
+    	
+    	if(LocationFinder.isGpsNetworkEnabled(context)){
+    		LocationFinder locationFinder = new LocationFinder(context, sWorkerThread);
+    		locationFinder.setHandler(new Handler() {
+				public void handleMessage(Message msg) {
+                	switch(msg.what) {
+                	case LocationFinder.UPDATE_LOCATION:
+                		Log.d(TAG, "handleMessage() : UPDATE_LOCATION");
+	                	mLocation = (Location) msg.obj;
+	                	break;
+                	case LocationFinder.UPDATE_ADDRESS:
+                		Log.d(TAG, "handleMessage() : UPDATE_ADDRESS");
+                		mCityname = (String)msg.obj;
+                		
+                	
+                		if(mCityname.equals("알수없음")) 
+            				Toast.makeText(ctx, "에러", Toast.LENGTH_LONG).show();
+                		
+                		Toast.makeText(ctx, "에러", Toast.LENGTH_SHORT).show();
+                		break;
+                	}
+                }
+    	    });
+    		locationFinder.find();
+    	}
+    	else { //GPS not enabled 
+    		mLocation = new Location(LocationManager.NETWORK_PROVIDER);
+    		mLocation.setLatitude(37.566535);
+    		mLocation.setLongitude(126.977969);
+			mCityname = "서울";			
+			
+    	}
+    	mIsFirstUpdate = false;
+    }
 
 //	@Override 
 //    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
