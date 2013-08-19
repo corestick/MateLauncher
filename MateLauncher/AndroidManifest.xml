@@ -32,6 +32,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
@@ -47,6 +48,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	
 
     <application
         android:name="LauncherApplication"
@@ -132,22 +134,13 @@
             android:authorities="mobi.intuitit.android.mate.launcher.settings"
             android:readPermission="mobi.intuitit.android.mate.launcher.permission.READ_SETTINGS"
             android:writePermission="mobi.intuitit.android.mate.launcher.permission.WRITE_SETTINGS" />
-   
-        <receiver android:name="SmallWeatherWidgetProvider">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/small_widgetinfo" />
-        </receiver>
-        
-        <service android:name="WeatherWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="false" />
-        
+
         <activity
             android:name="ScreenPrefActivity"
             android:screenOrientation="sensor" >
         </activity>
+         <service android:name="mobi.intutit.android.weatherwidget.WeatherWidgetService"
+            android:enabled="true"/>
     </application>
 
     <uses-sdk android:minSdkVersion="9" />

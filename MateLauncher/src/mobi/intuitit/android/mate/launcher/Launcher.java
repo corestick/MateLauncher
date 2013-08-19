@@ -40,6 +40,7 @@ import java.util.List;
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
 import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
+import mobi.intutit.android.weatherwidget.WeatherWidgetService;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -3637,5 +3638,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		logConfigurator.setRootLevel(Level.DEBUG);
 		logConfigurator.setLevel("org.apache", Level.ERROR);
 		logConfigurator.configure();
+	}
+	
+	//start widget service
+	public void widgetStart(){
+		Intent intent = new Intent(this,WeatherWidgetService.class);
+		startService(intent);
 	}
 }

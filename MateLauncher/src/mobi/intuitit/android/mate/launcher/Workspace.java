@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import mobi.intuitit.android.widget.WidgetCellLayout;
 import mobi.intuitit.android.widget.WidgetSpace;
+import mobi.intutit.android.weatherwidget.WeatherWidgetService;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetHostView;
@@ -40,7 +41,6 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -1131,6 +1131,11 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		LauncherModel.addOrMoveItemInDatabase(mLauncher, info,
 				LauncherSettings.Favorites.CONTAINER_DESKTOP, mCurrentScreen,
 				lp.cellX, lp.cellY);
+		
+		if(info.mobjectType == MGlobal.MOBJECTTYPE_WIDGET){
+			Log.e("widget", "widget");
+			mLauncher.widgetStart(); // ³¯¾¾À§Á¬ ¼­ºñ½º ½ÃÀÛ
+		}
 	}
 
 	/**
