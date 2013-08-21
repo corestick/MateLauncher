@@ -1,15 +1,10 @@
 package mobi.intuitit.android.mate.launcher;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
-import mobi.intuitit.android.homepage.HomeMain;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -97,14 +92,49 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			return;
 		} else if (v.equals(mDockButton[4])) {
 			// 화면 꾸미기
-			hideDockbar();
-			Launcher.modifyMode = true;
-			mLauncher.mMDockbar.showMDockbar();
-			mLauncher.modifyAnimationStart();
-			MLayout mLayout = (MLayout) mWorkspace.getChildAt(mWorkspace
-					.getCurrentScreen());
-			mLayout.hideAllAvatarView();
-			return;
+			 hideDockbar();
+			 Launcher.modifyMode = true;
+			 mLauncher.mMDockbar.showMDockbar();
+			 mLauncher.modifyAnimationStart();
+			 MLayout mLayout = (MLayout) mWorkspace.getChildAt(mWorkspace
+			 .getCurrentScreen());
+			 mLayout.hideAllAvatarView();
+			 return;
+
+			// 홈페이지 들어가기
+			// captureView 생성
+//			int count = mLauncher.getWorkspace().getChildCount();
+//
+//			if (captureView == null || captureView.length != count)
+//				captureView = new Bitmap[count];
+//
+//			String sdcard = Environment.getExternalStorageDirectory()
+//					.getAbsolutePath();
+//
+//			File cfile = new File(sdcard + "/MateLauncher/Owner");
+//			cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
+//			for (int i = 0; i < count; i++) {
+//				View tempCapture = mLauncher.getWorkspace().getChildAt(i);
+//				tempCapture.buildDrawingCache();
+//				captureView[i] = tempCapture.getDrawingCache();
+//
+//				String path = sdcard + "/MateLauncher/Owner/screen" + i
+//						+ ".jpg";
+//				try {
+//					FileOutputStream fos = new FileOutputStream(path);
+//					captureView[i].compress(Bitmap.CompressFormat.JPEG, 100,
+//							fos);
+//					fos.flush();
+//					fos.close();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			Intent intent = new Intent(mLauncher, HomeMain.class);
+//			intent.putExtra("ChildCount", mLauncher.Child_Count());
+//			mLauncher.startActivity(intent);
+//			return;
+
 		}
 	}
 }

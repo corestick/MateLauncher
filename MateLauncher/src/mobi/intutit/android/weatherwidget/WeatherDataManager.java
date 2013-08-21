@@ -66,16 +66,6 @@ public class WeatherDataManager {
 		}
 	}
 	
-	public int getCurrentResourceID() {
-		synchronized (this) {
-			if(mCurrentWeatherData == null) {
-				return 0;
-			} else {
-				return mCurrentWeatherData.getResourceID();
-			}
-		}
-	}
-	
 	public String getCurrentWeather() {
 		synchronized (this) {
 			if(mCurrentWeatherData == null) {

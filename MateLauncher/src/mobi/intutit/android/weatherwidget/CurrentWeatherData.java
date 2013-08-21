@@ -106,10 +106,5 @@ public class CurrentWeatherData {
 			}
 		}
 		return icon;
-	}
-
-	protected int getResourceID() {
-		int icon = getIcon();
-		return 0;
-	}
+	}	
 }

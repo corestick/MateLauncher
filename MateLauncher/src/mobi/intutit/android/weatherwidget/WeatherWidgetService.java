@@ -18,6 +18,7 @@ package mobi.intutit.android.weatherwidget;
 
 
 
+import mobi.intuitit.android.mate.launcher.Launcher;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -70,7 +71,8 @@ public class WeatherWidgetService extends Service {
 				location.setLatitude(37.566535);
 				location.setLongitude(126.977969);			
 				mWeatherDataManager.setLocation(location);
-//				Message.obtain(mHandler, 0, 0).sendToTarget();
+				Log.e("CW", mWeatherDataManager.getCurrentWeather());
+//				((Launcher)mContext).widgetIconChange(0);
 			}
 		});
 		return startId;		
