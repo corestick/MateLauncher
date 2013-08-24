@@ -58,7 +58,7 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 		mDockButton[1].setBackgroundResource(R.drawable.icon_contacts);
 		mDockButton[2].setBackgroundResource(R.drawable.icon_apps);
 		mDockButton[3].setBackgroundResource(R.drawable.icon_setting);
-		mDockButton[4].setBackgroundResource(R.drawable.icon_homepage);
+		mDockButton[4].setBackgroundResource(R.drawable.icon_edit);
 	}
 
 	public void showDockbar() {

@@ -40,6 +40,7 @@ import java.util.List;
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
 import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
+import mobi.intuitit.android.weatherwidget.WeatherWidgetService;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -255,7 +256,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ModifyThread mModifyThread = null;
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
-	
+
 	@Override
 	protected void onStart() {
 
@@ -283,9 +284,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (PROFILE_STARTUP) {
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
 		}
-
-		// Log4j 설정 //
-		configureLogger();
+	
 
 		checkForLocaleChange();
 		setWallpaperDimension();
@@ -297,15 +296,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerContentObservers();
 
 		mSavedState = savedInstanceState;
-		restoreState(mSavedState);
+		restoreState(mSavedState);	
+	
 
 		if (PROFILE_STARTUP) {
 			android.os.Debug.stopMethodTracing();
 		}
 
 		if (!mRestoring) {
-			startLoaders();
+			startLoaders();			
 		}
+		
+		// Log4j 설정 //
+		configureLogger();
+
+		// 위젯 서비스 시작
+		widgetStart();
 
 		// For handling default keys
 		mDefaultKeySsb = new SpannableStringBuilder();
@@ -817,7 +823,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			favorite.setTag(info);
 			favorite.setOnClickListener(this);
 			favorite.initMobjectView();
-			
 
 			return favorite;
 		}
@@ -1269,6 +1274,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		unregisterReceiver(mCloseSystemDialogsReceiver);
 
 		mWorkspace.unregisterProvider();
+
+		widgetStop();
 	}
 
 	@Override
@@ -1966,12 +1973,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						item.cellY, 1, 1, !desktopLocked);
 				break;
 			case LauncherSettings.Favorites.ITEM_TYPE_USER_FOLDER:
-//				final FolderIcon newFolder = FolderIcon.fromXml(
-//						R.layout.folder_icon, this, (ViewGroup) workspace
-//								.getChildAt(workspace.getCurrentScreen()),
-//						(UserFolderInfo) item);
-//				workspace.addInScreen(newFolder, item.screen, item.cellX,
-//						item.cellY, 1, 1, !desktopLocked);
+				// final FolderIcon newFolder = FolderIcon.fromXml(
+				// R.layout.folder_icon, this, (ViewGroup) workspace
+				// .getChildAt(workspace.getCurrentScreen()),
+				// (UserFolderInfo) item);
+				// workspace.addInScreen(newFolder, item.screen, item.cellX,
+				// item.cellY, 1, 1, !desktopLocked);
 				break;
 			case LauncherSettings.Favorites.ITEM_TYPE_LIVE_FOLDER:
 				final FolderIcon newLiveFolder = LiveFolderIcon.fromXml(
@@ -2197,24 +2204,40 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		} else {
 			Object tag = v.getTag();
 			if (tag instanceof Mobject) {
-				
-				switch(((Mobject)tag).mobjectType) {
-					case MGlobal.MOBJECTTYPE_FURNITURE:
-						SelectView = v;
-						Function_dialog function_dialog = new Function_dialog(this,
-								v);
-						function_dialog.setCancelable(true);
-						function_dialog.show();
-						break;
-					case MGlobal.MOBJECTTYPE_AVATAR:
-						// 전화번호 얻어오기 커스텀 다이얼로그
-						SelectView = v;
-						clickedInfo = tag;
-						createThreadAndDialog();
-						break;
-					case MGlobal.MOBJECTTYPE_WIDGET:
-						
-						break;
+
+				switch (((Mobject) tag).mobjectType) {
+				case MGlobal.MOBJECTTYPE_FURNITURE:
+					SelectView = v;
+					Function_dialog function_dialog = new Function_dialog(this,
+							v);
+					function_dialog.setCancelable(true);
+					function_dialog.show();
+					break;
+				case MGlobal.MOBJECTTYPE_AVATAR:
+					// 전화번호 얻어오기 커스텀 다이얼로그
+					SelectView = v;
+					clickedInfo = tag;
+					createThreadAndDialog();
+					break;
+				case MGlobal.MOBJECTTYPE_WIDGET:
+					// 아이콘 이미지 대칭
+					if (((Mobject) tag).icon_mirror == 0) {
+						MobjectImageView imgView = (MobjectImageView) v;
+						imgView.reverseImg();
+						((Mobject) tag).icon_mirror = 1;
+					} else {
+						MobjectImageView imgView = (MobjectImageView) v;
+						imgView.orginImg();
+						((Mobject) tag).icon_mirror = 0;
+					}
+					v.setTag(tag);
+					final ContentValues values = new ContentValues();
+					final ContentResolver cr = this.getContentResolver();
+					values.put(LauncherSettings.Favorites.ICON_MIRROR,
+							((Mobject) tag).icon_mirror);
+					cr.update(LauncherSettings.Favorites.getContentUri(
+							((Mobject) tag).id, false), values, null, null);
+					break;
 				}
 			}
 		}
@@ -2411,7 +2434,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	// return mDrawer.isMoving();
 	// }
 
-	static Workspace getWorkspace() {
+	public static Workspace getWorkspace() {
 		return mWorkspace;
 	}
 
@@ -2942,7 +2965,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					.getDefaultSharedPreferences(this).getString(
 							getString(R.string.key_screen_number), "3"));
 			int count = mWorkspace.getChildCount();
-			
+
 			Log.i(LOG_TAG, "Screen number " + count + ", to be " + number);
 
 			// Don't need to change
@@ -3296,17 +3319,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					} else if (position == 1) {
 						Object tag = v.getTag();
 
-						if(((Mobject)tag).icon_mirror == 0){
+						if (((Mobject) tag).icon_mirror == 0) {
 							MobjectImageView imgView = (MobjectImageView) v;
-							imgView.reverseImg();	
-							((Mobject)tag).icon_mirror = 1;
-						}					
-						else {
+							imgView.reverseImg();
+							((Mobject) tag).icon_mirror = 1;
+						} else {
 							MobjectImageView imgView = (MobjectImageView) v;
 							imgView.orginImg();
-							((Mobject)tag).icon_mirror = 0;
+							((Mobject) tag).icon_mirror = 0;
 						}
-						v.setTag(tag);						
+						v.setTag(tag);
 						final ContentValues values = new ContentValues();
 						final ContentResolver cr = context.getContentResolver();
 						values.put(LauncherSettings.Favorites.ICON_MIRROR,
@@ -3575,7 +3597,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		SelectView.setTag(tag);
 	}
 
-	//로그캣
+	// 로그캣
 	public void writeLogcat() {
 
 		StringBuilder sb = new StringBuilder();
@@ -3628,7 +3650,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
-	//로그
+	// 로그
 	public static void configureLogger() {
 		final LogConfigurator logConfigurator = new LogConfigurator();
 		logConfigurator.setFileName(Environment.getExternalStorageDirectory()
@@ -3638,4 +3660,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		logConfigurator.setLevel("org.apache", Level.ERROR);
 		logConfigurator.configure();
 	}
+
+	// start widget service
+	public void widgetStart() {
+		Log.e("RRR", "widgetStart");
+		Intent intent = new Intent(this, WeatherWidgetService.class);
+		startService(intent);
+	}
+
+	// stop widget service
+	public void widgetStop() {
+		Intent intent = new Intent(this, WeatherWidgetService.class);
+		stopService(intent);
+	}
+
 }

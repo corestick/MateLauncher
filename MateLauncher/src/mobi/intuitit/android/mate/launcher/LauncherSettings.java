@@ -22,7 +22,7 @@ import android.net.Uri;
 /**
  * Settings related utilities.
  */
-class LauncherSettings {
+public class LauncherSettings {
     static interface BaseLauncherColumns extends BaseColumns {
         /**
          * Descriptive name of the gesture that can be displayed to the user.
