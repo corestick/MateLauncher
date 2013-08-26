@@ -1,4 +1,4 @@
-package mobi.intutit.android.weatherwidget;
+package mobi.intuitit.android.weatherwidget;
 
 import java.net.HttpURLConnection;
 import java.net.URL;

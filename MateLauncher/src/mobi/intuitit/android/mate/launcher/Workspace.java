@@ -1586,4 +1586,23 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 			}
 		}
 	}
+	
+	public void setWidgetImg() {
+		for (int i = 0; i < this.getChildCount(); i++) {
+			LayoutType layout = (LayoutType) this.getChildAt(i);
+			if (layout instanceof MLayout) {
+				for (int j = 0; j < layout.getChildCount(); j++) {
+					if (layout.getChildAt(j) instanceof MobjectImageView) {
+						MobjectImageView mObjectImageView = (MobjectImageView) layout
+								.getChildAt(j);
+						
+						ItemInfo info = (ItemInfo) mObjectImageView.getTag();
+						if(info.mobjectType == MGlobal.MOBJECTTYPE_WIDGET)
+							mObjectImageView.initMobjectView();
+					}
+				}
+			}
+		}	
+	}
+	
 }

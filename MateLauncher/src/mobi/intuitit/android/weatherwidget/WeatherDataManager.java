@@ -1,7 +1,7 @@
-package mobi.intutit.android.weatherwidget;
+package mobi.intuitit.android.weatherwidget;
 
 
-import mobi.intutit.android.weatherwidget.AddressMap.AddressInfo;
+import mobi.intuitit.android.weatherwidget.AddressMap.AddressInfo;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
@@ -34,15 +34,12 @@ public class WeatherDataManager {
 			return true;
 	}
 	
-	public void setLocation(Location location) {
+	public void setLocation(Location location) {		
+		
 		Log.d(TAG, "setLocation() Latitude:" + location.getLatitude() + " Longitue:" + location.getLongitude());
 		
-		final AddressInfo ai = AddressMap.getInstance().queryCloseCity(location);
-		
-		String cityCode = AddressMap.getInstance().getWeekCityCode(ai.mCityname);
-		int weekStnId = AddressMap.getInstance().getWeekStationId(ai.mCityname);
+		final AddressInfo ai = AddressMap.getInstance().queryCloseCity(location);		
 		int curStnId = AddressMap.getInstance().getCurStationId(ai.mCityname);		
-		
 		String curWeatherURL = "http://www.kma.go.kr/XML/weather/sfc_web_map.xml";
 		
 		synchronized (this) {
@@ -69,16 +66,6 @@ public class WeatherDataManager {
 		}
 	}
 	
-	public int getCurrentResourceID() {
-		synchronized (this) {
-			if(mCurrentWeatherData == null) {
-				return 0;
-			} else {
-				return mCurrentWeatherData.getResourceID();
-			}
-		}
-	}
-	
 	public String getCurrentWeather() {
 		synchronized (this) {
 			if(mCurrentWeatherData == null) {
@@ -88,5 +75,4 @@ public class WeatherDataManager {
 			}
 		}
 	}	
-	
 }

@@ -1,10 +1,10 @@
-package mobi.intutit.android.weatherwidget;
+package mobi.intuitit.android.weatherwidget;
 
 import java.io.IOException;
 import java.util.List;
 
 import mobi.intuitit.android.mate.launcher.R;
-import mobi.intutit.android.weatherwidget.CurrentWeatherXmlParser.CurrentWeatherXmlData;
+import mobi.intuitit.android.weatherwidget.CurrentWeatherXmlParser.CurrentWeatherXmlData;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -106,10 +106,5 @@ public class CurrentWeatherData {
 			}
 		}
 		return icon;
-	}
-
-	protected int getResourceID() {
-		int icon = getIcon();
-		return 0;
-	}
+	}	
 }

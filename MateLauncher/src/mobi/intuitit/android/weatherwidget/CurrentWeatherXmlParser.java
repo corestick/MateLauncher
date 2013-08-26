@@ -1,4 +1,4 @@
-package mobi.intutit.android.weatherwidget;
+package mobi.intuitit.android.weatherwidget;
 
 import java.io.IOException;
 import java.io.InputStream;
