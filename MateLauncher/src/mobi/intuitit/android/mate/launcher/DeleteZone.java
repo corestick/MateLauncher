@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -146,11 +145,6 @@ public class DeleteZone extends ImageView implements DropTarget,
 				model.removeDesktopAppWidget((LauncherAppWidgetInfo) item);
 			} else {
 				model.removeDesktopItem(item);
-				if(item.mobjectType == MGlobal.MOBJECTTYPE_WIDGET)
-				{
-					Log.e("stopService", "stop");
-					mLauncher.widgetStop();
-				}
 			}
 		} else {
 			if (source instanceof UserFolder) {

@@ -6,8 +6,7 @@ import android.R.integer;
 
 public class MImageList {
 
-	public Vector<Integer> flooringList;
-	public Vector<Integer> wallpaperList;
+	public Vector<Integer> backgroundList;
 	public Vector<Integer> avatarList;
 	public Vector<Integer> furnitureList;
 	public Vector<Integer> widgetList;
@@ -16,14 +15,12 @@ public class MImageList {
 
 	private MImageList() {
 
-		flooringList = new Vector<Integer>();
-		wallpaperList = new Vector<Integer>();
+		backgroundList = new Vector<Integer>();
 		avatarList = new Vector<Integer>();
 		furnitureList = new Vector<Integer>();
 		widgetList = new Vector<Integer>();
 
-		initFlooring();
-		initWallpapaer();
+		initBackground();
 		initAvatar();
 		initFurniture();
 		initWidget();
@@ -33,46 +30,31 @@ public class MImageList {
 		return mImageList;
 	}
 
-	private void initFlooring() {
+	private void initBackground() {
 
-		flooringList.add(R.drawable.m_flooring_01);
-		flooringList.add(R.drawable.m_flooring_02);
-		flooringList.add(R.drawable.m_flooring_03);
-		flooringList.add(R.drawable.m_flooring_04);
-		flooringList.add(R.drawable.m_flooring_05);
-		flooringList.add(R.drawable.m_flooring_06);
-		flooringList.add(R.drawable.m_flooring_07);
-		flooringList.add(R.drawable.m_flooring_08);
-		// flooringList.add(R.drawable.m_flooring_09);
-
-	}
-
-	private void initWallpapaer() {
-
-		wallpaperList.add(R.drawable.m_wall_01);
-		wallpaperList.add(R.drawable.m_wall_02);
-		wallpaperList.add(R.drawable.m_wall_03);
-		wallpaperList.add(R.drawable.m_wall_04);
-		wallpaperList.add(R.drawable.m_wall_05);
-		wallpaperList.add(R.drawable.m_wall_06);
-		wallpaperList.add(R.drawable.m_wall_07);
-		wallpaperList.add(R.drawable.m_wall_08);
-		// wallpaperList.add(R.drawable.m_wall_09);
-		// wallpaperList.add(R.drawable.m_wall_010);
-
+		backgroundList.add(R.drawable.m_wall_01);
+		backgroundList.add(R.drawable.m_wall_02);
+		backgroundList.add(R.drawable.m_wall_03);
+		backgroundList.add(R.drawable.m_wall_04);
+		backgroundList.add(R.drawable.m_wall_05);
+		backgroundList.add(R.drawable.m_wall_06);
+		backgroundList.add(R.drawable.m_wall_07);
+		backgroundList.add(R.drawable.m_wall_08);
+		backgroundList.add(R.drawable.m_wall_09);
+		backgroundList.add(R.drawable.m_wall_10);
+		backgroundList.add(R.drawable.m_wall_11);
+		backgroundList.add(R.drawable.m_wall_12);
+		backgroundList.add(R.drawable.m_wall_13);
+		backgroundList.add(R.drawable.m_wall_14);
+		backgroundList.add(R.drawable.m_wall_15);	
 	}
 
 	private void initAvatar() {
-
 		avatarList.add(R.drawable.m_avatar_01);
 		avatarList.add(R.drawable.m_avatar_02);
 		avatarList.add(R.drawable.m_avatar_03);
 		avatarList.add(R.drawable.m_avatar_04);
-		avatarList.add(R.drawable.m_avatar_05);
-		avatarList.add(R.drawable.m_avatar_06);
-		avatarList.add(R.drawable.m_avatar_07);
-		avatarList.add(R.drawable.m_avatar_08);
-
+		avatarList.add(R.drawable.m_avatar_05);		
 	}
 
 	private void initFurniture() {
@@ -97,13 +79,29 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_18);
 		furnitureList.add(R.drawable.m_furniture_19);
 		furnitureList.add(R.drawable.m_furniture_20);
+		furnitureList.add(R.drawable.m_furniture_21);
+		furnitureList.add(R.drawable.m_furniture_22);
+		furnitureList.add(R.drawable.m_furniture_23);
+		furnitureList.add(R.drawable.m_furniture_24);
+		furnitureList.add(R.drawable.m_furniture_25);
+		furnitureList.add(R.drawable.m_furniture_26);
+		furnitureList.add(R.drawable.m_furniture_27);
+		furnitureList.add(R.drawable.m_furniture_28);
+		furnitureList.add(R.drawable.m_furniture_29);
+		furnitureList.add(R.drawable.m_furniture_30);
+		furnitureList.add(R.drawable.m_furniture_31);
+		furnitureList.add(R.drawable.m_furniture_32);	
 	}
 
 	private void initWidget() {
-		widgetList.add(R.drawable.m_widget_01);
-		widgetList.add(R.drawable.m_widget_02);
-		widgetList.add(R.drawable.m_widget_03);
-		widgetList.add(R.drawable.m_widget_04);
+		widgetList.add(R.drawable.sunny);
+		widgetList.add(R.drawable.big_sunny);
+		widgetList.add(R.drawable.cloud);
+		widgetList.add(R.drawable.big_cloud);
+		widgetList.add(R.drawable.rain);
+		widgetList.add(R.drawable.big_rain);
+		widgetList.add(R.drawable.snow);
+		widgetList.add(R.drawable.big_snow);
 	}
 
 	public int getIcon(int resType, int resIdx) {

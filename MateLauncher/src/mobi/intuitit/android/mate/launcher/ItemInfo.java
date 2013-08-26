@@ -36,7 +36,7 @@ class ItemInfo {
     /**
      * The id in the settings database for this item
      */
-    long id = NO_ID;
+    public long id = NO_ID;
     
     /**
      * One of {@link LauncherSettings.Favorites#ITEM_TYPE_APPLICATION},
@@ -104,12 +104,13 @@ class ItemInfo {
      */
     boolean filtered;
     
-    int mobjectType = -1; // 0 = 가구, 1 = 아바타
-    int mobjectIcon = -1;
+    public int mobjectType = -1; // 0 = 가구, 1 = 아바타
+    public int mobjectIcon = -1;
+    public int icon_mirror = 0; // 1이면 반대이미지
     
     String contact_num;
     String contact_name;
-    int icon_mirror = 0; // 1이면 반대이미지
+    
 
     ItemInfo() {
     }
