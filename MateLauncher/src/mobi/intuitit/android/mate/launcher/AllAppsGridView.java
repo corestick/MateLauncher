@@ -87,7 +87,7 @@ public class AllAppsGridView extends GridView implements
 
 		int x = 0;
 		int y;
-		
+
 		while (x < width) {
 			y = 0;
 			while (y < height) {
@@ -108,19 +108,19 @@ public class AllAppsGridView extends GridView implements
 
 	public boolean onItemLongClick(AdapterView<?> parent, View view,
 			int position, long id) {
-//		return false;
+		return false;
 
-		if (!view.isInTouchMode()) {
-			return false;
-		}
-
-		ItemInfo app = (ItemInfo) parent.getItemAtPosition(position);
-		app = new ItemInfo(app);
-
-		mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
-		mLauncher.closeAllApplications();
-
-		return true;
+		// if (!view.isInTouchMode()) {
+		// return false;
+		// }
+		//
+		// ItemInfo app = (ItemInfo) parent.getItemAtPosition(position);
+		// app = new ItemInfo(app);
+		//
+		// mDragger.startDrag(view, this, app, DragController.DRAG_ACTION_COPY);
+		// mLauncher.closeAllApplications();
+		//
+		// return true;
 	}
 
 	public void setDragger(DragController dragger) {
