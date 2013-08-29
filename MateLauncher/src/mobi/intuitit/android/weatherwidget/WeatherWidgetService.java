@@ -27,6 +27,7 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 
 /**
  * This is the service that provides the factory to be bound to the collection
@@ -68,8 +69,8 @@ public class WeatherWidgetService extends Service {
 			if (msg.what == 0) {
 				lh.run();
 
-				// Log.e("RRR", "Lat=" + lh.getLat());
-				// Log.e("RRR", "Lng=" + lh.getLng());
+//				 Log.e("RRR", "Lat=" + lh.getLat());
+//				 Log.e("RRR", "Lng=" + lh.getLng());
 
 				Location location = new Location(
 						LocationManager.NETWORK_PROVIDER);
@@ -77,6 +78,8 @@ public class WeatherWidgetService extends Service {
 				location.setLongitude(lh.getLng());
 				mWeatherDataManager.setLocation(location);
 				weatherStr = mWeatherDataManager.getCurrentWeather();
+				
+//				Log.e("RRR", "-->>" + weatherStr);
 
 				if (Launcher.getWorkspace() != null) {
 					if (weatherStr.equals("¸¼À½")) {

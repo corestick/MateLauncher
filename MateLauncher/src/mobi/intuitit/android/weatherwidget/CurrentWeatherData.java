@@ -73,6 +73,9 @@ public class CurrentWeatherData {
 	
 	protected String getWeatherString() {
 		int icon = getIcon();
+		
+		Log.e("RRR", "Icon=" + icon);
+		
 		switch(icon) {
 			case 1: return "¸¼À½";
 			case 2: return "±¸¸§ Á¶±Ý";
@@ -85,6 +88,7 @@ public class CurrentWeatherData {
 			case 9: return "ºñ";
 			case 10: return "´«";
 			case 11: return "´«";
+			case 14: return "ºñ";
 			case 15: return "¾È°³";
 			case 17: return "¹Ú¹«";
 			case 18: return "¾È°³";

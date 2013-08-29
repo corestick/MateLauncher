@@ -2388,8 +2388,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				MLayout mLayout = (MLayout) mObjectImageView.getParent();
 				mLayout.setVisibleStateSpeechBubble((MobjectImageView) mObjectImageView);
 			} else {
-				MLayout mLayout = (MLayout) v;
-				mLayout.setMobjectResolution(240, 400);
+//				해상도 관련 테스트
+//				MLayout mLayout = (MLayout) v;
+//				mLayout.setMobjectResolution(240, 400);
 			}
 		}
 
