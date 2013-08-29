@@ -17,7 +17,6 @@
 package mobi.intuitit.android.mate.launcher;
 
 import android.app.Application;
-import dalvik.system.VMRuntime;
 
 public class LauncherApplication extends Application {
     @Override
