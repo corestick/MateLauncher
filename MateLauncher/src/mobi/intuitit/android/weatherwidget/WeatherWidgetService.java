@@ -69,8 +69,8 @@ public class WeatherWidgetService extends Service {
 			if (msg.what == 0) {
 				lh.run();
 
-//				 Log.e("RRR", "Lat=" + lh.getLat());
-//				 Log.e("RRR", "Lng=" + lh.getLng());
+				 Log.e("RRR", "Lat=" + lh.getLat());
+				 Log.e("RRR", "Lng=" + lh.getLng());
 
 				Location location = new Location(
 						LocationManager.NETWORK_PROVIDER);
