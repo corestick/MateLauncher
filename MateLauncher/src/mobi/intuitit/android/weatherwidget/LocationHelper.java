@@ -95,6 +95,7 @@ public class LocationHelper {
 
 		mLat = location.getLatitude();
 		mLng = location.getLongitude();
+		
 		isLocationSetting = true;
 
 //		Toast.makeText(mContext, "Location 가 셋팅 되었습니다.", Toast.LENGTH_SHORT)
@@ -107,6 +108,10 @@ public class LocationHelper {
 	 * @return
 	 */
 	public double getLat() {
+		if (mLat == 0.0) {
+			mLat = 37.566535;
+		}
+		
 		return mLat;
 	}
 
@@ -116,6 +121,10 @@ public class LocationHelper {
 	 * @return
 	 */
 	public double getLng() {
+		if (mLng == 0.0) {
+			mLng = 126.977969;
+		}
+		
 		return mLng;
 	}
 

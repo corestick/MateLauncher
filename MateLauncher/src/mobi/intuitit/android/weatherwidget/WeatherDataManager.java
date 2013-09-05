@@ -39,7 +39,7 @@ public class WeatherDataManager {
 		Log.d(TAG, "setLocation() Latitude:" + location.getLatitude() + " Longitue:" + location.getLongitude());
 		
 		final AddressInfo ai = AddressMap.getInstance().queryCloseCity(location);		
-		int curStnId = AddressMap.getInstance().getCurStationId(ai.mCityname);		
+		int curStnId = AddressMap.getInstance().getCurStationId(ai.mCityname);
 		String curWeatherURL = "http://www.kma.go.kr/XML/weather/sfc_web_map.xml";
 		
 		synchronized (this) {
