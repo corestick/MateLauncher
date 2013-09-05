@@ -716,7 +716,7 @@ containing a value of this type.
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name android:texture
+          @attr name mobi.intuitit.android.mate.launcher:texture
         */
         public static final int AllAppsGridView_texture = 0;
         /**  CellLayout specific attributes. These attributes are used to customize
@@ -763,7 +763,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:cellHeight
+          @attr name mobi.intuitit.android.mate.launcher:cellHeight
         */
         public static final int CellLayout_cellHeight = 1;
         /**
@@ -781,7 +781,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:cellWidth
+          @attr name mobi.intuitit.android.mate.launcher:cellWidth
         */
         public static final int CellLayout_cellWidth = 0;
         /**
@@ -797,7 +797,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:longAxisCells
+          @attr name mobi.intuitit.android.mate.launcher:longAxisCells
         */
         public static final int CellLayout_longAxisCells = 7;
         /**
@@ -815,7 +815,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:longAxisEndPadding
+          @attr name mobi.intuitit.android.mate.launcher:longAxisEndPadding
         */
         public static final int CellLayout_longAxisEndPadding = 3;
         /**
@@ -833,7 +833,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:longAxisStartPadding
+          @attr name mobi.intuitit.android.mate.launcher:longAxisStartPadding
         */
         public static final int CellLayout_longAxisStartPadding = 2;
         /**
@@ -849,7 +849,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:shortAxisCells
+          @attr name mobi.intuitit.android.mate.launcher:shortAxisCells
         */
         public static final int CellLayout_shortAxisCells = 6;
         /**
@@ -867,7 +867,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:shortAxisEndPadding
+          @attr name mobi.intuitit.android.mate.launcher:shortAxisEndPadding
         */
         public static final int CellLayout_shortAxisEndPadding = 5;
         /**
@@ -885,7 +885,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:shortAxisStartPadding
+          @attr name mobi.intuitit.android.mate.launcher:shortAxisStartPadding
         */
         public static final int CellLayout_shortAxisStartPadding = 4;
         /**  DeleteZone specific attributes. These attributes are used to customize
@@ -918,7 +918,7 @@ containing a value of this type.
 <tr><td><code>horizontal</code></td><td>1</td><td> Horizontal widget. </td></tr>
 </table>
           <p>This is a private symbol.
-          @attr name android:direction
+          @attr name mobi.intuitit.android.mate.launcher:direction
         */
         public static final int DeleteZone_direction = 0;
         /**  XML attributes used by default_workspace.xml 
@@ -960,7 +960,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:className
+          @attr name mobi.intuitit.android.mate.launcher:className
         */
         public static final int Favorite_className = 0;
         /**
@@ -970,7 +970,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:icon
+          @attr name mobi.intuitit.android.mate.launcher:icon
         */
         public static final int Favorite_icon = 5;
         /**
@@ -984,7 +984,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:packageName
+          @attr name mobi.intuitit.android.mate.launcher:packageName
         */
         public static final int Favorite_packageName = 1;
         /**
@@ -998,7 +998,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:screen
+          @attr name mobi.intuitit.android.mate.launcher:screen
         */
         public static final int Favorite_screen = 2;
         /**
@@ -1008,7 +1008,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name android:title
+          @attr name mobi.intuitit.android.mate.launcher:title
         */
         public static final int Favorite_title = 6;
         /**
@@ -1022,7 +1022,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:uri
+          @attr name mobi.intuitit.android.mate.launcher:uri
         */
         public static final int Favorite_uri = 7;
         /**
@@ -1036,7 +1036,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:x
+          @attr name mobi.intuitit.android.mate.launcher:x
         */
         public static final int Favorite_x = 3;
         /**
@@ -1050,7 +1050,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name android:y
+          @attr name mobi.intuitit.android.mate.launcher:y
         */
         public static final int Favorite_y = 4;
         /**  HandleView specific attributes. These attributes are used to customize
@@ -1083,7 +1083,7 @@ containing a value of this type.
 <tr><td><code>horizontal</code></td><td>1</td><td> Horizontal widget. </td></tr>
 </table>
           <p>This is a private symbol.
-          @attr name android:direction
+          @attr name mobi.intuitit.android.mate.launcher:direction
         */
         public static final int HandleView_direction = 0;
         /**  Workspace specific attributes. These attributes are used to customize
@@ -1113,7 +1113,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name android:defaultScreen
+          @attr name mobi.intuitit.android.mate.launcher:defaultScreen
         */
         public static final int Workspace_defaultScreen = 0;
     };

@@ -256,7 +256,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private ModifyThread mModifyThread = null;
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
-	
+
 	static public int mWeather = MGlobal.WEATHER_SUNNY;
 
 	@Override
@@ -286,7 +286,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		if (PROFILE_STARTUP) {
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
 		}
-	
 
 		checkForLocaleChange();
 		setWallpaperDimension();
@@ -298,19 +297,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		registerContentObservers();
 
 		mSavedState = savedInstanceState;
-		restoreState(mSavedState);	
-	
+		restoreState(mSavedState);
 
 		if (PROFILE_STARTUP) {
 			android.os.Debug.stopMethodTracing();
 		}
 
 		if (!mRestoring) {
-			startLoaders();			
+			startLoaders();
 		}
-		
+
 		// Log4j 설정 //
-//		configureLogger();
+		// configureLogger();
 
 		// 위젯 서비스 시작
 		widgetStart();
@@ -2179,9 +2177,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	 * @param v
 	 *            The view representing the clicked shortcut.
 	 */
-	public void onClick(View v) {
+	public void onClick(final View v) {
 		if (modifyMode == false) {
-			Object tag = v.getTag();
+			final Object tag = v.getTag();
 			if (tag instanceof ApplicationInfo) {
 				// Open shortcut
 				final Intent intent = ((ApplicationInfo) tag).intent;
@@ -2197,10 +2195,85 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_FURNITURE) {
 					final Intent intent = ((Mobject) tag).intent;
+					if (intent == null) {
+						// Toast.makeText(this, "어플리케이션을 매칭해주세요.",
+						// Toast.LENGTH_SHORT).show();
+
+						AlertDialog.Builder alart = new AlertDialog.Builder(
+								mLauncher);
+
+						alart.setMessage("어플리케이션을 매칭하시겠습니까??")
+								.setCancelable(true)
+								.setPositiveButton("예",
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												dialog.dismiss();
+												Object tag = v.getTag();
+												AppList_dialog appDialog = new AppList_dialog(
+														Launcher.this, tag);
+												appDialog.setCancelable(true);
+												android.view.WindowManager.LayoutParams params = appDialog
+														.getWindow()
+														.getAttributes();
+												params.width = LayoutParams.FILL_PARENT;
+												params.height = LayoutParams.FILL_PARENT;
+												appDialog.getWindow()
+														.setAttributes(params);
+												appDialog.show();
+											}
+										})
+								.setNegativeButton("아니오",
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												dialog.dismiss();
+											}
+										});
+						AlertDialog AD = alart.create();
+						AD.show();
+						return;
+					}
 					startActivitySafely(intent);
 				} else {
-					MLayout mLayout = (MLayout) v.getParent();
-					mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
+					if (((Mobject) tag).contact_num == null) {
+						AlertDialog.Builder alart = new AlertDialog.Builder(
+								mLauncher);
+
+						alart.setMessage("연락처를 매칭하시겠습니까??")
+								.setCancelable(true)
+								.setPositiveButton("예",
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												dialog.dismiss();
+												SelectView = v;
+												clickedInfo = tag;
+												createThreadAndDialog();												
+											}
+										})
+								.setNegativeButton("아니오",
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(
+													DialogInterface dialog,
+													int which) {
+												dialog.dismiss();
+											}
+										});
+						AlertDialog AD = alart.create();
+						AD.show();
+						return;
+					} else {
+						MLayout mLayout = (MLayout) v.getParent();
+						mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
+					}
 				}
 			}
 		} else {
@@ -2263,10 +2336,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	void startActivitySafely(Intent intent) {
-		if (intent == null) {
-			Toast.makeText(this, "어플리케이션을 매칭해주세요.", Toast.LENGTH_SHORT).show();
-			return;
-		}
+
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		try {
 			startActivity(intent);
@@ -2388,9 +2458,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				MLayout mLayout = (MLayout) mObjectImageView.getParent();
 				mLayout.setVisibleStateSpeechBubble((MobjectImageView) mObjectImageView);
 			} else {
-//				해상도 관련 테스트
-//				MLayout mLayout = (MLayout) v;
-//				mLayout.setMobjectResolution(240, 400);
+				// 해상도 관련 테스트
+				// MLayout mLayout = (MLayout) v;
+				// mLayout.setMobjectResolution(240, 400);
 			}
 		}
 
@@ -3303,7 +3373,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						params.height = LayoutParams.FILL_PARENT;
 						dialog.getWindow().setAttributes(params);
 						dialog.show();
-					} else if (position == 1) {				
+					} else if (position == 1) {
 						((MobjectImageView) v).reverseImg();
 					}
 					dismiss();
