@@ -2212,6 +2212,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 													int which) {
 												dialog.dismiss();
 												Object tag = v.getTag();
+												SelectView = v;
 												AppList_dialog appDialog = new AppList_dialog(
 														Launcher.this, tag);
 												appDialog.setCancelable(true);
@@ -2255,7 +2256,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 												dialog.dismiss();
 												SelectView = v;
 												clickedInfo = tag;
-												createThreadAndDialog();												
+												createThreadAndDialog();
 											}
 										})
 								.setNegativeButton("¾Æ´Ï¿À",
@@ -3359,6 +3360,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			adapter = new ArrayAdapter<String>(context,
 					android.R.layout.simple_list_item_1, str);
 			listview.setAdapter(adapter);
+			listview.setFastScrollEnabled(true);
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
