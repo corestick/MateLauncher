@@ -18,12 +18,12 @@ package mobi.intuitit.android.mate.launcher;
 
 public class StringMatcher {
 
-	private final static char KOREAN_UNICODE_START = '∞°';
-	private final static char KOREAN_UNICODE_END = '∆R';
-	private final static char KOREAN_UNIT = '±Ó' - '∞°';
-	private final static char[] KOREAN_INITIAL = { '§°', '§¢', '§§', '§ß', '§®',
-			'§©', '§±', '§≤', '§≥', '§µ', '§∂', '§∑', '§∏', '§π', '§∫', '§ª', '§º', '§Ω',
-			'§æ' };
+	private final static char KOREAN_UNICODE_START = 'Í∞Ä';
+	private final static char KOREAN_UNICODE_END = 'Ìû£';
+	private final static char KOREAN_UNIT = 'Íπå' - 'Í∞Ä';
+	private final static char[] KOREAN_INITIAL = { '„Ñ±', '„Ñ≤', '„Ñ¥', '„Ñ∑', '„Ñ∏',
+			'„Ñπ', '„ÖÅ', '„ÖÇ', '„ÖÉ', '„ÖÖ', '„ÖÜ', '„Öá', '„Öà', '„Öâ', '„Öä', '„Öã', '„Öå', '„Öç',
+			'„Öé' };
 
 	public static boolean match(String value, String keyword) {
 		if (value == null || keyword == null)
