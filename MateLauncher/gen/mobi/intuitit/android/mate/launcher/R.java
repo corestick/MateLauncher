@@ -393,15 +393,15 @@ containing a value of this type.
         public static final int write=0x7f0200b6;
     }
     public static final class id {
-        public static final int all_apps=0x7f07003a;
+        public static final int all_apps=0x7f070039;
         public static final int applist_image=0x7f070019;
         public static final int applist_listview=0x7f07001e;
         public static final int applist_name=0x7f07001a;
         public static final int btnwrite=0x7f070021;
-        public static final int cell1=0x7f070036;
-        public static final int cell2=0x7f070037;
-        public static final int cell3=0x7f070038;
-        public static final int checkbox=0x7f070045;
+        public static final int cell1=0x7f070035;
+        public static final int cell2=0x7f070036;
+        public static final int cell3=0x7f070037;
+        public static final int checkbox=0x7f070044;
         public static final int comment_day=0x7f07002a;
         public static final int comment_line=0x7f070026;
         public static final int comment_listview=0x7f070023;
@@ -409,28 +409,27 @@ containing a value of this type.
         public static final int comment_name=0x7f070028;
         public static final int comment_profile=0x7f070027;
         public static final int contact_name=0x7f07002b;
-        public static final int contact_phonenum=0x7f07002c;
-        public static final int content=0x7f07003b;
-        public static final int delete_zone=0x7f07003c;
+        public static final int content=0x7f07003a;
+        public static final int delete_zone=0x7f07003b;
         public static final int description=0x7f07001d;
-        public static final int dialog_imageview=0x7f070030;
-        public static final int dockbar=0x7f070040;
-        public static final int drag_layer=0x7f070034;
-        public static final int drawer=0x7f070039;
+        public static final int dialog_imageview=0x7f07002f;
+        public static final int dockbar=0x7f07003f;
+        public static final int drag_layer=0x7f070033;
+        public static final int drawer=0x7f070038;
         public static final int edit_comment=0x7f070022;
-        public static final int edtAvatarMsg=0x7f070048;
-        public static final int folder_close=0x7f070046;
-        public static final int folder_content=0x7f070047;
-        public static final int folder_name=0x7f070053;
-        public static final int friend_listview=0x7f070032;
-        public static final int friend_name=0x7f07002f;
-        public static final int friend_profile=0x7f07002d;
-        public static final int friend_statemessage=0x7f07002e;
-        public static final int gallery=0x7f07005c;
+        public static final int edtAvatarMsg=0x7f070047;
+        public static final int folder_close=0x7f070045;
+        public static final int folder_content=0x7f070046;
+        public static final int folder_name=0x7f070052;
+        public static final int friend_listview=0x7f070031;
+        public static final int friend_name=0x7f07002e;
+        public static final int friend_profile=0x7f07002c;
+        public static final int friend_statemessage=0x7f07002d;
+        public static final int gallery=0x7f07005b;
         public static final int gallery1=0x7f070011;
         public static final int gallery_guest=0x7f070005;
-        public static final int guestMsg=0x7f070055;
-        public static final int guestPoto=0x7f070054;
+        public static final int guestMsg=0x7f070054;
+        public static final int guestPoto=0x7f070053;
         public static final int guest_comment=0x7f07000d;
         public static final int guest_down=0x7f070008;
         public static final int guest_download=0x7f07000e;
@@ -441,23 +440,23 @@ containing a value of this type.
         public static final int guest_visit=0x7f07000a;
         public static final int horizontal=0x7f070001;
         public static final int icon=0x7f07001c;
-        public static final int icon_function_listview=0x7f070033;
+        public static final int icon_function_listview=0x7f070032;
         public static final int imageView1=0x7f070007;
         public static final int imageView2=0x7f070009;
         public static final int imageView3=0x7f07000b;
-        public static final int imgCall=0x7f070049;
-        public static final int imgFacebook=0x7f07004d;
-        public static final int imgKakaoTalk=0x7f07004b;
-        public static final int imgSMS=0x7f07004a;
-        public static final int imgTwitter=0x7f07004c;
-        public static final int label=0x7f070052;
+        public static final int imgCall=0x7f070048;
+        public static final int imgFacebook=0x7f07004c;
+        public static final int imgKakaoTalk=0x7f07004a;
+        public static final int imgSMS=0x7f070049;
+        public static final int imgTwitter=0x7f07004b;
+        public static final int label=0x7f070051;
         public static final int layout1=0x7f070002;
-        public static final int line1=0x7f070056;
-        public static final int line2=0x7f070057;
-        public static final int line3=0x7f070058;
-        public static final int mdockbar=0x7f070041;
+        public static final int line1=0x7f070055;
+        public static final int line2=0x7f070056;
+        public static final int line3=0x7f070057;
+        public static final int mdockbar=0x7f070040;
         public static final int name=0x7f07001b;
-        public static final int objectview=0x7f070042;
+        public static final int objectview=0x7f070041;
         public static final int owner_comment=0x7f070018;
         public static final int owner_down=0x7f070014;
         public static final int owner_download=0x7f070017;
@@ -466,31 +465,31 @@ containing a value of this type.
         public static final int owner_recommend=0x7f070012;
         public static final int owner_state=0x7f070010;
         public static final int owner_visit=0x7f070015;
-        public static final int rank_listview=0x7f070051;
-        public static final int rank_name=0x7f070050;
-        public static final int rank_num=0x7f07004e;
+        public static final int rank_listview=0x7f070050;
+        public static final int rank_name=0x7f07004f;
+        public static final int rank_num=0x7f07004d;
         public static final int rank_photo=0x7f070013;
-        public static final int rank_state=0x7f07004f;
+        public static final int rank_state=0x7f07004e;
         public static final int relative_comment=0x7f07001f;
-        public static final int screen_indicator=0x7f07003d;
-        public static final int screen_switcher=0x7f07003f;
-        public static final int scrollView=0x7f070059;
+        public static final int screen_indicator=0x7f07003c;
+        public static final int screen_switcher=0x7f07003e;
+        public static final int scrollView=0x7f070058;
         public static final int scrolldown=0x7f070024;
         public static final int scrollup=0x7f070025;
-        public static final int search_plate=0x7f07005f;
-        public static final int search_src_text=0x7f070060;
-        public static final int search_voice_btn=0x7f070061;
-        public static final int set=0x7f07005d;
-        public static final int stub_screen_switcher=0x7f07003e;
-        public static final int summary=0x7f070044;
-        public static final int textLabel=0x7f070031;
-        public static final int title=0x7f070043;
+        public static final int search_plate=0x7f07005e;
+        public static final int search_src_text=0x7f07005f;
+        public static final int search_voice_btn=0x7f070060;
+        public static final int set=0x7f07005c;
+        public static final int stub_screen_switcher=0x7f07003d;
+        public static final int summary=0x7f070043;
+        public static final int textLabel=0x7f070030;
+        public static final int title=0x7f070042;
         public static final int tv_comment=0x7f070020;
-        public static final int txtSpeechBubble=0x7f07005a;
+        public static final int txtSpeechBubble=0x7f070059;
         public static final int vertical=0x7f070000;
-        public static final int wallpaper=0x7f07005b;
-        public static final int widget_search=0x7f07005e;
-        public static final int workspace=0x7f070035;
+        public static final int wallpaper=0x7f07005a;
+        public static final int widget_search=0x7f07005d;
+        public static final int workspace=0x7f070034;
     }
     public static final class layout {
         public static final int activity_guest_home=0x7f030000;
@@ -716,7 +715,7 @@ containing a value of this type.
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:texture
+          @attr name android:texture
         */
         public static final int AllAppsGridView_texture = 0;
         /**  CellLayout specific attributes. These attributes are used to customize
@@ -763,7 +762,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:cellHeight
+          @attr name android:cellHeight
         */
         public static final int CellLayout_cellHeight = 1;
         /**
@@ -781,7 +780,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:cellWidth
+          @attr name android:cellWidth
         */
         public static final int CellLayout_cellWidth = 0;
         /**
@@ -797,7 +796,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:longAxisCells
+          @attr name android:longAxisCells
         */
         public static final int CellLayout_longAxisCells = 7;
         /**
@@ -815,7 +814,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:longAxisEndPadding
+          @attr name android:longAxisEndPadding
         */
         public static final int CellLayout_longAxisEndPadding = 3;
         /**
@@ -833,7 +832,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:longAxisStartPadding
+          @attr name android:longAxisStartPadding
         */
         public static final int CellLayout_longAxisStartPadding = 2;
         /**
@@ -849,7 +848,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:shortAxisCells
+          @attr name android:shortAxisCells
         */
         public static final int CellLayout_shortAxisCells = 6;
         /**
@@ -867,7 +866,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:shortAxisEndPadding
+          @attr name android:shortAxisEndPadding
         */
         public static final int CellLayout_shortAxisEndPadding = 5;
         /**
@@ -885,7 +884,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:shortAxisStartPadding
+          @attr name android:shortAxisStartPadding
         */
         public static final int CellLayout_shortAxisStartPadding = 4;
         /**  DeleteZone specific attributes. These attributes are used to customize
@@ -918,7 +917,7 @@ containing a value of this type.
 <tr><td><code>horizontal</code></td><td>1</td><td> Horizontal widget. </td></tr>
 </table>
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:direction
+          @attr name android:direction
         */
         public static final int DeleteZone_direction = 0;
         /**  XML attributes used by default_workspace.xml 
@@ -960,7 +959,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name mobi.intuitit.android.mate.launcher:className
+          @attr name android:className
         */
         public static final int Favorite_className = 0;
         /**
@@ -970,7 +969,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name mobi.intuitit.android.mate.launcher:icon
+          @attr name android:icon
         */
         public static final int Favorite_icon = 5;
         /**
@@ -984,7 +983,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name mobi.intuitit.android.mate.launcher:packageName
+          @attr name android:packageName
         */
         public static final int Favorite_packageName = 1;
         /**
@@ -998,7 +997,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name mobi.intuitit.android.mate.launcher:screen
+          @attr name android:screen
         */
         public static final int Favorite_screen = 2;
         /**
@@ -1008,7 +1007,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name mobi.intuitit.android.mate.launcher:title
+          @attr name android:title
         */
         public static final int Favorite_title = 6;
         /**
@@ -1022,7 +1021,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name mobi.intuitit.android.mate.launcher:uri
+          @attr name android:uri
         */
         public static final int Favorite_uri = 7;
         /**
@@ -1036,7 +1035,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name mobi.intuitit.android.mate.launcher:x
+          @attr name android:x
         */
         public static final int Favorite_x = 3;
         /**
@@ -1050,7 +1049,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name mobi.intuitit.android.mate.launcher:y
+          @attr name android:y
         */
         public static final int Favorite_y = 4;
         /**  HandleView specific attributes. These attributes are used to customize
@@ -1083,7 +1082,7 @@ containing a value of this type.
 <tr><td><code>horizontal</code></td><td>1</td><td> Horizontal widget. </td></tr>
 </table>
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:direction
+          @attr name android:direction
         */
         public static final int HandleView_direction = 0;
         /**  Workspace specific attributes. These attributes are used to customize
@@ -1113,7 +1112,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name mobi.intuitit.android.mate.launcher:defaultScreen
+          @attr name android:defaultScreen
         */
         public static final int Workspace_defaultScreen = 0;
     };

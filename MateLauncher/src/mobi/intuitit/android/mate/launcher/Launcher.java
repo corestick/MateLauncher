@@ -116,6 +116,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.SectionIndexer;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -3243,17 +3244,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public class ContactList_dialog extends Dialog implements
 			View.OnClickListener {
 
-		ListView listview;
+		IndexableListView listview;
 		Contact_Adapter contact_Adapter;
 
 		public ContactList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.applist_dialog);
-			listview = (ListView) findViewById(R.id.applist_listview);
+			listview = (IndexableListView) findViewById(R.id.applist_listview);
 			contact_Adapter = new Contact_Adapter();
 
 			listview.setAdapter(contact_Adapter);
+			listview.setFastScrollEnabled(true);
 
 			// listview.addFooterView(v)
 			final long App_id = ((Mobject) tag).id;
@@ -3298,10 +3300,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		// 翱塊籀 adapter
-		public class Contact_Adapter extends BaseAdapter {
+		public class Contact_Adapter extends BaseAdapter implements SectionIndexer {
 
+			private String mSections = "#丑中之予仃仆今仄元內六兮公冗ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			
 			TextView Name;
-			TextView PhoneNum;
+//			TextView PhoneNum;
 			LayoutInflater inflater;
 
 			public Contact_Adapter() {
@@ -3334,12 +3338,46 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							false);
 				}
 				Name = (TextView) convertView.findViewById(R.id.contact_name);
-				PhoneNum = (TextView) convertView
-						.findViewById(R.id.contact_phonenum);
+//				PhoneNum = (TextView) convertView
+//						.findViewById(R.id.contact_phonenum);
 
 				Name.setText(contactlist.get(position).Name);
-				PhoneNum.setText(contactlist.get(position).PhoneNum);
+//				PhoneNum.setText(contactlist.get(position).PhoneNum);
 				return convertView;
+			}
+
+			@Override
+			public int getPositionForSection(int section) {
+				// If there is no item for current section, previous section will be selected
+				for (int i = section; i >= 0; i--) {
+					for (int j = 0; j < getCount(); j++) {
+						if (i == 0) {
+							// For numeric section
+							for (int k = 0; k <= 9; k++) {
+								if (StringMatcher.matchInitial(String.valueOf((contactlist.get(j).Name).charAt(0)), String.valueOf(k)))
+									return j;
+							}
+						} else {
+							if (StringMatcher.matchInitial(String.valueOf((contactlist.get(j).Name).charAt(0)), String.valueOf(mSections.charAt(i))))
+								return j;
+						}
+					}
+				}
+				return 0;
+			}
+
+			@Override
+			public int getSectionForPosition(int position) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public Object[] getSections() {
+				String[] sections = new String[mSections.length()];
+				for (int i = 0; i < mSections.length(); i++)
+					sections[i] = String.valueOf(mSections.charAt(i));
+				return sections;
 			}
 		}
 	}
@@ -3383,7 +3421,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	}
 
 	public class AppList_dialog extends Dialog {
-		ListView listview;
+		IndexableListView listview;
 		App_Adapter App_Adapter;
 		ArrayList<AppInfo> appInfoArry;
 
@@ -3391,13 +3429,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.applist_dialog);
-			listview = (ListView) findViewById(R.id.applist_listview);
+			listview = (IndexableListView) findViewById(R.id.applist_listview);
 			appInfoArry = new ArrayList<AppInfo>();
 			final long App_id = ((Mobject) tag).id;
 			Apptag = (Mobject) tag;
 			App_Adapter = new App_Adapter();
 			listview.setAdapter(App_Adapter);
+			listview.setFastScrollEnabled(true);
+			
 			loadApp();
+			
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
@@ -3516,8 +3557,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			public Drawable appIcon;
 		}
 
-		public class App_Adapter extends BaseAdapter {
-
+		public class App_Adapter extends BaseAdapter implements SectionIndexer {
+			
+			private String mSections = "#丑中之予仃仆今仄元內六兮公冗ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			
 			ImageView image;
 			TextView name;
 			LayoutInflater inflater;
@@ -3561,6 +3604,40 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				name.setText(appInfoArry.get(position).appName);
 				return convertView;
 
+			}
+
+			@Override
+			public int getPositionForSection(int section) {
+				// If there is no item for current section, previous section will be selected
+				for (int i = section; i >= 0; i--) {
+					for (int j = 0; j < getCount(); j++) {
+						if (i == 0) {
+							// For numeric section
+							for (int k = 0; k <= 9; k++) {
+								if (StringMatcher.matchInitial(String.valueOf(appInfoArry.get(j).appName), String.valueOf(k)))
+									return j;
+							}
+						} else {
+							if (StringMatcher.matchInitial(String.valueOf(appInfoArry.get(j).appName), String.valueOf(mSections.charAt(i))))
+								return j;
+						}
+					}
+				}
+				return 0;
+			}
+
+			@Override
+			public int getSectionForPosition(int position) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public Object[] getSections() {
+				String[] sections = new String[mSections.length()];
+				for (int i = 0; i < mSections.length(); i++)
+					sections[i] = String.valueOf(mSections.charAt(i));
+				return sections;
 			}
 		}
 	}
