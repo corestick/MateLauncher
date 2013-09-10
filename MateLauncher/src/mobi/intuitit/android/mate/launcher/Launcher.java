@@ -3325,7 +3325,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		public class Contact_Adapter extends BaseAdapter implements
 				SectionIndexer {
 
-			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 			TextView Name;
 			// TextView PhoneNum;
@@ -3608,7 +3608,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public class App_Adapter extends BaseAdapter implements SectionIndexer {
 
-			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 			ImageView image;
 			TextView name;
