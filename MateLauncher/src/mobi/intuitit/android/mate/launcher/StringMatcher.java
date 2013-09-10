@@ -17,19 +17,20 @@
 package mobi.intuitit.android.mate.launcher;
 
 public class StringMatcher {
-	
-	private final static char KOREAN_UNICODE_START = 'ê°€';
-	private final static char KOREAN_UNICODE_END = 'íž£';
-	private final static char KOREAN_UNIT = 'ê¹Œ' - 'ê°€';
-	private final static char[] KOREAN_INITIAL = {'ã„±', 'ã„²', 'ã„´', 'ã„·', 'ã„¸', 'ã„¹', 'ã…', 'ã…‚', 'ã…ƒ', 'ã……'
-		, 'ã…†', 'ã…‡', 'ã…ˆ', 'ã…‰', 'ã…Š', 'ã…‹', 'ã…Œ', 'ã…', 'ã…Ž'};
-	
+
+	private final static char KOREAN_UNICODE_START = '°¡';
+	private final static char KOREAN_UNICODE_END = 'ÆR';
+	private final static char KOREAN_UNIT = '±î' - '°¡';
+	private final static char[] KOREAN_INITIAL = { '¤¡', '¤¢', '¤¤', '¤§', '¤¨',
+			'¤©', '¤±', '¤²', '¤³', '¤µ', '¤¶', '¤·', '¤¸', '¤¹', '¤º', '¤»', '¤¼', '¤½',
+			'¤¾' };
+
 	public static boolean match(String value, String keyword) {
 		if (value == null || keyword == null)
 			return false;
 		if (keyword.length() > value.length())
 			return false;
-		
+
 		int i = 0, j = 0;
 		do {
 			if (isKorean(value.charAt(i)) && isInitialSound(keyword.charAt(j))) {
@@ -50,39 +51,35 @@ public class StringMatcher {
 					i++;
 			}
 		} while (i < value.length() && j < keyword.length());
-		
-		return (j == keyword.length())? true : false;
+
+		return (j == keyword.length()) ? true : false;
 	}
-	
+
 	public static boolean matchInitial(String value, String keyword) {
 		if (value == null || keyword == null)
 			return false;
 		if (keyword.length() > value.length())
 			return false;
-		
-		if(isKorean(value.charAt(0)) && isInitialSound(keyword.charAt(0))) {
-			if(keyword.charAt(0) == getInitialSound(value.charAt(0))) {
+
+		if (isKorean(value.charAt(0)) && isInitialSound(keyword.charAt(0))) {
+			if (keyword.charAt(0) == getInitialSound(value.charAt(0))) {
 				return true;
-			}
-			else
+			} else
 				return false;
-		}
-		else
-		{
+		} else {
 			if (keyword.charAt(0) == value.charAt(0)) {
 				return true;
-			}
-			else
+			} else
 				return false;
 		}
 	}
-	
+
 	private static boolean isKorean(char c) {
 		if (c >= KOREAN_UNICODE_START && c <= KOREAN_UNICODE_END)
 			return true;
 		return false;
 	}
-	
+
 	private static boolean isInitialSound(char c) {
 		for (char i : KOREAN_INITIAL) {
 			if (c == i)
@@ -90,7 +87,7 @@ public class StringMatcher {
 		}
 		return false;
 	}
-	
+
 	private static char getInitialSound(char c) {
 		return KOREAN_INITIAL[(c - KOREAN_UNICODE_START) / KOREAN_UNIT];
 	}
