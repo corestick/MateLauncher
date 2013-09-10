@@ -3302,7 +3302,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// ����ó adapter
 		public class Contact_Adapter extends BaseAdapter implements SectionIndexer {
 
-			private String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎ";
+			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			
 			TextView Name;
 //			TextView PhoneNum;
@@ -3559,7 +3559,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public class App_Adapter extends BaseAdapter implements SectionIndexer {
 			
-			private String mSections = "#����������������������������ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			
 			ImageView image;
 			TextView name;
