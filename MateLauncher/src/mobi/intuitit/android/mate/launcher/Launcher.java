@@ -241,19 +241,19 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private Bundle mSavedInstanceState;
 	private DesktopBinder mBinder;
 
-	static boolean modifyMode = false; // ¼öÁ¤¸ğµå ÇÃ·¡±×
+	static boolean modifyMode = false; //ìˆ˜ì •ëª¨ë“œ í”Œë˜ê·¸
 	static boolean DOWNLOAR_VIEW = false;
 
 	public Launcher mLauncher = this;
 
-	Mobject Apptag = new Mobject(); // ¸ÅÄª¾îÇÃ¸®ÄÉÀÌ¼Ç Á¤º¸ ÀúÀå
-	Mobject contactsTag = new Mobject(); // ¸ÅÄª ¿¬¶ôÃ³ Á¤º¸ ÀúÀå
-	View SelectView;// ÇöÀç ¼±ÅÃµÈ ºä
+	Mobject Apptag = new Mobject(); // ë§¤ì¹­ì–´í”Œë¦¬ì¼€ì´ì…˜ ì •ë³´ ì €ì¥
+	Mobject contactsTag = new Mobject(); // ë§¤ì¹­ ì—°ë½ì²˜ ì •ë³´ì €ì¥
+	View SelectView;// í˜„ì¬ ì„ íƒëœ ë·°
 
 	private static final int SEND_THREAD_PLAY = 0;
 	private static final int SEND_THREAD_STOP = 1;
 
-	private ModifyHandler mModifyHandler = null; // ¼öÁ¤¸ğµå¿¡ ¾²´Â ÇÚµé·¯;
+	private ModifyHandler mModifyHandler = null; // ìˆ˜ì •ëª¨ë“œì— ì“°ëŠ” í•¸ë“¤ëŸ¬
 	private ModifyThread mModifyThread = null;
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
@@ -266,7 +266,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		Log.e("Launcher-Start", "Start");
 		if (DOWNLOAR_VIEW) {
 			Log.e("Launcher-Start-change", "Start-change");
-			start_reLoad(); // ´Ù¿î¹Ş±â ´©¸£¸é Ã³À½ºÎÅÍ ´Ù½Ã ÀĞ¾î¼­ È­¸é¿¡ »Ñ¸².
+			start_reLoad(); // ë‹¤ìš´ë°›ê¸° ëˆ„ë¥´ë©´ ì²˜ìŒë¶€í„° ë‹¤ì‹œ ì¼ì–´ì„œ í™”ë©´ì— ë¿Œë¦¼
 			DOWNLOAR_VIEW = false;
 		}
 		super.onStart();
@@ -308,10 +308,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			startLoaders();
 		}
 
-		// Log4j ¼³Á¤ //
+		// Log4j ï¿½ï¿½ï¿½ï¿½ //
 		// configureLogger();
 
-		// À§Á¬ ¼­ºñ½º ½ÃÀÛ
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		widgetStart();
 
 		// For handling default keys
@@ -742,7 +742,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mDockbar.setLauncher(this);
 		mDockbar.setWorkspace(mWorkspace);
 		mDockbar.setAllgridView(mAllAppsGrid);
-		mDockbar.CreateDockbar(); // µ¶¹Ù ºä »ı¼º
+		mDockbar.CreateDockbar(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½
 
 		mMDockbar = (MDockbar) dragLayer.findViewById(R.id.mdockbar);
 		mMDockbar.initMDockbar(this);
@@ -764,7 +764,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		dragLayer.setDragScoller(workspace);
 		dragLayer.setDragListener(mDeleteZone);
 
-		// mModifyHandler = new ModifyHandler(); // ¼öÁ¤¸ğµå¿¡ ¾²´Â ÇÚµé·¯
+		// mModifyHandler = new ModifyHandler(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµé·¯
 	}
 
 	/**
@@ -1766,7 +1766,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
 
-		mModifyHandler = new ModifyHandler(); // ¼öÁ¤¸ğµå¿¡ ¾²´Â ÇÚµé·¯
+		mModifyHandler = new ModifyHandler(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµé·¯
 	}
 
 	/**
@@ -2063,7 +2063,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private void bindDrawer(Launcher.DesktopBinder binder,
 			ApplicationsAdapter drawerAdapter) {
 		mAllAppsGrid.setAdapter(drawerAdapter);
-		// µ¶¹Ù
+		// ï¿½ï¿½ï¿½ï¿½
 		binder.startBindingAppWidgetsWhenIdle();
 	}
 
@@ -2197,15 +2197,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				if (((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_FURNITURE) {
 					final Intent intent = ((Mobject) tag).intent;
 					if (intent == null) {
-						// Toast.makeText(this, "¾îÇÃ¸®ÄÉÀÌ¼ÇÀ» ¸ÅÄªÇØÁÖ¼¼¿ä.",
+						// Toast.makeText(this, "ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½Äªï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.",
 						// Toast.LENGTH_SHORT).show();
 
 						AlertDialog.Builder alart = new AlertDialog.Builder(
 								mLauncher);
 
-						alart.setMessage("¾îÇÃ¸®ÄÉÀÌ¼ÇÀ» ¸ÅÄªÇÏ½Ã°Ú½À´Ï±î??")
+						alart.setMessage("ì–´í”Œë¦¬ì¼€ì´ì…˜ì„ ë§¤ì¹­í•˜ì‹œê² ìŠµë‹ˆê¹Œ??")
 								.setCancelable(true)
-								.setPositiveButton("¿¹",
+								.setPositiveButton("ì˜ˆ",
 										new DialogInterface.OnClickListener() {
 											@Override
 											public void onClick(
@@ -2226,7 +2226,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 												appDialog.show();
 											}
 										})
-								.setNegativeButton("¾Æ´Ï¿À",
+								.setNegativeButton("ì•„ë‹ˆì˜¤",
 										new DialogInterface.OnClickListener() {
 											@Override
 											public void onClick(
@@ -2245,9 +2245,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						AlertDialog.Builder alart = new AlertDialog.Builder(
 								mLauncher);
 
-						alart.setMessage("¿¬¶ôÃ³¸¦ ¸ÅÄªÇÏ½Ã°Ú½À´Ï±î??")
+						alart.setMessage("ì—°ë½ì²˜ë¥¼ ë§¤ì¹­í•˜ì‹œê² ìŠµë‹ˆê¹Œ??")
 								.setCancelable(true)
-								.setPositiveButton("¿¹",
+								.setPositiveButton("ì˜ˆ",
 										new DialogInterface.OnClickListener() {
 											@Override
 											public void onClick(
@@ -2259,7 +2259,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 												createThreadAndDialog();												
 											}
 										})
-								.setNegativeButton("¾Æ´Ï¿À",
+								.setNegativeButton("ì•„ë‹ˆì˜¤",
 										new DialogInterface.OnClickListener() {
 											@Override
 											public void onClick(
@@ -2290,7 +2290,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					function_dialog.show();
 					break;
 				case MGlobal.MOBJECTTYPE_AVATAR:
-					// ÀüÈ­¹øÈ£ ¾ò¾î¿À±â Ä¿½ºÅÒ ´ÙÀÌ¾ó·Î±×
+					// ï¿½ï¿½È­ï¿½ï¿½È£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½Î±ï¿½
 					SelectView = v;
 					clickedInfo = tag;
 					createThreadAndDialog();
@@ -2306,7 +2306,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	Object clickedInfo;
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			loagindDialog.dismiss(); // ´ÙÀÌ¾ó·Î±× »èÁ¦
+			loagindDialog.dismiss(); // ï¿½ï¿½ï¿½Ì¾ï¿½Î±ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 			ContactList_dialog dialog = new ContactList_dialog(mLauncher,
 					clickedInfo);
@@ -2324,7 +2324,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	void createThreadAndDialog() {
 		/* ProgressDialog */
-		loagindDialog = ProgressDialog.show(this, null, "¿¬¶ôÃ³¸¦ ºÒ·¯¿À´Â ÁßÀÔ´Ï´Ù.",
+		loagindDialog = ProgressDialog.show(this, null, "ì—°ë½ì²˜ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘ì…ë‹ˆë‹¤.",
 				true, false);
 
 		Thread thread = new Thread(new Runnable() {
@@ -2459,7 +2459,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				MLayout mLayout = (MLayout) mObjectImageView.getParent();
 				mLayout.setVisibleStateSpeechBubble((MobjectImageView) mObjectImageView);
 			} else {
-				// ÇØ»óµµ °ü·Ã Å×½ºÆ®
+				// ï¿½Ø»ï¿½ ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®
 				// MLayout mLayout = (MLayout) v;
 				// mLayout.setMobjectResolution(240, 400);
 			}
@@ -2862,7 +2862,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		public void onDrawerOpened() {
 			if (!mOpen) {
 				// mHandleIcon.reverseTransition(150);
-				// allgridview È£Ãâ
+				// allgridview È£ï¿½ï¿½
 				final Rect bounds = mWorkspace.mDrawerBounds;
 				// offsetBoundsToDragLayer(bounds, mAllAppsGrid);
 
@@ -3154,8 +3154,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
-		Log.i("MATE", "¹®ÀÚ Àü¼Û");
-		Toast.makeText(getApplicationContext(), "¹®ÀÚ¸Ş½ÃÁö Àü¼ÛÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.",
+		Log.i("MATE", "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+		Toast.makeText(getApplicationContext(), "ï¿½ï¿½ï¿½Ú¸Ş½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½Ï´ï¿½.",
 				Toast.LENGTH_SHORT).show();
 	}
 
@@ -3170,7 +3170,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		public String PhoneNum;
 	}
 
-	// ¿¬¶ôÃ³ ÀĞ¾î¿À±â
+	// ï¿½ï¿½ï¿½ï¿½Ã³ ï¿½Ğ¾ï¿½ï¿½ï¿½ï¿½
 	public void readContacts() {
 		contactlist = new ArrayList<Contacts>();
 
@@ -3284,7 +3284,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 					cr.update(LauncherSettings.Favorites.getContentUri(App_id,
 							false), values, null, null);
-					Toast.makeText(mLauncher, name + "´Ô°ú ¾Æ¹ÙÅ¸°¡ ¸ÅÄªµÇ¾ú½À´Ï´Ù.",
+					Toast.makeText(mLauncher, name + "ë‹˜ê³¼ ì•„ë°”íƒ€ê°€ ë§¤ì¹­ë˜ì—ˆìŠµë‹ˆë‹¤.",
 							Toast.LENGTH_SHORT).show();
 					viewSetTag(contactsTag);
 					dismiss();
@@ -3299,10 +3299,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		}
 
-		// ¿¬¶ôÃ³ adapter
+		// ï¿½ï¿½ï¿½ï¿½Ã³ adapter
 		public class Contact_Adapter extends BaseAdapter implements SectionIndexer {
 
-			private String mSections = "#¤¡¤¤¤§¤©¤±¤²¤µ¤·¤¸¤º¤»¤¼¤½¤¾ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			private String mSections = "#ã„±ã„´ã„·ã„¹ã…ã…‚ã……ã…‡ã…ˆã…Šã…‹ã…ã…ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			
 			TextView Name;
 //			TextView PhoneNum;
@@ -3386,7 +3386,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		ListView listview;
 		ArrayAdapter<String> adapter;
-		String[] str = { "¾Û¸ÅÄª", "¾ÆÀÌÄÜ´ëÄª" };
+		String[] str = { "ì•±ë§¤ì¹­", "ì•„ì´ì½˜ëŒ€ì¹­" };
 		Bitmap bitmap;
 
 		public Function_dialog(final Context context, final View v) {
@@ -3493,13 +3493,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					Toast.makeText(
 							mLauncher,
 							appInfoArry.get(position).appName
-									+ " ¾îÇÃ¸®ÄÉÀÌ¼ÇÀÌ ¸ÅÄªµÇ¾ú½À´Ï´Ù.", Toast.LENGTH_SHORT)
+									+ " ì–´í”Œë¦¬ì¼€ì´ì…˜ì´ ë§¤ì¹­ë˜ì—ˆìŠµë‹ˆë‹¤.", Toast.LENGTH_SHORT)
 							.show();
 					viewSetTag(Apptag);
 
 					dismiss();
 					// this.getPackageManager().getLaunchIntentForPackage(packageName);
-					// startActivity(intent); ÆĞÅ°Áö ÀÌ¸§À¸·Î ½ÇÇà½ÃÅ°´Â ·ÎÁ÷
+					// startActivity(intent); ï¿½ï¿½Å°ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 				}
 
@@ -3550,7 +3550,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			App_Adapter.notifyDataSetChanged();
 		}
 
-		// ¾Û Á¤º¸ ÀúÀåÇÒ Å¬·¡½º
+		// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
 		class AppInfo {
 			public String packagename;
 			public String appName;
@@ -3559,7 +3559,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public class App_Adapter extends BaseAdapter implements SectionIndexer {
 			
-			private String mSections = "#¤¡¤¤¤§¤©¤±¤²¤µ¤·¤¸¤º¤»¤¼¤½¤¾ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			private String mSections = "#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			
 			ImageView image;
 			TextView name;
@@ -3662,7 +3662,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			case SEND_THREAD_STOP:
 				mModifyThread.interrupt();
 
-				// // ¼öÁ¤¸ğµå¿¡¼­ Å¸ÀÌÆ² Ç¥½Ã
+				// // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ Å¸ï¿½ï¿½Æ² Ç¥ï¿½ï¿½
 				// for (int i = 0; i < vg.getChildCount(); i++) {
 				// if(vg.getChildAt(i) instanceof MobjectTextView)
 				// ((MobjectTextView)vg.getChildAt(i)).setTitle(false);
@@ -3714,7 +3714,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		SelectView.setTag(tag);
 	}
 
-	// ·Î±×Ä¹
+	// ï¿½Î±ï¿½Ä¹
 	public void writeLogcat() {
 
 		StringBuilder sb = new StringBuilder();
@@ -3767,7 +3767,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
-	// ·Î±×
+	// ï¿½Î±ï¿½
 	public static void configureLogger() {
 		final LogConfigurator logConfigurator = new LogConfigurator();
 		logConfigurator.setFileName(Environment.getExternalStorageDirectory()
