@@ -3155,7 +3155,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		SmsManager sms = SmsManager.getDefault();
 		sms.sendTextMessage(phoneNumber, null, message, pi, null);
 		Log.i("MATE", "���� ���");
-		Toast.makeText(getApplicationContext(), "���ڸ޽��� ����� �Ϸ�Ǿ���ϴ�.",
+		Toast.makeText(getApplicationContext(), "SMS전송이 완료되었습니다.",
 				Toast.LENGTH_SHORT).show();
 	}
 
@@ -3302,7 +3302,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// ����ó adapter
 		public class Contact_Adapter extends BaseAdapter implements SectionIndexer {
 
-			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			private String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎ";
 			
 			TextView Name;
 //			TextView PhoneNum;
