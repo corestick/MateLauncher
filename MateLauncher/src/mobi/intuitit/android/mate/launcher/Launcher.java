@@ -111,6 +111,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -241,7 +242,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private Bundle mSavedInstanceState;
 	private DesktopBinder mBinder;
 
-	static boolean modifyMode = false; //수정모드 플래그
+	static boolean modifyMode = false; // 수정모드 플래그
 	static boolean DOWNLOAR_VIEW = false;
 
 	public Launcher mLauncher = this;
@@ -259,6 +260,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private final Logger log4j = Logger.getLogger(Launcher.class);
 
 	static public int mWeather = MGlobal.WEATHER_SUNNY;
+
+	SoundSearcher searcher;
 
 	@Override
 	protected void onStart() {
@@ -2256,7 +2259,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 												dialog.dismiss();
 												SelectView = v;
 												clickedInfo = tag;
-												createThreadAndDialog();												
+												createThreadAndDialog();
 											}
 										})
 								.setNegativeButton("아니오",
@@ -3163,16 +3166,16 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return mWorkspace.getChildCount();
 	}
 
-	ArrayList<Contacts> contactlist;
+	ArrayList<Contacts> contactInfoArry;
 
-	class Contacts {
+	public class Contacts {
 		public String Name;
 		public String PhoneNum;
 	}
 
 	// ����ó �о����
 	public void readContacts() {
-		contactlist = new ArrayList<Contacts>();
+		contactInfoArry = new ArrayList<Contacts>();
 
 		Comparator<Contacts> myComparator = new Comparator<Contacts>() {
 			Collator app_Collator = Collator.getInstance();
@@ -3231,14 +3234,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				}
 
 				if (contact.PhoneNum != null) {
-					contactlist.add(contact);
+					contactInfoArry.add(contact);
 				}
 			}
 
 		}
 
 		cur.close();
-		Collections.sort(contactlist, myComparator);
+		Collections.sort(contactInfoArry, myComparator);
 	}
 
 	public class ContactList_dialog extends Dialog implements
@@ -3246,12 +3249,17 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		IndexableListView listview;
 		Contact_Adapter contact_Adapter;
+		EditText edit;
+		Button btn_search;
 
 		public ContactList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.applist_dialog);
+			setContentView(R.layout.list_dialog);
 			listview = (IndexableListView) findViewById(R.id.applist_listview);
+			edit = (EditText) findViewById(R.id.edit_search);
+			btn_search = (Button) findViewById(R.id.btn_search);
+			searcher = new SoundSearcher();
 			contact_Adapter = new Contact_Adapter();
 
 			listview.setAdapter(contact_Adapter);
@@ -3261,14 +3269,28 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			final long App_id = ((Mobject) tag).id;
 			contactsTag = (Mobject) tag;
 
+			btn_search.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for (int i = 0; i < contactInfoArry.size(); i++) {
+						if (SoundSearcher.matchString(
+								contactInfoArry.get(i).Name, edit.getText()
+										.toString())) {
+							listview.setSelectionFromTop(i, 10);
+						}
+					}
+
+				}
+			});
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
 						int position, long id) {
 					final ContentValues values = new ContentValues();
 					final ContentResolver cr = getContentResolver();
-					String name = contactlist.get(position).Name;
-					String num = contactlist.get(position).PhoneNum;
+					String name = contactInfoArry.get(position).Name;
+					String num = contactInfoArry.get(position).PhoneNum;
 
 					num = num.replace("-", "");
 
@@ -3300,12 +3322,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		// ����ó adapter
-		public class Contact_Adapter extends BaseAdapter implements SectionIndexer {
+		public class Contact_Adapter extends BaseAdapter implements
+				SectionIndexer {
 
 			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			
+
 			TextView Name;
-//			TextView PhoneNum;
+			// TextView PhoneNum;
 			LayoutInflater inflater;
 
 			public Contact_Adapter() {
@@ -3316,7 +3339,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			@Override
 			public int getCount() {
 				// TODO Auto-generated method stub
-				return contactlist.size();
+				return contactInfoArry.size();
 			}
 
 			@Override
@@ -3338,27 +3361,33 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							false);
 				}
 				Name = (TextView) convertView.findViewById(R.id.contact_name);
-//				PhoneNum = (TextView) convertView
-//						.findViewById(R.id.contact_phonenum);
+				// PhoneNum = (TextView) convertView
+				// .findViewById(R.id.contact_phonenum);
 
-				Name.setText(contactlist.get(position).Name);
-//				PhoneNum.setText(contactlist.get(position).PhoneNum);
+				Name.setText(contactInfoArry.get(position).Name);
+				// PhoneNum.setText(contactlist.get(position).PhoneNum);
 				return convertView;
 			}
 
 			@Override
 			public int getPositionForSection(int section) {
-				// If there is no item for current section, previous section will be selected
+				// If there is no item for current section, previous section
+				// will be selected
 				for (int i = section; i >= 0; i--) {
 					for (int j = 0; j < getCount(); j++) {
 						if (i == 0) {
 							// For numeric section
 							for (int k = 0; k <= 9; k++) {
-								if (StringMatcher.matchInitial(String.valueOf((contactlist.get(j).Name).charAt(0)), String.valueOf(k)))
+								if (StringMatcher.matchInitial(String
+										.valueOf((contactInfoArry.get(j).Name)
+												.charAt(0)), String.valueOf(k)))
 									return j;
 							}
 						} else {
-							if (StringMatcher.matchInitial(String.valueOf((contactlist.get(j).Name).charAt(0)), String.valueOf(mSections.charAt(i))))
+							if (StringMatcher.matchInitial(String
+									.valueOf((contactInfoArry.get(j).Name)
+											.charAt(0)), String
+									.valueOf(mSections.charAt(i))))
 								return j;
 						}
 					}
@@ -3424,21 +3453,41 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		IndexableListView listview;
 		App_Adapter App_Adapter;
 		ArrayList<AppInfo> appInfoArry;
+		EditText edit;
+		Button btn_search;
 
 		public AppList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			setContentView(R.layout.applist_dialog);
+			setContentView(R.layout.list_dialog);
 			listview = (IndexableListView) findViewById(R.id.applist_listview);
+			edit = (EditText) findViewById(R.id.edit_search);
+			btn_search = (Button) findViewById(R.id.btn_search);
+			searcher = new SoundSearcher();
+
 			appInfoArry = new ArrayList<AppInfo>();
 			final long App_id = ((Mobject) tag).id;
 			Apptag = (Mobject) tag;
 			App_Adapter = new App_Adapter();
 			listview.setAdapter(App_Adapter);
 			listview.setFastScrollEnabled(true);
-			
+
 			loadApp();
-			
+
+			btn_search.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for (int i = 0; i < appInfoArry.size(); i++) {
+						if (SoundSearcher.matchString(
+								appInfoArry.get(i).appName, edit.getText()
+										.toString())) {
+							listview.setSelectionFromTop(i, 10);
+						}
+					}
+
+				}
+			});
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
@@ -3558,9 +3607,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		public class App_Adapter extends BaseAdapter implements SectionIndexer {
-			
+
 			private String mSections = "#ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅍㅎABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			
+
 			ImageView image;
 			TextView name;
 			LayoutInflater inflater;
@@ -3608,17 +3657,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 			@Override
 			public int getPositionForSection(int section) {
-				// If there is no item for current section, previous section will be selected
+				// If there is no item for current section, previous section
+				// will be selected
 				for (int i = section; i >= 0; i--) {
 					for (int j = 0; j < getCount(); j++) {
 						if (i == 0) {
 							// For numeric section
 							for (int k = 0; k <= 9; k++) {
-								if (StringMatcher.matchInitial(String.valueOf(appInfoArry.get(j).appName), String.valueOf(k)))
+								if (StringMatcher.matchInitial(String
+										.valueOf(appInfoArry.get(j).appName),
+										String.valueOf(k)))
 									return j;
 							}
 						} else {
-							if (StringMatcher.matchInitial(String.valueOf(appInfoArry.get(j).appName), String.valueOf(mSections.charAt(i))))
+							if (StringMatcher.matchInitial(
+									String.valueOf(appInfoArry.get(j).appName),
+									String.valueOf(mSections.charAt(i))))
 								return j;
 						}
 					}
