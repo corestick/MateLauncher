@@ -111,6 +111,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -258,6 +259,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private final Logger log4j = Logger.getLogger(Launcher.class);
 
 	static public int mWeather = MGlobal.WEATHER_SUNNY;
+	SoundSearcher searcher; // 앱,전화번호 검색
 
 	@Override
 	protected void onStart() {
@@ -3163,22 +3165,22 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		return mWorkspace.getChildCount();
 	}
 
-	ArrayList<Contacts> contactlist;
+	ArrayList<ContactsInfo> contactInfoArry;
 
-	class Contacts {
+	public class ContactsInfo {
 		public String Name;
 		public String PhoneNum;
 	}
 
 	// 연락처 읽어오기
 	public void readContacts() {
-		contactlist = new ArrayList<Contacts>();
+		contactInfoArry = new ArrayList<ContactsInfo>();
 
-		Comparator<Contacts> myComparator = new Comparator<Contacts>() {
+		Comparator<ContactsInfo> myComparator = new Comparator<ContactsInfo>() {
 			Collator app_Collator = Collator.getInstance();
 
 			@Override
-			public int compare(Contacts a, Contacts b) {
+			public int compare(ContactsInfo a, ContactsInfo b) {
 				return app_Collator.compare(a.Name, b.Name);
 			}
 		};
@@ -3189,7 +3191,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		if (cur.getCount() > 0) {
 			while (cur.moveToNext()) {
-				Contacts contact = new Contacts();
+				ContactsInfo contact = new ContactsInfo();
 				String id = cur.getString(cur
 						.getColumnIndex(ContactsContract.Contacts._ID));
 				String name = cur
@@ -3231,14 +3233,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				}
 
 				if (contact.PhoneNum != null) {
-					contactlist.add(contact);
+					contactInfoArry.add(contact);
 				}
 			}
 
 		}
 
 		cur.close();
-		Collections.sort(contactlist, myComparator);
+		Collections.sort(contactInfoArry, myComparator);
 	}
 
 	public class ContactList_dialog extends Dialog implements
@@ -3246,6 +3248,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		ListView listview;
 		Contact_Adapter contact_Adapter;
+		EditText edit;
+		Button btn_search;
 
 		public ContactList_dialog(Context context, Object tag) {
 			super(context);
@@ -3253,21 +3257,36 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			setContentView(R.layout.applist_dialog);
 			listview = (ListView) findViewById(R.id.applist_listview);
 			contact_Adapter = new Contact_Adapter();
-
+			edit = (EditText) findViewById(R.id.edit_appsearch);
+			btn_search = (Button) findViewById(R.id.btn_appsearch);
+			searcher = new SoundSearcher();
 			listview.setAdapter(contact_Adapter);
 
 			// listview.addFooterView(v)
 			final long App_id = ((Mobject) tag).id;
 			contactsTag = (Mobject) tag;
 
+			btn_search.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for (int i = 0; i < contactInfoArry.size(); i++) {
+						if (SoundSearcher.matchString(
+								contactInfoArry.get(i).Name, edit.getText()
+										.toString())) {
+							listview.setSelectionFromTop(i, 10);
+						}
+					}
+
+				}
+			});
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
 						int position, long id) {
 					final ContentValues values = new ContentValues();
 					final ContentResolver cr = getContentResolver();
-					String name = contactlist.get(position).Name;
-					String num = contactlist.get(position).PhoneNum;
+					String name = contactInfoArry.get(position).Name;
+					String num = contactInfoArry.get(position).PhoneNum;
 
 					num = num.replace("-", "");
 
@@ -3313,7 +3332,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			@Override
 			public int getCount() {
 				// TODO Auto-generated method stub
-				return contactlist.size();
+				return contactInfoArry.size();
 			}
 
 			@Override
@@ -3338,8 +3357,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				PhoneNum = (TextView) convertView
 						.findViewById(R.id.contact_phonenum);
 
-				Name.setText(contactlist.get(position).Name);
-				PhoneNum.setText(contactlist.get(position).PhoneNum);
+				Name.setText(contactInfoArry.get(position).Name);
+				PhoneNum.setText(contactInfoArry.get(position).PhoneNum);
 				return convertView;
 			}
 		}
@@ -3360,7 +3379,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			adapter = new ArrayAdapter<String>(context,
 					android.R.layout.simple_list_item_1, str);
 			listview.setAdapter(adapter);
-			listview.setFastScrollEnabled(true);
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
@@ -3387,6 +3405,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public class AppList_dialog extends Dialog {
 		ListView listview;
 		App_Adapter App_Adapter;
+		EditText edit;
+		Button btn_search;
 		ArrayList<AppInfo> appInfoArry;
 
 		public AppList_dialog(Context context, Object tag) {
@@ -3394,12 +3414,30 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.applist_dialog);
 			listview = (ListView) findViewById(R.id.applist_listview);
+			edit = (EditText) findViewById(R.id.edit_appsearch);
+			btn_search = (Button) findViewById(R.id.btn_appsearch);
+			searcher = new SoundSearcher();
 			appInfoArry = new ArrayList<AppInfo>();
 			final long App_id = ((Mobject) tag).id;
 			Apptag = (Mobject) tag;
 			App_Adapter = new App_Adapter();
 			listview.setAdapter(App_Adapter);
 			loadApp();
+
+			btn_search.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for (int i = 0; i < appInfoArry.size(); i++) {
+						if (SoundSearcher.matchString(
+								appInfoArry.get(i).appName, edit.getText()
+										.toString())) {
+							listview.setSelectionFromTop(i, 10);
+						}
+					}
+
+				}
+			});
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
@@ -3512,7 +3550,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 
 		// 앱 정보 저장할 클래스
-		class AppInfo {
+		public class AppInfo {
 			public String packagename;
 			public String appName;
 			public Drawable appIcon;
