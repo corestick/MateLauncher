@@ -2202,49 +2202,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_FURNITURE) {
 					final Intent intent = ((Mobject) tag).intent;
-<<<<<<< HEAD
-					if (intent == null) {
-						// Toast.makeText(this, "���ø����̼��� ��Ī���ּ���.",
-						// Toast.LENGTH_SHORT).show();
-//						Dialog dial = new Dialog(mLauncher, R.style.Theme_dialog);
-//						View v = getLayoutInflater().inflate(R., root)
-						AlertDialog.Builder alart = new AlertDialog.Builder(
-								mLauncher);
-						alart.setMessage("어플리케이션을 매칭하시겠습니까??")
-								.setCancelable(true)
-								.setPositiveButton("예",
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												dialog.dismiss();
-												Object tag = v.getTag();												
-												AppList_dialog appDialog = new AppList_dialog(
-														Launcher.this, tag);
-												appDialog.setCancelable(true);
-												android.view.WindowManager.LayoutParams params = appDialog
-														.getWindow()
-														.getAttributes();
-												params.width = LayoutParams.FILL_PARENT;
-												params.height = LayoutParams.FILL_PARENT;
-												appDialog.getWindow()
-														.setAttributes(params);
-												appDialog.show();
-											}
-										})
-								.setNegativeButton("아니오",
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												dialog.dismiss();
-											}
-										});
-						AlertDialog AD = alart.create();						
-						AD.show();
-=======
 					if (intent == null) {					
 						final Dialog dial = new Dialog(mLauncher,
 								R.style.Theme_dialog);
@@ -2280,7 +2237,6 @@ public final class Launcher extends Activity implements View.OnClickListener,
 							}
 						});
 						dial.show();
->>>>>>> origin/kwon.image-add
 						return;
 					}
 					startActivitySafely(intent);
