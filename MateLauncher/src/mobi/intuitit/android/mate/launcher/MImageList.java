@@ -38,8 +38,8 @@ public class MImageList {
 		backgroundList.add(R.drawable.m_wall_01);
 		backgroundList.add(R.drawable.m_wall_02);
 		backgroundList.add(R.drawable.m_wall_03);
-//		backgroundList.add(R.drawable.m_wall_04);
-//		backgroundList.add(R.drawable.m_wall_05);
+		backgroundList.add(R.drawable.m_wall_04);
+		backgroundList.add(R.drawable.m_wall_05);
 //		backgroundList.add(R.drawable.m_wall_06);
 //		backgroundList.add(R.drawable.m_wall_07);
 //		backgroundList.add(R.drawable.m_wall_08);
@@ -127,11 +127,11 @@ public class MImageList {
 	public int getIcon(int resType, int resIdx) {
 		
 		switch (resType) {
-		case 0: // °¡±¸
+		case 0: // ï¿½ï¿½ï¿½ï¿½
 			return furnitureList.get(resIdx);
-		case 1: // ¾Æ¹ÙÅ¸
+		case 1: // ï¿½Æ¹ï¿½Å¸
 			return avatarList.get(resIdx);
-		case 2: // À§Á¬
+		case 2: // ï¿½ï¿½ï¿½ï¿½
 			return weatherList.get(resIdx).get(Launcher.mWeather);
 		default:
 			return -1;

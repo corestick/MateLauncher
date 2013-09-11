@@ -29,7 +29,7 @@ class SpeechBubble extends LinearLayout {
 		setVisible(mVisibleState);
 		
 		txtSpeechBubble = (TextView) findViewById(R.id.txtSpeechBubble);
-//		txtSpeechBubble.setText("You're probably trying to load a huge bitmap or a huge image and your device is running out of memory as seen in the stack trace. You need to be very careful with the size of the images you load and work with.");
+//		txtSpeechBubble.setText(" You're probably trying to load a huge bitmap or a huge image and your device is running out of memory as seen in the stack trace. You need to be very careful with the size of the images you load and work with.");
 		
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 	}

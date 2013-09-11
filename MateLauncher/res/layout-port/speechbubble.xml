@@ -2,7 +2,6 @@
 <mobi.intuitit.android.mate.launcher.SpeechBubble xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/speechbubble"
     >
 
     <ScrollView
@@ -14,7 +13,7 @@
             android:id="@+id/txtSpeechBubble"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:textColor="#ff6666ff"
+            android:textColor="#ff333333"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:paddingRight="5dp"

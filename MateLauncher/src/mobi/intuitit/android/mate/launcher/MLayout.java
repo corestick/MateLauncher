@@ -35,7 +35,7 @@ public class MLayout extends LayoutType {
 	private int mScreenIdx;
 
 	private final int SPEECHBUBBLE_WIDTH = 160;
-	private final int SPEECHBUBBLE_HEIGHT = 140;
+	private final int SPEECHBUBBLE_HEIGHT = 160;
 	private final int SPEECHBUBBLE_BOTTOM_PADDING = 20;
 
 	private final int MAVATARMENU_WIDTH = 300;
@@ -414,7 +414,7 @@ public class MLayout extends LayoutType {
 	}
 
 	synchronized void saveThumb() {
-		// if (layoutDrawed) º®Áö, ¹Ù´Ú ¹Ù²î¸é Àû¿ëÀ» À§ÇØ
+		// if (layoutDrawed) ï¿½ï¿½ï¿½ï¿½, ï¿½Ù´ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		// return;
 
 		if (mThumbCanvas == null)
@@ -577,7 +577,7 @@ public class MLayout extends LayoutType {
 	CellInfo findAllVacantCells(boolean[] occupiedCells, View ignoreView) {
 		// TODO Auto-generated method stub
 
-		// / »ý¼º À§Ä¡ ºÎºÐ ¼öÁ¤ ÇØ¾ß ÇÑ´Ù.
+		// / ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¾ï¿½ ï¿½Ñ´ï¿½.
 		CellInfo cellInfo = new CellInfo();
 
 		// /cellInfo.cellX = -1;

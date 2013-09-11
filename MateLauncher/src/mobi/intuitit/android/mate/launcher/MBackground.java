@@ -14,7 +14,7 @@ import android.graphics.drawable.Drawable;
 
 /**
  * 
- * @author À¯Á¾¿ø ÆÐÅÏ ÀÌ¹ÌÁö¸¦ ¹ÞÀº ÆäÀÎÆ® »ý¼º ¹Ù´Ú, º®Áö(¿ÞÂÊ/¿À¸¥ÂÊ) ÆÐ½º »ý¼º °æ°è¼± ÆÐ½º »ý¼º
+ * @author ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ ï¿½Ù´ï¿½, ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½) ï¿½Ð½ï¿½ ï¿½ï¿½ ï¿½ï¿½è¼± ï¿½Ð½ï¿½ ï¿½ï¿½
  */
 public class MBackground {
 
@@ -36,25 +36,38 @@ public class MBackground {
 
 		MBack mBack = new MBack();
 		mBack.resId = R.drawable.m_wall_01;
-		mBack.leftRGB = Color.rgb(119, 204, 207);
-		mBack.rightRGB = Color.rgb(99, 194, 197);
-		mBack.bottomRGB = Color.rgb(139, 224, 227);
+		mBack.leftRGB = Color.rgb(195, 214, 47);
+		mBack.rightRGB = Color.rgb(167, 186, 39);
+		mBack.bottomRGB = Color.rgb(135, 153, 31);
 		mBackList.add(mBack);
 
 		mBack = new MBack();
 		mBack.resId = R.drawable.m_wall_02;
-		mBack.leftRGB = Color.rgb(194, 215, 48);
-		mBack.rightRGB = Color.rgb(174, 234, 68);
-		mBack.bottomRGB = Color.rgb(159, 195, 28);
+		mBack.leftRGB = Color.rgb(247, 181, 182);
+		mBack.rightRGB = Color.rgb(240, 120, 126);
+		mBack.bottomRGB = Color.rgb(237, 76, 89);
 		mBackList.add(mBack);
 		
 		mBack = new MBack();
 		mBack.resId = R.drawable.m_wall_03;
-		mBack.leftRGB = Color.rgb(168, 188, 39);
-		mBack.rightRGB = Color.rgb(188, 208, 59);
-		mBack.bottomRGB = Color.rgb(148, 168, 19);
+		mBack.leftRGB = Color.rgb(255, 227, 171);
+		mBack.rightRGB = Color.rgb(252, 206, 131);
+		mBack.bottomRGB = Color.rgb(250, 180, 82);
 		mBackList.add(mBack);
-
+		
+		mBack = new MBack();
+		mBack.resId = R.drawable.m_wall_04;
+		mBack.leftRGB = Color.rgb(199, 157, 198);
+		mBack.rightRGB = Color.rgb(173, 120, 176);
+		mBack.bottomRGB = Color.rgb(157, 93, 161);
+		mBackList.add(mBack);
+		
+		mBack = new MBack();
+		mBack.resId = R.drawable.m_wall_05;
+		mBack.leftRGB = Color.rgb(247, 190, 215);
+		mBack.rightRGB = Color.rgb(240, 163, 198);
+		mBack.bottomRGB = Color.rgb(235, 127, 177);
+		mBackList.add(mBack);
 	}
 	
 	public static MBackground getInstance() {

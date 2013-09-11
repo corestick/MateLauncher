@@ -2205,8 +2205,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					if (intent == null) {
 						// Toast.makeText(this, "���ø����̼��� ��Ī���ּ���.",
 						// Toast.LENGTH_SHORT).show();
-						Dialog dial = new Dialog(mLauncher, R.style.Theme_dialog);
-						View v = getLayoutInflater().inflate(R., root)
+//						Dialog dial = new Dialog(mLauncher, R.style.Theme_dialog);
+//						View v = getLayoutInflater().inflate(R., root)
 						AlertDialog.Builder alart = new AlertDialog.Builder(
 								mLauncher);
 						alart.setMessage("어플리케이션을 매칭하시겠습니까??")
