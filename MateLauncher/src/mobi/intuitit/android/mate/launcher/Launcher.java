@@ -73,10 +73,13 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.content.res.Resources.Theme;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -2202,10 +2205,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					if (intent == null) {
 						// Toast.makeText(this, "���ø����̼��� ��Ī���ּ���.",
 						// Toast.LENGTH_SHORT).show();
-
+						Dialog dial = new Dialog(mLauncher, R.style.Theme_dialog);
+						View v = getLayoutInflater().inflate(R., root)
 						AlertDialog.Builder alart = new AlertDialog.Builder(
 								mLauncher);
-
 						alart.setMessage("어플리케이션을 매칭하시겠습니까??")
 								.setCancelable(true)
 								.setPositiveButton("예",
@@ -2215,7 +2218,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 													DialogInterface dialog,
 													int which) {
 												dialog.dismiss();
-												Object tag = v.getTag();
+												Object tag = v.getTag();												
 												AppList_dialog appDialog = new AppList_dialog(
 														Launcher.this, tag);
 												appDialog.setCancelable(true);
@@ -2238,7 +2241,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 												dialog.dismiss();
 											}
 										});
-						AlertDialog AD = alart.create();
+						AlertDialog AD = alart.create();						
 						AD.show();
 						return;
 					}
@@ -3458,8 +3461,11 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public AppList_dialog(Context context, Object tag) {
 			super(context);
+//			setTheme(R.style.Theme_dialog); //테두리 없애기위해
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.list_dialog);
+			getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.gridback));
 			listview = (IndexableListView) findViewById(R.id.applist_listview);
 			edit = (EditText) findViewById(R.id.edit_search);
 			btn_search = (Button) findViewById(R.id.btn_search);

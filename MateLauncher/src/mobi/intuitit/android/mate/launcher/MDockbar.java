@@ -40,7 +40,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		mFurniture.setBackgroundResource(R.drawable.icon_furniture);		
 		mWallpaper.setBackgroundResource(R.drawable.icon_flooring);
 		mAvatar.setBackgroundResource(R.drawable.icon_avatar);
-		mWidget.setBackgroundResource(R.drawable.icon_wiget);
+		mWidget.setBackgroundResource(R.drawable.icon_widget);
 		mRight.setBackgroundResource(R.drawable.icon_home);
 
 		addView(mFurniture);
