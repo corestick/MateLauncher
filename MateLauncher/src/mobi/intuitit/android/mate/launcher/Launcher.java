@@ -262,9 +262,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
 
-	static public int mWeather = MGlobal.WEATHER_SUNNY;
-
-	SoundSearcher searcher;
+	static public int mWeather = MGlobal.WEATHER_SUNNY;	
 
 	@Override
 	protected void onStart() {
@@ -2214,7 +2212,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						t.setText("어플리케이션을 매칭하시겠습니까??");
 						b1.setOnClickListener(new View.OnClickListener() {
 							@Override
-							public void onClick(View v) {
+							public void onClick(View click_v) {
 								dial.dismiss();
 								Object tag = v.getTag();
 								SelectView = v;
@@ -3243,17 +3241,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		IndexableListView listview;
 		Contact_Adapter contact_Adapter;
-		EditText edit;
-		Button btn_search;
+		
 
 		public ContactList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.list_dialog);
-			listview = (IndexableListView) findViewById(R.id.applist_listview);
-			edit = (EditText) findViewById(R.id.edit_search);
-			btn_search = (Button) findViewById(R.id.btn_search);
-			searcher = new SoundSearcher();
+			listview = (IndexableListView) findViewById(R.id.applist_listview);			
 			contact_Adapter = new Contact_Adapter();
 
 			listview.setAdapter(contact_Adapter);
@@ -3262,21 +3256,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			// listview.addFooterView(v)
 			final long App_id = ((Mobject) tag).id;
 			contactsTag = (Mobject) tag;
-
-			btn_search.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					for (int i = 0; i < contactInfoArry.size(); i++) {
-						if (SoundSearcher.matchString(
-								contactInfoArry.get(i).Name, edit.getText()
-										.toString())) {
-							listview.setSelectionFromTop(i, 10);
-						}
-					}
-
-				}
-			});
-
+	
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
@@ -3426,7 +3406,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						int position, long id) {
 					if (position == 0) {
 						Object tag = v.getTag();
-						AppList_dialog dialog = new AppList_dialog(context, tag);
+						AppList_dialog dialog = new AppList_dialog(context,tag);
 						dialog.setCancelable(true);
 						android.view.WindowManager.LayoutParams params = dialog
 								.getWindow().getAttributes();
@@ -3446,9 +3426,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public class AppList_dialog extends Dialog {
 		IndexableListView listview;
 		App_Adapter App_Adapter;
-		ArrayList<AppInfo> appInfoArry;
-		EditText edit;
-		Button btn_search;
+		ArrayList<AppInfo> appInfoArry;		
 
 		public AppList_dialog(Context context, Object tag) {
 			super(context);
@@ -3459,33 +3437,14 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					new ColorDrawable(Color.TRANSPARENT));
 			getWindow().setBackgroundDrawable(
 					getResources().getDrawable(R.drawable.gridback));
-			listview = (IndexableListView) findViewById(R.id.applist_listview);
-			edit = (EditText) findViewById(R.id.edit_search);
-			btn_search = (Button) findViewById(R.id.btn_search);
-			searcher = new SoundSearcher();
-
+			listview = (IndexableListView) findViewById(R.id.applist_listview);	
 			appInfoArry = new ArrayList<AppInfo>();
 			final long App_id = ((Mobject) tag).id;
 			Apptag = (Mobject) tag;
 			App_Adapter = new App_Adapter();
 			listview.setAdapter(App_Adapter);
 			listview.setFastScrollEnabled(true);
-
 			loadApp();
-
-			btn_search.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					for (int i = 0; i < appInfoArry.size(); i++) {
-						if (SoundSearcher.matchString(
-								appInfoArry.get(i).appName, edit.getText()
-										.toString())) {
-							listview.setSelectionFromTop(i, 10);
-						}
-					}
-
-				}
-			});
 
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
