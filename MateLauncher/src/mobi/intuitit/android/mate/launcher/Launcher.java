@@ -2202,6 +2202,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_FURNITURE) {
 					final Intent intent = ((Mobject) tag).intent;
+<<<<<<< HEAD
 					if (intent == null) {
 						// Toast.makeText(this, "���ø����̼��� ��Ī���ּ���.",
 						// Toast.LENGTH_SHORT).show();
@@ -2243,39 +2244,73 @@ public final class Launcher extends Activity implements View.OnClickListener,
 										});
 						AlertDialog AD = alart.create();						
 						AD.show();
+=======
+					if (intent == null) {					
+						final Dialog dial = new Dialog(mLauncher,
+								R.style.Theme_dialog);
+						View dial_view = getLayoutInflater().inflate(
+								R.layout.custom_dialog, null);					
+						dial.setContentView(dial_view);
+						TextView t = (TextView) dial_view.findViewById(R.id.custom_text);
+						Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
+						Button b2 = (Button) dial_view.findViewById(R.id.custom_btncancle);
+						t.setText("어플리케이션을 매칭하시겠습니까??");
+						b1.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								dial.dismiss();
+								Object tag = v.getTag();
+								SelectView = v;
+								AppList_dialog appDialog = new AppList_dialog(
+										Launcher.this, tag);
+								appDialog.setCancelable(true);
+								android.view.WindowManager.LayoutParams params = appDialog
+										.getWindow().getAttributes();
+								params.width = LayoutParams.FILL_PARENT;
+								params.height = LayoutParams.FILL_PARENT;
+								appDialog.getWindow().setAttributes(params);
+								appDialog.show();
+
+							}
+						});
+						b2.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								dial.dismiss();
+							}
+						});
+						dial.show();
+>>>>>>> origin/kwon.image-add
 						return;
 					}
 					startActivitySafely(intent);
 				} else {
-					if (((Mobject) tag).contact_num == null) {
-						AlertDialog.Builder alart = new AlertDialog.Builder(
-								mLauncher);
+					if (((Mobject) tag).contact_num == null) {									
+						final Dialog dial = new Dialog(mLauncher);
+						View dial_view = getLayoutInflater().inflate(
+								R.layout.custom_dialog, null);					
+						dial.setContentView(dial_view);
+						TextView t = (TextView) dial_view.findViewById(R.id.custom_text);
+						Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
+						Button b2 = (Button) dial_view.findViewById(R.id.custom_btncancle);
+						t.setText("연락처를 매칭하시겠습니까??");
+						b1.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								dial.dismiss();
+								SelectView = v;
+								clickedInfo = tag;
+								createThreadAndDialog();
 
-						alart.setMessage("연락처를 매칭하시겠습니까??")
-								.setCancelable(true)
-								.setPositiveButton("예",
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												dialog.dismiss();
-												SelectView = v;
-												clickedInfo = tag;
-												createThreadAndDialog();
-											}
-										})
-								.setNegativeButton("아니오",
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(
-													DialogInterface dialog,
-													int which) {
-												dialog.dismiss();
-											}
-										});
-						AlertDialog AD = alart.create();
-						AD.show();
+							}
+						});
+						b2.setOnClickListener(new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								dial.dismiss();
+							}
+						});
+						dial.show();
 						return;
 					} else {
 						MLayout mLayout = (MLayout) v.getParent();
@@ -3461,11 +3496,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		public AppList_dialog(Context context, Object tag) {
 			super(context);
-//			setTheme(R.style.Theme_dialog); //테두리 없애기위해
+			// setTheme(R.style.Theme_dialog); //테두리 없애기위해
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.list_dialog);
-			getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-			getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.gridback));
+			getWindow().setBackgroundDrawable(
+					new ColorDrawable(Color.TRANSPARENT));
+			getWindow().setBackgroundDrawable(
+					getResources().getDrawable(R.drawable.gridback));
 			listview = (IndexableListView) findViewById(R.id.applist_listview);
 			edit = (EditText) findViewById(R.id.edit_search);
 			btn_search = (Button) findViewById(R.id.btn_search);
