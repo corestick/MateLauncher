@@ -91,9 +91,7 @@ public class MImageList {
 		furnitureList.add(R.drawable.m_furniture_27);
 		furnitureList.add(R.drawable.m_furniture_28);
 		furnitureList.add(R.drawable.m_furniture_29);
-		furnitureList.add(R.drawable.m_furniture_30);
-		furnitureList.add(R.drawable.m_furniture_31);
-		furnitureList.add(R.drawable.m_furniture_32);	
+		furnitureList.add(R.drawable.m_furniture_30);		
 	}
 
 	private void initWidget() {
