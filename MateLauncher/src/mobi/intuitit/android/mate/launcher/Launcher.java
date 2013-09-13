@@ -2240,14 +2240,15 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					startActivitySafely(intent);
 				} else {
 					if (((Mobject) tag).contact_num == null) {									
-						final Dialog dial = new Dialog(mLauncher);
+						final Dialog dial = new Dialog(mLauncher,R.style.Theme_dialog);
 						View dial_view = getLayoutInflater().inflate(
 								R.layout.custom_dialog, null);					
 						dial.setContentView(dial_view);
 						TextView t = (TextView) dial_view.findViewById(R.id.custom_text);
 						Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
 						Button b2 = (Button) dial_view.findViewById(R.id.custom_btncancle);
-						t.setText("연락처를 매칭하시겠습니까??");
+						t.setText("연락처를 매칭하시겠습니까?");
+						
 						b1.setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {

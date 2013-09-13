@@ -4,6 +4,7 @@ public class SoundSearcher {
 	private static final char HANGUL_BEGIN_UNICODE = 44032;
 	private static final char HANGUL_LAST_UNICODE = 55203;
 	private static final char HANGUL_BASE_UNIT = 588;
+	
 	// 자음
 	private static final char[] INITIAL_SOUND = { 'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ',
 			'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' };
