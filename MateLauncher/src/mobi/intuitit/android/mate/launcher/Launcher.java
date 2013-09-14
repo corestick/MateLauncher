@@ -3732,6 +3732,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	public void viewSetTag(Mobject tag) {
 		SelectView.setTag(tag);
+		SelectView.invalidate();
 	}
 
 	// �α�Ĺ

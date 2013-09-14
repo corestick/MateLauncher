@@ -106,10 +106,10 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			mLayout.hideAllAvatarView();
 
 			// ������忡�� Ÿ��Ʋ ǥ��
+//			mLayout.invalidate();
 			for (int i = 0; i < mLayout.getChildCount(); i++) {
 				if (mLayout.getChildAt(i) instanceof MobjectImageView){
-					((MobjectImageView) mLayout.getChildAt(i)).setTitle(true);
-				((MobjectImageView) mLayout.getChildAt(i)).invalidate();
+					((MobjectImageView) mLayout.getChildAt(i)).invalidate();
 				}
 			}
 			return;

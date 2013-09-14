@@ -135,14 +135,12 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			mLauncher.mDockbar.showDockbar();
 //			mLauncher.modifyAnimationStop();
 
-			// ������忡�� Ÿ��Ʋ ǥ��
 			MLayout mLayout = (MLayout) Launcher.getWorkspace().getChildAt(Launcher.getWorkspace()
 					.getCurrentScreen());
 			
-			// ������忡�� Ÿ��Ʋ ǥ��
+//			mLayout.invalidate();
 			for (int i = 0; i < mLayout.getChildCount(); i++) {
 				if (mLayout.getChildAt(i) instanceof MobjectImageView) {
-					((MobjectImageView) mLayout.getChildAt(i)).setTitle(false);
 					((MobjectImageView) mLayout.getChildAt(i)).invalidate();
 				}
 			}

@@ -10,13 +10,14 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 public class MobjectImageView extends ImageView {
@@ -113,41 +114,13 @@ public class MobjectImageView extends ImageView {
 		return new BitmapDrawable(bm);
 	}
 
-	public void setTitle(boolean isModifyMode) {
-		ItemInfo info = (ItemInfo) this.getTag();
-		
-		Log.e("RRR", "isModifyMode=" + isModifyMode);
-		
-		this.isModifyMode = isModifyMode;
-		
-//		if (isModifyMode) {
+//	public void startAnimation() {
+//		Animation anim = new RotateAnimation(-1, 1, Animation.RELATIVE_TO_SELF,
+//				0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+//		anim.setDuration(300);
 //
-//			if (info.contact_num != null)
-//			{
-//				Log.e("RRR", "contact_name=" + info.contact_name);
-//				this.setBackgroundDrawable(writeOnDrawable(MImageList.getInstance().getIcon(
-//						info.mobjectType, info.mobjectIcon), info.contact_name));
-//			}
-//			else if (info.title != null)
-//			{
-//				Log.e("RRR", "title=" + info.title.toString());
-//				this.setBackgroundDrawable(writeOnDrawable(MImageList.getInstance().getIcon(
-//						info.mobjectType, info.mobjectIcon), info.title.toString()));
-//			}
-//		} else {
-//			Log.e("RRR", "asd=11");
-//			this.setBackgroundDrawable(writeOnDrawable(MImageList.getInstance().getIcon(
-//					info.mobjectType, info.mobjectIcon), ""));
-//		}
-	}
-
-	public void startAnimation() {
-		Animation anim = new RotateAnimation(-1, 1, Animation.RELATIVE_TO_SELF,
-				0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-		anim.setDuration(300);
-
-		this.startAnimation(anim);
-	}
+//		this.startAnimation(anim);
+//	}
 
 	@Override
 	protected boolean setFrame(int left, int top, int right, int bottom) {
@@ -172,8 +145,6 @@ public class MobjectImageView extends ImageView {
 		super.drawableStateChanged();
 	}
 
-	private boolean isModifyMode = false;
-	
 	@Override
 	public void draw(Canvas canvas) {
 		final Drawable background = mBackground;
@@ -196,37 +167,41 @@ public class MobjectImageView extends ImageView {
 			}
 		}
 		
-		
-		
-		ItemInfo info = (ItemInfo) this.getTag();
-		
-
-		
-		Paint paint = new Paint();
-		paint.setStyle(Style.FILL);
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(20);
 		super.draw(canvas);
 		
-		if (isModifyMode) {
-			
+		// 타이틀 표시
+		ItemInfo info = (ItemInfo) this.getTag();
+				
+		Paint paint = new Paint();
+		paint.setStyle(Style.FILL);
+		
+		paint.setColor(Color.WHITE);
+		paint.setTextSize(20);
+		paint.setFakeBoldText(true);
+		paint.setAntiAlias(true);
+		paint.setShadowLayer(5, 3, 3, Color.RED);
+		
+		String title = "";
+		
+		if (Launcher.modifyMode) {
 			if (info.contact_num != null)
 			{
-				Log.e("RRR", "contact_name=" + info.contact_name);
-
-				canvas.drawText(info.contact_name, 0, 20, paint);
-				
+//				Log.e("RRR", "contact_name=" + info.contact_name);
+				title = info.contact_name;
 			}
 			else if (info.title != null)
 			{
-				Log.e("RRR", "title=" + info.title.toString());
-				canvas.drawText(info.title.toString(), 0, 25, paint);
+//				Log.e("RRR", "title=" + info.title.toString());
+				title = info.title.toString();
 			}
-		} else {
-			Log.e("RRR", "asd=11");
-			canvas.drawText("", 0, 5, paint);
 		}
-
+		
+		title = TextUtils.ellipsize(title, new TextPaint(), this.getWidth() / 2, TruncateAt.END).toString();
+		
+		Rect b = new Rect();
+		paint.getTextBounds(title, 0, title.length(), b);
+		
+		canvas.drawText(title, this.getWidth() / 2 - b.width() / 2, this.getHeight() / 2, paint);
 		
 	}
 }
