@@ -2241,7 +2241,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						return;
 					}
 					startActivitySafely(intent);
-				} else if (((Mobject) tag).mobjectType == MGlobal.MDOCKBAR_MENU_AVATAR) {
+				} else if (((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_AVATAR) {
 					if (((Mobject) tag).contact_num == null) {
 						final Dialog dial = new Dialog(mLauncher,
 								R.style.Theme_dialog);
@@ -2278,7 +2278,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						MLayout mLayout = (MLayout) v.getParent();
 						mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
 					}
-				} else {
+				} else if(((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_AVATAR) {
 					// 날씨 업데이트
 					Message msg = new Message();
 					msg.what = 0;
