@@ -1011,8 +1011,8 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 
 		final LayoutType layoutType = getCurrentDropLayout();
 
-		// ¼öÁ¤¸ðµå ¾Ö´Ï¸ÞÀÌ¼Ç ½ÃÀÛ
-		mLauncher.modifyAnimationStart();
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+//		mLauncher.modifyAnimationStart();
 
 		if (source != this) {
 			onDropExternal(x - xOffset, y - yOffset, dragInfo, layoutType);
@@ -1039,7 +1039,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 				LayoutType.LayoutParams lp = (LayoutType.LayoutParams) cell
 						.getLayoutParams();
 
-				// -- MLayout °ü·Ã
+				// -- MLayout ï¿½ï¿½ï¿½
 				if (layoutType instanceof MLayout) {
 					layoutType.onDropChild(cell, x - xOffset, y - yOffset);
 
@@ -1114,7 +1114,7 @@ public class Workspace extends WidgetSpace implements DropTarget, DragSource,
 		layoutType.addView(view, insertAtFirst ? 0 : -1);
 		view.setOnLongClickListener(mLongClickListener);
 
-		// -- MLayout °ü·Ã
+		// -- MLayout ï¿½ï¿½ï¿½
 		LayoutType.LayoutParams lp = (LayoutType.LayoutParams) view
 				.getLayoutParams();
 		if (layoutType instanceof MLayout) {

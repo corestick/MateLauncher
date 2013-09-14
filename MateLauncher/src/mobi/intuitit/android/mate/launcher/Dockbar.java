@@ -96,14 +96,22 @@ public class Dockbar extends LinearLayout implements View.OnClickListener {
 			mLauncher.startActivity(intent);
 			return;
 		} else if (v.equals(mDockButton[4])) {
-			// ȭ�� �ٹ̱�
+			// ȭ�� �ٹ̱�
 			hideDockbar();
 			Launcher.modifyMode = true;
 			mLauncher.mMDockbar.showMDockbar();
-			mLauncher.modifyAnimationStart();
+//			mLauncher.modifyAnimationStart();
 			MLayout mLayout = (MLayout) mWorkspace.getChildAt(mWorkspace
 					.getCurrentScreen());
 			mLayout.hideAllAvatarView();
+
+			// ������忡�� Ÿ��Ʋ ǥ��
+			for (int i = 0; i < mLayout.getChildCount(); i++) {
+				if (mLayout.getChildAt(i) instanceof MobjectImageView){
+					((MobjectImageView) mLayout.getChildAt(i)).setTitle(true);
+				((MobjectImageView) mLayout.getChildAt(i)).invalidate();
+				}
+			}
 			return;
 		}
 	}

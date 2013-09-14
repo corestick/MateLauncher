@@ -104,13 +104,12 @@ class ItemInfo {
      */
     boolean filtered;
     
-    public int mobjectType = -1; // 0 = °¡±¸, 1 = ¾Æ¹ÙÅ¸
+    public int mobjectType = -1; // 0 = ï¿½ï¿½ï¿½ï¿½, 1 = ï¿½Æ¹ï¿½Å¸
     public int mobjectIcon = -1;
-    public int reverseIcon = 0; // 1ÀÌ¸é ¹Ý´ëÀÌ¹ÌÁö
+    public int reverseIcon = 0; // 1ï¿½Ì¸ï¿½ ï¿½Ý´ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½
     
     String contact_num;
     String contact_name;
-    
 
     ItemInfo() {
     }

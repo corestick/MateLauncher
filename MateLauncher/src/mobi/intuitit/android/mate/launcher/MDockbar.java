@@ -31,13 +31,13 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 	public void initMDockbar(Launcher launcher) {
 		this.mLauncher = launcher;
 
-		mFurniture = new ImageButton(context);		
+		mFurniture = new ImageButton(context);
 		mWallpaper = new ImageButton(context);
 		mAvatar = new ImageButton(context);
 		mWidget = new ImageButton(context);
 		mRight = new ImageButton(context);
 
-		mFurniture.setBackgroundResource(R.drawable.icon_furniture);		
+		mFurniture.setBackgroundResource(R.drawable.icon_furniture);
 		mWallpaper.setBackgroundResource(R.drawable.icon_flooring);
 		mAvatar.setBackgroundResource(R.drawable.icon_avatar);
 		mWidget.setBackgroundResource(R.drawable.icon_widget);
@@ -51,7 +51,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		addView(mWallpaper);
 		params = (LayoutParams) mFurniture.getLayoutParams();
 		params.weight = 50;
-		mWallpaper.setLayoutParams(params);	
+		mWallpaper.setLayoutParams(params);
 
 		addView(mAvatar);
 		params = (LayoutParams) mAvatar.getLayoutParams();
@@ -69,7 +69,7 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 		mRight.setLayoutParams(params);
 
 		mFurniture.setOnClickListener(this);
-		mWallpaper.setOnClickListener(this);		
+		mWallpaper.setOnClickListener(this);
 		mAvatar.setOnClickListener(this);
 		mWidget.setOnClickListener(this);
 		mRight.setOnClickListener(this);
@@ -133,7 +133,19 @@ public class MDockbar extends LinearLayout implements View.OnClickListener {
 			hideMDockbar();
 			Launcher.modifyMode = false;
 			mLauncher.mDockbar.showDockbar();
-			mLauncher.modifyAnimationStop();
+//			mLauncher.modifyAnimationStop();
+
+			// ������忡�� Ÿ��Ʋ ǥ��
+			MLayout mLayout = (MLayout) Launcher.getWorkspace().getChildAt(Launcher.getWorkspace()
+					.getCurrentScreen());
+			
+			// ������忡�� Ÿ��Ʋ ǥ��
+			for (int i = 0; i < mLayout.getChildCount(); i++) {
+				if (mLayout.getChildAt(i) instanceof MobjectImageView) {
+					((MobjectImageView) mLayout.getChildAt(i)).setTitle(false);
+					((MobjectImageView) mLayout.getChildAt(i)).invalidate();
+				}
+			}
 			return;
 		}
 	}
