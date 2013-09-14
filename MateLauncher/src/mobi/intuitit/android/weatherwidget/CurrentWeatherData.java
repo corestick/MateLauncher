@@ -77,35 +77,35 @@ public class CurrentWeatherData {
 
 		switch (icon) {
 		case 1:
-			return "¸¼À½";
+			return "ë§‘ìŒ";
 		case 2:
-			return "±¸¸§ Á¶±İ";
+			return "êµ¬ë¦„ ì¡°ê¸ˆ";
 		case 3:
-			return "±¸¸§ ¸¹À½";
+			return "êµ¬ë¦„ ë§ìŒ";
 		case 4:
-			return "Èå¸²";
+			return "íë¦¼";
 		case 5:
-			return "¸¼À½";
+			return "ë§‘ìŒ";
 		case 6:
-			return "¸¼À½";
+			return "ë§‘ìŒ";
 		case 7:
-			return "¸¼À½";
+			return "ë§‘ìŒ";
 		case 8:
-			return "ºñ";
+			return "ë¹„";
 		case 9:
-			return "ºñ";
+			return "ë¹„";
 		case 10:
-			return "´«";
+			return "ëˆˆ";
 		case 11:
-			return "´«";
+			return "ëˆˆ";
 		case 14:
-			return "ºñ";
+			return "ë¹„";
 		case 15:
-			return "¾È°³";
+			return "ì•ˆê°œ";
 		case 17:
-			return "¹Ú¹«";
+			return "ë°•ë¬´";
 		case 18:
-			return "¾È°³";
+			return "ì•ˆê°œ";
 		default:
 			return "";
 		}
@@ -115,7 +115,7 @@ public class CurrentWeatherData {
 		int icon = 0;
 
 		if (mCurrentParsedList == null) {
-			// ÀÎÅÍ³İ ¾ÈµÇ¸é ¸¼À½
+			// ï¿½ï¿½ï¿½Í³ï¿½ ï¿½ÈµÇ¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 			return 1;
 		} else {
 
