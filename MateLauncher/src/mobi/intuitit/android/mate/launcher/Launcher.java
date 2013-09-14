@@ -262,7 +262,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
 
-	static public int mWeather = MGlobal.WEATHER_SUNNY;	
+	static public int mWeather = MGlobal.WEATHER_SUNNY;
 
 	@Override
 	protected void onStart() {
@@ -2200,15 +2200,18 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			} else if (tag instanceof Mobject) {
 				if (((Mobject) tag).mobjectType == MGlobal.MOBJECTTYPE_FURNITURE) {
 					final Intent intent = ((Mobject) tag).intent;
-					if (intent == null) {					
+					if (intent == null) {
 						final Dialog dial = new Dialog(mLauncher,
 								R.style.Theme_dialog);
 						View dial_view = getLayoutInflater().inflate(
-								R.layout.custom_dialog, null);					
+								R.layout.custom_dialog, null);
 						dial.setContentView(dial_view);
-						TextView t = (TextView) dial_view.findViewById(R.id.custom_text);
-						Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
-						Button b2 = (Button) dial_view.findViewById(R.id.custom_btncancle);
+						TextView t = (TextView) dial_view
+								.findViewById(R.id.custom_text);
+						Button b1 = (Button) dial_view
+								.findViewById(R.id.custom_btnOK);
+						Button b2 = (Button) dial_view
+								.findViewById(R.id.custom_btncancle);
 						t.setText("어플리케이션을 매칭하시겠습니까??");
 						b1.setOnClickListener(new View.OnClickListener() {
 							@Override
@@ -2238,17 +2241,21 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						return;
 					}
 					startActivitySafely(intent);
-				} else {
-					if (((Mobject) tag).contact_num == null) {									
-						final Dialog dial = new Dialog(mLauncher,R.style.Theme_dialog);
+				} else if (((Mobject) tag).mobjectType == MGlobal.MDOCKBAR_MENU_AVATAR) {
+					if (((Mobject) tag).contact_num == null) {
+						final Dialog dial = new Dialog(mLauncher,
+								R.style.Theme_dialog);
 						View dial_view = getLayoutInflater().inflate(
-								R.layout.custom_dialog, null);					
+								R.layout.custom_dialog, null);
 						dial.setContentView(dial_view);
-						TextView t = (TextView) dial_view.findViewById(R.id.custom_text);
-						Button b1 = (Button) dial_view.findViewById(R.id.custom_btnOK);
-						Button b2 = (Button) dial_view.findViewById(R.id.custom_btncancle);
+						TextView t = (TextView) dial_view
+								.findViewById(R.id.custom_text);
+						Button b1 = (Button) dial_view
+								.findViewById(R.id.custom_btnOK);
+						Button b2 = (Button) dial_view
+								.findViewById(R.id.custom_btncancle);
 						t.setText("연락처를 매칭하시겠습니까?");
-						
+
 						b1.setOnClickListener(new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
@@ -2271,6 +2278,13 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						MLayout mLayout = (MLayout) v.getParent();
 						mLayout.setVisibleStateMavatarMenu((MobjectImageView) v);
 					}
+				} else {
+					// 날씨 업데이트
+					Message msg = new Message();
+					msg.what = 0;
+					WeatherWidgetService.mHandler.sendMessage(msg);
+					Toast.makeText(mLauncher, "날씨가 업데이트 되었습니다.",
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		} else {
@@ -3242,13 +3256,12 @@ public final class Launcher extends Activity implements View.OnClickListener,
 
 		IndexableListView listview;
 		Contact_Adapter contact_Adapter;
-		
 
 		public ContactList_dialog(Context context, Object tag) {
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.list_dialog);
-			listview = (IndexableListView) findViewById(R.id.applist_listview);			
+			listview = (IndexableListView) findViewById(R.id.applist_listview);
 			contact_Adapter = new Contact_Adapter();
 
 			listview.setAdapter(contact_Adapter);
@@ -3257,7 +3270,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			// listview.addFooterView(v)
 			final long App_id = ((Mobject) tag).id;
 			contactsTag = (Mobject) tag;
-	
+
 			listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parentView, View view,
@@ -3407,7 +3420,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 						int position, long id) {
 					if (position == 0) {
 						Object tag = v.getTag();
-						AppList_dialog dialog = new AppList_dialog(context,tag);
+						AppList_dialog dialog = new AppList_dialog(context, tag);
 						dialog.setCancelable(true);
 						android.view.WindowManager.LayoutParams params = dialog
 								.getWindow().getAttributes();
@@ -3427,7 +3440,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public class AppList_dialog extends Dialog {
 		IndexableListView listview;
 		App_Adapter App_Adapter;
-		ArrayList<AppInfo> appInfoArry;		
+		ArrayList<AppInfo> appInfoArry;
 
 		public AppList_dialog(Context context, Object tag) {
 			super(context);
@@ -3438,7 +3451,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 					new ColorDrawable(Color.TRANSPARENT));
 			getWindow().setBackgroundDrawable(
 					getResources().getDrawable(R.drawable.gridback));
-			listview = (IndexableListView) findViewById(R.id.applist_listview);	
+			listview = (IndexableListView) findViewById(R.id.applist_listview);
 			appInfoArry = new ArrayList<AppInfo>();
 			final long App_id = ((Mobject) tag).id;
 			Apptag = (Mobject) tag;

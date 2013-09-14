@@ -34,11 +34,11 @@ import android.util.Log;
  * service.
  */
 public class WeatherWidgetService extends Service {
-	private WeatherDataManager mWeatherDataManager;
+	public static WeatherDataManager mWeatherDataManager;
 	private Context mContext;
 
-	private LocationHelper lh;
-	public String weatherStr;
+	public static LocationHelper lh;
+	public static String weatherStr;
 
 	class NewThread extends Thread {
 		WeatherWidgetService mParent;
@@ -64,9 +64,10 @@ public class WeatherWidgetService extends Service {
 		}
 	}
 
-	Handler mHandler = new Handler() {
+	public static Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0) {
+				Log.e("update", "update");
 				lh.run();
 
 				 Log.e("RRR", "Lat=" + lh.getLat());
@@ -82,18 +83,18 @@ public class WeatherWidgetService extends Service {
 //				Log.e("RRR", "-->>" + weatherStr);
 
 				if (Launcher.getWorkspace() != null) {
-					if (weatherStr.equals("∏º¿Ω")) {
+					if (weatherStr.equals("ÎßëÏùå")) {
 						Launcher.mWeather = MGlobal.WEATHER_SUNNY;
-					} else if (weatherStr.equals("»Â∏≤")
-							|| weatherStr.equals("±∏∏ß ¡∂±›")
-							|| weatherStr.equals("±∏∏ß ∏π¿Ω")
-							|| weatherStr.equals("æ»∞≥")) {
+					} else if (weatherStr.equals("ÌùêÎ¶º")
+							|| weatherStr.equals("Íµ¨Î¶Ñ Ï°∞Í∏à")
+							|| weatherStr.equals("Íµ¨Î¶Ñ ÎßéÏùå")
+							|| weatherStr.equals("ÏïàÍ∞ú")) {
 
 						Launcher.mWeather = MGlobal.WEATHER_CLOUD;
 
-					} else if (weatherStr.equals("∫Ò")) {
+					} else if (weatherStr.equals("ÎπÑ")) {
 						Launcher.mWeather = MGlobal.WEATHER_RAIN;
-					} else if (weatherStr.equals("¥´")) {
+					} else if (weatherStr.equals("Îàà")) {
 						Launcher.mWeather = MGlobal.WEATHER_SNOW;
 					}
 

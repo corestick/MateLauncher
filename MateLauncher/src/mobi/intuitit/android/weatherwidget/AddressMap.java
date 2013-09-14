@@ -13,8 +13,8 @@ public class AddressMap {
 		public int 		mWeekStnId;
 		public int 		mCurStnId;
 		public String 	mWeekCityCode;
-		public double 	mLatitude; //À§µµ 
-		public double 	mLongitude; //°æµµ
+		public double 	mLatitude; //ìœ„ë„ 
+		public double 	mLongitude; //ê²½ë„
 		
 		public AddressInfo(String cityname, int curStnId, int weekStnId, String weekCitycode, double latitude, double longitude) {
 			mCityname = cityname;
@@ -33,25 +33,25 @@ public class AddressMap {
 	private HashMap<String, AddressInfo> mWeekAddressMap = new HashMap<String, AddressInfo>();
 	
 	private AddressMap() {
-		mWeekAddressMap.put("¼­¿ï", new AddressInfo("¼­¿ï",  108,  109, "11B10101", 37.566521, 126.977963));
-		mWeekAddressMap.put("ÀÎÃµ", new AddressInfo("ÀÎÃµ",  112,  109, "11B20201", 37.454318, 126.705472 ));
-		mWeekAddressMap.put("¼ö¿ø", new AddressInfo("¼ö¿ø",  119,  109, "11B20601", 37.262565, 127.027928));
-		mWeekAddressMap.put("ÃáÃµ", new AddressInfo("ÃáÃµ",  101,  105, "11D10301", 37.881315, 127.729971 ));
-		mWeekAddressMap.put("°­¸ª", new AddressInfo("°­¸ª",  105,  105, "11D20501", 37.751853, 128.876057 ));
-		mWeekAddressMap.put("Ã»ÁÖ", new AddressInfo("Ã»ÁÖ",  131,  131, "11C10301", 36.642434,127.489032 ));
-		mWeekAddressMap.put("´ëÀü", new AddressInfo("´ëÀü",  133,  133, "11C20401", 36.350412, 127.384548 ));
-		mWeekAddressMap.put("¼­»ê", new AddressInfo("¼­»ê",  129,  133, "11C20101", 36.784499,126.450317 ));
-		mWeekAddressMap.put("ÀüÁÖ", new AddressInfo("ÀüÁÖ",  146,  146, "11F10201", 35.824224,127.147953 ));
-		mWeekAddressMap.put("±¤ÁÖ", new AddressInfo("±¤ÁÖ",  156,  156, "11F20501", 35.159545, 126.852601 ));
-		mWeekAddressMap.put("¸ñÆ÷", new AddressInfo("¸ñÆ÷",  165,  156, "21F20801", 34.811835, 126.392166 ));
-		mWeekAddressMap.put("¿©¼ö", new AddressInfo("¿©¼ö",  168,  156, "11F20401", 34.760374, 127.662222 ));
-		mWeekAddressMap.put("´ë±¸", new AddressInfo("´ë±¸",  143,  143, "11H10701", 35.871435,128.601445 ));
-		mWeekAddressMap.put("¾Èµ¿", new AddressInfo("¾Èµ¿",  136,  143, "11H10501", 36.568354, 128.729357 ));
-		mWeekAddressMap.put("ºÎ»ê", new AddressInfo("ºÎ»ê",  159,  159, "11H20201", 35.179554, 129.075642 ));
-		mWeekAddressMap.put("¿ï»ê", new AddressInfo("¿ï»ê",  152,  159, "11H20101", 35.538377,129.31136 ));
-		mWeekAddressMap.put("Ã¢¿ø", new AddressInfo("Ã¢¿ø",  155,  159, "11H20301", 35.270833,128.663056));
-		mWeekAddressMap.put("Á¦ÁÖ", new AddressInfo("Á¦ÁÖ",  184,  184, "11G00201", 33.499621,126.531188 ));
-		mWeekAddressMap.put("¼­±ÍÆ÷", new AddressInfo("¼­±ÍÆ÷", 189, 184, "11G00401", 33.25412, 126.560076 ));
+		mWeekAddressMap.put("ì„œìš¸", new AddressInfo("ì„œìš¸",  108,  109, "11B10101", 37.566521, 126.977963));
+		mWeekAddressMap.put("ì¸ì²œ", new AddressInfo("ì¸ì²œ",  112,  109, "11B20201", 37.454318, 126.705472 ));
+		mWeekAddressMap.put("ìˆ˜ì›", new AddressInfo("ìˆ˜ì›",  119,  109, "11B20601", 37.262565, 127.027928));
+		mWeekAddressMap.put("ì¶˜ì²œ", new AddressInfo("ì¶˜ì²œ",  101,  105, "11D10301", 37.881315, 127.729971 ));
+		mWeekAddressMap.put("ê°•ë¦‰", new AddressInfo("ê°•ë¦‰",  105,  105, "11D20501", 37.751853, 128.876057 ));
+		mWeekAddressMap.put("ì²­ì£¼", new AddressInfo("ì²­ì£¼",  131,  131, "11C10301", 36.642434,127.489032 ));
+		mWeekAddressMap.put("ëŒ€ì „", new AddressInfo("ëŒ€ì „",  133,  133, "11C20401", 36.350412, 127.384548 ));
+		mWeekAddressMap.put("ì„œì‚°", new AddressInfo("ì„œì‚°",  129,  133, "11C20101", 36.784499,126.450317 ));
+		mWeekAddressMap.put("ì „ì£¼", new AddressInfo("ì „ì£¼",  146,  146, "11F10201", 35.824224,127.147953 ));
+		mWeekAddressMap.put("ê´‘ì£¼", new AddressInfo("ê´‘ì£¼",  156,  156, "11F20501", 35.159545, 126.852601 ));
+		mWeekAddressMap.put("ëª©í¬", new AddressInfo("ëª©í¬",  165,  156, "21F20801", 34.811835, 126.392166 ));
+		mWeekAddressMap.put("ì—¬ìˆ˜", new AddressInfo("ì—¬ìˆ˜",  168,  156, "11F20401", 34.760374, 127.662222 ));
+		mWeekAddressMap.put("ëŒ€êµ¬", new AddressInfo("ëŒ€êµ¬",  143,  143, "11H10701", 35.871435,128.601445 ));
+		mWeekAddressMap.put("ì•ˆë™", new AddressInfo("ì•ˆë™",  136,  143, "11H10501", 36.568354, 128.729357 ));
+		mWeekAddressMap.put("ë¶€ì‚°", new AddressInfo("ë¶€ì‚°",  159,  159, "11H20201", 35.179554, 129.075642 ));
+		mWeekAddressMap.put("ìš¸ì‚°", new AddressInfo("ìš¸ì‚°",  152,  159, "11H20101", 35.538377,129.31136 ));
+		mWeekAddressMap.put("ì°½ì›", new AddressInfo("ì°½ì›",  155,  159, "11H20301", 35.270833,128.663056));
+		mWeekAddressMap.put("ì œì£¼", new AddressInfo("ì œì£¼",  184,  184, "11G00201", 33.499621,126.531188 ));
+		mWeekAddressMap.put("ì„œê·€í¬", new AddressInfo("ì„œê·€í¬", 189, 184, "11G00401", 33.25412, 126.560076 ));
 	}
 	
 	public static AddressMap getInstance() {
