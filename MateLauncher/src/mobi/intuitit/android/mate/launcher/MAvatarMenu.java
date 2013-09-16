@@ -1,18 +1,11 @@
 package mobi.intuitit.android.mate.launcher;
 
-import java.util.List;
-
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -92,7 +85,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 			Intent intent = mLauncher.getPackageManager()
 					.getLaunchIntentForPackage("com.twitter.android");
 			if (intent == null) {
-				Toast.makeText(getContext(), "Æ®À§ÅÍ°¡ ¾ø½À´Ï´Ù.", Toast.LENGTH_SHORT)
+				Toast.makeText(getContext(), "íŠ¸ìœ„í„°ì•±ì„ ì„¤ì¹˜í•˜ì„¸ìš”.", Toast.LENGTH_SHORT)
 						.show();
 			} else {
 				mLauncher.startActivity(intent);
@@ -101,7 +94,7 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 			Intent intent = mLauncher.getPackageManager()
 					.getLaunchIntentForPackage("com.facebook.katana");
 			if (intent == null) {
-				Toast.makeText(getContext(), "ÆäÀÌ½ººÏÀÌ ¾ø½À´Ï´Ù.", Toast.LENGTH_SHORT)
+				Toast.makeText(getContext(), "ì¹´ì¹´ì˜¤í†¡ì•±ì„ ì„¤ì¹˜í•˜ì„¸ìš”.", Toast.LENGTH_SHORT)
 						.show();
 			} else {
 				mLauncher.startActivity(intent);
@@ -119,9 +112,9 @@ public class MAvatarMenu extends LinearLayout implements OnClickListener {
 		builder.setView(layout);
 
 		dig = builder.create();
-		dig.setTitle("¸Ş½ÃÁö ÀÔ·Â");
+		dig.setTitle("ë©”ì„¸ì§€ ì‘ì„±");
 		edtMsg = (EditText) layout.findViewById(R.id.edtAvatarMsg);
-		dig.setButton("È®ÀÎ", new DialogInterface.OnClickListener() {
+		dig.setButton("ì „ì†¡", new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
