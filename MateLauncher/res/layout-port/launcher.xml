@@ -62,7 +62,7 @@
         android:scrollbarStyle="outsideInset"
         android:verticalSpacing="10dip"
         android:visibility="gone"
-        launcher:texture="@drawable/pattern_carbon_fiber_dark" />
+        launcher:texture="@drawable/pattern_back" />
 
     <mobi.intuitit.android.mate.launcher.DeleteZone
         android:id="@+id/delete_zone"
@@ -70,8 +70,7 @@
         android:layout_height="49dip"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@drawable/delete_zone_selector"
-        android:scaleType="center"
-        android:src="@drawable/ic_delete"
+        android:scaleType="center"       
         android:visibility="invisible"
         launcher:direction="horizontal" />
     <mobi.intuitit.android.mate.launcher.MobjectView
@@ -82,7 +81,7 @@
         android:numColumns="4"
         android:verticalSpacing="10dip"
         android:visibility="invisible"
-        launcher:texture="@drawable/pattern_carbon_fiber_dark" />
+        launcher:texture="@drawable/pattern_back" />
     <mobi.intuitit.android.mate.launcher.ScreenIndicator
         android:id="@+id/screen_indicator"
         android:layout_width="fill_parent"

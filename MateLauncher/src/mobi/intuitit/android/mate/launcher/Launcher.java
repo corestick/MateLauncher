@@ -257,8 +257,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final int SEND_THREAD_PLAY = 0;
 	private static final int SEND_THREAD_STOP = 1;
 
-//	private ModifyHandler mModifyHandler = null; // 수정모드에 쓰는 핸들러
-//	private ModifyThread mModifyThread = null;
+	// private ModifyHandler mModifyHandler = null; // 수정모드에 쓰는 핸들러
+	// private ModifyThread mModifyThread = null;
 
 	private final Logger log4j = Logger.getLogger(Launcher.class);
 
@@ -286,7 +286,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
 		mAppWidgetHost.startListening();
 
-//		mModifyHandler = new ModifyHandler();
+		// mModifyHandler = new ModifyHandler();
 
 		if (PROFILE_STARTUP) {
 			android.os.Debug.startMethodTracing("/sdcard/launcher");
@@ -1770,7 +1770,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
 		registerReceiver(mCloseSystemDialogsReceiver, filter);
 
-//		mModifyHandler = new ModifyHandler(); // ������忡 ���� �ڵ鷯
+		// mModifyHandler = new ModifyHandler(); // ������忡 ���� �ڵ鷯
 	}
 
 	/**
@@ -2456,7 +2456,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 				} else {
 					if (!(cellInfo.cell instanceof Folder)) {
 						// User long pressed on an item
-//						modifyAnimationStop();
+						// modifyAnimationStop();
 						mWorkspace.startDrag(cellInfo);
 					}
 				}
@@ -3261,6 +3261,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.list_dialog);
+			getWindow().setBackgroundDrawable(
+					new ColorDrawable(Color.TRANSPARENT));
+			getWindow().setBackgroundDrawable(
+					getResources().getDrawable(R.drawable.gridback));
 			listview = (IndexableListView) findViewById(R.id.applist_listview);
 			contact_Adapter = new Contact_Adapter();
 
@@ -3410,6 +3414,10 @@ public final class Launcher extends Activity implements View.OnClickListener,
 			super(context);
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			setContentView(R.layout.icon_function_dialog);
+			getWindow().setBackgroundDrawable(
+					new ColorDrawable(Color.TRANSPARENT));
+			getWindow().setBackgroundDrawable(
+					getResources().getDrawable(R.drawable.custom_back2));
 			listview = (ListView) findViewById(R.id.icon_function_listview);
 			adapter = new ArrayAdapter<String>(context,
 					android.R.layout.simple_list_item_1, str);
@@ -3668,67 +3676,67 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		}
 	}
 
-//	class ModifyHandler extends Handler {
-//
-//		@Override
-//		public void handleMessage(Message msg) {
-//			super.handleMessage(msg);
-//
-//			ViewGroup vg = (ViewGroup) mWorkspace.getChildAt(mWorkspace
-//					.getCurrentScreen());
-//
-//			switch (msg.what) {
-//			case SEND_THREAD_PLAY:
-//				for (int i = 0; i < vg.getChildCount(); i++) {
-//					if (vg.getChildAt(i) instanceof MobjectImageView)
-//						((MobjectImageView) vg.getChildAt(i)).startAnimation();
-//				}
-//				break;
-//
-//			case SEND_THREAD_STOP:
-//				mModifyThread.interrupt();
-//				break;
-//
-//			default:
-//				break;
-//			}
-//		}
-//
-//	};
+	// class ModifyHandler extends Handler {
+	//
+	// @Override
+	// public void handleMessage(Message msg) {
+	// super.handleMessage(msg);
+	//
+	// ViewGroup vg = (ViewGroup) mWorkspace.getChildAt(mWorkspace
+	// .getCurrentScreen());
+	//
+	// switch (msg.what) {
+	// case SEND_THREAD_PLAY:
+	// for (int i = 0; i < vg.getChildCount(); i++) {
+	// if (vg.getChildAt(i) instanceof MobjectImageView)
+	// ((MobjectImageView) vg.getChildAt(i)).startAnimation();
+	// }
+	// break;
+	//
+	// case SEND_THREAD_STOP:
+	// mModifyThread.interrupt();
+	// break;
+	//
+	// default:
+	// break;
+	// }
+	// }
+	//
+	// };
 
-//	class ModifyThread extends Thread implements Runnable {
-//
-//		@Override
-//		public void run() {
-//			super.run();
-//			while (true) {
-//				Message msg = mModifyHandler.obtainMessage();
-//				msg.what = SEND_THREAD_PLAY;
-//				mModifyHandler.sendMessage(msg);
-//
-//				try {
-//					Thread.sleep(500);
-//				} catch (InterruptedException e) {
-//					// e.printStackTrace();
-//					return;
-//				}
-//			}
-//		}
-//	}
-//
-//	public void modifyAnimationStart() {
-//		if (mModifyThread != null) {
-//			if (mModifyThread.isAlive())
-//				mModifyThread.interrupt();
-//		}
-//
-//		mModifyThread = new ModifyThread();
-//		mModifyThread.start();
-//	}
-//
-//	public void modifyAnimationStop() {
-//		mModifyHandler.sendEmptyMessage(SEND_THREAD_STOP);
-//	}
+	// class ModifyThread extends Thread implements Runnable {
+	//
+	// @Override
+	// public void run() {
+	// super.run();
+	// while (true) {
+	// Message msg = mModifyHandler.obtainMessage();
+	// msg.what = SEND_THREAD_PLAY;
+	// mModifyHandler.sendMessage(msg);
+	//
+	// try {
+	// Thread.sleep(500);
+	// } catch (InterruptedException e) {
+	// // e.printStackTrace();
+	// return;
+	// }
+	// }
+	// }
+	// }
+	//
+	// public void modifyAnimationStart() {
+	// if (mModifyThread != null) {
+	// if (mModifyThread.isAlive())
+	// mModifyThread.interrupt();
+	// }
+	//
+	// mModifyThread = new ModifyThread();
+	// mModifyThread.start();
+	// }
+	//
+	// public void modifyAnimationStop() {
+	// mModifyHandler.sendEmptyMessage(SEND_THREAD_STOP);
+	// }
 
 	public void viewSetTag(Mobject tag) {
 		SelectView.setTag(tag);
