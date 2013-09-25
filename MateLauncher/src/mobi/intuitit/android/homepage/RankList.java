@@ -19,12 +19,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class RankList extends Activity implements OnItemClickListener{
+public class RankList extends Activity implements OnItemClickListener {
 
 	private ListView listview;
-	// µ¥ÀÌÅÍ¸¦ ¿¬°áÇÒ Adapter
+	// ë°ì´í„°ë¥¼ ì—°ê²°í•  Adapter
 	DataAdapter adapter;
-	// µ¥ÀÌÅÍ¸¦ ´ãÀ» ÀÚ·á±¸Á¶
+	// ë°ì´í„°ë¥¼ ë‹´ì„ ìë£Œêµ¬ì¡°
 	ArrayList<CData> alist;
 
 	@Override
@@ -38,20 +38,20 @@ public class RankList extends Activity implements OnItemClickListener{
 
 		alist = new ArrayList<CData>();
 
-		// µ¥ÀÌÅÍ¸¦ ¹Ş±âÀ§ÇØ µ¥ÀÌÅÍ¾î´ğÅÍ °´Ã¼ ¼±¾ğ
+		// ë°ì´í„°ë¥¼ ë°›ê¸°ìœ„í•´ ë°ì´í„°ì–´ëŒ‘í„° ê°ì²´ ì„ ì–¸
 		adapter = new DataAdapter(this, alist);
 
-		// ¸®½ºÆ®ºä¿¡ ¾î´ğÅÍ ¿¬°á
+		// ë¦¬ìŠ¤íŠ¸ë·°ì— ì–´ëŒ‘í„° ì—°ê²°
 		listview.setAdapter(adapter);
-		// ¸®½ºÆ®ºä Å¬¸¯ ¸®½º³Ê
+		// ë¦¬ìŠ¤íŠ¸ë·° í´ë¦­ ë¦¬ìŠ¤ë„ˆ
 		listview.setOnItemClickListener(this);
 
-		// ¸®½ºÆ®ºä¿¡ Ç×¸ñ Ãß°¡
+		// ë¦¬ìŠ¤íŠ¸ë·°ì— í•­ëª© ì¶”ê°€
 
-		add("¾î±úÀ§ÀÇ º¸¸®", "±è¼ºÇö", R.drawable.hyun);
-		add("¹İ°©½À´Ï´Ù", "³ªµ¿±Ô", R.drawable.na);
-		add("´Á´ë¾ÆÀÌ", "·ùÁ¾¿ø", R.drawable.ryu);
-		add("±× °Ü¿ï ¹Ù¶÷ÀÌ ºĞ´Ù", "±è±Ç¼·", R.drawable.kwon);
+		add("ì–´ê¹¨ìœ„ì˜ ë³´ë¦¬", "ê¹€ì„±í˜„", R.drawable.hyun);
+		add("ë°˜ê°‘ìŠµë‹ˆë‹¤", "ë‚˜ë™ê·œ", R.drawable.na);
+		add("ëŠ‘ëŒ€ì•„ì´", "ë¥˜ì¢…ì›", R.drawable.ryu);
+		add("ê·¸ ê²¨ìš¸ ë°”ëŒì´ ë¶„ë‹¤", "ê¹€ê¶Œì„­", R.drawable.kwon);
 	}
 
 	public void add(String state, String name, int profile) {
@@ -59,7 +59,7 @@ public class RankList extends Activity implements OnItemClickListener{
 	}
 
 	private class DataAdapter extends ArrayAdapter<CData> {
-		// ·¹ÀÌ¾Æ¿ô XMLÀ» ÀĞ¾îµéÀÌ±â À§ÇÑ °´Ã¼
+		// ë ˆì´ì•„ì›ƒ XMLì„ ì½ì–´ë“¤ì´ê¸° ìœ„í•œ ê°ì²´
 		private LayoutInflater mInflater;
 
 		public DataAdapter(Context context, ArrayList<CData> object) {
@@ -68,13 +68,13 @@ public class RankList extends Activity implements OnItemClickListener{
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
-		// º¸¿©Áö´Â ½ºÅ¸ÀÏÀ» ÀÚ½ÅÀÌ ¸¸µç xml·Î º¸ÀÌ±â À§ÇÑ ±¸¹®
+		// ë³´ì—¬ì§€ëŠ” ìŠ¤íƒ€ì¼ì„ ìì‹ ì´ ë§Œë“  xmlë¡œ ë³´ì´ê¸° ìœ„í•œ êµ¬ë¬¸
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
 			View view = null;
-			// ÇöÀç ¸®½ºÆ®ÀÇ ÇÏ³ªÀÇ Ç×¸ñ¿¡ º¸ÀÏ ÄÁÆ®·Ñ ¾ò±â
+			// í˜„ì¬ ë¦¬ìŠ¤íŠ¸ì˜ í•˜ë‚˜ì˜ í•­ëª©ì— ë³´ì¼ ì»¨íŠ¸ë¡¤ ì–»ê¸°
 			if (v == null) {
-				// XML ·¹ÀÌ¾Æ¿ôÀ» Á÷Á¢ ÀĞ¾î¼­ ¸®½ºÆ®ºä¿¡ ³ÖÀ½
+				// XML ë ˆì´ì•„ì›ƒì„ ì§ì ‘ ì½ì–´ì„œ ë¦¬ìŠ¤íŠ¸ë·°ì— ë„£ìŒ
 				view = mInflater.inflate(R.layout.rank_custom, null);
 			} else {
 				view = v;
@@ -83,31 +83,31 @@ public class RankList extends Activity implements OnItemClickListener{
 			TextView rank = (TextView) view.findViewById(R.id.rank_num);
 			int ranknum = position;
 			ranknum++;
-			rank.setText(ranknum + "µî");
+			rank.setText(ranknum + "ë“±");
 
-			// ÀÚ·á¸¦ ¹Ş´Â´Ù.
+			// ìë£Œë¥¼ ë°›ëŠ”ë‹¤.
 			final CData data = this.getItem(position);
 
-			if (data != null) { // È­¸é Ãâ·Â
+			if (data != null) { // í™”ë©´ ì¶œë ¥
 
 				TextView m_stateMessage = (TextView) view
 						.findViewById(R.id.rank_state);
 				TextView m_name = (TextView) view.findViewById(R.id.rank_name);
-				// ÅØ½ºÆ®ºä1¿¡ getStateMessage()À» Ãâ·Â Áï Ã¹¹øÂ° ÀÎ¼ö°ª
+				// í…ìŠ¤íŠ¸ë·°1ì— getStateMessage()ì„ ì¶œë ¥ ì¦‰ ì²«ë²ˆì§¸ ì¸ìˆ˜ê°’
 				m_stateMessage.setText(data.getStateMessage());
-				// ÅØ½ºÆ®ºä2¿¡ getName()À» Ãâ·Â Áï µÎ¹øÂ° ÀÎ¼ö°ª
+				// í…ìŠ¤íŠ¸ë·°2ì— getName()ì„ ì¶œë ¥ ì¦‰ ë‘ë²ˆì§¸ ì¸ìˆ˜ê°’
 				m_name.setText(data.getName());
 
 				ImageView m_profile = (ImageView) view
 						.findViewById(R.id.rank_photo);
-				// ÀÌ¹ÌÁöºä¿¡ »Ñ·ÁÁú ÇØ´ç ÀÌ¹ÌÁö°ªÀ» ¿¬°á Áï ¼¼¹øÂ° ÀÎ¼ö°ª
+				// ì´ë¯¸ì§€ë·°ì— ë¿Œë ¤ì§ˆ í•´ë‹¹ ì´ë¯¸ì§€ê°’ì„ ì—°ê²° ì¦‰ ì„¸ë²ˆì§¸ ì¸ìˆ˜ê°’
 				m_profile.setImageResource(data.getProfile());
 			}
 			return view;
 		}
 	}
 
-	// CData¾È¿¡ ¹ŞÀº °ªÀ» Á÷Á¢ ÇÒ´ç
+	// CDataì•ˆì— ë°›ì€ ê°’ì„ ì§ì ‘ í• ë‹¹
 	class CData {
 
 		private String m_state;
@@ -133,38 +133,35 @@ public class RankList extends Activity implements OnItemClickListener{
 		public int getProfile() {
 			return m_profile;
 		}
-		
+
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		if(position==0){
+		if (position == 0) {
 			Intent intent = new Intent(RankList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
 			intent.putExtra("position", position);
-			startActivity(intent);			
-		}
-		else if(position==1){
+			startActivity(intent);
+		} else if (position == 1) {
 			Intent intent = new Intent(RankList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
 			intent.putExtra("position", position);
-			startActivity(intent);			
-		}
-		else if(position==2){
+			startActivity(intent);
+		} else if (position == 2) {
 			Intent intent = new Intent(RankList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
 			intent.putExtra("position", position);
-			startActivity(intent);			
-		}
-		else if(position==3){
+			startActivity(intent);
+		} else if (position == 3) {
 			Intent intent = new Intent(RankList.this, GuestHome.class);
 			intent.putExtra("state", alist.get(position).getStateMessage());
 			intent.putExtra("profile", alist.get(position).getProfile());
 			intent.putExtra("position", position);
-			startActivity(intent);			
+			startActivity(intent);
 		}
 	}
 

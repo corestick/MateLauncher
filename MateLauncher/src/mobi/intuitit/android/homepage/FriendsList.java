@@ -19,11 +19,11 @@ import android.widget.TextView;
 
 public class FriendsList extends Activity implements OnItemClickListener{
 
-	// ¸®½ºÆ®ºä ¼±¾ğ
+	// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	private ListView listview;
-	// µ¥ÀÌÅÍ¸¦ ¿¬°áÇÒ Adapter
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Adapter
 	DataAdapter adapter;
-	// µ¥ÀÌÅÍ¸¦ ´ãÀ» ÀÚ·á±¸Á¶
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·á±¸ï¿½ï¿½
 	ArrayList<CData> alist;
 
 	/** Called when the activity is first created. */
@@ -36,18 +36,19 @@ public class FriendsList extends Activity implements OnItemClickListener{
 	
 		alist = new ArrayList<CData>();
 
-		// µ¥ÀÌÅÍ¸¦ ¹Ş±âÀ§ÇØ µ¥ÀÌÅÍ¾î´ğÅÍ °´Ã¼ ¼±¾ğ
+		// ë°ì´í„°ë¥¼ ë°›ê¸°ìœ„í•´ ë°ì´í„°ì–´ëŒ‘í„° ê°ì²´ ì„ ì–¸
 		adapter = new DataAdapter(this, alist);
 
-		// ¸®½ºÆ®ºä¿¡ ¾î´ğÅÍ ¿¬°á
+		// ë¦¬ìŠ¤íŠ¸ë·°ì— ì–´ëŒ‘í„° ì—°ê²°
 		listview.setAdapter(adapter);
-		// ¸®½ºÆ®ºä Å¬¸¯ ¸®½º³Ê
+		// ë¦¬ìŠ¤íŠ¸ë·° í´ë¦­ ë¦¬ìŠ¤ë„ˆ
 		listview.setOnItemClickListener(this);
 		
-		// ¸®½ºÆ®ºä¿¡ Ç×¸ñ Ãß°¡ 
-		add("¾î±úÀ§ÀÇ º¸¸®", "±è¼ºÇö", R.drawable.hyun);
-		add("¹İ°©½À´Ï´Ù", "³ªµ¿±Ô", R.drawable.na);
-		add("´Á´ë¾ÆÀÌ", "·ùÁ¾¿ø", R.drawable.ryu);
+		// ë¦¬ìŠ¤íŠ¸ë·°ì— í•­ëª© ì¶”ê°€ 
+		add("ì–´ê¹¨ìœ„ì˜ ë³´ë¦¬", "ê¹€ì„±í˜„", R.drawable.hyun);
+		add("ë°˜ê°‘ìŠµë‹ˆë‹¤", "ë‚˜ë™ê·œ", R.drawable.na);
+		add("ëŠ‘ëŒ€ì•„ì´", "ë¥˜ì¢…ì›", R.drawable.ryu);
+
 	}
 	
 	public void add(String state, String name, int profile){		
@@ -55,7 +56,7 @@ public class FriendsList extends Activity implements OnItemClickListener{
 	}
 
 	private class DataAdapter extends ArrayAdapter<CData> {
-		// ·¹ÀÌ¾Æ¿ô XMLÀ» ÀĞ¾îµéÀÌ±â À§ÇÑ °´Ã¼
+		// ï¿½ï¿½ï¿½Ì¾Æ¿ï¿½ XMLï¿½ï¿½ ï¿½Ğ¾ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
 		private LayoutInflater mInflater;
 
 		public DataAdapter(Context context, ArrayList<CData> object) {
@@ -63,40 +64,40 @@ public class FriendsList extends Activity implements OnItemClickListener{
 			mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
-		// º¸¿©Áö´Â ½ºÅ¸ÀÏÀ» ÀÚ½ÅÀÌ ¸¸µç xml·Î º¸ÀÌ±â À§ÇÑ ±¸¹®
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ xmlï¿½ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		@Override
 		public View getView(int position, View v, ViewGroup parent) {
 			View view = null;
-			// ÇöÀç ¸®½ºÆ®ÀÇ ÇÏ³ªÀÇ Ç×¸ñ¿¡ º¸ÀÏ ÄÁÆ®·Ñ ¾ò±â
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½
 			if (v == null) {
 
-				// XML ·¹ÀÌ¾Æ¿ôÀ» Á÷Á¢ ÀĞ¾î¼­ ¸®½ºÆ®ºä¿¡ ³ÖÀ½
+				// XML ï¿½ï¿½ï¿½Ì¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ¾î¼­ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ä¿¡ ï¿½ï¿½ï¿½ï¿½
 				view = mInflater.inflate(R.layout.custom_friendlist, null);
 			} else {
 				view = v;
 			}
-			// ÀÚ·á¸¦ ¹Ş´Â´Ù.
+			// ï¿½Ú·á¸¦ ï¿½Ş´Â´ï¿½.
 			final CData data = this.getItem(position);
 
 			if (data != null) {
-				// È­¸é Ãâ·Â
+				// È­ï¿½ï¿½ ï¿½ï¿½ï¿½
 				TextView m_stateMessage = (TextView) view.findViewById(R.id.friend_statemessage);
 				TextView m_name = (TextView) view.findViewById(R.id.friend_name);
-				// ÅØ½ºÆ®ºä1¿¡ getStateMessage()À» Ãâ·Â Áï Ã¹¹øÂ° ÀÎ¼ö°ª
+				// ï¿½Ø½ï¿½Æ®ï¿½ï¿½1ï¿½ï¿½ getStateMessage()ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã¹ï¿½ï¿½Â° ï¿½Î¼ï¿½ï¿½ï¿½
 				m_stateMessage.setText(data.getStateMessage());
-				// ÅØ½ºÆ®ºä2¿¡ getName()À» Ãâ·Â Áï µÎ¹øÂ° ÀÎ¼ö°ª
+				// ï¿½Ø½ï¿½Æ®ï¿½ï¿½2ï¿½ï¿½ getName()ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Î¹ï¿½Â° ï¿½Î¼ï¿½ï¿½ï¿½
 				m_name.setText(data.getName());
 				
 				ImageView m_profile = (ImageView) view.findViewById(R.id.friend_profile);
 
-				// ÀÌ¹ÌÁöºä¿¡ »Ñ·ÁÁú ÇØ´ç ÀÌ¹ÌÁö°ªÀ» ¿¬°á Áï ¼¼¹øÂ° ÀÎ¼ö°ª
+				// ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ä¿¡ ï¿½Ñ·ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Â° ï¿½Î¼ï¿½ï¿½ï¿½
 				m_profile.setImageResource(data.getProfile());
 			}
 			return view;
 		}
 
 	}
-	// CData¾È¿¡ ¹ŞÀº °ªÀ» Á÷Á¢ ÇÒ´ç
+	// CDataï¿½È¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò´ï¿½
 	class CData {
 
 		private String m_state;
@@ -122,7 +123,7 @@ public class FriendsList extends Activity implements OnItemClickListener{
 		}
 	}
 
-	// ¼­¹ö¿¡ µ¥ÀÌÅÍ ¿ä±¸
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ä±¸
 	@Override 
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		if(position==0){

@@ -50,7 +50,7 @@ import android.widget.TextView;
 public class OwnerHome extends Activity implements OnScrollListener,
 		OnClickListener {
 
-	final String serverUrl = "http://kimsunghyuntest2.appspot.com/simpleservletapp";
+	final String serverUrl = "http://kimsunghyuntest.appspot.com/simpleservletapp";
 
 	private static final int PICK_FROM_CAMERA = 0;
 	private static final int PICK_FROM_ALBUM = 1;
@@ -87,7 +87,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	public Button likeButton;
 	public Button commentButton;
 
-	public String phoneNum = "123";
+	public String phoneNum = "2";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,17 +109,17 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		profileMsg = (TextView) findViewById(R.id.owner_state);
 		profileMsg.setText("Mate Launcher");
 
-		// ��õ, �ٿ�, �湮 �ؽ�Ʈ��
+		// 추천, 다운, 방문 텍스트뷰
 		tv_Recommend = (TextView) findViewById(R.id.owner_recommend);
 		tv_Download = (TextView) findViewById(R.id.owner_down);
 		tv_Comment = (TextView) findViewById(R.id.owner_visit);
 
-		// ��õ, �ٿ�, �湮 ��
+		// 추천, 다운, 방문 셋
 		tv_Recommend = setRecommend(count_Recommend);
 		tv_Download = setDownload(count_Download);
 		tv_Comment = setVisit(count_Comment);
 
-		// ��ó Ȩ��ũ�� �����ִ� �κ�
+		// 런처 홈스크린 보여주는 부분
 		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
 		gallery.setAdapter(new OwnerImageAdapter(this));
 		gallery.setSelection(1);
@@ -162,18 +162,17 @@ public class OwnerHome extends Activity implements OnScrollListener,
 					}
 				};
 
-				new AlertDialog.Builder(OwnerHome.this)
-						.setTitle("���ε��� �̹��� ����")
-						.setPositiveButton("�����Կ�", cameraListener)
-						.setNeutralButton("�ٹ���", albumListener)
-						.setNegativeButton("���", cancelListener).show();
+				new AlertDialog.Builder(OwnerHome.this).setTitle("업로드할 이미지 선택")
+						.setPositiveButton("사진촬영", cameraListener)
+						.setNeutralButton("앨범선택", albumListener)
+						.setNegativeButton("취소", cancelListener).show();
 
 			}
 		});
 
 	}
 
-	// ��õ, �ٿ�, �湮 �� ��
+	// 추천, 다운, 방문 수 셋
 	private TextView setRecommend(int n) {
 		tv_Recommend.setText("" + n);
 		return tv_Recommend;
@@ -255,8 +254,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		// ���� ���� ó���� ���̴� ����ȣ�� �������� ����ȣ�� ���Ѱ���
-		// ��ü�� ���ڿ� ���������� ���� �Ʒ��� ��ũ�� �Ǿ�ٰ� �����մϴ�.
+		// 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
+		// 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
 		int count = totalItemCount - visibleItemCount;
 
 		if (msgCnt != 0) {
@@ -281,7 +280,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			@Override
 			public void run() {
 				for (int i = 0; i < size; i++) {
-					mRowList.add("�ȳ� " + msgCnt);
+					mRowList.add("안녕 " + msgCnt);
 					msgCnt--;
 				}
 
@@ -325,7 +324,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	public void get_DB() {
-		// �ڵ��� ��ȣ �о����
+		// 핸드폰 번호 읽어오기
 		// TelephonyManager telManager =
 		// (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 		// phoneNum = telManager.getLine1Number();
@@ -346,10 +345,10 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		final int cellXIndex = c.getColumnIndexOrThrow("cellX");
 		final int cellYIndex = c.getColumnIndexOrThrow("cellY");
 		final int mobjectType = c.getColumnIndexOrThrow("mobjectType");
-		final int mobjectIcon = c.getColumnIndex("mobjectIcon");
-		final int contactsName = c.getColumnIndex("contact_name");
-		final int contactsNum = c.getColumnIndex("contact_num");
-		final int icon_Mirror = c.getColumnIndex("icon_mirror");
+		final int mobjectIcon = c.getColumnIndexOrThrow("mobjectIcon");
+		// final int contactsName = c.getColumnIndexOrThrow("contact_name");
+		// final int contactsNum = c.getColumnIndexOrThrow("contact_num");
+		final int icon_Mirror = c.getColumnIndexOrThrow("reverseIcon");
 
 		while (c.moveToNext()) {
 
@@ -361,8 +360,6 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			int cellY = c.getInt(cellYIndex);
 			int MobjectType = c.getInt(mobjectType);
 			int MobjectIcon = c.getInt(mobjectIcon);
-			String contactName = c.getString(contactsName);
-			String contactNum = c.getString(contactsNum);
 			int iconMirror = c.getInt(icon_Mirror);
 
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -371,15 +368,6 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				map.put("intent", "null");
 			else
 				map.put("intent", intentDescription);
-			if (contactName == null)
-				map.put("contact_name", "null");
-			else
-				map.put("contact_name", contactName);
-			if (contactNum == null)
-				map.put("contact_num", "null");
-			else
-				map.put("contact_num", contactNum);
-
 			map.put("container", container);
 			map.put("itemType", itemType);
 			map.put("screen", screen);
@@ -387,8 +375,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			map.put("cellY", cellY);
 			map.put("MobjectType", MobjectType);
 			map.put("MobjectIcon", MobjectIcon);
-			map.put("icon_mirror", iconMirror);
-//			map.put("wall", "null");
+			map.put("reverseIcon", iconMirror);
+			map.put("wall", "null");
 
 			JSONfunctions.postSONfromURL(serverUrl, map);
 		}
@@ -396,7 +384,6 @@ public class OwnerHome extends Activity implements OnScrollListener,
 
 		for (int i = 0; i < HomeMain.ChildCount; i++) {
 			int wIdx = SharedPreference.getIntSharedPreference(this, i + "|w");
-			int fIdx = SharedPreference.getIntSharedPreference(this, i + "|f");
 			Log.e("Sh-Wall", String.valueOf(wIdx));
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("user", phoneNum);
@@ -405,7 +392,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		}
 	}
 
-	// ��õ, �ٿ�ε�, �ڸ�Ʈ Ŭ�� ������
+	// 추천, 다운로드, 코멘트 클릭 리스너
 	@Override
 	public void onClick(View v) {
 		if (v.equals(uploadButton)) {
@@ -450,15 +437,16 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			alist = new ArrayList<CData>();
 			adapter = new DataAdapter(this.getContext(), alist);
 			listview.setAdapter(adapter);
-			add("�� �̻ڳ׿�~", "�輺��", R.drawable.hyun);
-			add("�̻ڴ�~", "��Ǽ�", R.drawable.kwon);
-			add("��õ�ڰ?��~", "������", R.drawable.na);
-			add("�۰���~", "������", R.drawable.ryu);
+			add("와 이쁘네요~", "김성현", R.drawable.hyun);
+			add("이쁘다~", "김권섭", R.drawable.kwon);
+			add("추천박고가요~", "나동규", R.drawable.na);
+			add("퍼가요~", "류종원", R.drawable.ryu);
+
 		}
 
 		public void onClick(View view) {
 			if (view == write) {
-				add(et.getText(), "��Ǽ�", R.drawable.kwon);
+				add(et.getText(), "김권섭", R.drawable.kwon);
 				et.setText("");
 				count_Comment++;
 				tv_Comment = setVisit(count_Comment);
@@ -477,7 +465,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	private class DataAdapter extends ArrayAdapter<CData> {
-		// ���̾ƿ� XML�� �о���̱� ���� ��ü
+		// 레이아웃 XML을 읽어들이기 위한 객체
 		private LayoutInflater mInflater;
 
 		public DataAdapter(Context context, ArrayList<CData> object) {
