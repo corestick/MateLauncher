@@ -66,7 +66,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	private TextView profileMsg;
 	private EditText editText;
 	private String data;
-	private Gallery gallery; // ·±Ã³ ÀÌ¹ÌÁö º¸¿©ÁÖ±â
+	private Gallery gallery; // ï¿½ï¿½Ã³ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
 
 	private ScrollAdapter mAdapter;
 	private ListView mListView;
@@ -109,17 +109,17 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		profileMsg = (TextView) findViewById(R.id.owner_state);
 		profileMsg.setText("Mate Launcher");
 
-		// ÃßÃµ, ´Ù¿î, ¹æ¹® ÅØ½ºÆ®ºä
+		// ï¿½ï¿½Ãµ, ï¿½Ù¿ï¿½, ï¿½æ¹® ï¿½Ø½ï¿½Æ®ï¿½ï¿½
 		tv_Recommend = (TextView) findViewById(R.id.owner_recommend);
 		tv_Download = (TextView) findViewById(R.id.owner_down);
 		tv_Comment = (TextView) findViewById(R.id.owner_visit);
 
-		// ÃßÃµ, ´Ù¿î, ¹æ¹® ¼Â
+		// ï¿½ï¿½Ãµ, ï¿½Ù¿ï¿½, ï¿½æ¹® ï¿½ï¿½
 		tv_Recommend = setRecommend(count_Recommend);
 		tv_Download = setDownload(count_Download);
 		tv_Comment = setVisit(count_Comment);
 
-		// ·±Ã³ È¨½ºÅ©¸° º¸¿©ÁÖ´Â ºÎºÐ
+		// ï¿½ï¿½Ã³ È¨ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Îºï¿½
 		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
 		gallery.setAdapter(new OwnerImageAdapter(this));
 		gallery.setSelection(1);
@@ -162,17 +162,18 @@ public class OwnerHome extends Activity implements OnScrollListener,
 					}
 				};
 
-				new AlertDialog.Builder(OwnerHome.this).setTitle("¾÷·ÎµåÇÒ ÀÌ¹ÌÁö ¼±ÅÃ")
-						.setPositiveButton("»çÁøÃÔ¿µ", cameraListener)
-						.setNeutralButton("¾Ù¹ü¼±ÅÃ", albumListener)
-						.setNegativeButton("Ãë¼Ò", cancelListener).show();
+				new AlertDialog.Builder(OwnerHome.this)
+						.setTitle("ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
+						.setPositiveButton("ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½", cameraListener)
+						.setNeutralButton("ï¿½Ù¹ï¿½ï¿½ï¿½", albumListener)
+						.setNegativeButton("ï¿½ï¿½ï¿½", cancelListener).show();
 
 			}
 		});
 
 	}
 
-	// ÃßÃµ, ´Ù¿î, ¹æ¹® ¼ö ¼Â
+	// ï¿½ï¿½Ãµ, ï¿½Ù¿ï¿½, ï¿½æ¹® ï¿½ï¿½ ï¿½ï¿½
 	private TextView setRecommend(int n) {
 		tv_Recommend.setText("" + n);
 		return tv_Recommend;
@@ -254,8 +255,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		// ÇöÀç °¡Àå Ã³À½¿¡ º¸ÀÌ´Â ¼¿¹øÈ£¿Í º¸¿©Áö´Â ¼¿¹øÈ£¸¦ ´õÇÑ°ªÀÌ
-		// ÀüÃ¼ÀÇ ¼ýÀÚ¿Í µ¿ÀÏÇØÁö¸é °¡Àå ¾Æ·¡·Î ½ºÅ©·Ñ µÇ¾ú´Ù°í °¡Á¤ÇÕ´Ï´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½
+		// ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½Ç¾ï¿½Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 		int count = totalItemCount - visibleItemCount;
 
 		if (msgCnt != 0) {
@@ -273,19 +274,19 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	private void addItems(final int size) {
-		// ¾ÆÀÌÅÛÀ» Ãß°¡ÇÏ´Â µ¿¾È Áßº¹ ¿äÃ»À» ¹æÁöÇÏ±â À§ÇØ ¶ôÀ» °É¾îµÓ´Ï´Ù.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ßºï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½É¾ï¿½Ó´Ï´ï¿½.
 		mLockListView = true;
 
 		Runnable run = new Runnable() {
 			@Override
 			public void run() {
 				for (int i = 0; i < size; i++) {
-					mRowList.add("¾È³ç " + msgCnt);
+					mRowList.add("ï¿½È³ï¿½ " + msgCnt);
 					msgCnt--;
 				}
 
-				// ¸ðµç µ¥ÀÌÅÍ¸¦ ·ÎµåÇÏ¿© Àû¿ëÇÏ¿´´Ù¸é ¾î´ðÅÍ¿¡ ¾Ë¸®°í
-				// ¸®½ºÆ®ºäÀÇ ¶ôÀ» ÇØÁ¦ÇÕ´Ï´Ù.
+				// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Îµï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½Ë¸ï¿½ï¿½ï¿½
+				// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 				mAdapter.notifyDataSetChanged();
 				if (msgCnt != 0)
 					mLockListView = false;
@@ -294,7 +295,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			}
 		};
 
-		// ¼ÓµµÀÇ µô·¹ÀÌ¸¦ ±¸ÇöÇÏ±â À§ÇÑ ²Ä¼ö
+		// ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¼ï¿½
 		Handler handler = new Handler();
 		handler.postDelayed(run, 5000);
 	}
@@ -324,7 +325,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	public void get_DB() {
-		// ÇÚµåÆù ¹øÈ£ ÀÐ¾î¿À±â
+		// ï¿½Úµï¿½ï¿½ï¿½ ï¿½ï¿½È£ ï¿½Ð¾ï¿½ï¿½ï¿½ï¿½
 		// TelephonyManager telManager =
 		// (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 		// phoneNum = telManager.getLine1Number();
@@ -346,7 +347,9 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		final int cellYIndex = c.getColumnIndexOrThrow("cellY");
 		final int mobjectType = c.getColumnIndexOrThrow("mobjectType");
 		final int mobjectIcon = c.getColumnIndex("mobjectIcon");
-		final int contactsIndex = c.getColumnIndex("contacts");
+		final int contactsName = c.getColumnIndex("contact_name");
+		final int contactsNum = c.getColumnIndex("contact_num");
+		final int icon_Mirror = c.getColumnIndex("icon_mirror");
 
 		while (c.moveToNext()) {
 
@@ -358,7 +361,9 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			int cellY = c.getInt(cellYIndex);
 			int MobjectType = c.getInt(mobjectType);
 			int MobjectIcon = c.getInt(mobjectIcon);
-			String contacts = c.getString(contactsIndex);
+			String contactName = c.getString(contactsName);
+			String contactNum = c.getString(contactsNum);
+			int iconMirror = c.getInt(icon_Mirror);
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("user", phoneNum);
@@ -366,10 +371,15 @@ public class OwnerHome extends Activity implements OnScrollListener,
 				map.put("intent", "null");
 			else
 				map.put("intent", intentDescription);
-//			if (contacts == null)
-//				map.put("contacts", "null");
-//			else
-//				map.put("contacts", contacts);
+			if (contactName == null)
+				map.put("contact_name", "null");
+			else
+				map.put("contact_name", contactName);
+			if (contactNum == null)
+				map.put("contact_num", "null");
+			else
+				map.put("contact_num", contactNum);
+
 			map.put("container", container);
 			map.put("itemType", itemType);
 			map.put("screen", screen);
@@ -377,8 +387,8 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			map.put("cellY", cellY);
 			map.put("MobjectType", MobjectType);
 			map.put("MobjectIcon", MobjectIcon);
-
-			map.put("wall", "null");
+			map.put("icon_mirror", iconMirror);
+//			map.put("wall", "null");
 
 			JSONfunctions.postSONfromURL(serverUrl, map);
 		}
@@ -391,12 +401,11 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("user", phoneNum);
 			map.put("wall", i + "-" + wIdx);
-			map.put("floor", i + "-" + fIdx);
 			JSONfunctions.postSONfromURL(serverUrl, map);
 		}
 	}
 
-	// ÃßÃµ, ´Ù¿î·Îµå, ÄÚ¸àÆ® Å¬¸¯ ¸®½º³Ê
+	// ï¿½ï¿½Ãµ, ï¿½Ù¿ï¿½Îµï¿½, ï¿½Ú¸ï¿½Æ® Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Override
 	public void onClick(View v) {
 		if (v.equals(uploadButton)) {
@@ -415,11 +424,11 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			params.height = LayoutParams.WRAP_CONTENT;
 			commentdialog.getWindow().setAttributes(params);
 			commentdialog.show();
-			
+
 		}
 	}
 
-	// ÄÚ¸àÆ® ´ÙÀÌ¾î·Î±×
+	// ï¿½Ú¸ï¿½Æ® ï¿½ï¿½ï¿½Ì¾ï¿½Î±ï¿½
 
 	public class CommentDialog extends Dialog implements
 			android.view.View.OnClickListener {
@@ -441,15 +450,15 @@ public class OwnerHome extends Activity implements OnScrollListener,
 			alist = new ArrayList<CData>();
 			adapter = new DataAdapter(this.getContext(), alist);
 			listview.setAdapter(adapter);
-			add("¿Í ÀÌ»Ú³×¿ä~", "±è¼ºÇö", R.drawable.hyun);
-			add("ÀÌ»Ú´Ù~", "±è±Ç¼·", R.drawable.kwon);
-			add("ÃßÃµ¹Ú°í°¡¿ä~", "³ªµ¿±Ô", R.drawable.na);
-			add("ÆÛ°¡¿ä~", "·ùÁ¾¿ø", R.drawable.ryu);
+			add("ï¿½ï¿½ ï¿½Ì»Ú³×¿ï¿½~", "ï¿½è¼ºï¿½ï¿½", R.drawable.hyun);
+			add("ï¿½Ì»Ú´ï¿½~", "ï¿½ï¿½Ç¼ï¿½", R.drawable.kwon);
+			add("ï¿½ï¿½Ãµï¿½Ú°?ï¿½ï¿½~", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", R.drawable.na);
+			add("ï¿½Û°ï¿½ï¿½ï¿½~", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", R.drawable.ryu);
 		}
 
 		public void onClick(View view) {
 			if (view == write) {
-				add(et.getText(), "±è±Ç¼·", R.drawable.kwon);
+				add(et.getText(), "ï¿½ï¿½Ç¼ï¿½", R.drawable.kwon);
 				et.setText("");
 				count_Comment++;
 				tv_Comment = setVisit(count_Comment);
@@ -468,7 +477,7 @@ public class OwnerHome extends Activity implements OnScrollListener,
 	}
 
 	private class DataAdapter extends ArrayAdapter<CData> {
-		// ·¹ÀÌ¾Æ¿ô XMLÀ» ÀÐ¾îµéÀÌ±â À§ÇÑ °´Ã¼
+		// ï¿½ï¿½ï¿½Ì¾Æ¿ï¿½ XMLï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
 		private LayoutInflater mInflater;
 
 		public DataAdapter(Context context, ArrayList<CData> object) {
@@ -507,28 +516,29 @@ public class OwnerHome extends Activity implements OnScrollListener,
 		}
 	}
 
-    private ProgressDialog loagindDialog; // Loading Dialog
-    void upThreadAndDialog() {
-        /* ProgressDialog */
-        loagindDialog = ProgressDialog.show(this, "uploading",
-                "Please wait...", true, false);
-        
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-            	get_DB();
-                handler.sendEmptyMessage(0);
-            }
-        });
-        thread.start();
-    }
+	private ProgressDialog loagindDialog; // Loading Dialog
 
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            loagindDialog.dismiss(); // ´ÙÀÌ¾ó·Î±× »èÁ¦
-            // View°»½Å
-        }
-    };
-	
+	void upThreadAndDialog() {
+		/* ProgressDialog */
+		loagindDialog = ProgressDialog.show(this, "uploading",
+				"Please wait...", true, false);
+
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				get_DB();
+				handler.sendEmptyMessage(0);
+			}
+		});
+		thread.start();
+	}
+
+	private Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			loagindDialog.dismiss(); // ï¿½ï¿½ï¿½Ì¾ï¿½Î±ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// Viewï¿½ï¿½ï¿½ï¿½
+		}
+	};
+
 	class CData {
 
 		private String m_comment;

@@ -39,6 +39,7 @@ import java.util.List;
 
 import mobi.intuitit.android.content.LauncherIntent;
 import mobi.intuitit.android.content.LauncherMetadata;
+import mobi.intuitit.android.homepage.HomeMain;
 import mobi.intuitit.android.mate.launcher.ScreenLayout.onScreenChangeListener;
 import mobi.intuitit.android.weatherwidget.WeatherWidgetService;
 
@@ -73,7 +74,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.Resources.Theme;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -146,6 +146,7 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	private static final int MENU_NOTIFICATIONS = MENU_SEARCH + 1;
 	private static final int MENU_SETTINGS = MENU_NOTIFICATIONS + 1;
 	private static final int MENU_SCREENS = MENU_SETTINGS + 1;
+	private static final int MENU_HOMEPAGE = MENU_SCREENS + 1;
 
 	private static final int REQUEST_CREATE_SHORTCUT = 1;
 	private static final int REQUEST_CREATE_LIVE_FOLDER = 4;
@@ -1385,6 +1386,8 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		menu.add(0, MENU_NOTIFICATIONS, 0, R.string.menu_notifications)
 				.setIcon(R.drawable.ic_menu_notifications)
 				.setAlphabeticShortcut('N');
+		menu.add(0, MENU_HOMEPAGE, 0, "Launcher Homepage").setIcon(
+				R.drawable.icon_homepage);
 
 		final Intent settings = new Intent(
 				android.provider.Settings.ACTION_SETTINGS);
@@ -1431,6 +1434,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		case MENU_SCREENS:
 			Intent intent = new Intent(Launcher.this, ScreenPrefActivity.class);
 			startActivity(intent);
+			return true;
+		case MENU_HOMEPAGE:
+			startLauncherHomepage(); //런처홈페이지 시작
 			return true;
 		}
 
@@ -3817,5 +3823,38 @@ public final class Launcher extends Activity implements View.OnClickListener,
 	public void widgetStop() {
 		Intent intent = new Intent(this, WeatherWidgetService.class);
 		stopService(intent);
+	}
+
+	public void startLauncherHomepage() {
+		Bitmap captureView[] = null;
+		int count = mLauncher.getWorkspace().getChildCount();
+
+		if (captureView == null || captureView.length != count)
+			captureView = new Bitmap[count];
+
+		String sdcard = Environment.getExternalStorageDirectory()
+				.getAbsolutePath();
+
+		File cfile = new File(sdcard + "/MateLauncher/Owner");
+		cfile.mkdirs(); // 폴더가 없을 경우 ScreenShotTest 폴더생성
+		for (int i = 0; i < count; i++) {
+			View tempCapture = mLauncher.getWorkspace().getChildAt(i);
+			tempCapture.buildDrawingCache();
+			captureView[i] = tempCapture.getDrawingCache();
+
+			String path = sdcard + "/MateLauncher/Owner/screen" + i + ".jpg";
+			try {
+				FileOutputStream fos = new FileOutputStream(path);
+				captureView[i].compress(Bitmap.CompressFormat.JPEG, 100, fos);
+				fos.flush();
+				fos.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		Intent intent = new Intent(mLauncher, HomeMain.class);
+		intent.putExtra("ChildCount", mLauncher.Child_Count());
+		mLauncher.startActivity(intent);
+
 	}
 }
