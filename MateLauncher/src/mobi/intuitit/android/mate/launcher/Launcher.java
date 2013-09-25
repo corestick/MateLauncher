@@ -1376,9 +1376,9 @@ public final class Launcher extends Activity implements View.OnClickListener,
 		// menu.add(0, MENU_WALLPAPER_SETTINGS, 0, R.string.menu_wallpaper)
 		// .setIcon(android.R.drawable.ic_menu_gallery)
 		// .setAlphabeticShortcut('W');
-		menu.add(0, MENU_SCREENS, 0, R.string.group_screens)
-				.setIcon(android.R.drawable.ic_menu_add)
-				.setAlphabeticShortcut('A');
+		// menu.add(0, MENU_SCREENS, 0, R.string.group_screens)
+		// .setIcon(android.R.drawable.ic_menu_add)
+		// .setAlphabeticShortcut('A');
 		menu.add(0, MENU_SEARCH, 0, R.string.menu_search)
 				.setIcon(android.R.drawable.ic_search_category_default)
 				.setAlphabeticShortcut(SearchManager.MENU_KEY);
